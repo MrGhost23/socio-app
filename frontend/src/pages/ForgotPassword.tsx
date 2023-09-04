@@ -16,7 +16,7 @@ const ForgotPassword = () => {
   return (
     <FormLayout>
       <form className="bg-white rounded py-16 px-12" onSubmit={handleSubmit}>
-        <h3 className='text-4xl text-indigo-800 font-bold tracking-wide mb-8'>Reset your password!</h3>
+        <h3 className='text-4xl text-indigo-800 font-bold tracking-wide mb-8'>Reset password!</h3>
         <div className="mb-7">
           <Input id='email' type='email' label='Email' value={email} onChange={(newValue) => setEmail(newValue)} />
         </div>
