@@ -22,7 +22,7 @@ const Register = () => {
   return (
     <FormLayout>
       <form className="bg-white rounded py-16 px-12" onSubmit={handleSubmit}>
-        <h3 className='text-4xl text-indigo-800 font-bold tracking-wide mb-8'>Create an account!</h3>
+        <h3 className='text-4xl text-indigo-800 font-bold tracking-wide mb-8'>Create account!</h3>
         <div className="mb-7">
           <Input id='first-name' type='text' label='First Name' value={firstName} onChange={(newValue) => setFirstName(newValue)} />
         </div>
