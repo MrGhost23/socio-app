@@ -12,9 +12,8 @@ export default {
       xl: '1440px'
     },
     extend: {
-      colors: {
-        primaryGreen: '#28a745',
-        darkGreen: '#11862c',
+      fontFamily: {
+        sans: ['Roboto', 'sans-serif']
       }
     }
   },
