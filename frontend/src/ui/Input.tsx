@@ -1,11 +1,12 @@
 type Props = {
   id: string;
   type: string;
+  label: string;
   value: string;
   onChange: (text: string) => void;
 }
 
-const Input: React.FC<Props> = ({ id, type, value, onChange }) => {
+const Input: React.FC<Props> = ({ id, type, label, value, onChange }) => {
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onChange(event.target.value);
   };
@@ -16,7 +17,7 @@ const Input: React.FC<Props> = ({ id, type, value, onChange }) => {
         className="absolute -top-2 left-3 px-1 bg-white text-gray-500 text-sm font-bold tracking-wide"
         htmlFor={id}
       >
-        Email
+        {label}
       </label>
       <input
         className="appearance-none border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none"
