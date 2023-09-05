@@ -9,6 +9,7 @@ import Register from './pages/Register';
 import LogIn from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
 import Profile from './pages/Profile';
+import PageLayout from './pages/PageLayout';
 
 const App: React.FC = () => {
   return (
@@ -18,7 +19,9 @@ const App: React.FC = () => {
         <Route path='/register' element={<Register />}/>
         <Route path='/login' element={<LogIn />}/>
         <Route path='/forgot-password' element={<ForgotPassword />}/>
-        <Route path='/profile' element={<Profile />}/>
+        <Route element={<PageLayout />}>
+          <Route path='/profile' element={<Profile />}/>
+        </Route>
       </Routes>
       <ToastContainer
         position='bottom-right'
