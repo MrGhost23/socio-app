@@ -6,7 +6,7 @@ type Props = {
   posts: {
     id: number,
     text: string,
-    image: string,
+    image?: string,
     likes: number,
     comments: number,
     authorFullName: string,
