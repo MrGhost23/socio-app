@@ -1,10 +1,10 @@
-import Card from "../ui/Card";
-import UserInfo from "../components/User/UserInfo";
-import Button from "../ui/Button";
-import PostForm from "../components/Post/PostForm";
-import Posts from "../components/Post/Posts";
-import SuggestedUsers from "../components/User/SuggestedUsers";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import Card from '../ui/Card';
+import UserInfo from '../components/User/UserInfo';
+import Button from '../ui/Button';
+import PostForm from '../components/Post/PostForm';
+import Posts from '../components/Post/Posts';
+import SuggestedUsers from '../components/User/SuggestedUsers';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 
 const Profile = () => {
   const currentUserFullName = 'Omar Adel';
@@ -80,7 +80,7 @@ const Profile = () => {
 
   return (
     <>
-      <div className='col-span-1'>
+      <div className='col-span-1 order-1'>
         <Card className='sticky top-10 px-8 py-8 flex flex-col items-center'>
           <BsThreeDotsVertical className='absolute top-10 right-6 text-xl text-gray-500 cursor-pointer transition duration-500 hover:text-indigo-700' />
           <UserInfo userInfo={userInfo} />
@@ -90,11 +90,11 @@ const Profile = () => {
           </div>
         </Card>
       </div>
-      <div className="col-span-2">
+      <div className='col-span-2 order-3 lg:order-2'>
         <PostForm />
         <Posts currentUserFullName={currentUserFullName} currentUserImage={currentUserImage} posts={userPosts} />
       </div>
-      <div className='col-span-1'>
+      <div className='col-span-1 order-2 xl:order-3'>
         <Card className='sticky top-10 px-8 py-4 pb-6 flex flex-col !text-left'>
           <h3 className='mb-5 text-xl'>Suggested for you</h3>
           <SuggestedUsers users={suggestedUsers} />
