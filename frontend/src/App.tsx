@@ -10,6 +10,7 @@ import LogIn from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
 import Profile from './pages/Profile';
 import PageLayout from './pages/PageLayout';
+import Timeline from './pages/Timeline';
 
 const App: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ const App: React.FC = () => {
         <Route path='/login' element={<LogIn />}/>
         <Route path='/forgot-password' element={<ForgotPassword />}/>
         <Route element={<PageLayout />}>
+          <Route path='/' element={<Timeline />}/>
           <Route path='/profile' element={<Profile />}/>
         </Route>
       </Routes>
