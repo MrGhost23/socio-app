@@ -84,10 +84,6 @@ const Sidebar = () => {
             )
           } 
         </ul>
-        <button className="w-32 border-none px-2 py-1 rounded-md font-semibold">
-          Show More
-        </button>
-        <hr className="my-4" />
       </div>
     </div>
   );
