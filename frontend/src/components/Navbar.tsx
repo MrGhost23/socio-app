@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
 
   return (
     <header className="bg-white" ref={navRef}>
-      <div className="mx-auto px-12 py-5 flex items-center">
+      <div className="mx-auto px-20 py-5 flex items-center">
         <div className="md:w-48 flex-shrink-0 mr-auto">
           <Link className="font-bold text-4xl text-sky-500" to="/">
             Socio
