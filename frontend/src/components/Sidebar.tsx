@@ -10,7 +10,6 @@ import VerticalLine from "../ui/VerticalLine";
 import UserFullName from "./User/UserFullName";
 import UserTag from "./User/UserTag";
 
-
 const Sidebar = () => {
   const currentUserFullName = "Omar Mohamed";
   const currentUserTag = "MrGhost";
@@ -29,8 +28,8 @@ const Sidebar = () => {
           sideRef.current.classList.add("sticky-sidebar");
         }
       } else if (sideRef.current) {
-          sideRef.current.classList.remove("sticky-sidebar");
-        }
+        sideRef.current.classList.remove("sticky-sidebar");
+      }
     });
   };
 
@@ -41,11 +40,16 @@ const Sidebar = () => {
   }, []);
 
   const list = [
-    { id: 1, text: 'feed', path: '/', icon: <MdOutlineRssFeed /> },
-    { id: 2, text: 'chats', path: '/messages', icon: <AiOutlineMessage /> },
-    { id: 3, text: 'find friends', path: '/find-friends', icon: <BsPeople /> },
-    { id: 4, text: 'bookmarks', path: '/bookmarks', icon: <HiOutlineBookmark /> },
-    { id: 5, text: 'settings', path: '/settings', icon: <BiCog /> }
+    { id: 1, text: "feed", path: "/", icon: <MdOutlineRssFeed /> },
+    { id: 2, text: "chats", path: "/messages", icon: <AiOutlineMessage /> },
+    { id: 3, text: "find friends", path: "/find-friends", icon: <BsPeople /> },
+    {
+      id: 4,
+      text: "bookmarks",
+      path: "/bookmarks",
+      icon: <HiOutlineBookmark />,
+    },
+    { id: 5, text: "settings", path: "/settings", icon: <BiCog /> },
   ];
 
   return (
@@ -53,36 +57,34 @@ const Sidebar = () => {
       className="h-[calc(100vh-82px)] sticky bottom-0 left-0 top-82px shadow-lg"
       ref={sideRef}
     >
-      <div className="px-20 pt-10">
-        <Link
-          className="mb-5 flex items-center gap-3 group"
-          to="/profile"
-        >
+      <div className="px-10 pt-10">
+        <Link className="mb-5 flex items-center gap-3 group" to="/profile">
           <UserImage
             className="w-14 !m-0"
             src={currentUserImage}
             alt={currentUserFullName}
           />
           <div className="flex flex-col">
-            <UserFullName className='!text-lg font-medium group-hover:text-gray-700' fullName={currentUserFullName} />
+            <UserFullName
+              className="!text-lg font-medium group-hover:text-gray-700"
+              fullName={currentUserFullName}
+            />
             <UserTag tag={currentUserTag} />
           </div>
         </Link>
         <VerticalLine className="my-3" />
         <ul className="m-0 list-none">
-          {
-            list.map(link =>
-              <li
-                key={link.id}
-                className="mb-4 p-2 text-2xl text-gray-700 cursor-pointer transition duration-500 hover:bg-gray-200"
-              >
-                <Link to={link.path} className="flex items-center gap-2">
-                  {link.icon}
-                  <span className="text-lg capitalize">{link.text}</span>
-                </Link>
-              </li>
-            )
-          } 
+          {list.map((link) => (
+            <li
+              key={link.id}
+              className="mb-4 p-2 text-2xl text-gray-700 cursor-pointer hover:bg-gray-200"
+            >
+              <Link to={link.path} className="flex items-center gap-2">
+                {link.icon}
+                <span className="text-lg capitalize">{link.text}</span>
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
     </div>
