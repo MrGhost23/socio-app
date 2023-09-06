@@ -1,0 +1,31 @@
+.modal {
+  @apply fixed top-1/2 left-1/2 z-50;
+  @apply -translate-x-1/2 -translate-y-1/2;
+  @apply w-fit pt-12 px-10 pb-6 overflow-hidden;
+  @apply bg-white rounded;
+  @apply transition-all duration-700;
+}
+
+.modal.modal-visible {
+  @apply opacity-100;
+}
+
+.modal.modal-hidden {
+  @apply opacity-0;
+}
+
+.modal.noBg {
+  @apply bg-transparent p-0;
+}
+
+.modal .modal-close-icon {
+  @apply absolute top-3 right-3;
+  @apply text-3xl text-gray-400;
+  @apply cursor-pointer;
+  @apply transition duration-500;
+  @apply hover:text-indigo-600 hover:scale-110;
+}
+
+.modal.noBg .modal-close-icon {
+  @apply top-5 right-5;
+}
