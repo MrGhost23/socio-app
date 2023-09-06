@@ -19,14 +19,43 @@ const register = async (req, res) => {
     email,
     password,
     picutrePath,
+    role,
   });
-  console.log(user);
+  const token = createTokenUser(user);
+  attachCookiesToResponse({ res, user: token });
+  res.status(StatusCodes.CREATED).json({ user });
+};
 
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    throw new CustomError.BadRequestError(
+      "Please provide an email and password"
+    );
+  }
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new CustomError.UnauthenticatedError("User does not exist");
+  }
+  const isPasswordCorrect = await user.comparePasswords(password);
+  if (!isPasswordCorrect) {
+    throw new CustomError.UnauthenticatedError("Invalid Credentials");
+  }
   const tokenUser = createTokenUser(user);
   attachCookiesToResponse({ res, user: tokenUser });
   res.status(StatusCodes.CREATED).json({ user: tokenUser });
 };
 
+const logout = async (req, res) => {
+  res.cookie("token", "logout", {
+    httpOnly: true,
+    expires: new Date(Date.now()),
+  });
+  res.status(StatusCodes.OK).json({ msg: "User Logged out!" });
+};
+
 module.exports = {
   register,
+  login,
+  logout,
 };

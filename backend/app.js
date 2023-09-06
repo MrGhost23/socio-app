@@ -8,7 +8,12 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const connectDB = require("./db/connect");
 const { register } = require("./controllers/authController");
+const { createPost } = require("./controllers/postsController");
+const authRouter = require("./routes/authRoutes");
+const userRouter = require("./routes/usersRoutes");
+const postRouter = require("./routes/postsRoutes");
 const cookieParser = require("cookie-parser");
+const { authenticateUser } = require("./middleware/authentication");
 
 const app = express();
 app.use(express.json());
@@ -18,6 +23,7 @@ app.use(morgan("common"));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
+const path = require("path");
 
 // EXPRESS STATIC HERE
 
@@ -32,11 +38,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-app.post("/api/v1/auth/register", upload.single("picture"), register);
+app.use(express.static(path.join(__dirname, "build")));
 
-app.use("/", (req, res) => {
-  res.send("noice");
-});
+app.post("/api/v1/auth/register", upload.single("picture"), register);
+app.post("/posts", authenticateUser, upload.single("picture"), createPost);
+
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/posts", postRouter);
 
 const port = process.env.PORT || 5000;
 const start = async () => {
