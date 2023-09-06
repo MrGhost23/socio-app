@@ -5,3 +5,15 @@
 html {
   @apply bg-gray-50 box-border;
 }
+
+@layer components {
+  .sticky-nav {
+    @apply w-full shadow-md z-50 sticky top-0 left-0;
+  }
+}
+
+@layer components {
+  .sticky-sidebar {
+    @apply w-full shadow-md z-50 sticky top-[82px] left-0;
+  }
+}
