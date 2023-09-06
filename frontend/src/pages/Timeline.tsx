@@ -38,7 +38,7 @@ const Timeline = () => {
     <div className="w-full grid grid-cols-4 gap-16">
       <Sidebar />
       <div className="col-span-2 pt-10">
-      <Posts
+        <Posts
           currentUserFullName={currentUserFullName}
           currentUserImage={currentUserImage}
           posts={posts}
