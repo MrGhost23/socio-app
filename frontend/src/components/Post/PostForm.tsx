@@ -4,13 +4,13 @@ import Card from "../../ui/Card";
 const PostForm = () => {
   return (
     <Card>
-      <div className="mb-8 py-6 flex flex-col items-center lg:items-start lg:flex-row gap-4">
+      <div className="mb-8 mx-10 py-6 flex flex-col items-center lg:items-start lg:flex-row gap-4">
         <img
           className="w-14 h-14 rounded-full shadow-lg"
           src="https://cdn.discordapp.com/avatars/683014296342364286/30889b16f6a06a146378d9d10554582b.png?size=1024"
           alt=""
         />
-        <div className="grow flex flex-col">
+        <div className="w-full flex flex-col items-center md:items-start">
           <textarea
             className="w-full h-24 mb-3 px-4 py-3 border rounded-xl outline-none resize-none"
             placeholder="Share something.."

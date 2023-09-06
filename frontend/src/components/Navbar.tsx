@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
           </Link>
         </div>
       ) : (
-        <div className="mx-auto px-20 py-5 flex items-center">
+        <div className="mx-auto px-4 sm:px-10 md:px-20 py-5 flex items-center">
           <div className="md:w-48 flex-shrink-0 mr-auto">
             <Link className="font-bold text-4xl text-sky-500" to="/">
               Socio

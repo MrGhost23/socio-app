@@ -55,7 +55,7 @@ const Post: React.FC<Props> = ({
       <div className="flex flex-col">
         <PostText text={post.text} />
         {post.image && <PostImage src={post.image} alt="" />}
-        <VerticalLine className="my-3" />
+        <VerticalLine className="my-4" />
         <PostStats likes={post.likes} comments={post.comments} />
         <PostCommentForm
           currentUserImage={currentUserImage}

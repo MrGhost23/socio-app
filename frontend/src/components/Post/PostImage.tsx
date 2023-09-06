@@ -5,7 +5,7 @@ type Props = {
 
 const PostImage: React.FC<Props> = ({ src, alt }) => {
   return (
-    <img className='mt-3 mb-4' src={src} alt={alt} />
+    <img className='w-full h-96 mt-3 mb-4 bg-contain cursor-pointer' src={src} alt={alt} />
   );
 };
 

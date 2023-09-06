@@ -5,7 +5,7 @@ type Props = {
 
 const UserStats: React.FC<Props> = (props) => {
   return (
-    <div className='mb-5 flex flex-row gap-3 tracking-wide'>
+    <div className='mb-5 flex flex-row gap-3 text-gray-500 font-medium tracking-wide'>
       <div className='flex flex-col gap-1'>
         <p>Followers</p>
         <p className='text-lg font-semibold'>{props.followers}</p>

@@ -4,13 +4,16 @@ type Props = {
 }
 
 const UserTag: React.FC<Props> = (props) => {
-  let classes = 'text-sm text-gray-400'
+  let classes = 'text-sm text-gray-400 font-medium'
   if (props.className) {
     classes += ' ' + props.className;
   }
 
   return (
-    <p className={classes}>@{props.tag}</p>
+    <p className={classes}>
+      <span className="select-none">@</span>
+      {props.tag}
+    </p>
   );
 };
 

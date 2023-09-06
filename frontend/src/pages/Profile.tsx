@@ -90,8 +90,8 @@ const Profile = () => {
 
   return (
     <>
-      <div className="col-span-1 order-1">
-        <Card className="sticky top-10 px-8 py-8 flex flex-col items-center">
+      <div className="col-span-2 lg:col-span-1 order-1">
+        <Card className="sticky top-32 px-8 py-8 flex flex-col items-center">
           <BsThreeDotsVertical className="absolute top-10 right-6 text-xl text-gray-500 cursor-pointer transition duration-500 hover:text-indigo-700" />
           <UserInfo userInfo={userInfo} />
           <div className="w-full flex flex-col gap-4">
@@ -100,19 +100,21 @@ const Profile = () => {
           </div>
         </Card>
       </div>
-      <div className="col-span-2 order-3 lg:order-2">
-        <PostForm />
-        <Posts
-          currentUserFullName={currentUserFullName}
-          currentUserImage={currentUserImage}
-          posts={userPosts}
-        />
-      </div>
-      <div className="col-span-1 order-2 xl:order-3">
-        <Card className="sticky top-10 px-8 py-4 pb-6 flex flex-col !text-left">
-          <h3 className="mb-5 text-xl">Suggested for you</h3>
-          <SuggestedUsers users={suggestedUsers} />
-        </Card>
+      <div className="grid grid-cols-1 xl:grid-cols-3 col-span-2 xl:col-span-3 order-2 xl:gap-12">
+        <div className="col-span-2 order-2 xl:order-1">
+          <PostForm />
+          <Posts
+            currentUserFullName={currentUserFullName}
+            currentUserImage={currentUserImage}
+            posts={userPosts}
+          />
+        </div>
+        <div className="mb-12 xl:col-span-1 order-1 xl:order-2">
+          <Card className="sticky top-32 px-8 py-4 pb-6 flex flex-col !text-left">
+            <h3 className="mb-5 text-xl">Suggested for you</h3>
+            <SuggestedUsers users={suggestedUsers} />
+          </Card>
+        </div>
       </div>
     </>
   );

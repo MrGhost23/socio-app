@@ -36,9 +36,7 @@ const Timeline = () => {
 
   return (
     <div className="w-full grid grid-cols-4 gap-16">
-      <div>
-        <Sidebar />
-      </div>
+      <Sidebar />
       <div className="col-span-2 pt-10">
       <Posts
           currentUserFullName={currentUserFullName}

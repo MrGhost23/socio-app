@@ -50,7 +50,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className="h-[calc(100vh-82px)] sticky left-0 top-82px shadow-lg"
+      className="h-[calc(100vh-82px)] sticky bottom-0 left-0 top-82px shadow-lg"
       ref={sideRef}
     >
       <div className="px-20 pt-10">
