@@ -10,6 +10,7 @@ import VerticalLine from "../ui/VerticalLine";
 import UserFullName from "./User/UserFullName";
 import UserTag from "./User/UserTag";
 
+
 const Sidebar = () => {
   const currentUserFullName = "Omar Mohamed";
   const currentUserTag = "MrGhost";
@@ -49,12 +50,12 @@ const Sidebar = () => {
 
   return (
     <div
-      className="h-[calc(100vh-82px)] sticky left-0 shadow-lg"
+      className="h-[calc(100vh-82px)] sticky left-0 top-82px shadow-lg"
       ref={sideRef}
     >
       <div className="px-20 pt-10">
         <Link
-          className="mb-5 flex items-center gap-3 roup"
+          className="mb-5 flex items-center gap-3 group"
           to="/profile"
         >
           <UserImage
@@ -83,6 +84,10 @@ const Sidebar = () => {
             )
           } 
         </ul>
+        <button className="w-32 border-none px-2 py-1 rounded-md font-semibold">
+          Show More
+        </button>
+        <hr className="my-4" />
       </div>
     </div>
   );
