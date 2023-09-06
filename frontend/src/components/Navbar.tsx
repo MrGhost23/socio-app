@@ -19,11 +19,9 @@ const Navbar: React.FC = () => {
         if (navRef.current) {
           navRef.current.classList.add("sticky-nav");
         }
-      } else {
-        if (navRef.current) {
+      } else if (navRef.current) {
           navRef.current.classList.remove("sticky-nav");
         }
-      }
     });
   };
 
