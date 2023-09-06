@@ -1,12 +1,21 @@
 import { AiOutlineMessage } from "react-icons/ai";
-import { BsBookmark } from "react-icons/bs";
+import { BsPeople } from "react-icons/bs";
 import { MdOutlineRssFeed } from "react-icons/md";
-import { LiaUserFriendsSolid } from "react-icons/lia";
+import { HiOutlineBookmark } from "react-icons/hi";
+import { BiCog } from "react-icons/bi";
 import UserImage from "./User/UserImage";
 import { Link } from "react-router-dom";
 import { useEffect, useRef } from "react";
+import VerticalLine from "../ui/VerticalLine";
+import UserFullName from "./User/UserFullName";
+import UserTag from "./User/UserTag";
 
 const Sidebar = () => {
+  const currentUserFullName = "Omar Mohamed";
+  const currentUserTag = "MrGhost";
+  const currentUserImage =
+    "https://i.pinimg.com/564x/c7/58/a5/c758a5b04e0e7080dc19187e8c62a9c3.jpg";
+
   const sideRef = useRef<HTMLDivElement | null>(null);
 
   const stickySidebar = () => {
@@ -18,11 +27,9 @@ const Sidebar = () => {
         if (sideRef.current) {
           sideRef.current.classList.add("sticky-sidebar");
         }
-      } else {
-        if (sideRef.current) {
+      } else if (sideRef.current) {
           sideRef.current.classList.remove("sticky-sidebar");
         }
-      }
     });
   };
 
@@ -31,50 +38,49 @@ const Sidebar = () => {
 
     return () => window.removeEventListener("scroll", stickySidebar);
   }, []);
+
+  const list = [
+    { id: 1, text: 'feed', icon: <MdOutlineRssFeed /> },
+    { id: 2, text: 'chats', icon: <AiOutlineMessage /> },
+    { id: 3, text: 'find friends', icon: <BsPeople /> },
+    { id: 4, text: 'bookmarks', icon: <HiOutlineBookmark /> },
+    { id: 5, text: 'settings', icon: <BiCog /> }
+  ];
+
   return (
     <div
-      className="h-[calc(100vh-82px)] sticky left-0 top-82px shadow-lg"
+      className="h-[calc(100vh-82px)] sticky left-0 shadow-lg"
       ref={sideRef}
     >
-      <div className="px-4 pt-5">
-        <ul className="p-0 m-0 list-none">
-          <Link
-            className="flex items-center cursor-pointer group"
-            to="/profile"
-          >
-            <UserImage
-              className="w-12 mr-2"
-              src="https://i.pinimg.com/564x/c7/58/a5/c758a5b04e0e7080dc19187e8c62a9c3.jpg"
-              alt="Profile Picture"
-            />
-            <div className="flex flex-col">
-              <span className="font-medium group-hover:text-gray-700">
-                Omar Mohamed
-              </span>
-              <span className="text-sm text-gray-400">@MrGhost</span>
-            </div>
-          </Link>
-          <li className="flex items-center mb-4 hover:bg-gray-200 cursor-pointer p-2">
-            <MdOutlineRssFeed className="mr-2 text-xl text-gray-700" />
-            <span>Feed</span>
-          </li>
-          <li className="flex items-center mb-4  hover:bg-gray-200 cursor-pointer p-2">
-            <AiOutlineMessage className="mr-2 text-lg text-gray-700" />
-            <span>Chats</span>
-          </li>
-          <li className="flex items-center mb-4 hover:bg-gray-200 cursor-pointer p-2">
-            <LiaUserFriendsSolid className="mr-2 text-xl text-gray-700" />
-            <span>Find Friends</span>
-          </li>
-          <li className="flex items-center mb-4  hover:bg-gray-200 cursor-pointer p-2">
-            <BsBookmark className="mr-2 text-lg text-gray-700" />
-            <span>Bookmarks</span>
-          </li>
+      <div className="px-20 pt-10">
+        <Link
+          className="mb-5 flex items-center gap-3 roup"
+          to="/profile"
+        >
+          <UserImage
+            className="w-14 !m-0"
+            src={currentUserImage}
+            alt={currentUserFullName}
+          />
+          <div className="flex flex-col">
+            <UserFullName className='!text-lg font-medium group-hover:text-gray-700' fullName={currentUserFullName} />
+            <UserTag tag={currentUserTag} />
+          </div>
+        </Link>
+        <VerticalLine className="my-3" />
+        <ul className="m-0 list-none">
+          {
+            list.map(link =>
+              <li
+                key={link.id}
+                className="mb-4 p-2 flex items-center gap-2 text-2xl text-gray-700 cursor-pointer transition duration-500 hover:bg-gray-200"
+              >
+                {link.icon}
+                <span className="text-lg capitalize">{link.text}</span>
+              </li>
+            )
+          } 
         </ul>
-        <button className="w-32 border-none px-2 py-1 rounded-md font-semibold">
-          Show More
-        </button>
-        <hr className="my-4" />
       </div>
     </div>
   );
