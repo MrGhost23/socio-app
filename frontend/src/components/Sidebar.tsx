@@ -1,10 +1,10 @@
+import { Link } from "react-router-dom";
 import { AiOutlineMessage } from "react-icons/ai";
 import { BsPeople } from "react-icons/bs";
 import { MdOutlineRssFeed } from "react-icons/md";
 import { HiOutlineBookmark } from "react-icons/hi";
 import { BiCog } from "react-icons/bi";
 import UserImage from "./User/UserImage";
-import { Link } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import VerticalLine from "../ui/VerticalLine";
 import UserFullName from "./User/UserFullName";
@@ -40,11 +40,11 @@ const Sidebar = () => {
   }, []);
 
   const list = [
-    { id: 1, text: 'feed', icon: <MdOutlineRssFeed /> },
-    { id: 2, text: 'chats', icon: <AiOutlineMessage /> },
-    { id: 3, text: 'find friends', icon: <BsPeople /> },
-    { id: 4, text: 'bookmarks', icon: <HiOutlineBookmark /> },
-    { id: 5, text: 'settings', icon: <BiCog /> }
+    { id: 1, text: 'feed', path: '/', icon: <MdOutlineRssFeed /> },
+    { id: 2, text: 'chats', path: '/messages', icon: <AiOutlineMessage /> },
+    { id: 3, text: 'find friends', path: '/find-friends', icon: <BsPeople /> },
+    { id: 4, text: 'bookmarks', path: '/bookmarks', icon: <HiOutlineBookmark /> },
+    { id: 5, text: 'settings', path: '/settings', icon: <BiCog /> }
   ];
 
   return (
@@ -73,10 +73,12 @@ const Sidebar = () => {
             list.map(link =>
               <li
                 key={link.id}
-                className="mb-4 p-2 flex items-center gap-2 text-2xl text-gray-700 cursor-pointer transition duration-500 hover:bg-gray-200"
+                className="mb-4 p-2 text-2xl text-gray-700 cursor-pointer transition duration-500 hover:bg-gray-200"
               >
-                {link.icon}
-                <span className="text-lg capitalize">{link.text}</span>
+                <Link to={link.path} className="flex items-center gap-2">
+                  {link.icon}
+                  <span className="text-lg capitalize">{link.text}</span>
+                </Link>
               </li>
             )
           } 
