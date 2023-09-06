@@ -7,7 +7,7 @@ import { IoIosNotifications } from "react-icons/io";
 import { Link } from "react-router-dom";
 
 const Navbar: React.FC = () => {
-  const isLoggedIn = false;
+  const isLoggedIn = true;
   const navRef = useRef<HTMLDivElement | null>(null);
 
   const stickyNav = () => {
@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
           </Link>
         </div>
       ) : (
-        <div className="mx-auto px-12 py-5 flex items-center">
+        <div className="mx-auto px-20 py-5 flex items-center">
           <div className="md:w-48 flex-shrink-0 mr-auto">
             <Link className="font-bold text-4xl text-sky-500" to="/">
               Socio
