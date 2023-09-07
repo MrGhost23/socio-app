@@ -22,6 +22,7 @@ import Timeline from "./pages/Timeline";
 import Post from "./pages/Post";
 import Bookmarks from "./pages/Bookmarks";
 import Settings from "./pages/Settings";
+import FindFriends from "./pages/FindFriends";
 
 const App: React.FC = () => {
   return (
@@ -35,6 +36,7 @@ const App: React.FC = () => {
         <Route element={<MainLayout />}>
           <Route path="/" element={<Timeline />} />
           <Route path="/post/:id" element={<Post />} />
+          <Route path="/find-friends" element={<FindFriends />} />
           <Route path="/bookmarks" element={<Bookmarks />} />
           <Route path="/settings" element={<Settings />} />
         </Route>
