@@ -16,7 +16,7 @@ const SuggestedUser: React.FC<Props> = ({ image, id, fullName, followers, change
 
   return (
     <div className={changeStyle ? x + ' flex-col xl:flex-row' : x + ' flex-row'}>
-      <UserImage className='w-14 h-14 !mb-0' src={image} alt={fullName} id={id} />
+      <UserImage className='w-16 h-16 !mb-0' src={image} alt={fullName} id={id} />
       <div className={changeStyle ? z + ' items-center xl:items-start' : z}>
         <UserFullName className='!text-base font-medium whitespace-nowrap' fullName={fullName} id={id} />
         <p className='text-sm whitespace-nowrap'>{followers} followers</p>
