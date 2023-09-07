@@ -58,7 +58,7 @@ const ProfileLayout = () => {
   ];
 
   return (
-    <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-12 mx-4 sm:mx-10 md:mx-20 mt-10">
+    <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-12 mx-4 sm:mx-10 md:mx-20 mt-10">
       <div className="col-span-2 lg:col-span-1 order-1">
         <Card className="sticky top-32 p-8 flex flex-col items-center">
           <BsThreeDotsVertical className="absolute top-10 right-6 text-xl text-gray-500 cursor-pointer transition duration-500 hover:text-indigo-700" />
