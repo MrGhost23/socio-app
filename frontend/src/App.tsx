@@ -19,7 +19,7 @@ import Followers from "./pages/Followers";
 import Following from "./pages/Following";
 
 import Timeline from "./pages/Timeline";
-import Post from "./pages/Post";
+import PostPage from "./pages/PostPage";
 import Bookmarks from "./pages/Bookmarks";
 import Settings from "./pages/Settings";
 import FindFriends from "./pages/FindFriends";
@@ -35,7 +35,7 @@ const App: React.FC = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route element={<MainLayout />}>
           <Route path="/" element={<Timeline />} />
-          <Route path="/post/:id" element={<Post />} />
+          <Route path="/post/:id" element={<PostPage />} />
           <Route path="/find-friends" element={<FindFriends />} />
           <Route path="/bookmarks" element={<Bookmarks />} />
           <Route path="/settings" element={<Settings />} />

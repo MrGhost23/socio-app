@@ -44,12 +44,7 @@ const Sidebar = () => {
     { id: 1, text: "feed", path: "/", icon: <MdOutlineRssFeed /> },
     { id: 2, text: "chats", path: "/messages", icon: <AiOutlineMessage /> },
     { id: 3, text: "find friends", path: "/find-friends", icon: <BsPeople /> },
-    {
-      id: 4,
-      text: "bookmarks",
-      path: "/bookmarks",
-      icon: <HiOutlineBookmark />,
-    },
+    { id: 4, text: "bookmarks", path: "/bookmarks", icon: <HiOutlineBookmark />, },
     { id: 5, text: "settings", path: "/settings", icon: <BiCog /> },
   ];
 
