@@ -11,10 +11,11 @@ import PostCommentForm from "./PostCommentForm";
 import VerticalLine from "../../ui/VerticalLine";
 
 type Props = {
+  currentUserId: string;
   currentUserFullName: string;
   currentUserImage: string;
   post: {
-    id: number;
+    id: string;
     text: string;
     image?: string;
     likes: number;
@@ -27,6 +28,7 @@ type Props = {
 };
 
 const Post: React.FC<Props> = ({
+  currentUserId,
   currentUserFullName,
   currentUserImage,
   post,
@@ -39,14 +41,15 @@ const Post: React.FC<Props> = ({
             className="w-14"
             src={post.authorImage}
             alt={post.authorFullName}
+            id={currentUserId}
           />
           <div className="flex flex-col items-start gap-1">
             <div className="flex flex-col">
               <div className="flex flex-row items-center gap-2">
-                <UserFullName fullName={post.authorFullName} />
-                <UserTag tag={post.authorTag} />
+                <UserFullName fullName={post.authorFullName} id={currentUserId} />
+                <UserTag tag={post.authorTag} id={currentUserId} />
               </div>
-              <PostDate date={post.date} />
+              <PostDate date={post.date} id={post.id} />
             </div>
           </div>
         </div>
@@ -58,6 +61,7 @@ const Post: React.FC<Props> = ({
         <VerticalLine className="my-4" />
         <PostStats likes={post.likes} comments={post.comments} />
         <PostCommentForm
+          currentUserId={currentUserId}
           currentUserImage={currentUserImage}
           currentUserFullName={currentUserFullName}
         />

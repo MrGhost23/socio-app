@@ -1,10 +1,11 @@
 import Post from "./Post";
 
 type Props = {
+  currentUserId: string;
   currentUserFullName: string;
   currentUserImage: string;
   posts: {
-    id: number,
+    id: string,
     text: string,
     image?: string,
     likes: number,
@@ -16,12 +17,12 @@ type Props = {
   }[];
 }
 
-const Posts: React.FC<Props> = ({ currentUserFullName, currentUserImage, posts }) => {
+const Posts: React.FC<Props> = ({ currentUserId, currentUserFullName, currentUserImage, posts }) => {
   return (
     <>
       {
         posts.map(post =>
-          <Post key={post.id} currentUserFullName={currentUserFullName} currentUserImage={currentUserImage} post={post} />
+          <Post key={post.id} currentUserId={currentUserId} currentUserFullName={currentUserFullName} currentUserImage={currentUserImage} post={post} />
         )
       }
     </>

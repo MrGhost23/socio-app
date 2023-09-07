@@ -12,6 +12,8 @@ import Profile from "./pages/Profile";
 import PageLayout from "./pages/PageLayout";
 import Timeline from "./pages/Timeline";
 import Navbar from "./components/Navbar";
+import Followers from "./pages/Followers";
+import Following from "./pages/Following";
 
 const App: React.FC = () => {
   return (
@@ -24,7 +26,9 @@ const App: React.FC = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/" element={<Timeline />} />
         <Route element={<PageLayout />}>
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/profile/:id/followers" element={<Followers />} />
+          <Route path="/profile/:id/following" element={<Following />} />
         </Route>
       </Routes>
       <ToastContainer

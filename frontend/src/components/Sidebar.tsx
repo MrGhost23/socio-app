@@ -11,6 +11,7 @@ import UserFullName from "./User/UserFullName";
 import UserTag from "./User/UserTag";
 
 const Sidebar = () => {
+  const currentUserId = '618237294201';
   const currentUserFullName = "Omar Mohamed";
   const currentUserTag = "MrGhost";
   const currentUserImage =
@@ -63,13 +64,15 @@ const Sidebar = () => {
             className="w-14 !m-0"
             src={currentUserImage}
             alt={currentUserFullName}
+            id={currentUserId}
           />
           <div className="flex flex-col">
             <UserFullName
               className="!text-lg font-medium group-hover:text-gray-700"
               fullName={currentUserFullName}
+              id={currentUserId}
             />
-            <UserTag tag={currentUserTag} />
+            <UserTag tag={currentUserTag} id={currentUserId} />
           </div>
         </Link>
         <VerticalLine className="my-3" />

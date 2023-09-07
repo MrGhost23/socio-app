@@ -1,5 +1,8 @@
+import { Link } from 'react-router-dom';
+
 type Props = {
   fullName: string;
+  id: string;
   className?: string;
 }
 
@@ -10,7 +13,7 @@ const UserFullName: React.FC<Props> = (props) => {
   }
 
   return (
-    <p className={classes}>{props.fullName}</p>
+    <Link to={`/profile/${props.id}`} className={classes}>{props.fullName}</Link>
   );
 };
 

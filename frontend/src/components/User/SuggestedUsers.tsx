@@ -1,8 +1,8 @@
-import SuggestedUser from "./SuggestedUser";
+import User from "./User";
 
 type Props = {
   users: {
-    id: number
+    id: string
     image: string;
     fullName: string;
     followers: number;
@@ -14,7 +14,7 @@ const SuggestedUsers: React.FC<Props> = ({ users }) => {
     <div className='pb-5 xl:pb-0 flex flex-row xl:flex-col gap-5 md:gap-8 xl:gap-5 overflow-x-auto'>
       {
         users.map(user =>
-          <SuggestedUser key={user.id} image={user.image} fullName={user.fullName} followers={user.followers} />
+          <User key={user.id} image={user.image} id={user.id} fullName={user.fullName} followers={user.followers} changeStyle={true} />
         )
       }
     </div>

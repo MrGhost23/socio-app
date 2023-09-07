@@ -7,23 +7,24 @@ import UserStats from './UserStats';
 
 type Props = {
   userInfo: {
-    image: string,
-    firstName: string,
-    lastName: string,
-    username: string,
-    country: string,
-    bio: string,
-    followers: number,
-    following: number
+    id: string;
+    image: string;
+    firstName: string;
+    lastName: string;
+    username: string;
+    country: string;
+    bio: string;
+    followers: number;
+    following: number;
   };
 }
 
 const UserInfo: React.FC<Props> = ({ userInfo }) => {
   return (
     <>
-      <UserImage className='w-32' src={userInfo.image} alt={userInfo.firstName + ' ' + userInfo.lastName} />
-      <UserFullName className='mb-1 !text-2xl' fullName={userInfo.firstName + ' ' + userInfo.lastName} />
-      <UserTag tag={userInfo.username} />
+      <UserImage className='w-32' src={userInfo.image} alt={userInfo.firstName + ' ' + userInfo.lastName} id={userInfo.id}/>
+      <UserFullName className='mb-1 !text-2xl' fullName={userInfo.firstName + ' ' + userInfo.lastName} id={userInfo.id} />
+      <UserTag tag={userInfo.username} id={userInfo.id} />
       <UserCounty country={userInfo.country} />
       <UserBio bio={userInfo.bio} />
       <UserStats followers={userInfo.followers} following={userInfo.following} />

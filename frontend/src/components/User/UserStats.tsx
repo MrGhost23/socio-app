@@ -1,20 +1,26 @@
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+
 type Props = {
   followers: number;
   following: number;
-}
+};
 
 const UserStats: React.FC<Props> = (props) => {
+  const location = useLocation();
+  const path = location.pathname.split('/').slice(0, 3).join('/');
+
   return (
     <div className='mb-5 flex flex-row gap-3 text-gray-500 font-medium tracking-wide'>
-      <div className='flex flex-col gap-1'>
+      <Link to={`${path}/followers`} className='flex flex-col gap-1'>
         <p>Followers</p>
         <p className='text-lg font-semibold'>{props.followers}</p>
-      </div>
+      </Link>
       <div className='w-0.5 h-16 bg-gray-200'></div>
-      <div className='flex flex-col gap-1'>
+      <Link to={`${path}/following`} className='flex flex-col gap-1'>
         <p>Following</p>
         <p className='text-lg font-semibold'>{props.following}</p>
-      </div>
+      </Link>
     </div>
   );
 };

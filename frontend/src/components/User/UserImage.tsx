@@ -1,7 +1,10 @@
+import {Link} from 'react-router-dom';
+
 type Props = {
   src: string;
   alt: string;
   className: string;
+  id: string;
 }
 
 const UserImage: React.FC<Props> = (props) => {
@@ -11,7 +14,9 @@ const UserImage: React.FC<Props> = (props) => {
   }
 
   return (
-    <img className={classes} src={props.src} alt={props.alt} />
+    <Link to={`/profile/${props.id}`}>
+      <img className={classes} src={props.src} alt={props.alt} />
+    </Link>
   );
 };
 
