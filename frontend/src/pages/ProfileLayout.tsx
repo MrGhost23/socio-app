@@ -5,7 +5,7 @@ import Button from '../ui/Button';
 import {BsThreeDotsVertical} from 'react-icons/bs';
 import SuggestedUsers from "../components/User/SuggestedUsers";
 
-const PageLayout = () => {
+const ProfileLayout = () => {
   const userInfo = {
     id: '142281728172',
     username: "Heisenberg",
@@ -84,4 +84,4 @@ const PageLayout = () => {
   );
 };
 
-export default PageLayout;
+export default ProfileLayout;
