@@ -45,7 +45,7 @@ const MainLayout = () => {
   return (
     <div className="w-full pr-20 grid grid-cols-4 gap-16">
       <Sidebar />
-      <div className="col-span-2 pt-10">
+      <div className="col-span-2 py-10">
         <Outlet />
       </div>
       <Card className="sticky top-32 px-8 py-4 pb-6 flex flex-col !text-left">
