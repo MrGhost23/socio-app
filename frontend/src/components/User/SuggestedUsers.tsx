@@ -6,7 +6,7 @@ type Props = {
     image: string;
     fullName: string;
     followers: number;
-  }[]
+  }[];
 };
 
 const SuggestedUsers: React.FC<Props> = ({ users }) => {
