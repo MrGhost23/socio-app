@@ -73,7 +73,7 @@ const ProfileLayout = () => {
         <div className="col-span-2 order-2 xl:order-1">
           <Outlet />
         </div>
-        <div className="mb-12 xl:col-span-1 order-1 xl:order-2">
+        <div className="mb-8 xl:mb-0 xl:col-span-1 order-1 xl:order-2">
           <Card className="sticky top-32 px-8 py-4 pb-6 flex flex-col !text-left">
             <h3 className="mb-5 text-xl">Suggested for you</h3>
             <SuggestedUsers users={suggestedUsers} />
