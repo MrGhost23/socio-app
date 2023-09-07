@@ -34,8 +34,8 @@ const Post: React.FC<Props> = ({
   post,
 }) => {
   return (
-    <Card className="mb-6 px-8 py-6 !text-left">
-      <div className="mb-2 flex flex-row justify-between gap-3">
+    <Card className="px-8 py-6 !text-left">
+      <div className="relative mb-2 flex flex-row justify-between gap-3">
         <div className="flex flex-row gap-3">
           <UserImage
             className="w-14"

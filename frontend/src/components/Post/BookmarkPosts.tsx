@@ -1,4 +1,4 @@
-import Post from "./Post";
+import BookmarkPost from "./BookmarkPost";
 
 type Props = {
   currentUserId: string;
@@ -17,16 +17,16 @@ type Props = {
   }[];
 }
 
-const Posts: React.FC<Props> = ({ currentUserId, currentUserFullName, currentUserImage, posts }) => {
+const BookmarkPosts: React.FC<Props> = ({ currentUserId, currentUserFullName, currentUserImage, posts }) => {
   return (
     <div className="flex flex-col gap-8">
       {
         posts.map(post =>
-          <Post key={post.id} currentUserId={currentUserId} currentUserFullName={currentUserFullName} currentUserImage={currentUserImage} post={post} />
+          <BookmarkPost key={post.id} currentUserId={currentUserId} currentUserFullName={currentUserFullName} currentUserImage={currentUserImage} post={post} />
         )
       }
     </div>
   );
 };
 
-export default Posts;
+export default BookmarkPosts;

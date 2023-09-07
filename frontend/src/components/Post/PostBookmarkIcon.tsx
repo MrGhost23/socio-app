@@ -9,7 +9,7 @@ const PostBookmarkIcon = () => {
     setInBookmarks(prevState => !prevState);
   };
 
-  const classes = 'text-2xl cursor-pointer transition duration-500 hover:scale-110';
+  const classes = 'absolute top-0 right-0 text-2xl cursor-pointer transition duration-500 hover:scale-110';
 
   return (
     <>
