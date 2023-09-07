@@ -5,16 +5,23 @@ import "react-toastify/dist/ReactToastify.css";
 
 import ErrorPage from "./pages/ErrorPage";
 
+import Navbar from "./components/Navbar";
+
+import MainLayout from "./pages/MainLayout";
+import ProfileLayout from "./pages/ProfileLayout";
+
 import Register from "./pages/Register";
 import LogIn from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
+
 import Profile from "./pages/Profile";
-import ProfileLayout from "./pages/ProfileLayout";
-import Timeline from "./pages/Timeline";
-import Navbar from "./components/Navbar";
 import Followers from "./pages/Followers";
 import Following from "./pages/Following";
-import MainLayout from "./pages/MainLayout";
+
+import Timeline from "./pages/Timeline";
+import Post from "./pages/Post";
+import Bookmarks from "./pages/Bookmarks";
+import Settings from "./pages/Settings";
 
 const App: React.FC = () => {
   return (
@@ -27,6 +34,9 @@ const App: React.FC = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route element={<MainLayout />}>
           <Route path="/" element={<Timeline />} />
+          <Route path="/post/:id" element={<Post />} />
+          <Route path="/bookmarks" element={<Bookmarks />} />
+          <Route path="/settings" element={<Settings />} />
         </Route>
         <Route element={<ProfileLayout />}>
           <Route path="/profile/:id" element={<Profile />} />
