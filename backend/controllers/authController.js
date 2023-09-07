@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const { StatusCodes } = require("http-status-codes");
 const CustomError = require("../errors");
-const { attachCookiesToResponse, createTokenUser } = require("../utils");
+const { createTokenUser, createJWT } = require("../utils");
 
 const register = async (req, res) => {
   const { firstName, lastName, email, password, picutrePath } = req.body;
@@ -21,9 +21,10 @@ const register = async (req, res) => {
     picutrePath,
     role,
   });
-  const token = createTokenUser(user);
-  attachCookiesToResponse({ res, user: token });
-  res.status(StatusCodes.CREATED).json({ user });
+  const tokenUser = createTokenUser(user);
+  const token = createJWT({ payload: tokenUser });
+  console.log(token);
+  res.status(StatusCodes.CREATED).json({ user: tokenUser, token });
 };
 
 const login = async (req, res) => {
@@ -42,15 +43,11 @@ const login = async (req, res) => {
     throw new CustomError.UnauthenticatedError("Invalid Credentials");
   }
   const tokenUser = createTokenUser(user);
-  attachCookiesToResponse({ res, user: tokenUser });
-  res.status(StatusCodes.CREATED).json({ user: tokenUser });
+  const token = createJWT({ payload: tokenUser });
+  res.status(StatusCodes.CREATED).json({ user: tokenUser, token });
 };
 
 const logout = async (req, res) => {
-  res.cookie("token", "logout", {
-    httpOnly: true,
-    expires: new Date(Date.now()),
-  });
   res.status(StatusCodes.OK).json({ msg: "User Logged out!" });
 };
 
