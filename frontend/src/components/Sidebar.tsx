@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { AiOutlineMessage } from "react-icons/ai";
 import { BsPeople } from "react-icons/bs";
 import { MdOutlineRssFeed } from "react-icons/md";
-import { HiOutlineBookmark } from "react-icons/hi";
+import { FaRegBookmark } from "react-icons/fa6";
 import { BiCog } from "react-icons/bi";
 import UserImage from "./User/UserImage";
 import { useEffect, useRef } from "react";
@@ -44,7 +44,7 @@ const Sidebar = () => {
     { id: 1, text: "feed", path: "/", icon: <MdOutlineRssFeed /> },
     { id: 2, text: "chats", path: "/messages", icon: <AiOutlineMessage /> },
     { id: 3, text: "find friends", path: "/find-friends", icon: <BsPeople /> },
-    { id: 4, text: "bookmarks", path: "/bookmarks", icon: <HiOutlineBookmark />, },
+    { id: 4, text: "bookmarks", path: "/bookmarks", icon: <FaRegBookmark className="scale-90" />, },
     { id: 5, text: "settings", path: "/settings", icon: <BiCog /> },
   ];
 

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { BsBookmark, BsBookmarkFill } from 'react-icons/bs';
+import { FaBookmark, FaRegBookmark } from 'react-icons/fa6';
+
 
 const PostBookmarkIcon = () => {
   // This should be done in the parent component actually
@@ -9,15 +10,16 @@ const PostBookmarkIcon = () => {
     setInBookmarks(prevState => !prevState);
   };
 
-  const classes = 'absolute top-0 right-0 text-2xl cursor-pointer transition duration-500 hover:scale-110';
+  const classes = 'absolute top-0 right-0 text-2xl scale-y-110 cursor-pointer transition duration-500 hover:scale-x-110 hover:scale-y-[1.2]';
+
 
   return (
     <>
       {
         inBookmarks ?
-          <BsBookmarkFill className={classes + ' text-sky-500  hover:text-sky-500'} onClick={toggleBookmark} />
+          <FaBookmark className={classes + ' text-sky-500  hover:text-sky-500'} onClick={toggleBookmark} />
         :
-          <BsBookmark className={classes + ' hover:text-sky-500'} onClick={toggleBookmark} />
+          <FaRegBookmark className={classes + ' text-gray-500 hover:text-sky-500'} onClick={toggleBookmark} />
       }
     </>
   );
