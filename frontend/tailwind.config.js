@@ -11,10 +11,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ["Roboto", "sans-serif"],
-      },
-      colors: {
-        primaryDark: "#18191a",
-      },
+      }
     },
   },
   plugins: [],
