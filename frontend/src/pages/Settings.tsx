@@ -125,7 +125,7 @@ const Settings = () => {
             type="password"
             placeholder="***************"
           />
-          <Button text='Submit' />
+          <Button text='Submit' bg={true} />
         </div>
       </Card>
       <Card className="p-8 !text-left">
