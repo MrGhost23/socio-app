@@ -2,7 +2,7 @@ type Props = {
   className?: string;
   text: string;
   bg: boolean;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>
+  onClick: React.MouseEventHandler<HTMLButtonElement>
 };
 
 const Button: React.FC<Props> = (props) => {
@@ -17,7 +17,7 @@ const Button: React.FC<Props> = (props) => {
   }
 
   return (
-    <button className={classes} type="submit" onClick={props.onClick ? props.onClick : () => {}}>
+    <button className={classes} onClick={props.onClick ? props.onClick : () => {}}>
       {props.text}
     </button>
   );
