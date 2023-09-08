@@ -1,4 +1,5 @@
-import { Outlet } from "react-router-dom";
+import { useState } from 'react';
+import { Outlet, useNavigate } from "react-router-dom";
 import Card from '../ui/Card';
 import UserInfo from '../components/User/UserInfo';
 import Button from '../ui/Button';
@@ -6,6 +7,10 @@ import {BsThreeDotsVertical} from 'react-icons/bs';
 import RecentActivities from "../components/RecentActivities";
 
 const ProfileLayout = () => {
+  const navigate = useNavigate();
+
+  const [isFollowing, setIsFollowing] = useState(false);
+
   const userInfo = {
     id: '142281728172',
     username: "Heisenberg",
@@ -70,8 +75,8 @@ const ProfileLayout = () => {
           <BsThreeDotsVertical className="absolute top-10 right-6 text-xl text-gray-500 cursor-pointer transition duration-500 hover:text-indigo-700" />
           <UserInfo userInfo={userInfo} />
           <div className="w-full flex flex-col gap-4">
-            <Button text="Follow" />
-            <Button text="Edit profile" />
+            <Button text={isFollowing ? "Unfollow" : "Follow"} onClick={() => setIsFollowing(prevState => !prevState)} />
+            <Button text="Edit profile" onClick={() => navigate("/settings")} />
           </div>
         </Card>
       </div>
