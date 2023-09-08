@@ -14,6 +14,7 @@ const ProfileLayout = () => {
     image:
       "https://cdn.discordapp.com/avatars/683014296342364286/30889b16f6a06a146378d9d10554582b.png?size=1024",
     country: "Russia",
+    occupation: "Web Dev.",
     bio: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores, fugiat.",
     followers: 500,
     following: 400,
