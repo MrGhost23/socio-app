@@ -18,9 +18,9 @@ const RecentActivity: React.FC<Props> = ({ userFirstName, recentActivity }) => {
     <div key={recentActivity.id} className="flex flex-row items-start gap-2">
       {
         recentActivity.action === "like" ?
-          <FaRegHeart className="min-w-[1.35rem] min-h-[1.35rem] mt-0.5 text-xl text-indigo-700"/>
+          <FaRegHeart className="min-w-[1.35rem] min-h-[1.35rem] mt-0.5 text-xl text-sky-500"/>
         :
-          <FaRegCommentDots className="min-w-[1.35rem] min-h-[1.35rem] mt-0.5 text-xl text-indigo-700"/>
+          <FaRegCommentDots className="min-w-[1.35rem] min-h-[1.35rem] mt-0.5 text-xl text-sky-500"/>
       }
       <p>
         {userFirstName} {recentActivity.action === "like" ? "liked" : "commented on"} 

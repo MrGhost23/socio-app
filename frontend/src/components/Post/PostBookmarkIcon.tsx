@@ -15,9 +15,9 @@ const PostBookmarkIcon = () => {
     <>
       {
         inBookmarks ?
-          <BsBookmarkFill className={classes + ' text-indigo-600  hover:text-indigo-700'} onClick={toggleBookmark} />
+          <BsBookmarkFill className={classes + ' text-sky-500  hover:text-sky-500'} onClick={toggleBookmark} />
         :
-          <BsBookmark className={classes + ' hover:text-indigo-600'} onClick={toggleBookmark} />
+          <BsBookmark className={classes + ' hover:text-sky-500'} onClick={toggleBookmark} />
       }
     </>
   );

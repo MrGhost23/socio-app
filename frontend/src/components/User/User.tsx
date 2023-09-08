@@ -20,7 +20,7 @@ const SuggestedUser: React.FC<Props> = ({ image, id, fullName, followers, change
       <div className={changeStyle ? infoContainerClasses + ' items-center xl:items-start' : infoContainerClasses}>
         <UserFullName className='!text-base font-medium whitespace-nowrap' fullName={fullName} id={id} />
         <p className='text-sm whitespace-nowrap'>{followers} followers</p>
-        <Button text='Follow' className='!w-fit !h-fit !px-0 !py-0 !bg-transparent !text-sm !text-indigo-700 !rounded-none' />
+        <Button text='Follow' className='!w-fit !h-fit !px-0 !py-0 !bg-transparent !text-sm !text-sky-500 !rounded-none' />
       </div>
     </div>
   );

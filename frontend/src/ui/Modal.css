@@ -23,7 +23,7 @@
   @apply text-3xl text-gray-400;
   @apply cursor-pointer;
   @apply transition duration-500;
-  @apply hover:text-indigo-600 hover:scale-110;
+  @apply hover:text-sky-500 hover:scale-110;
 }
 
 .modal.noBg .modal-close-icon {
