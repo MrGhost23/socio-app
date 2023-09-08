@@ -2,6 +2,7 @@ import RecentActivity from './RecentActivity';
 
 
 type Props = {
+  userFirstName: string;
   recentActivities: {
     id: string,
     action: string,
@@ -12,12 +13,12 @@ type Props = {
   }[];
 }
 
-const RecentActivities: React.FC<Props> = ({ recentActivities }) => {
+const RecentActivities: React.FC<Props> = ({ userFirstName, recentActivities }) => {
   return (
     <div className="flex flex-col gap-4 text-gray-600">
       {
         recentActivities.map(recentActivity =>
-          <RecentActivity key={recentActivity.id} recentActivity={recentActivity} />
+          <RecentActivity key={recentActivity.id} userFirstName={userFirstName} recentActivity={recentActivity} />
         )
       }
     </div>

@@ -2,6 +2,7 @@ import {FaRegCommentDots, FaRegHeart} from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 type Props = {
+  userFirstName: string;
   recentActivity: {
     id: string,
     action: string,
@@ -12,7 +13,7 @@ type Props = {
   };
 }
 
-const RecentActivity: React.FC<Props> = ({ recentActivity }) => {
+const RecentActivity: React.FC<Props> = ({ userFirstName, recentActivity }) => {
   return (
     <div key={recentActivity.id} className="flex flex-row items-start gap-2">
       {
@@ -22,7 +23,7 @@ const RecentActivity: React.FC<Props> = ({ recentActivity }) => {
           <FaRegCommentDots className="min-w-[1.35rem] min-h-[1.35rem] mt-0.5 text-xl text-indigo-700"/>
       }
       <p>
-        Omar {recentActivity.action === "like" ? "liked" : "commented on"} 
+        {userFirstName} {recentActivity.action === "like" ? "liked" : "commented on"} 
         <Link to={`/profile/${recentActivity.postAuthorId}`} className="font-medium"> {recentActivity.postAuthorFirstName + " " + recentActivity.postAuthorLastName}</Link> 's 
         <Link to={`/post/${recentActivity.postId}`}> post</Link>.
       </p>

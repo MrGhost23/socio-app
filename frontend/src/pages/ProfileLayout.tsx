@@ -82,7 +82,7 @@ const ProfileLayout = () => {
         <div className="mb-8 xl:mb-0 xl:col-span-1 order-1 xl:order-2">
           <Card className="sticky top-32 px-8 py-4 pb-6 flex flex-col !text-left">
             <h3 className="mb-5 text-xl">Recent Activities</h3>
-            <RecentActivities recentActivities={recentActivities} />
+            <RecentActivities userFirstName={userInfo.firstName} recentActivities={recentActivities} />
           </Card>
         </div>
       </div>
