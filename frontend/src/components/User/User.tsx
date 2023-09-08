@@ -8,11 +8,20 @@ type Props = {
   fullName: string;
   followers: number;
   changeStyle: boolean;
+  mode: string;
 };
 
-const SuggestedUser: React.FC<Props> = ({ image, id, fullName, followers, changeStyle }) => {
+const SuggestedUser: React.FC<Props> = ({ image, id, fullName, followers, changeStyle, mode }) => {
   const mainContainerClasses = 'flex items-center gap-2'
   const infoContainerClasses = 'flex flex-col text-gray-600'
+
+  const followHandler = () => {
+    console.log("Followed User")
+  };
+
+  const unBlockHandler = () => {
+    console.log("Unblocked User")
+  };
 
   return (
     <div className={changeStyle ? mainContainerClasses + ' flex-col xl:flex-row' : mainContainerClasses + ' flex-row'}>
@@ -20,7 +29,7 @@ const SuggestedUser: React.FC<Props> = ({ image, id, fullName, followers, change
       <div className={changeStyle ? infoContainerClasses + ' items-center xl:items-start' : infoContainerClasses}>
         <UserFullName className='!text-base font-medium whitespace-nowrap' fullName={fullName} id={id} />
         <p className='text-sm whitespace-nowrap'>{followers} followers</p>
-        <Button text='Follow' bg={false} className='!text-sm' />
+        <Button text={mode === 'follow' ? 'Follow' : 'Unblock'} bg={false} onClick={mode === 'follow' ? followHandler : unBlockHandler} className='!text-sm' />
       </div>
     </div>
   );

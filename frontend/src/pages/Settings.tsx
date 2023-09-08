@@ -140,7 +140,7 @@ const Settings = () => {
       </Card>
       <Card className="p-8 !text-left">
         <h3 className="mb-5 text-xl">Blocked Users</h3>
-        <Users users={suggestedUsers} />
+        <Users users={suggestedUsers} mode='block' />
       </Card>
     </div>
   );
