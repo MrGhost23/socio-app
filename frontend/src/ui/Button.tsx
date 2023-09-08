@@ -1,8 +1,8 @@
 type Props = {
-  className?: string;
   text: string;
   bg: boolean;
   onClick: React.MouseEventHandler<HTMLButtonElement>
+  className?: string;
 };
 
 const Button: React.FC<Props> = (props) => {
