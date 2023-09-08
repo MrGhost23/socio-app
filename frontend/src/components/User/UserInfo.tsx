@@ -25,7 +25,7 @@ const UserInfo: React.FC<Props> = ({ userInfo }) => {
   return (
     <>
       <UserImage className='w-32' src={userInfo.image} alt={userInfo.firstName + ' ' + userInfo.lastName} id={userInfo.id}/>
-      <UserFullName className='mb-1 !text-2xl' fullName={userInfo.firstName + ' ' + userInfo.lastName} id={userInfo.id} />
+      <UserFullName className='mb-0.5 !text-2xl' fullName={userInfo.firstName + ' ' + userInfo.lastName} id={userInfo.id} />
       <UserTag tag={userInfo.username} id={userInfo.id} />
       <UserOccupation occupation={userInfo.occupation} />
       <UserCounty country={userInfo.country} />
