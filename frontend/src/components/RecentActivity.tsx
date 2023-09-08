@@ -25,7 +25,7 @@ const RecentActivity: React.FC<Props> = ({ userFirstName, recentActivity }) => {
       <p>
         {userFirstName} {recentActivity.action === "like" ? "liked" : "commented on"} 
         <Link to={`/profile/${recentActivity.postAuthorId}`} className="font-medium"> {recentActivity.postAuthorFirstName + " " + recentActivity.postAuthorLastName}</Link> 's 
-        <Link to={`/post/${recentActivity.postId}`}> post</Link>.
+        <Link to={`/post/${recentActivity.postId}`} className="font-medium"> post</Link>.
       </p>
     </div>
   );
