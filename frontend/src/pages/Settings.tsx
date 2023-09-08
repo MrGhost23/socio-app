@@ -53,6 +53,16 @@ const Settings = () => {
     },
   ];
 
+  const submitHandler = () => {
+    console.log(username)
+    console.log(firstName)
+    console.log(lastName)
+    console.log(email)
+    console.log(country)
+    console.log(bio)
+    console.log(password)
+  };
+
   return (
     <div className="flex flex-col gap-8">
       <Card className="p-8 !text-left">
@@ -125,7 +135,7 @@ const Settings = () => {
             type="password"
             placeholder="***************"
           />
-          <Button text='Submit' bg={true} />
+          <Button text='Submit' bg={true} onClick={submitHandler} />
         </div>
       </Card>
       <Card className="p-8 !text-left">
