@@ -46,7 +46,7 @@ const FindFriends = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {
           suggestedUsers.map(user =>
-            <User key={user.id} image={user.image} id={user.id} fullName={user.fullName} followers={user.followers} changeStyle={false} />
+            <User key={user.id} image={user.image} id={user.id} fullName={user.fullName} followers={user.followers} changeStyle={false} mode='follow' />
           )
         }
       </div>
