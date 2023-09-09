@@ -47,7 +47,7 @@ const Post: React.FC<Props> = ({
       <div className="relative mb-2 flex flex-row justify-between gap-3">
         <div className="flex flex-row gap-3">
           <UserImage
-            className="w-14"
+            className="w-14 !mb-0"
             src={post.authorImage}
             alt={post.authorFullName}
             id={currentUserId}
