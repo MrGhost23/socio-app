@@ -68,15 +68,15 @@ const Sidebar = () => {
             className="w-14 !m-0"
             src={currentUserImage}
             alt={currentUserFullName}
-            id={currentUserId}
+            id={currentUserTag}
           />
           <div className="flex flex-col">
             <UserFullName
               className="!text-lg font-medium group-hover:text-gray-700"
               fullName={currentUserFullName}
-              id={currentUserId}
+              id={currentUserTag}
             />
-            <UserTag tag={currentUserTag} id={currentUserId} />
+            <UserTag tag={currentUserTag} id={currentUserTag} />
           </div>
         </Link>
         <VerticalLine className="my-3" />
