@@ -5,25 +5,38 @@ const CustomError = require("../errors");
 const { createTokenUser, createJWT } = require("../utils");
 
 const register = async (req, res) => {
-  const { firstName, lastName, email, password, picutrePath } = req.body;
+  const {
+    firstName,
+    lastName,
+    username,
+    email,
+    password,
+    userPicture,
+    country,
+  } = req.body;
 
   const emailAlreadyExists = await User.findOne({ email });
   if (emailAlreadyExists) {
     throw new CustomError.BadRequestError("Email already exists");
+  }
+  const usernameAlreadyExists = await User.findOne({ username });
+  if (usernameAlreadyExists) {
+    throw new CustomError.BadRequestError("Username already exists");
   }
   const isFirstAccount = (await User.countDocuments({})) === 0;
   const role = isFirstAccount ? "admin" : "user";
   const user = await User.create({
     firstName,
     lastName,
+    username,
     email,
     password,
-    picutrePath,
+    country,
+    userPicture,
     role,
   });
   const tokenUser = createTokenUser(user);
   const token = createJWT({ payload: tokenUser });
-  console.log(token);
   res.status(StatusCodes.CREATED).json({ user: tokenUser, token });
 };
 
