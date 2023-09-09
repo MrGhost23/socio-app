@@ -11,7 +11,7 @@ import UserFullName from "./User/UserFullName";
 import UserTag from "./User/UserTag";
 
 const Sidebar = () => {
-  const currentUserId = '618237294201';
+  const currentUserId = "618237294201";
   const currentUserFullName = "Omar Mohamed";
   const currentUserTag = "MrGhost";
   const currentUserImage =
@@ -44,7 +44,12 @@ const Sidebar = () => {
     { id: 1, text: "feed", path: "/", icon: <MdOutlineRssFeed /> },
     { id: 2, text: "chats", path: "/messages", icon: <AiOutlineMessage /> },
     { id: 3, text: "find friends", path: "/find-friends", icon: <BsPeople /> },
-    { id: 4, text: "bookmarks", path: "/bookmarks", icon: <FaRegBookmark className="scale-90" />, },
+    {
+      id: 4,
+      text: "bookmarks",
+      path: "/bookmarks",
+      icon: <FaRegBookmark className="scale-90" />,
+    },
     { id: 5, text: "settings", path: "/settings", icon: <BiCog /> },
   ];
 
@@ -53,7 +58,7 @@ const Sidebar = () => {
       className="h-[calc(100vh-82px)] sticky bottom-0 left-0 top-82px shadow-lg"
       ref={sideRef}
     >
-      <div className="px-10 pt-10">
+      <div className="pl-5 pt-10">
         <Link className="mb-5 flex items-center gap-3 group" to="/profile">
           <UserImage
             className="w-14 !m-0"
