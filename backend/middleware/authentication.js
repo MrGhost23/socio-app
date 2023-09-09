@@ -9,8 +9,26 @@ const authenticateUser = async (req, res, next) => {
   const token = authHeader.split(" ")[1];
 
   try {
-    const { firstName, lastName, userId, role } = isTokenValid({ token });
-    req.user = { firstName, lastName, userId, role };
+    const {
+      firstName,
+      lastName,
+      userId,
+      role,
+      userPicture,
+      country,
+      username,
+      createdAt,
+    } = isTokenValid({ token });
+    req.user = {
+      firstName,
+      lastName,
+      userId,
+      role,
+      userPicture,
+      country,
+      username,
+      createdAt,
+    };
     next();
   } catch (error) {
     throw new CustomError.UnauthenticatedError("Authentication Invalid");

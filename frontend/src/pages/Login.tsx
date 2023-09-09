@@ -2,14 +2,32 @@ import { useState } from "react";
 import FormLayout from "../components/FormLayout";
 import Input from "../ui/Input";
 import connection from "../assets/connection.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store/store";
+import { login } from "../store/slices/authSlice";
+import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
+  const { loading, error } = useSelector((state: RootState) => state.auth);
+  const navigate = useNavigate();
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    dispatch(
+      login({
+        email,
+        password,
+      })
+    );
+
+    setEmail("");
+    setPassword("");
+    navigate("/");
   };
 
   return (
@@ -51,8 +69,10 @@ const Login = () => {
             type="submit"
             className="block bg-sky-500 text-white w-full py-2 hover:bg-sky-600 mb-4"
           >
-            Log in
+            {loading ? "Logging in..." : "Login"}
           </button>
+          {error && <p className="text-red-500">{error}</p>}
+
           <p>
             Don't have an account?{" "}
             <Link to="/register" className="font-bold">

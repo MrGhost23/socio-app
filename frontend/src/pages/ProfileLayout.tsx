@@ -1,39 +1,61 @@
-import { useState } from 'react';
 import { Outlet, useNavigate } from "react-router-dom";
-import Card from '../ui/Card';
-import UserInfo from '../components/User/UserInfo';
-import Button from '../ui/Button';
-import {BsThreeDotsVertical} from 'react-icons/bs';
+import Card from "../ui/Card";
+import UserInfo from "../components/User/UserInfo";
+import Button from "../ui/Button";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import RecentActivities from "../components/RecentActivities";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { ProfileType } from "../Types/Profile.types";
 
 const ProfileLayout = () => {
   const navigate = useNavigate();
+
+  const { id: userId } = useParams();
+  const [profileInfo, setProfileInfo] = useState<ProfileType>([]);
+  useEffect(() => {
+    const fetchToken = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/v1/users/${userId}`
+        );
+        setProfileInfo(response.data[0]);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchToken();
+  }, [userId]);
 
   const [isFollowing, setIsFollowing] = useState(false);
   const [menuOpened, setMenuOpened] = useState(false);
 
   const blockHandler = () => {
-    console.log('Blocked User');
+    console.log("Blocked User");
     setMenuOpened(false);
-  }
+  };
 
   const ReportHandler = () => {
-    console.log('Reported User');
+    console.log("Reported User");
     setMenuOpened(false);
-  }
+  };
 
   const userInfo = {
-    id: '142281728172',
-    username: "Heisenberg",
-    firstName: "Omar",
-    lastName: "Adel",
-    image:
-      "https://cdn.discordapp.com/avatars/683014296342364286/30889b16f6a06a146378d9d10554582b.png?size=1024",
-    country: "Russia",
-    occupation: "Web Dev.",
+    id: profileInfo?.username,
+    username: profileInfo?.username,
+    firstName: profileInfo?.firstName,
+    lastName: profileInfo?.lastName,
+    userPicture: profileInfo?.userPicture,
+    country: profileInfo?.country,
+    occupation: "كلام في الحب",
     bio: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores, fugiat.",
-    followers: 500,
-    following: 400,
+    followers: 0,
+    followings: 0,
+    createdAt: profileInfo?.createdAt,
+    role: profileInfo?.role,
+    userId: profileInfo?.userId,
+    email: profileInfo?.email,
   };
 
   const recentActivities = [
@@ -43,7 +65,7 @@ const ProfileLayout = () => {
       postId: "1",
       postAuthorId: "2198437676231",
       postAuthorFirstName: "Louie",
-      postAuthorLastName: "Mayert"
+      postAuthorLastName: "Mayert",
     },
     {
       id: "2",
@@ -51,7 +73,7 @@ const ProfileLayout = () => {
       postId: "1",
       postAuthorId: "2198437676231",
       postAuthorFirstName: "Forrest",
-      postAuthorLastName: "Auer"
+      postAuthorLastName: "Auer",
     },
     {
       id: "3",
@@ -59,7 +81,7 @@ const ProfileLayout = () => {
       postId: "1",
       postAuthorId: "2198437676231",
       postAuthorFirstName: "Jamel",
-      postAuthorLastName: "McCullough"
+      postAuthorLastName: "McCullough",
     },
     {
       id: "4",
@@ -67,7 +89,7 @@ const ProfileLayout = () => {
       postId: "1",
       postAuthorId: "2198437676231",
       postAuthorFirstName: "Chanel",
-      postAuthorLastName: "Gulgowski"
+      postAuthorLastName: "Gulgowski",
     },
     {
       id: "5",
@@ -75,7 +97,7 @@ const ProfileLayout = () => {
       postId: "1",
       postAuthorId: "2198437676231",
       postAuthorFirstName: "Rubie",
-      postAuthorLastName: "Quigley"
+      postAuthorLastName: "Quigley",
     },
   ];
 
@@ -85,30 +107,36 @@ const ProfileLayout = () => {
         <Card className="sticky top-32 px-10 py-8 flex flex-col items-center">
           <div className="relative top-0 right-2 left-full self-start">
             <BsThreeDotsVertical
-                className={
-                  menuOpened ?
-                    "absolute text-xl text-sky-500 cursor-pointer"
-                  :
-                    "absolute text-xl text-gray-500 cursor-pointer transition duration-500 hover:text-sky-500"
-                }
-                onClick={() => setMenuOpened(prevState => !prevState)}  
-              />
-              {
-                menuOpened &&
-                <ul className="absolute top-7 -right-2 md:translate-x-full px-6 py-4 bg-white rounded border border-gray-10 shadow-md flex flex-col gap-4">
-                  <li>
-                    <Button text='Block' bg={false} onClick={blockHandler} />
-                  </li>
-                  <li>
-                    <Button text='Report' bg={false} onClick={ReportHandler} />
-                  </li>
-                </ul>
+              className={
+                menuOpened
+                  ? "absolute text-xl text-sky-500 cursor-pointer"
+                  : "absolute text-xl text-gray-500 cursor-pointer transition duration-500 hover:text-sky-500"
               }
+              onClick={() => setMenuOpened((prevState) => !prevState)}
+            />
+            {menuOpened && (
+              <ul className="absolute top-7 -right-2 md:translate-x-full px-6 py-4 bg-white rounded border border-gray-10 shadow-md flex flex-col gap-4">
+                <li>
+                  <Button text="Block" bg={false} onClick={blockHandler} />
+                </li>
+                <li>
+                  <Button text="Report" bg={false} onClick={ReportHandler} />
+                </li>
+              </ul>
+            )}
           </div>
           <UserInfo userInfo={userInfo} />
           <div className="w-full flex flex-col gap-4">
-            <Button text={isFollowing ? "Unfollow" : "Follow"} onClick={() => setIsFollowing(prevState => !prevState)} bg={true}  />
-            <Button text="Edit profile" onClick={() => navigate("/settings")} bg={true}  />
+            <Button
+              text={isFollowing ? "Unfollow" : "Follow"}
+              onClick={() => setIsFollowing((prevState) => !prevState)}
+              bg={true}
+            />
+            <Button
+              text="Edit profile"
+              onClick={() => navigate("/settings")}
+              bg={true}
+            />
           </div>
         </Card>
       </div>
@@ -119,7 +147,10 @@ const ProfileLayout = () => {
         <div className="mb-8 xl:mb-0 xl:col-span-1 order-1 xl:order-2">
           <Card className="sticky top-32 -z-10 px-8 py-4 pb-6 flex flex-col !text-left">
             <h3 className="mb-5 text-xl">Recent Activities</h3>
-            <RecentActivities userFirstName={userInfo.firstName} recentActivities={recentActivities} />
+            <RecentActivities
+              userFirstName={userInfo.firstName}
+              recentActivities={recentActivities}
+            />
           </Card>
         </div>
       </div>
