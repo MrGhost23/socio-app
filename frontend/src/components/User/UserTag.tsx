@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 
 type Props = {
-  id: string;
-  tag: string;
+  id: string | undefined;
+  tag: string | undefined;
   className?: string;
-}
+};
 
 const UserTag: React.FC<Props> = (props) => {
-  let classes = 'text-sm text-gray-400 font-medium'
+  let classes = "text-sm text-gray-400 font-medium";
   if (props.className) {
-    classes += ' ' + props.className;
+    classes += " " + props.className;
   }
 
   return (

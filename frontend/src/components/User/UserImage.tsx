@@ -1,16 +1,16 @@
-import {Link} from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 type Props = {
   src: string;
   alt: string;
   className: string;
-  id: string;
-}
+  id: string | undefined;
+};
 
 const UserImage: React.FC<Props> = (props) => {
-  let classes = 'mb-4 rounded-full shadow-lg'
+  let classes = "mb-4 rounded-full shadow-lg";
   if (props.className) {
-    classes += ' ' + props.className;
+    classes += " " + props.className;
   }
 
   return (

@@ -9,13 +9,17 @@ import { useEffect, useRef } from "react";
 import VerticalLine from "../ui/VerticalLine";
 import UserFullName from "./User/UserFullName";
 import UserTag from "./User/UserTag";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
+import noAvatar from "../assets/noAvatar.png";
 
 const Sidebar = () => {
-  const currentUserId = "618237294201";
-  const currentUserFullName = "Omar Mohamed";
-  const currentUserTag = "MrGhost";
-  const currentUserImage =
-    "https://i.pinimg.com/564x/c7/58/a5/c758a5b04e0e7080dc19187e8c62a9c3.jpg";
+  const user = useSelector((state: RootState) => state.auth.user);
+  console.log(user);
+  const currentUserFullName = user?.firstName + " " + user?.lastName;
+  const currentUserTag = user?.username;
+  const currentUserImage = user?.userPicture || noAvatar;
+  const currentUserId = user?.userId;
 
   const sideRef = useRef<HTMLDivElement | null>(null);
 
