@@ -19,7 +19,6 @@ const Sidebar = () => {
   const currentUserFullName = user?.firstName + " " + user?.lastName;
   const currentUserTag = user?.username;
   const currentUserImage = user?.userPicture || noAvatar;
-  const currentUserId = user?.userId;
 
   const sideRef = useRef<HTMLDivElement | null>(null);
 
