@@ -5,15 +5,23 @@ type Props = {
   currentUserFullName: string;
   currentUserImage: string;
   posts: {
-    id: string,
-    text: string,
-    image?: string,
-    likes: number,
-    comments: number,
-    authorFullName: string,
-    authorTag: string,
-    authorImage: string,
-    date: string
+    id: string;
+    text: string;
+    image?: string;
+    likes: number;
+    comments: number;
+    authorFullName: string;
+    authorTag: string;
+    authorImage: string;
+    date: string;
+    postComments: {
+      id: string;
+      text: string;
+      date: string;
+      authorId: string;
+      authorFullName: string;
+      authorImage: string;
+    }[]
   }[];
 }
 

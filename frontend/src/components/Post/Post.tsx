@@ -9,6 +9,7 @@ import PostDate from "./PostDate";
 import PostStats from "./PostStats";
 import PostCommentForm from "./PostCommentForm";
 import VerticalLine from "../../ui/VerticalLine";
+import Comments from "../Comment/Comments";
 
 type Props = {
   currentUserId: string;
@@ -24,6 +25,14 @@ type Props = {
     authorTag: string;
     authorImage: string;
     date: string;
+    postComments: {
+      id: string;
+      text: string;
+      date: string;
+      authorId: string;
+      authorFullName: string;
+      authorImage: string;
+    }[]
   };
 };
 
@@ -31,7 +40,7 @@ const Post: React.FC<Props> = ({
   currentUserId,
   currentUserFullName,
   currentUserImage,
-  post,
+  post
 }) => {
   return (
     <Card className="px-8 py-6 !text-left">
@@ -58,8 +67,10 @@ const Post: React.FC<Props> = ({
       <div className="flex flex-col">
         <PostText text={post.text} />
         {post.image && <PostImage src={post.image} alt="" />}
-        <VerticalLine className="my-4" />
+        <VerticalLine className="my-2" />
         <PostStats likes={post.likes} comments={post.comments} />
+        <VerticalLine className="mb-5" />
+        <Comments comments={post.postComments} />
         <PostCommentForm
           currentUserId={currentUserId}
           currentUserImage={currentUserImage}
