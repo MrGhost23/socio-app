@@ -8,7 +8,7 @@ const {
 const { authenticateUser } = require("../middleware/authentication");
 
 router.get("/", authenticateUser, getFeedPosts);
-router.get("/:userId/posts", authenticateUser, getUserPosts);
+router.get("/:username/posts", authenticateUser, getUserPosts);
 
 router.patch("/:id/like", authenticateUser, likePosts);
 

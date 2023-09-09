@@ -3,16 +3,16 @@ const User = require("../models/User");
 
 const createPost = async (req, res) => {
   try {
-    const { userId, description, picturePath } = req.body;
-    const user = await User.findById(userId);
+    const { username, description, postImage } = req.body;
+    const user = await User.findById(username);
     const newPost = new Post({
-      userId,
+      username,
       firstName: user.firstName,
       lastName: user.lastName,
       location: user.location,
       description,
-      userPicutrePath: user.picturePath,
-      picturePath,
+      userPicture: user.userPicture,
+      postImage,
       likes: {},
       comments: [],
     });
@@ -35,8 +35,8 @@ const getFeedPosts = async (req, res) => {
 
 const getUserPosts = async (req, res) => {
   try {
-    const { userId } = req.params;
-    const posts = await Post.find({ userId });
+    const user = await User.findOne({ username: req.params.username });
+    const posts = await Post.find({ userId: user._id });
     res.status(200).json(posts);
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -46,13 +46,13 @@ const getUserPosts = async (req, res) => {
 const likePosts = async (req, res) => {
   try {
     const { id } = req.params;
-    const { userId } = req.body;
+    const { username } = req.body;
     const post = await Post.findById(id);
-    const isLiked = post.likes.get(userId);
+    const isLiked = post.likes.get(username);
     if (isLiked) {
-      post.likes.delete(userId);
+      post.likes.delete(username);
     } else {
-      post.likes.set(userId, true);
+      post.likes.set(username, true);
     }
     const updatedPost = await Post.findByIdAndUpdate(
       id,
