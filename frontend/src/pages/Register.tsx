@@ -2,7 +2,12 @@ import { useState } from "react";
 import FormLayout from "../components/FormLayout";
 import Input from "../ui/Input";
 import connection from "../assets/connection.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { register } from "../store/slices/authSlice";
+import { useDispatch } from "react-redux";
+
+import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
+import { RootState } from "../store/store";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -10,9 +15,27 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [country, setCountry] = useState("");
+  const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
+  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    dispatch(
+      register({
+        firstName,
+        lastName,
+        email,
+        password,
+        country,
+      })
+    );
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPassword("");
+    setCountry("");
+
+    navigate("/");
   };
 
   return (
