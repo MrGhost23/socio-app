@@ -14,6 +14,8 @@ const userRouter = require("./routes/usersRoutes");
 const postRouter = require("./routes/postsRoutes");
 const cookieParser = require("cookie-parser");
 const { authenticateUser } = require("./middleware/authentication");
+const jwt = require("jsonwebtoken");
+const CustomError = require("./errors/index");
 
 const app = express();
 app.use(express.json());
@@ -43,6 +45,18 @@ app.use(express.static(path.join(__dirname, "build")));
 app.post("/api/v1/auth/register", upload.single("picture"), register);
 app.post("/posts", authenticateUser, upload.single("picture"), createPost);
 
+app.use("/api/v1/validateToken", async (req, res) => {
+  const { token } = req.body;
+  if (!token) {
+    throw new CustomError.NotFoundError("Could not find token");
+  }
+
+  const userData = jwt.decode(token, process.env.JWT_SECRET);
+  if (!userData) {
+    throw new CustomError.UnauthenticatedError("Token not valid");
+  }
+  res.status(200).json({ userData });
+});
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/posts", postRouter);
