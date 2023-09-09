@@ -24,7 +24,33 @@ import Bookmarks from "./pages/Bookmarks";
 import Settings from "./pages/Settings";
 import FindFriends from "./pages/FindFriends";
 
+import { useEffect } from "react";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setUser } from "./store/slices/authSlice";
+
 const App: React.FC = () => {
+  const dispatch = useDispatch();
+  const localToken = localStorage.getItem("token");
+  useEffect(() => {
+    if (!localToken) {
+      return;
+    }
+    const fetchToken = async () => {
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/api/v1/validateToken",
+          {
+            token: localToken,
+          }
+        );
+        dispatch(setUser(response.data.userData));
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchToken();
+  }, [dispatch, localToken]);
   return (
     <>
       <Navbar />
