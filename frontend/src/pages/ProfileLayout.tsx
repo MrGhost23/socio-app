@@ -97,14 +97,17 @@ const ProfileLayout = () => {
       <div className="col-span-2 lg:col-span-1 order-1">
         <Card className="sticky top-32 px-10 py-8 flex flex-col items-center">
           <div className="relative top-0 right-2 left-full self-start">
-            <BsThreeDotsVertical
-              className={
-                menuOpened
-                  ? "absolute text-xl text-sky-500 cursor-pointer"
-                  : "absolute text-xl text-gray-500 cursor-pointer transition duration-500 hover:text-sky-500"
-              }
-              onClick={() => setMenuOpened((prevState) => !prevState)}
-            />
+            {!isMyProfile && (
+              <BsThreeDotsVertical
+                className={
+                  menuOpened
+                    ? "absolute text-xl text-sky-500 cursor-pointer"
+                    : "absolute text-xl text-gray-500 cursor-pointer transition duration-500 hover:text-sky-500"
+                }
+                onClick={() => setMenuOpened((prevState) => !prevState)}
+              />
+            )}
+
             {menuOpened && (
               <ul className="absolute top-7 -right-2 md:translate-x-full px-6 py-4 bg-white rounded border border-gray-10 shadow-md flex flex-col gap-4">
                 <li>
