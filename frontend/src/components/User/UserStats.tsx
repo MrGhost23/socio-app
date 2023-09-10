@@ -17,8 +17,8 @@ const UserStats: React.FC<Props> = (props) => {
         <p className="text-xl font-semibold">{props.followers}</p>
       </Link>
       <div className="w-0.5 h-16 bg-gray-200"></div>
-      <Link to={`${path}/following`} className="flex flex-col gap-1">
-        <p>Following</p>
+      <Link to={`${path}/followings`} className="flex flex-col gap-1">
+        <p>Followings</p>
         <p className="text-xl font-semibold">{props.followings}</p>
       </Link>
     </div>
