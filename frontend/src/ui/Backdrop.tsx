@@ -1,4 +1,4 @@
-import './Backdrop.css';
+import "./Backdrop.css";
 
 type Props = {
   className?: string;
@@ -6,9 +6,7 @@ type Props = {
 };
 
 const Backdrop: React.FC<Props> = (props) => {
-  return (
-    <div className={props.className} onClick={props.onClose} />
-  );
+  return <div className={props.className} onClick={props.onClose} />;
 };
 
 export default Backdrop;

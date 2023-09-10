@@ -2,13 +2,20 @@ import React, { useEffect, useRef } from "react";
 import { BsSearch } from "react-icons/bs";
 import { FaMoon } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
-import { AiFillMessage } from "react-icons/ai";
-import { IoIosNotifications } from "react-icons/io";
+import { AiFillMessage, AiOutlineClose } from "react-icons/ai";
+import { IoIosNotifications, IoMdCloseCircleOutline } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
+import { RootState } from "../store/store";
+import { selectSideOpen, toggleSidebar } from "../store/slices/sidebarSlice";
+import { MdClose } from "react-icons/md";
 
 const Navbar: React.FC = () => {
+  const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
   const isLoggedIn = true;
   const navRef = useRef<HTMLDivElement | null>(null);
+  const sideOpen = useSelector(selectSideOpen);
 
   const stickyNav = () => {
     window.addEventListener("scroll", () => {
@@ -20,8 +27,8 @@ const Navbar: React.FC = () => {
           navRef.current.classList.add("sticky-nav");
         }
       } else if (navRef.current) {
-          navRef.current.classList.remove("sticky-nav");
-        }
+        navRef.current.classList.remove("sticky-nav");
+      }
     });
   };
 
@@ -31,8 +38,12 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener("scroll", stickyNav);
   }, []);
 
+  const handleSidebar = () => {
+    dispatch(toggleSidebar());
+  };
+
   return (
-    <header className="bg-white dark:bg-primaryDark" ref={navRef}>
+    <header className="bg-white dark:bg-primaryDark z-10" ref={navRef}>
       {!isLoggedIn ? (
         <div className="flex justify-center items-center py-5">
           <Link className="font-bold text-4xl text-sky-500" to="/">
@@ -73,14 +84,14 @@ const Navbar: React.FC = () => {
               </li>
               <li className="ml-2 lg:ml-4 relative inline-block">
                 <a className="" href="">
-                  <div className="absolute -top-3 -right-2 z-10 bg-sky-500 text-xs font-bold px-1 py-0.5 rounded-lg text-white">
+                  <div className="absolute -top-3 -right-2 bg-sky-500 text-xs font-bold px-1 py-0.5 rounded-lg text-white">
                     3
                   </div>
                   <AiFillMessage className="text-2xl text-gray-700 dark:text-gray-200" />
                 </a>
               </li>
               <li className="ml-2 lg:ml-4 relative inline-block">
-                <div className="absolute -top-2 -right-1 z-10 bg-sky-500 text-xs font-bold px-1 py-0.5 rounded-lg text-white">
+                <div className="absolute -top-2 -right-1 bg-sky-500 text-xs font-bold px-1 py-0.5 rounded-lg text-white">
                   1
                 </div>
                 <IoIosNotifications className="text-3xl text-gray-700 dark:text-gray-200" />
@@ -104,9 +115,12 @@ const Navbar: React.FC = () => {
               </svg>
             </div>
           </div>
-          <button className="md:mr-5 md:hidden ml-auto mr-0 flex items-center gap-2">
+          <button
+            className="md:mr-5 md:hidden ml-auto mr-0 flex items-center gap-2"
+            onClick={handleSidebar}
+          >
             <span className="text-2xl">
-              <FiMenu />
+              {sideOpen ? <MdClose /> : <FiMenu />}
             </span>
             <span className="font-semibold hidden md:inline-block">Menu</span>
           </button>

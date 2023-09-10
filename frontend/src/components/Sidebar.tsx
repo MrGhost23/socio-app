@@ -9,12 +9,18 @@ import { useEffect, useRef } from "react";
 import VerticalLine from "../ui/VerticalLine";
 import UserFullName from "./User/UserFullName";
 import UserTag from "./User/UserTag";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import noAvatar from "../assets/noAvatar.png";
 import { selectUser } from "../store/slices/authSlice";
+import { closeSidebar, selectSideOpen } from "../store/slices/sidebarSlice";
+import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
+import { RootState } from "../store/store";
+import Backdrop from "./Backdrop";
 
 const Sidebar = () => {
   const user = useSelector(selectUser);
+  const sideOpen = useSelector(selectSideOpen);
+  const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
   console.log(user);
   const currentUserFullName = user?.firstName + " " + user?.lastName;
   const currentUserTag = user?.username;
@@ -57,43 +63,49 @@ const Sidebar = () => {
   ];
 
   return (
-    <div
-      className="h-[calc(100vh-82px)] hidden lg:block sticky bottom-0 left-0 top-82px shadow-lg"
-      ref={sideRef}
-    >
-      <div className="pl-5 pt-10">
-        <div className="mb-5 flex items-center gap-3 group">
-          <UserImage
-            className="w-14 !m-0"
-            src={currentUserImage}
-            alt={currentUserFullName}
-            id={currentUserTag}
-          />
-          <div className="flex flex-col">
-            <UserFullName
-              className="!text-lg font-medium group-hover:text-gray-700"
-              fullName={currentUserFullName}
+    <>
+      {sideOpen && <Backdrop onClick={() => dispatch(closeSidebar())} />}
+
+      <div
+        className={`sidebar fixed transition-all bottom-0 duration-300 inset-y-0 bg-white transform ${
+          sideOpen ? "left-0 w-2/3" : "left-[-100%]"
+        } lg:translate-x-0 lg:sticky lg:top-0 lg:left-0 lg:bottom-auto lg:shadow-lg`}
+      >
+        <div className="pl-5 pt-10">
+          <div className="mb-5 flex items-center gap-3 group">
+            <UserImage
+              className="w-14 !m-0"
+              src={currentUserImage}
+              alt={currentUserFullName}
               id={currentUserTag}
             />
-            <UserTag tag={currentUserTag} id={currentUserTag} />
+            <div className="flex flex-col">
+              <UserFullName
+                className="!text-lg font-medium group-hover:text-gray-700"
+                fullName={currentUserFullName}
+                id={currentUserTag}
+              />
+              <UserTag tag={currentUserTag} id={currentUserTag} />
+            </div>
           </div>
+          <VerticalLine className="my-3" />
+          <ul className="m-0 list-none">
+            {list.map((link) => (
+              <li
+                key={link.id}
+                className="mb-4 p-2 text-2xl text-gray-700 cursor-pointer hover:bg-gray-200"
+                onClick={() => dispatch(closeSidebar())}
+              >
+                <Link to={link.path} className="flex items-center gap-2">
+                  {link.icon}
+                  <span className="text-lg capitalize">{link.text}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
-        <VerticalLine className="my-3" />
-        <ul className="m-0 list-none">
-          {list.map((link) => (
-            <li
-              key={link.id}
-              className="mb-4 p-2 text-2xl text-gray-700 cursor-pointer hover:bg-gray-200"
-            >
-              <Link to={link.path} className="flex items-center gap-2">
-                {link.icon}
-                <span className="text-lg capitalize">{link.text}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
       </div>
-    </div>
+    </>
   );
 };
 export default Sidebar;
