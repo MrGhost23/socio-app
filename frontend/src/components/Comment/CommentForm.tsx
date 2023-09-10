@@ -46,7 +46,7 @@ const CommentForm: React.FC<Props> = ({ postId, currentUserId, currentUserImage,
       <form className="w-full">
         <div className="relative w-full">
           <textarea
-            className="w-full min-h-[2.5rem] h-10 max-h-[8rem] resize-y px-4 py-1.5 border rounded-xl outline-none"
+            className="w-full min-h-[2.5rem] h-fit max-h-[8rem] resize-y pl-4 pr-7 py-1.5 border rounded-xl outline-none"
             placeholder="Write your comment"
             value={text}
             onChange={changeHandler}

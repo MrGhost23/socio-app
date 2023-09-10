@@ -45,7 +45,7 @@ const Post: React.FC<Props> = ({
   return (
     <Card className="px-8 py-6 !text-left">
       <div className="relative mb-2 flex flex-row justify-between gap-3">
-        <div className="flex flex-row gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <UserImage
             className="w-14 !mb-0"
             src={post.authorImage}
@@ -54,7 +54,7 @@ const Post: React.FC<Props> = ({
           />
           <div className="flex flex-col items-start gap-1">
             <div className="flex flex-col">
-              <div className="flex flex-row items-center gap-2">
+              <div className="flex flex-col md:flex-row items-center md:gap-2">
                 <UserFullName
                   fullName={post.authorFullName}
                   id={currentUserId}
