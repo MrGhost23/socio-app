@@ -10,30 +10,13 @@ import PostStats from "./PostStats";
 import CommentForm from "../Comment/CommentForm";
 import VerticalLine from "../../ui/VerticalLine";
 import Comments from "../Comment/Comments";
+import { PostType } from "../../Types/Post.types";
 
 type Props = {
   currentUserId: string | undefined;
   currentUserFullName: string | undefined;
   currentUserImage: string | undefined;
-  post: {
-    id: string;
-    text: string;
-    image?: string;
-    likes: number;
-    comments: number;
-    authorFullName: string;
-    authorTag: string;
-    authorImage: string;
-    date: string;
-    postComments: {
-      id: string;
-      text: string;
-      date: string;
-      authorId: string;
-      authorFullName: string;
-      authorImage: string;
-    }[];
-  };
+  post: PostType;
 };
 
 const Post: React.FC<Props> = ({
@@ -48,34 +31,34 @@ const Post: React.FC<Props> = ({
         <div className="flex flex-col sm:flex-row gap-3">
           <UserImage
             className="w-14 !mb-0"
-            src={post.authorImage}
-            alt={post.authorFullName}
+            src={post.userPicture}
+            alt={post.firstName + " " + post.lastName}
             id={currentUserId}
           />
           <div className="flex flex-col items-start gap-1">
             <div className="flex flex-col">
               <div className="flex flex-col md:flex-row items-center md:gap-2">
                 <UserFullName
-                  fullName={post.authorFullName}
+                  fullName={post.firstName + " " + post.lastName}
                   id={currentUserId}
                 />
-                <UserTag tag={post.authorTag} id={currentUserId} />
+                <UserTag tag={post.username} id={currentUserId} />
               </div>
-              <PostDate date={post.date} id={post.id} />
+              <PostDate date={post.createdAt} id={post._id} />
             </div>
           </div>
         </div>
         <PostBookmarkIcon />
       </div>
       <div className="flex flex-col">
-        <PostText text={post.text} />
-        {post.image && <PostImage src={post.image} alt="" />}
+        <PostText description={post.description} />
+        {post.postImage && <PostImage src={post.postImage} alt="" />}
         <VerticalLine className="my-2" />
         <PostStats likes={post.likes} comments={post.comments} />
         <VerticalLine className="mb-5" />
-        <Comments comments={post.postComments} />
+        {/* <Comments comments={post.comments} /> */}
         <CommentForm
-          postId={post.id}
+          postId={post._id}
           currentUserId={currentUserId}
           currentUserImage={currentUserImage}
           currentUserFullName={currentUserFullName}
