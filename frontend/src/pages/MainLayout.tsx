@@ -43,12 +43,12 @@ const MainLayout = () => {
   ];
   
   return (
-    <div className="w-full pr-20 grid grid-cols-4 gap-16">
+    <div className="w-full px-4 sm:px-10 lg:pl-0 lg:pr-20 flex flex-col lg:grid lg:grid-cols-4 gap-8 xl:gap-16">
       <Sidebar />
-      <div className="col-span-2 py-10">
+      <div className="col-span-2 lg:py-10 order-2 lg:order-1">
         <Outlet />
       </div>
-      <Card className="sticky top-32 px-8 py-4 pb-6 flex flex-col !text-left">
+      <Card className="lg:sticky lg:top-32 mt-10 lg:mt-0 lg:mb-10 px-8 py-4 pb-6 flex flex-col !text-left order-1 lg:order-2">
         <h3 className="mb-5 text-xl">Suggested for you</h3>
         <SuggestedUsers users={suggestedUsers} />
       </Card>
