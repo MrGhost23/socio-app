@@ -3,8 +3,8 @@ export interface ProfileType {
   lastName: string;
   createdAt: Date | string;
   country: string;
-  followings: string | number | Array<string>;
-  followers: string | number | Array<string>;
+  followings: Array<string>;
+  followers: Array<string>;
   role: string;
   userPicture: string;
   username: string;

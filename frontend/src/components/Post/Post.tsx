@@ -12,9 +12,9 @@ import VerticalLine from "../../ui/VerticalLine";
 import Comments from "../Comment/Comments";
 
 type Props = {
-  currentUserId: string;
-  currentUserFullName: string;
-  currentUserImage: string;
+  currentUserId: string | undefined;
+  currentUserFullName: string | undefined;
+  currentUserImage: string | undefined;
   post: {
     id: string;
     text: string;
@@ -32,7 +32,7 @@ type Props = {
       authorId: string;
       authorFullName: string;
       authorImage: string;
-    }[]
+    }[];
   };
 };
 
@@ -40,7 +40,7 @@ const Post: React.FC<Props> = ({
   currentUserId,
   currentUserFullName,
   currentUserImage,
-  post
+  post,
 }) => {
   return (
     <Card className="px-8 py-6 !text-left">
@@ -55,7 +55,10 @@ const Post: React.FC<Props> = ({
           <div className="flex flex-col items-start gap-1">
             <div className="flex flex-col">
               <div className="flex flex-row items-center gap-2">
-                <UserFullName fullName={post.authorFullName} id={currentUserId} />
+                <UserFullName
+                  fullName={post.authorFullName}
+                  id={currentUserId}
+                />
                 <UserTag tag={post.authorTag} id={currentUserId} />
               </div>
               <PostDate date={post.date} id={post.id} />

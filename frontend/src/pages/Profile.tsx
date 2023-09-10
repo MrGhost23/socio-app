@@ -4,10 +4,15 @@ import Posts from "../components/Post/Posts";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ProfileType } from "../Types/Profile.types";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 const Profile = () => {
+  const user = useSelector((state: RootState) => state.auth.user);
   const { id: userId } = useParams();
-  const [profile, setProfile] = useState<ProfileType>({});
+  const [profile, setProfile] = useState<ProfileType | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   useEffect(() => {
     const fetchToken = async () => {
       try {
@@ -15,13 +20,22 @@ const Profile = () => {
           `http://localhost:5000/api/v1/users/${userId}`
         );
         setProfile(response.data[0]);
-        console.log(response.data[0]);
+        setLoading(false);
       } catch (error) {
-        console.error(error);
+        setError("Error fetching profile data.");
+        setLoading(false);
       }
     };
-    fetchToken();
+
+    try {
+      fetchToken();
+    } catch (error) {
+      setError("Error fetching profile data.");
+      setLoading(false);
+    }
   }, [userId]);
+
+  const isMyProfile = user?.username === profile?.username;
   const currentUserId = profile?.userId;
   const currentUserFullName = profile?.firstName;
   const currentUserImage = profile?.userPicture;
@@ -82,17 +96,23 @@ const Profile = () => {
     },
   ];
 
-  return (
-    <>
-      <PostForm />
-      <Posts
-        currentUserId={currentUserId}
-        currentUserFullName={currentUserFullName}
-        currentUserImage={currentUserImage}
-        posts={userPosts}
-      />
-    </>
-  );
+  if (loading) {
+    return <div>Loading...</div>;
+  } else if (error) {
+    return <div>Error: {error}</div>;
+  } else {
+    return (
+      <>
+        {isMyProfile && <PostForm src={currentUserImage} />}
+        <Posts
+          currentUserId={currentUserId}
+          currentUserFullName={currentUserFullName}
+          currentUserImage={currentUserImage}
+          posts={userPosts}
+        />
+      </>
+    );
+  }
 };
 
 export default Profile;

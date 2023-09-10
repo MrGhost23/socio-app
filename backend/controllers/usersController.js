@@ -2,8 +2,8 @@ const User = require("../models/User.js");
 
 const getUser = async (req, res) => {
   try {
-    const { id } = req.params;
-    const user = await User.find({ username: id }).select("-password");
+    const { username } = req.params;
+    const user = await User.find({ username }).select("-password");
     console.log(user);
     res.status(200).json(user);
   } catch (error) {
@@ -13,55 +13,51 @@ const getUser = async (req, res) => {
 
 const getUserFriends = async (req, res) => {
   try {
-    const { id } = req.params;
-    const user = await User.findById(id);
+    const user = await User.findById(req.params.userId);
     const friends = await Promise.all(
-      user.friends.map((id) => User.findById(id))
+      user.followings.map((friendId) => {
+        return User.find(friendId);
+      })
     );
-    const formattedFriends = friends.map(
-      ({ _id, firstName, lastName, location, picturePath }) => {
-        return { _id, firstName, lastName, location, picturePath };
-      }
-    );
-    res.status(200).json(formattedFriends);
-  } catch (error) {
-    res.status(404).json({ message: error.message });
+    let friendList = [];
+    friends.map((friend) => {
+      const { _id, username, profilePicture } = friend;
+      friendList.push({ _id, username, profilePicture });
+    });
+    res.status(200).json(friendList);
+  } catch (err) {
+    res.status(500).json(err);
   }
 };
 
-const addRemoveFriends = async (req, res) => {
-  try {
-    const { id, friendId } = req.params;
-    const user = await User.findById(id);
-    const friend = await User.findById(friendId);
+const followUser = async (req, res) => {
+  if (req.body.username !== req.params.username) {
+    try {
+      const user = await User.findOne({ username: req.params.username });
+      const currentUser = await User.findOne({ username: req.body.username });
 
-    if (user.friends.includes(friendId)) {
-      user.friends = user.friends.filter((id) => id !== friendId);
-      friend.friends = friend.friends.filter((id) => id !== id);
-    } else {
-      user.friends.push(friendId);
-      friend.friends.push(id);
-    }
-    await user.save();
-    await friend.save();
+      if (!user.followers.includes(req.body.username)) {
+        user.followers.push(req.body.username);
+        currentUser.followings.push(req.params.username);
 
-    const friends = await Promise.all(
-      user.friends.map((id) => User.findById(id))
-    );
-    const formattedFriends = friends.map(
-      ({ _id, firstName, lastName, occupation, location, picturePath }) => {
-        return { _id, firstName, lastName, occupation, location, picturePath };
+        await user.save();
+        await currentUser.save();
+
+        res.status(200).json("User has been followed!");
+      } else {
+        res.status(403).json("You already follow this user.");
       }
-    );
-
-    res.status(200).json(formattedFriends);
-  } catch (err) {
-    res.status(404).json({ message: err.message });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json("Internal Server Error.");
+    }
+  } else {
+    res.status(403).json("You can't follow yourself.");
   }
 };
 
 module.exports = {
   getUser,
   getUserFriends,
-  addRemoveFriends,
+  followUser,
 };
