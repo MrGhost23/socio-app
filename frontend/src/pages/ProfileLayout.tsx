@@ -1,11 +1,10 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useParams, useNavigate } from "react-router-dom";
 import Card from "../ui/Card";
 import UserInfo from "../components/User/UserInfo";
 import Button from "../ui/Button";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import RecentActivities from "../components/RecentActivities";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import axios from "axios";
 import { ProfileType } from "../Types/Profile.types";
 

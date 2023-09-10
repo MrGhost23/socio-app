@@ -7,7 +7,7 @@ import { ProfileType } from "../Types/Profile.types";
 
 const Profile = () => {
   const { id: userId } = useParams();
-  const [profile, setProfile] = useState<ProfileType>([]);
+  const [profile, setProfile] = useState<ProfileType>({});
   useEffect(() => {
     const fetchToken = async () => {
       try {
@@ -15,7 +15,7 @@ const Profile = () => {
           `http://localhost:5000/api/v1/users/${userId}`
         );
         setProfile(response.data[0]);
-        console.log(profile);
+        console.log(response.data[0]);
       } catch (error) {
         console.error(error);
       }
