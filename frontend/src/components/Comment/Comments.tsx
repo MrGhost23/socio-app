@@ -14,7 +14,6 @@ type Props = {
 }
 
 const Comments: React.FC<Props> = ({ comments }) => {
-  
   const max = 2;
   const [commentsSliced, setCommentsSliced] = useState(comments.length > max)
   
