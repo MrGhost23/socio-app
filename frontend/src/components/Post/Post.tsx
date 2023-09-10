@@ -7,7 +7,7 @@ import PostText from "./PostText";
 import PostImage from "./PostImage";
 import PostDate from "./PostDate";
 import PostStats from "./PostStats";
-import PostCommentForm from "./PostCommentForm";
+import CommentForm from "../Comment/CommentForm";
 import VerticalLine from "../../ui/VerticalLine";
 import Comments from "../Comment/Comments";
 
@@ -71,7 +71,8 @@ const Post: React.FC<Props> = ({
         <PostStats likes={post.likes} comments={post.comments} />
         <VerticalLine className="mb-5" />
         <Comments comments={post.postComments} />
-        <PostCommentForm
+        <CommentForm
+          postId={post.id}
           currentUserId={currentUserId}
           currentUserImage={currentUserImage}
           currentUserFullName={currentUserFullName}
