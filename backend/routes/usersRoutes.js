@@ -2,14 +2,14 @@ const {
   getUser,
   getUserFriends,
   addRemoveFriends,
+  followUser,
 } = require("../controllers/usersController.js");
 const { authenticateUser } = require("../middleware/authentication.js");
 
 const router = require("express").Router();
 
-router.get("/:id", getUser);
-router.get("/:id/friends", authenticateUser, getUserFriends);
-
-router.patch("/:id/:friendId", authenticateUser, addRemoveFriends);
+router.get("/:username", getUser);
+router.get("/:username/friends", getUserFriends);
+router.put("/:username/follow", followUser);
 
 module.exports = router;
