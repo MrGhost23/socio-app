@@ -15,7 +15,7 @@ const Profile = () => {
           `http://localhost:5000/api/v1/users/${userId}`
         );
         setProfile(response.data[0]);
-        console.log(response.data[0]);
+        console.log(response.data);
       } catch (error) {
         console.error(error);
       }

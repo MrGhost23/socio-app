@@ -2,8 +2,8 @@ const User = require("../models/User.js");
 
 const getUser = async (req, res) => {
   try {
-    const { id } = req.params;
-    const user = await User.find({ username: id }).select("-password");
+    const { username } = req.params;
+    const user = await User.find({ username }).select("-password");
     console.log(user);
     res.status(200).json(user);
   } catch (error) {
