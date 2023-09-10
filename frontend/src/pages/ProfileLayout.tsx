@@ -7,25 +7,17 @@ import RecentActivities from "../components/RecentActivities";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { ProfileType } from "../Types/Profile.types";
+import { RootState } from "../store/store";
+import { useSelector } from "react-redux";
+import useUserProfile from "../hooks/useUserProfile";
 
 const ProfileLayout = () => {
   const navigate = useNavigate();
-
+  const user = useSelector((state: RootState) => state.auth.user);
   const { id: userId } = useParams();
-  const [profileInfo, setProfileInfo] = useState<ProfileType>([]);
-  useEffect(() => {
-    const fetchToken = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/api/v1/users/${userId}`
-        );
-        setProfileInfo(response.data[0]);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchToken();
-  }, [userId]);
+  const { profile, loading, error } = useUserProfile(userId);
+
+  const isMyProfile = user?.username === profile?.username;
 
   const [isFollowing, setIsFollowing] = useState(false);
   const [menuOpened, setMenuOpened] = useState(false);
@@ -41,20 +33,20 @@ const ProfileLayout = () => {
   };
 
   const userInfo = {
-    id: profileInfo?.username,
-    username: profileInfo?.username,
-    firstName: profileInfo?.firstName,
-    lastName: profileInfo?.lastName,
-    userPicture: profileInfo?.userPicture,
-    country: profileInfo?.country,
+    id: profile?.username,
+    username: profile?.username,
+    firstName: profile?.firstName,
+    lastName: profile?.lastName,
+    userPicture: profile?.userPicture,
+    country: profile?.country,
     occupation: "كلام في الحب",
     bio: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores, fugiat.",
-    followers: profileInfo?.followers?.length,
-    followings: profileInfo?.followings?.length,
-    createdAt: profileInfo?.createdAt,
-    role: profileInfo?.role,
-    userId: profileInfo?.userId,
-    email: profileInfo?.email,
+    followers: profile?.followers?.length,
+    followings: profile?.followings?.length,
+    createdAt: profile?.createdAt,
+    role: profile?.role,
+    userId: profile?.userId,
+    email: profile?.email,
   };
 
   const recentActivities = [
@@ -126,16 +118,19 @@ const ProfileLayout = () => {
           </div>
           <UserInfo userInfo={userInfo} />
           <div className="w-full flex flex-col gap-4">
-            <Button
-              text={isFollowing ? "Unfollow" : "Follow"}
-              onClick={() => setIsFollowing((prevState) => !prevState)}
-              bg={true}
-            />
-            <Button
-              text="Edit profile"
-              onClick={() => navigate("/settings")}
-              bg={true}
-            />
+            {!isMyProfile ? (
+              <Button
+                text={isFollowing ? "Unfollow" : "Follow"}
+                onClick={() => setIsFollowing((prevState) => !prevState)}
+                bg={true}
+              />
+            ) : (
+              <Button
+                text="Edit profile"
+                onClick={() => navigate("/settings")}
+                bg={true}
+              />
+            )}
           </div>
         </Card>
       </div>

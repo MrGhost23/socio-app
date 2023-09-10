@@ -6,10 +6,10 @@ export interface ProfileType {
   followings: Array<string>;
   followers: Array<string>;
   role: string;
-  userPicture: string;
+  userPicture: string | undefined;
   username: string;
   userId: string;
   email: string;
-  occupation: string;
-  bio: string;
+  occupation: string | undefined;
+  bio: string | undefined;
 }

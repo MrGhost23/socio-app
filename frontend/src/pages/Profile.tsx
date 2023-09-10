@@ -1,39 +1,14 @@
-import axios from "axios";
 import PostForm from "../components/Post/PostForm";
 import Posts from "../components/Post/Posts";
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { ProfileType } from "../Types/Profile.types";
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
+import useUserProfile from "../hooks/useUserProfile";
 
 const Profile = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const { id: userId } = useParams();
-  const [profile, setProfile] = useState<ProfileType | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  useEffect(() => {
-    const fetchToken = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/api/v1/users/${userId}`
-        );
-        setProfile(response.data[0]);
-        setLoading(false);
-      } catch (error) {
-        setError("Error fetching profile data.");
-        setLoading(false);
-      }
-    };
-
-    try {
-      fetchToken();
-    } catch (error) {
-      setError("Error fetching profile data.");
-      setLoading(false);
-    }
-  }, [userId]);
+  const { profile, loading, error } = useUserProfile(userId);
 
   const isMyProfile = user?.username === profile?.username;
   const currentUserId = profile?.userId;

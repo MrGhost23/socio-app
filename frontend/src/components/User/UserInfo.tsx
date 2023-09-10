@@ -6,25 +6,12 @@ import UserBio from "./UserBio";
 import UserStats from "./UserStats";
 import UserOccupation from "./UserOccupation";
 
-type Props = {
-  userInfo: {
-    firstName: string;
-    lastName: string;
-    createdAt: Date | string;
-    country: string;
-    followings: string | number | Array<string>;
-    followers: string | number | Array<string>;
-    role: string;
-    userPicture: string;
-    username: string;
-    userId: string;
-    email: string;
-    occupation: string;
-    bio: string;
-  };
-};
+import { ProfileType } from "../../Types/Profile.types";
+interface UserInfoProps {
+  userInfo: ProfileType;
+}
 
-const UserInfo: React.FC<Props> = ({ userInfo }) => {
+const UserInfo: React.FC<UserInfoProps> = ({ userInfo }) => {
   return (
     <>
       <UserImage
