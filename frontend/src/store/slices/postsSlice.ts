@@ -7,7 +7,11 @@ import { PostType } from "../../Types/Post.types";
 
 interface PostsState {
   post: PostType | null;
+  postLoading: boolean;
+  userPosts: PostType[] | [];
+  userPostsLoading: boolean;
   feedPosts: PostType[] | [];
+  feedPostsLoading: boolean;
   error: string | null | undefined;
 }
 
@@ -33,9 +37,25 @@ export const fetchFeedPosts = createAsyncThunk<PostType[]>(
   }
 );
 
+export const fetchUserPosts = createAsyncThunk<PostType[]>(
+    'posts/fetchUserPosts',
+    async (username: string) => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/v1/posts/${username}`);
+        console.log(response.data);
+        return response.data;
+      } catch (error) {
+        throw new Error('Failed to fetch user posts.');
+    }}
+  );
+
 const initialState: PostsState = {
   post: null,
+  postLoading: false,
+  userPosts: [],
+  userPostsLoading: false,
   feedPosts: [],
+  feedPostsLoading: false,
   error: null,
 };
 
@@ -46,23 +66,51 @@ const postsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(createPost.fulfilled, (state, action) => {
+        state.postLoading = false
         state.post = action.payload;
         state.error = null;
       })
       .addCase(createPost.rejected, (state, action) => {
+        state.postLoading = false
         state.error = action.error.message;
       })
+      .addCase(createPost.pending, (state) => {
+        state.postLoading = true
+        state.error = null;
+      })
+      .addCase(fetchFeedPosts.pending, (state) => {
+        state.feedPostsLoading = true;
+        state.error = null;
+      })
       .addCase(fetchFeedPosts.fulfilled, (state, action) => {
+        state.feedPostsLoading = false
         state.feedPosts = action.payload;
         state.error = null;
       })
       .addCase(fetchFeedPosts.rejected, (state, action) => {
+        state.feedPostsLoading = false
         state.error = action.error.message;
-      });
+      })
+      .addCase(fetchUserPosts.pending, (state) => {
+        state.userPostsLoading = true
+        state.error = null;
+      })
+      .addCase(fetchUserPosts.fulfilled, (state, action) => {
+        state.userPostsLoading = true
+        state.userPosts = action.payload
+        state.error = null;
+      })
+      .addCase(fetchUserPosts.rejected, (state, action) => {
+        state.userPostsLoading = false
+        state.error = action.error.message;
+      })
+
+      
   },
 });
 
 export const selectPost = (state: RootState) => state.posts.post;
+export const selectUserPosts = (state: RootState) => state.posts.userPosts;
 export const selectFeedPosts = (state: RootState) => state.posts.feedPosts;
 export const selectError = (state: RootState) => state.posts.error;
 

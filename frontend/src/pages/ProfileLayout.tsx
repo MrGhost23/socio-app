@@ -4,16 +4,15 @@ import UserInfo from "../components/User/UserInfo";
 import Button from "../ui/Button";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import RecentActivities from "../components/RecentActivities";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { ProfileType } from "../Types/Profile.types";
-import { RootState } from "../store/store";
+import { useState } from "react";
+
 import { useSelector } from "react-redux";
 import useUserProfile from "../hooks/useUserProfile";
+import { selectUser } from "../store/slices/authSlice";
 
 const ProfileLayout = () => {
   const navigate = useNavigate();
-  const user = useSelector((state: RootState) => state.auth.user);
+  const user = useSelector(selectUser);
   const { id: userId } = useParams();
   const { profile, loading, error } = useUserProfile(userId);
 

@@ -1,16 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import Posts from "../components/Post/Posts";
 import { RootState } from "../store/store";
-import { fetchFeedPosts } from "../store/slices/postsSlice";
+import { fetchFeedPosts, selectFeedPosts } from "../store/slices/postsSlice";
 import { useEffect, useState } from "react";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
-import { FaHeartCircleExclamation } from "react-icons/fa6";
-import { FaCommentMedical } from "react-icons/fa";
+import { selectUser } from "../store/slices/authSlice";
 
 const Timeline = () => {
   const [loading, setLoading] = useState(true);
-  const user = useSelector((state: RootState) => state.auth.user);
-  const feedPosts = useSelector((state: RootState) => state.posts.feedPosts);
+  const user = useSelector(selectUser);
+  const feedPosts = useSelector(selectFeedPosts);
   console.log(feedPosts);
 
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
@@ -86,7 +85,10 @@ const Timeline = () => {
       ) : (
         <div>
           {feedPosts.map((post) => (
-            <div className="mx-auto bg-white rounded-xl shadow-md overflow-hidden py-2 my-8">
+            <div
+              key={post._id}
+              className="mx-auto bg-white rounded-xl shadow-md overflow-hidden py-2 my-8"
+            >
               {post.postImage && (
                 <img
                   className="w-full h-64 object-cover"

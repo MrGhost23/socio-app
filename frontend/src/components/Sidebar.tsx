@@ -10,11 +10,11 @@ import VerticalLine from "../ui/VerticalLine";
 import UserFullName from "./User/UserFullName";
 import UserTag from "./User/UserTag";
 import { useSelector } from "react-redux";
-import { RootState } from "../store/store";
 import noAvatar from "../assets/noAvatar.png";
+import { selectUser } from "../store/slices/authSlice";
 
 const Sidebar = () => {
-  const user = useSelector((state: RootState) => state.auth.user);
+  const user = useSelector(selectUser);
   console.log(user);
   const currentUserFullName = user?.firstName + " " + user?.lastName;
   const currentUserTag = user?.username;
