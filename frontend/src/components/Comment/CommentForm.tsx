@@ -10,7 +10,7 @@ type Props = {
 };
 
 const CommentForm: React.FC<Props> = ({ postId, currentUserId, currentUserImage, currentUserFullName }) => {
-  const classes = "absolute bottom-4 right-6 text-xl text-gray-600 opacity-0 cursor-pointer rotate-[135deg] transition duration-500 hover:text-sky-600 hover:scale-110";
+  const classes = "absolute bottom-4 right-6 text-xl text-gray-600 opacity-0 cursor-pointer rotate-[135deg] transition duration-500";
   
   const [text, setText] = useState("");
   const [showSendIcon, setShowSendIcon] = useState(false);
@@ -20,22 +20,19 @@ const CommentForm: React.FC<Props> = ({ postId, currentUserId, currentUserImage,
     setText(e.target.value);
 
     setShowSendIcon(true);
-    setIconClasses(e.target.value.trim().length !== 0 ? classes + " !text-sky-500" : classes);
+    setIconClasses(e.target.value.trim().length !== 0 ? classes + " !text-sky-500 hover:text-sky-600 hover:scale-110" : classes);
   };
 
   const focusHandler = () => {
     setIconClasses(classes + " !opacity-100");
   }
 
-  const blurHandler = () => {
-    setShowSendIcon(text.trim().length !== 0);
-    setIconClasses(classes + " !text-sky-500");
-  }
-
   const submitHandler = () => {
-    console.log(text, postId, currentUserId);
-    setText("");
-    setIconClasses(classes);
+    if (text) {
+      console.log(text, postId, currentUserId);
+      setText("");
+      setIconClasses(classes);
+    }
   }
 
   return (
@@ -54,7 +51,6 @@ const CommentForm: React.FC<Props> = ({ postId, currentUserId, currentUserImage,
             value={text}
             onChange={changeHandler}
             onFocus={focusHandler}
-            onBlur={blurHandler}
           />
           <PiNavigationArrowFill
             className={
