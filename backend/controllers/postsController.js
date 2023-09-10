@@ -4,12 +4,17 @@ const User = require("../models/User");
 const createPost = async (req, res) => {
   try {
     const { username, description, postImage } = req.body;
-    const user = await User.findById(username);
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    console.log(username);
     const newPost = new Post({
       username,
+      userId: user._id,
       firstName: user.firstName,
       lastName: user.lastName,
-      location: user.location,
+      country: user.country,
       description,
       userPicture: user.userPicture,
       postImage,

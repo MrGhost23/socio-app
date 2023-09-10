@@ -26,6 +26,7 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 const path = require("path");
+const verifyToken = require("./middleware/auth");
 
 // EXPRESS STATIC HERE
 
@@ -43,7 +44,7 @@ const upload = multer({ storage });
 app.use(express.static(path.join(__dirname, "build")));
 
 app.post("/api/v1/auth/register", upload.single("picture"), register);
-app.post("/posts", authenticateUser, upload.single("picture"), createPost);
+app.post("/api/v1/posts", verifyToken, upload.single("picture"), createPost);
 
 app.use("/api/v1/validateToken", async (req, res) => {
   const { token } = req.body;

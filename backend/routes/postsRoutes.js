@@ -5,11 +5,11 @@ const {
   getUserPosts,
   likePosts,
 } = require("../controllers/postsController");
-const { authenticateUser } = require("../middleware/authentication");
+const verifyToken = require("../middleware/auth");
 
-router.get("/", authenticateUser, getFeedPosts);
-router.get("/:username/posts", authenticateUser, getUserPosts);
+router.get("/", verifyToken, getFeedPosts);
+router.get("/:username/posts", verifyToken, getUserPosts);
 
-router.patch("/:id/like", authenticateUser, likePosts);
+router.patch("/:id/like", verifyToken, likePosts);
 
 module.exports = router;
