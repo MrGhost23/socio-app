@@ -62,7 +62,7 @@ const Sidebar = () => {
       ref={sideRef}
     >
       <div className="pl-5 pt-10">
-        <Link className="mb-5 flex items-center gap-3 group" to="/profile">
+        <div className="mb-5 flex items-center gap-3 group">
           <UserImage
             className="w-14 !m-0"
             src={currentUserImage}
@@ -77,7 +77,7 @@ const Sidebar = () => {
             />
             <UserTag tag={currentUserTag} id={currentUserTag} />
           </div>
-        </Link>
+        </div>
         <VerticalLine className="my-3" />
         <ul className="m-0 list-none">
           {list.map((link) => (
