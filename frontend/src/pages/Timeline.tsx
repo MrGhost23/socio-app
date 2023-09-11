@@ -84,7 +84,13 @@ const Timeline = () => {
         <div>Loading</div>
       ) : (
         <div>
-          {feedPosts.map((post) => (
+          <Posts
+            currentUserFullName={user?.firstName + " " + user?.lastName}
+            currentUserId={user?.userId}
+            currentUserImage={user?.userPicture}
+            posts={feedPosts}
+          />
+          {/* {feedPosts.map((post) => (
             <div
               key={post._id}
               className="mx-auto bg-white rounded-xl shadow-md overflow-hidden py-2 my-8"
@@ -117,15 +123,15 @@ const Timeline = () => {
               <div className="px-6 py-2 border-t border-gray-200">
                 <div className="flex justify-between">
                   <div className="flex items-center my-2 space-x-4">
-                    <span>0 Likes</span>
+                    <span>{Object.keys(post.likes).length} Likes</span>
                   </div>
                   <div className="flex items-center space-x-4">
-                    <span>0 Comments</span>
+                    <span>{post.comments.length} Comments</span>
                   </div>
                 </div>
               </div>
             </div>
-          ))}
+          ))} */}
         </div>
       )}
     </>

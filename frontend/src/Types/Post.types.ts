@@ -9,6 +9,6 @@ export interface PostType {
     postImage: string;
     likes: Record<string, any> | any;
     comments: any[];
-    createdAt: string;
+    createdAt: string | Date;
     updatedAt: string;
   }

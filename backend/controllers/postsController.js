@@ -22,7 +22,7 @@ const createPost = async (req, res) => {
       comments: [],
     });
     await newPost.save();
-    const post = await Post.find();
+    const post = await Post.find().sort({ createdAt: -1 }).exec();
     res.status(201).json(post);
   } catch (error) {
     res.status(409).json({ message: error.message });
@@ -41,7 +41,9 @@ const getFeedPosts = async (req, res) => {
 const getUserPosts = async (req, res) => {
   try {
     const user = await User.findOne({ username: req.params.username });
-    const posts = await Post.find({ userId: user._id });
+    const posts = await Post.find({ userId: user._id })
+      .sort({ createdAt: -1 })
+      .exec();
     res.status(200).json(posts);
   } catch (error) {
     res.status(404).json({ message: error.message });

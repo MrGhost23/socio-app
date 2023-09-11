@@ -29,7 +29,7 @@ const Posts: React.FC<Props> = ({
     <div className="flex flex-col gap-8">
       {posts.map((post) => (
         <Post
-          key={post.id}
+          key={post._id}
           currentUserId={currentUserId}
           currentUserFullName={currentUserFullName}
           currentUserImage={currentUserImage}
