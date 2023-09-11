@@ -71,8 +71,8 @@ const Sidebar = () => {
           sideOpen ? "left-0 w-2/3" : "left-[-100%]"
         } lg:translate-x-0 lg:sticky lg:top-0 lg:left-0 lg:bottom-auto lg:shadow-lg`}
       >
-        <div className="pl-5 pt-10">
-          <div className="mb-5 flex items-center gap-3 group">
+        <div className="px-5 xl:pr-0 pt-10">
+          <div className="mb-5 flex flex-row lg:flex-col xl:flex-row items-center gap-3 group">
             <UserImage
               className="w-14 !m-0"
               src={currentUserImage}
@@ -88,7 +88,7 @@ const Sidebar = () => {
               <UserTag tag={currentUserTag} id={currentUserTag} />
             </div>
           </div>
-          <VerticalLine className="my-3" />
+          <VerticalLine className="my-3 mx-2 xl:mx-0" />
           <ul className="m-0 list-none">
             {list.map((link) => (
               <li
