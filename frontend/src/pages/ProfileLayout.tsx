@@ -121,11 +121,18 @@ const ProfileLayout = () => {
           <UserInfo userInfo={userInfo} />
           <div className="w-full flex flex-col gap-4">
             {!isMyProfile ? (
-              <Button
-                text={isFollowing ? "Unfollow" : "Follow"}
-                onClick={() => setIsFollowing((prevState) => !prevState)}
+              <>
+                <Button
+                text="Send Message"
+                onClick={() => navigate(`/chats/${userInfo.username}`)}
                 bg={true}
-              />
+                />
+                <Button
+                  text={isFollowing ? "Unfollow" : "Follow"}
+                  onClick={() => setIsFollowing((prevState) => !prevState)}
+                  bg={true}
+                />
+              </>
             ) : (
               <Button
                 text="Edit profile"
