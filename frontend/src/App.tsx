@@ -16,7 +16,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 
 import Profile from "./pages/Profile";
 import Followers from "./pages/Followers";
-import Followings from "./pages/Followings";
+import Followings from "./pages/Following";
 
 import Timeline from "./pages/Timeline";
 import PostPage from "./pages/PostPage";
@@ -85,7 +85,7 @@ const App: React.FC = () => {
         <Route element={user ? <ProfileLayout /> : <Navigate to="/login" />}>
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/profile/:id/followers" element={<Followers />} />
-          <Route path="/profile/:id/followings" element={<Followings />} />
+          <Route path="/profile/:id/following" element={<Followings />} />
         </Route>
       </Routes>
       <ToastContainer

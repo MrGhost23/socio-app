@@ -31,7 +31,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ userInfo }) => {
       <UserBio bio={userInfo.bio || ""} />
       <UserStats
         followers={userInfo.followers}
-        followings={userInfo.followings}
+        following={userInfo.following}
       />
     </>
   );

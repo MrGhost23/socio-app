@@ -41,7 +41,7 @@ const ProfileLayout = () => {
     occupation: "كلام في الحب",
     bio: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores, fugiat.",
     followers: profile?.followers?.length,
-    followings: profile?.followings?.length,
+    following: profile?.followings?.length,
     createdAt: profile?.createdAt,
     role: profile?.role,
     userId: profile?.userId,

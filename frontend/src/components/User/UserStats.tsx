@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
 type Props = {
-  followings: string | number | Array<string>;
+  following: string | number | Array<string>;
   followers: string | number | Array<string>;
 };
 
@@ -17,9 +17,9 @@ const UserStats: React.FC<Props> = (props) => {
         <p className="text-xl font-semibold">{props.followers}</p>
       </Link>
       <div className="w-0.5 h-16 bg-gray-200"></div>
-      <Link to={`${path}/followings`} className="flex flex-col gap-1">
+      <Link to={`${path}/following`} className="flex flex-col gap-1">
         <p>Following</p>
-        <p className="text-xl font-semibold">{props.followings}</p>
+        <p className="text-xl font-semibold">{props.following}</p>
       </Link>
     </div>
   );
