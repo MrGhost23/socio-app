@@ -88,7 +88,7 @@ const Sidebar = () => {
               <UserTag tag={currentUserTag} id={currentUserTag} />
             </div>
           </div>
-          <VerticalLine className="my-3 mx-2 xl:mx-0" />
+          <VerticalLine className="my-3" />
           <ul className="m-0 list-none">
             {list.map((link) => (
               <li
