@@ -68,13 +68,13 @@ const Sidebar = () => {
 
       <div
         className={`sidebar fixed transition-all bottom-0 duration-300 inset-y-0 bg-white transform ${
-          sideOpen ? "left-0 w-2/3" : "left-[-100%]"
+          sideOpen ? "left-0 w-fit py-7 px-5" : "left-[-100%]"
         } lg:translate-x-0 lg:sticky lg:top-0 lg:left-0 lg:bottom-auto lg:shadow-lg`}
       >
         <div className="px-5 xl:pr-0 pt-10">
-          <div className="mb-5 flex flex-row lg:flex-col xl:flex-row items-center gap-3 group">
+          <div className="mb-5 flex flex-col xl:flex-row items-center gap-3 group">
             <UserImage
-              className="w-14 !m-0"
+              className="w-20 lg:w-16 !m-0"
               src={currentUserImage}
               alt={currentUserFullName}
               id={currentUserTag}
