@@ -79,8 +79,8 @@ const App: React.FC = () => {
           <Route path="/post/:id" element={<PostPage />} />
           <Route path="/find-friends" element={<FindFriends />} />
           <Route path="/bookmarks" element={<Bookmarks />} />
-          <Route path="/settings" element={<Settings />} />
         </Route>
+        <Route path="/settings" element={user ? <Settings /> : <Navigate to="/login" />} />
         <Route element={user ? <ProfileLayout /> : <Navigate to="/login" />}>
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/profile/:id/followers" element={<Followers />} />
