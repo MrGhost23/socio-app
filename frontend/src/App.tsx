@@ -38,6 +38,7 @@ const App: React.FC = () => {
   const localToken = localStorage.getItem("token");
   useEffect(() => {
     if (!localToken) {
+      setIsLoading(false);
       return;
     }
     const fetchToken = async () => {
@@ -57,6 +58,7 @@ const App: React.FC = () => {
     fetchToken();
   }, [dispatch, localToken]);
 
+  console.log(isLoading)
   if (isLoading) return;
 
   return (
