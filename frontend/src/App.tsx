@@ -58,7 +58,6 @@ const App: React.FC = () => {
     fetchToken();
   }, [dispatch, localToken]);
 
-  console.log(isLoading)
   if (isLoading) return;
 
   return (
