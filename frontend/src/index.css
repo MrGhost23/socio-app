@@ -7,6 +7,10 @@ html {
   font-family: "Noto Sans Arabic", sans-serif;
 }
 
+.Toastify__toast-icon > svg {
+  @apply fill-sky-500;
+}
+
 @layer components {
   .sticky-nav {
     @apply w-full shadow-md z-50 sticky top-0 left-0;

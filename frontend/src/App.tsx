@@ -99,7 +99,7 @@ const App: React.FC = () => {
         draggable
         pauseOnHover
         theme="light"
-        progressStyle={{ backgroundColor: "#D9083A" }}
+        progressStyle={{ backgroundColor: "#0ea5e9" }}
       />
     </>
   );
