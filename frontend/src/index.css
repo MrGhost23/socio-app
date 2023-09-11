@@ -4,6 +4,7 @@
 
 html {
   @apply bg-gray-50 box-border;
+  font-family: "Noto Sans Arabic", sans-serif;
 }
 
 @layer components {

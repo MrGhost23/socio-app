@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 
 type Props = {
   src: string | undefined;
-  alt: string | undefined;
-  className: string;
-  id: string | undefined;
+  alt?: string | undefined;
+  className?: string;
+  id?: string | undefined;
 };
 
 const UserImage: React.FC<Props> = (props) => {

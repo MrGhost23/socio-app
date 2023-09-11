@@ -51,7 +51,7 @@ const Sidebar = () => {
 
   const list = [
     { id: 1, text: "feed", path: "/", icon: <MdOutlineRssFeed /> },
-    { id: 2, text: "chats", path: "/messages", icon: <AiOutlineMessage /> },
+    { id: 2, text: "chats", path: "/chats", icon: <AiOutlineMessage /> },
     { id: 3, text: "find friends", path: "/find-friends", icon: <BsPeople /> },
     {
       id: 4,

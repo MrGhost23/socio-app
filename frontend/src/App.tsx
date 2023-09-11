@@ -28,7 +28,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser, setUser } from "./store/slices/authSlice";
-import Messages from "./pages/Messages";
+import Chats from "./pages/Chats";
 
 const App: React.FC = () => {
   const user = useSelector(selectUser);
@@ -67,7 +67,7 @@ const App: React.FC = () => {
           path="/login"
           element={!user ? <LogIn /> : <Navigate to="/" />}
         />
-        <Route path="/messages" element={!user ? <LogIn /> : <Messages />} />
+        <Route path="/chats" element={!user ? <LogIn /> : <Chats />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route element={user ? <MainLayout /> : <Navigate to="/login" />}>
           <Route path="/" element={<Timeline />} />
