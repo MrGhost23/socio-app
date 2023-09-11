@@ -5,10 +5,10 @@ import Button from "../ui/Button";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import RecentActivities from "../components/RecentActivities";
 import { useState } from "react";
-
 import { useSelector } from "react-redux";
 import useUserProfile from "../hooks/useUserProfile";
 import { selectUser } from "../store/slices/authSlice";
+import {toast} from 'react-toastify';
 
 const ProfileLayout = () => {
   const navigate = useNavigate();
@@ -21,13 +21,23 @@ const ProfileLayout = () => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [menuOpened, setMenuOpened] = useState(false);
 
+  const followHandler = () => {
+    toast.info(`You've successfully followed ${profile!.firstName} ${profile!.lastName}`);
+    setIsFollowing(true);
+  };
+
+  const unFollowHandler = () => {
+    toast.info(`You're not following ${profile!.firstName} ${profile!.lastName} anymore`);
+    setIsFollowing(false);
+  };
+
   const blockHandler = () => {
-    console.log("Blocked User");
+    toast.info(`You've successfully blocked ${profile!.firstName} ${profile!.lastName}`);
     setMenuOpened(false);
   };
 
   const ReportHandler = () => {
-    console.log("Reported User");
+    toast.info(`You've successfully reported ${profile!.firstName} ${profile!.lastName}`);
     setMenuOpened(false);
   };
 
@@ -129,7 +139,7 @@ const ProfileLayout = () => {
                 />
                 <Button
                   text={isFollowing ? "Unfollow" : "Follow"}
-                  onClick={() => setIsFollowing((prevState) => !prevState)}
+                  onClick={isFollowing ? unFollowHandler : followHandler}
                   bg={true}
                 />
               </>

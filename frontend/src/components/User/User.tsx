@@ -1,6 +1,7 @@
-import Button from "../../ui/Button";
+import { toast } from 'react-toastify';
 import UserImage from "./UserImage";
 import UserFullName from "./UserFullName";
+import Button from "../../ui/Button";
 
 type Props = {
   image: string;
@@ -23,11 +24,11 @@ const SuggestedUser: React.FC<Props> = ({
   const infoContainerClasses = "flex flex-col text-gray-600";
 
   const followHandler = () => {
-    console.log("Followed User");
+    toast.info(`You've successfully followed ${fullName}`);
   };
 
   const unBlockHandler = () => {
-    console.log("Unblocked User");
+    toast.info(`You've successfully unblocked ${fullName}`);
   };
 
   return (
