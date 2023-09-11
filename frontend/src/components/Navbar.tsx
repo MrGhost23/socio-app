@@ -127,13 +127,13 @@ const Navbar: React.FC = () => {
             </div>
           </div>
           <button
-            className="md:mr-5 md:hidden ml-auto mr-0 flex items-center gap-2"
+            className="md:mr-5 lg:hidden ml-auto mr-0 flex items-center gap-2 text-gray-600"
             onClick={handleSidebar}
           >
             <span className="text-2xl">
               {sideOpen ? <MdClose /> : <FiMenu />}
             </span>
-            <span className="font-semibold hidden md:inline-block">Menu</span>
+            <span className="text-lg font-semibold hidden md:inline-block">Menu</span>
           </button>
         </div>
       )}
