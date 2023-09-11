@@ -8,7 +8,7 @@ type Props = {
 const BookmarkText: React.FC<Props> = ({ text, id }) => {
   return (
     <Link to={`/post/${id}`}>
-      <p className="text-xl text-gray-500 font-medium">
+      <p className="text-lg md:text-xl text-gray-500 font-medium">
         {
           text.length > 120 ?
             text.slice(0, 117) + '...'

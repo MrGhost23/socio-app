@@ -29,17 +29,21 @@ const BookmarkPost: React.FC<Props> = ({
   post,
 }) => {
   return (
-    <Card className="p-8 !text-left flex flex-row gap-4">
-      {
-        post.image && <BookmarkImage src={post.image} alt='' id={post.id} />
-      }
-      <div className="relative w-full pr-8 flex flex-col gap-4">
-        <BookmarkText text={post.text} id={post.id} />
-        <div className="flex flex-row items-center gap-2">
-          <UserImage className="w-8 !m-0" src={currentUserImage} alt={currentUserFullName} id={currentUserId} />
-          <UserFullName className="!text-base text-gray-500 font-medium" fullName={currentUserFullName} id={currentUserId} />
+    <Card className="px-8 py-6 !text-left">
+      <div className="relative">
+        <div className="flex flex-col sm:flex-row gap-4">
+          {
+            post.image && <BookmarkImage src={post.image} alt='' id={post.id} />
+          }
+          <div className=" w-full pr-8 flex flex-col gap-4">
+            <BookmarkText text={post.text} id={post.id} />
+            <div className="flex flex-row items-center gap-2">
+              <UserImage className="min-w-[2rem] w-8 min-h-[2rem] h-8 !m-0" src={currentUserImage} alt={currentUserFullName} id={currentUserId} />
+              <UserFullName className="!text-base text-gray-500 font-medium" fullName={currentUserFullName} id={currentUserId} />
+            </div>
+            <PostBookmarkIcon />
+          </div>
         </div>
-        <PostBookmarkIcon />
       </div>
     </Card>
   );
