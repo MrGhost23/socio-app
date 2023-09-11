@@ -11,7 +11,7 @@ import CommentForm from "../Comment/CommentForm";
 import VerticalLine from "../../ui/VerticalLine";
 import Comments from "../Comment/Comments";
 import { PostType } from "../../Types/Post.types";
-
+import { formatDistanceToNow } from "date-fns";
 type Props = {
   currentUserId: string | undefined;
   currentUserFullName: string | undefined;
@@ -44,7 +44,12 @@ const Post: React.FC<Props> = ({
                 />
                 <UserTag tag={post.username} id={currentUserId} />
               </div>
-              <PostDate date={post.createdAt} id={post._id} />
+              <PostDate
+                date={formatDistanceToNow(new Date(post.createdAt), {
+                  addSuffix: true,
+                })}
+                id={post._id}
+              />
             </div>
           </div>
         </div>
@@ -54,9 +59,12 @@ const Post: React.FC<Props> = ({
         <PostText description={post.description} />
         {post.postImage && <PostImage src={post.postImage} alt="" />}
         <VerticalLine className="my-2" />
-        <PostStats likes={post.likes} comments={post.comments} />
+        <PostStats
+          likes={Object.keys(post.likes).length}
+          comments={post.comments.length}
+        />
         <VerticalLine className="mb-5" />
-        {/* <Comments comments={post.comments} /> */}
+        <Comments comments={post.comments} />
         <CommentForm
           postId={post._id}
           currentUserId={currentUserId}
