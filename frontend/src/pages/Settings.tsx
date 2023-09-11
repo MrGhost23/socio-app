@@ -7,9 +7,21 @@ import Button from "../ui/Button";
 import { useSelector } from "react-redux";
 import { selectSideOpen } from "../store/slices/sidebarSlice";
 import Sidebar from '../components/Sidebar';
+import { selectUser } from "../store/slices/authSlice";
 
 const Settings = () => {
+  const user = useSelector(selectUser);
+
   const sideOpen = useSelector(selectSideOpen);
+
+  const [image, setImage] = useState<object>();
+  const [previewImage, setPreviewImage] = useState<string>("");
+
+  const uploadImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files![0];
+    setImage(file);
+    setPreviewImage(URL.createObjectURL(file));
+  };
 
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -59,6 +71,7 @@ const Settings = () => {
   ];
 
   const submitHandler = () => {
+    console.log(image);
     console.log(username);
     console.log(firstName);
     console.log(lastName);
@@ -79,6 +92,10 @@ const Settings = () => {
       <div className="col-span-3 py-10 flex flex-col xl:grid xl:grid-cols-3 gap-8 xl:gap-16">
         <Card className="!text-left p-8 col-span-2">
           <h3 className="mb-5 text-xl">Account Info</h3>
+          <div className="relative w-fit mb-5 rounded-full overflow-hidden">
+            <img className="w-24 h-24" src={previewImage || user?.userPicture} alt="" />
+            <input className="absolute top-0 right-0 w-full h-full opacity-0" type="file" value="" onChange={uploadImageHandler} />
+          </div>
           <div className="mb-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
             <Input
               label="Username"
