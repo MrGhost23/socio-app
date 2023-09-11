@@ -94,7 +94,7 @@ const Settings = () => {
           <h3 className="mb-5 text-xl">Account Info</h3>
           <div className="relative w-fit mb-5 rounded-full overflow-hidden">
             <img className="w-24 h-24" src={previewImage || user?.userPicture} alt="" />
-            <input className="absolute top-0 right-0 w-full h-full opacity-0" type="file" value="" onChange={uploadImageHandler} />
+            <input className="absolute top-0 right-0 w-full h-full opacity-0 cursor-pointer" type="file" value="" onChange={uploadImageHandler} />
           </div>
           <div className="mb-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
             <Input
