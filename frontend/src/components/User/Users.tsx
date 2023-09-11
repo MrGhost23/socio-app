@@ -16,7 +16,7 @@ const Users:React.FC<Props> = ({ users, mode }) => {
 
   return (
     <ScrollableDiv className="h-fit max-h-[80vh]">
-      <div className={`grid grid-cols-1 ${classes} gap-4`}>
+      <div className={`grid grid-cols-1 ${classes} gap-3`}>
       {
         users.map(user =>
           <User key={user.id} id={user.id} image={user.image} fullName={user.fullName} followers={user.followers} changeStyle={false} mode={mode} />

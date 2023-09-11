@@ -19,7 +19,7 @@ const SuggestedUser: React.FC<Props> = ({
   changeStyle,
   mode,
 }) => {
-  const mainContainerClasses = "flex items-center xl:gap-2";
+  const mainContainerClasses = "flex items-center";
   const infoContainerClasses = "flex flex-col text-gray-600";
 
   const followHandler = () => {
@@ -34,8 +34,8 @@ const SuggestedUser: React.FC<Props> = ({
     <div
       className={
         changeStyle
-          ? mainContainerClasses + " flex-col xl:flex-row"
-          : mainContainerClasses + " flex-row"
+          ? mainContainerClasses + " flex-col xl:flex-row xl:gap-2"
+          : mainContainerClasses + " flex-row gap-2"
       }
     >
       <UserImage
