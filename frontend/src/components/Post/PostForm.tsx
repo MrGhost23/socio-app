@@ -29,8 +29,9 @@ const PostForm: React.FC = () => {
   };
 
   const submitHandler = () => {
+    console.log(text);
     console.log(image);
-    console.log(user)
+    console.log(user);
   };
 
   return (
