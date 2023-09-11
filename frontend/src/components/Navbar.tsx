@@ -11,6 +11,7 @@ import { RootState } from "../store/store";
 import { selectSideOpen, toggleSidebar } from "../store/slices/sidebarSlice";
 import { MdClose } from "react-icons/md";
 import { selectUser } from "../store/slices/authSlice";
+import UserImage from "./User/UserImage";
 
 const Navbar: React.FC = () => {
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
@@ -102,18 +103,27 @@ const Navbar: React.FC = () => {
 
           <div className="ml-8 hidden sm:flex flex-col font-bold">
             <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-              <svg
-                className="absolute w-12 h-12 text-gray-400 -left-1"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
+              {user.userPicture ? (
+                <UserImage
+                  className="w-14 !m-0"
+                  src={user.userPicture}
+                  alt={user.firstName + " " + user.lastName}
+                  id={user.username}
+                />
+              ) : (
+                <svg
+                  className="absolute w-12 h-12 text-gray-400 -left-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+              )}
             </div>
           </div>
           <button
