@@ -33,16 +33,16 @@ const Post: React.FC<Props> = ({
             className="w-14 !mb-0"
             src={post.userPicture}
             alt={post.firstName + " " + post.lastName}
-            id={currentUserId}
+            id={post.username}
           />
           <div className="flex flex-col items-start gap-1">
             <div className="flex flex-col">
               <div className="flex flex-col md:flex-row items-center md:gap-2">
                 <UserFullName
                   fullName={post.firstName + " " + post.lastName}
-                  id={currentUserId}
+                  id={post.username}
                 />
-                <UserTag tag={post.username} id={currentUserId} />
+                <UserTag tag={post.username} id={post.username} />
               </div>
               <PostDate date={post.createdAt} id={post._id} />
             </div>
@@ -56,7 +56,7 @@ const Post: React.FC<Props> = ({
         <VerticalLine className="my-2" />
         <PostStats likes={post.likes} comments={post.comments} />
         <VerticalLine className="mb-5" />
-        {/* <Comments comments={post.comments} /> */}
+        <Comments comments={post.comments} />
         <CommentForm
           postId={post._id}
           currentUserId={currentUserId}

@@ -24,6 +24,7 @@ const Posts: React.FC<Props> = ({
   currentUserImage,
   posts,
 }) => {
+  console.log(posts)
   return (
     <div className="flex flex-col gap-8">
       {posts.map((post) => (

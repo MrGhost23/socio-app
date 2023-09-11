@@ -28,11 +28,11 @@ const PostStats: React.FC<Props> = ({ likes, comments }) => {
             onClick={likeClickHandler}
           />
         )}
-        <span className="text-lg">{likes}</span>
+        <span className="text-lg">{Object.keys(likes).length}</span>
       </div>
       <div className="flex flex-row items-center gap-1.5">
         <FaRegCommentDots className="text-xl" />
-        <span className="text-lg">{comments}</span>
+        <span className="text-lg">{Object.keys(comments).length}</span>
       </div>
     </div>
   );
