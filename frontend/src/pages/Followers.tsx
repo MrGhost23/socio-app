@@ -1,5 +1,6 @@
 import Users from "../components/User/Users";
 import Card from '../ui/Card';
+import SearchInput from "../ui/SearchInput";
 
 const Followers = () => {
   const suggestedUsers = [
@@ -43,6 +44,7 @@ const Followers = () => {
   return (
     <Card className="sticky top-32 px-8 py-4 pb-6 flex flex-col !text-left">
       <h3 className="mb-5 text-xl">Followers</h3>
+      <SearchInput className="mb-5" />
       <Users users={suggestedUsers} mode='follow' />
     </Card>
   );
