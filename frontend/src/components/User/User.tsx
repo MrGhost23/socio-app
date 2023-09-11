@@ -19,7 +19,7 @@ const SuggestedUser: React.FC<Props> = ({
   changeStyle,
   mode,
 }) => {
-  const mainContainerClasses = "flex items-center gap-2";
+  const mainContainerClasses = "flex items-center xl:gap-2";
   const infoContainerClasses = "flex flex-col text-gray-600";
 
   const followHandler = () => {
