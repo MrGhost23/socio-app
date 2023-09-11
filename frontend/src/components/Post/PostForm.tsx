@@ -6,11 +6,7 @@ import { selectUser } from '../../store/slices/authSlice';
 import Card from "../../ui/Card";
 import Button from "../../ui/Button";
 
-type Props = {
-  src: string | undefined;
-};
-
-const PostForm: React.FC<Props> = ({ src }) => {
+const PostForm: React.FC = () => {
   const user = useSelector(selectUser);
 
   const [text, setText] = useState("");
@@ -40,7 +36,7 @@ const PostForm: React.FC<Props> = ({ src }) => {
   return (
     <Card>
       <div className="mb-8 mx-10 py-6 flex flex-col items-center lg:items-start lg:flex-row gap-4">
-        <img className="w-14 h-14 rounded-full shadow-lg" src={src} alt="" />
+        <img className="w-14 h-14 rounded-full shadow-lg" src={user!.userPicture} alt={`${user!.firstName} ${user!.lastName}'s profile picture`} />
         <div className="w-full flex flex-col items-center md:items-start gap-3">
           <textarea
             className="w-full min-h-[6rem] h-fit max-h-[14rem] resize-y pl-4 pr-7 py-1.5 border rounded-xl outline-none"
