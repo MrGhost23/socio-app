@@ -10,10 +10,11 @@ import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
 import { selectSideOpen, toggleSidebar } from "../store/slices/sidebarSlice";
 import { MdClose } from "react-icons/md";
+import { selectUser } from "../store/slices/authSlice";
 
 const Navbar: React.FC = () => {
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
-  const isLoggedIn = true;
+  const user = useSelector(selectUser);
   const navRef = useRef<HTMLDivElement | null>(null);
   const sideOpen = useSelector(selectSideOpen);
 
@@ -44,7 +45,7 @@ const Navbar: React.FC = () => {
 
   return (
     <header className="bg-white dark:bg-primaryDark z-10" ref={navRef}>
-      {!isLoggedIn ? (
+      {!user ? (
         <div className="flex justify-center items-center py-5">
           <Link className="font-bold text-4xl text-sky-500" to="/">
             Socio

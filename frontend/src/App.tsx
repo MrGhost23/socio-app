@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -26,10 +26,13 @@ import FindFriends from "./pages/FindFriends";
 
 import { useEffect } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
-import { setUser } from "./store/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser, setUser } from "./store/slices/authSlice";
+import Messages from "./pages/Messages";
 
 const App: React.FC = () => {
+  const user = useSelector(selectUser);
+
   const dispatch = useDispatch();
   const localToken = localStorage.getItem("token");
   useEffect(() => {
@@ -56,17 +59,24 @@ const App: React.FC = () => {
       <Navbar />
       <Routes>
         <Route path="*" element={<ErrorPage />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<LogIn />} />
+        <Route
+          path="/register"
+          element={!user ? <Register /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/login"
+          element={!user ? <LogIn /> : <Navigate to="/" />}
+        />
+        <Route path="/messages" element={!user ? <LogIn /> : <Messages />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route element={<MainLayout />}>
+        <Route element={user ? <MainLayout /> : <Navigate to="/login" />}>
           <Route path="/" element={<Timeline />} />
           <Route path="/post/:id" element={<PostPage />} />
           <Route path="/find-friends" element={<FindFriends />} />
           <Route path="/bookmarks" element={<Bookmarks />} />
           <Route path="/settings" element={<Settings />} />
         </Route>
-        <Route element={<ProfileLayout />}>
+        <Route element={user ? <ProfileLayout /> : <Navigate to="/login" />}>
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/profile/:id/followers" element={<Followers />} />
           <Route path="/profile/:id/followings" element={<Followings />} />
