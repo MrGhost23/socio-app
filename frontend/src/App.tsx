@@ -24,19 +24,21 @@ import Bookmarks from "./pages/Bookmarks";
 import Settings from "./pages/Settings";
 import FindFriends from "./pages/FindFriends";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser, setUser } from "./store/slices/authSlice";
 import Chats from "./pages/Chats";
 
 const App: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
   const user = useSelector(selectUser);
 
   const dispatch = useDispatch();
   const localToken = localStorage.getItem("token");
   useEffect(() => {
     if (!localToken) {
+      setIsLoading(false);
       return;
     }
     const fetchToken = async () => {
@@ -51,9 +53,13 @@ const App: React.FC = () => {
       } catch (error) {
         console.error(error);
       }
+      setIsLoading(false);
     };
     fetchToken();
   }, [dispatch, localToken]);
+
+  if (isLoading) return;
+
   return (
     <>
       <Navbar />
@@ -74,8 +80,8 @@ const App: React.FC = () => {
           <Route path="/post/:id" element={<PostPage />} />
           <Route path="/find-friends" element={<FindFriends />} />
           <Route path="/bookmarks" element={<Bookmarks />} />
-          <Route path="/settings" element={<Settings />} />
         </Route>
+        <Route path="/settings" element={user ? <Settings /> : <Navigate to="/login" />} />
         <Route element={user ? <ProfileLayout /> : <Navigate to="/login" />}>
           <Route path="/profile/:id" element={<Profile />} />
           <Route path="/profile/:id/followers" element={<Followers />} />
