@@ -39,7 +39,7 @@ const SuggestedUser: React.FC<Props> = ({
       }
     >
       <UserImage
-        className="w-16 h-16 !mb-0"
+        className="w-16 h-16"
         src={image}
         alt={fullName}
         id={id}
