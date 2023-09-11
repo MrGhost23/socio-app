@@ -77,7 +77,7 @@ const Settings = () => {
     >
       <Sidebar />
       <div className="col-span-3 py-10 flex flex-col xl:grid xl:grid-cols-3 gap-8 xl:gap-16">
-        <Card className="!text-left p-8 col-span-2 order-2 xl:order-1">
+        <Card className="!text-left p-8 col-span-2">
           <h3 className="mb-5 text-xl">Account Info</h3>
           <div className="mb-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
             <Input
@@ -150,7 +150,7 @@ const Settings = () => {
             <Button text="Save" bg={true} onClick={submitHandler} />
           </div>
         </Card>
-        <Card className="p-8 !text-left order-1 xl:order-2">
+        <Card className="p-8 !text-left">
           <h3 className="mb-5 text-xl">Blocked Users</h3>
           <Users users={suggestedUsers} mode="block" />
         </Card>
