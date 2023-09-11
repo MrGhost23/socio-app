@@ -71,8 +71,8 @@ const Sidebar = () => {
           sideOpen ? "left-0 w-fit py-7 px-5" : "left-[-100%]"
         } lg:translate-x-0 lg:sticky lg:top-0 lg:left-0 lg:bottom-auto lg:shadow-lg`}
       >
-        <div className="px-5 xl:pr-0 pt-10">
-          <div className="mb-5 flex flex-col xl:flex-row items-center gap-3 group">
+        <div className="pl-5 pt-10">
+          <div className="mb-5 flex items-center gap-3 group">
             <UserImage
               className="w-20 lg:w-16 !m-0"
               src={currentUserImage}
