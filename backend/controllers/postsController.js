@@ -1,14 +1,21 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
+const { StatusCodes } = require("http-status-codes");
 
 const createPost = async (req, res) => {
   try {
     const { username, description, postImage } = req.body;
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "User not found" });
     }
-    console.log(username);
+    if (!description) {
+      return res
+        .status(StatusCodes.FORBIDDEN)
+        .json({ message: "You must type caption for you post" });
+    }
     const newPost = new Post({
       username,
       userId: user._id,
@@ -23,18 +30,18 @@ const createPost = async (req, res) => {
     });
     await newPost.save();
     const post = await Post.find().sort({ createdAt: -1 }).exec();
-    res.status(201).json(post);
+    res.status(StatusCodes.CREATED).json(post);
   } catch (error) {
-    res.status(409).json({ message: error.message });
+    res.status(StatusCodes.CONFLICT).json({ message: error.message });
   }
 };
 
 const getFeedPosts = async (req, res) => {
   try {
     const post = await Post.find().sort({ createdAt: -1 }).exec();
-    res.status(200).json(post);
+    res.status(StatusCodes.OK).json(post);
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.status(StatusCodes.NOT_FOUND).json({ message: error.message });
   }
 };
 
@@ -44,9 +51,9 @@ const getUserPosts = async (req, res) => {
     const posts = await Post.find({ userId: user._id })
       .sort({ createdAt: -1 })
       .exec();
-    res.status(200).json(posts);
+    res.status(StatusCodes.OK).json(posts);
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.status(StatusCodes.NOT_FOUND).json({ message: error.message });
   }
 };
 
@@ -66,9 +73,9 @@ const likePosts = async (req, res) => {
       { likes: post.likes },
       { new: true }
     );
-    res.status(200).json(updatedPost);
+    res.status(StatusCodes.OK).json(updatedPost);
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.status(StatusCodes.NOT_FOUND).json({ message: error.message });
   }
 };
 

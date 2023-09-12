@@ -109,8 +109,11 @@ const postsSlice = createSlice({
 });
 
 export const selectPost = (state: RootState) => state.posts.post;
+export const selectPostLoading = (state: RootState) => state.posts.postLoading;
 export const selectUserPosts = (state: RootState) => state.posts.userPosts;
+export const selectUserPostsLoading = (state: RootState) => state.posts.userPostsLoading;
 export const selectFeedPosts = (state: RootState) => state.posts.feedPosts;
+export const selectFeedPostsLoading = (state: RootState) => state.posts.feedPostsLoading;
 export const selectError = (state: RootState) => state.posts.error;
 
 export default postsSlice.reducer;

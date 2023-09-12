@@ -5,11 +5,7 @@ import { MdOutlineClose } from "react-icons/md";
 import { selectUser } from "../../store/slices/authSlice";
 import Card from "../../ui/Card";
 import Button from "../../ui/Button";
-import {
-  createPost,
-  fetchFeedPosts,
-  fetchUserPosts,
-} from "../../store/slices/postsSlice";
+import { createPost, selectPostLoading } from "../../store/slices/postsSlice";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 
 import { RootState } from "../../store/store";
@@ -22,14 +18,17 @@ interface PostData {
 
 const PostForm: React.FC = () => {
   const user = useSelector(selectUser);
+  const createPostLoading = useSelector(selectPostLoading);
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
 
   const [description, setDescription] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
   const [image, setImage] = useState<object | null>(null);
   const [previewImage, setPreviewImage] = useState<string>("");
 
   const changeHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDescription(e.target.value);
+    setDescriptionError("");
   };
 
   const uploadImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,6 +51,10 @@ const PostForm: React.FC = () => {
     if (image) {
       postData.postImage = image;
     }
+    if (!description && !image) {
+      setDescriptionError("You must provide a description!");
+      return;
+    }
 
     dispatch(createPost(postData));
 
@@ -70,11 +73,16 @@ const PostForm: React.FC = () => {
         />
         <div className="w-full flex flex-col items-center md:items-start gap-3">
           <textarea
-            className="w-full min-h-[6rem] h-fit max-h-[14rem] resize-y pl-4 pr-7 py-1.5 border rounded-xl outline-none"
+            className={`w-full min-h-[6rem] h-fit max-h-[14rem] resize-y pl-4 pr-7 py-1.5 border rounded-xl outline-none ${
+              descriptionError && "border-red-700 bg-red-100"
+            }`}
             placeholder="Share something.."
             value={description}
             onChange={changeHandler}
           />
+          {descriptionError && (
+            <p className="text-red-700">{descriptionError}</p>
+          )}
           <div className="w-full flex flex-col sm:flex-row gap-3 items-center justify-between">
             <div className="relative w-fit flex flex-row items-center gap-1 border rounded-xl px-5 py-2 cursor-pointer transition duration-500 hover:description-white hover:bg-sky-500">
               <BsImage />
@@ -90,10 +98,12 @@ const PostForm: React.FC = () => {
             </div>
             <div className="">
               <Button
-                text="Submit"
+                text={createPostLoading ? "Loading..." : "Submit"}
                 bg={true}
-                onClick={submitHandler}
-                className="!px-10 !py-1.5"
+                onClick={createPostLoading ? null : submitHandler}
+                className={`!px-10 !py-1.5 ${
+                  createPostLoading ? "cursor-wait" : ""
+                }`}
               />
             </div>
           </div>
