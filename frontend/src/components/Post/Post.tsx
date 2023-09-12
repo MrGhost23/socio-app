@@ -12,6 +12,8 @@ import VerticalLine from "../../ui/VerticalLine";
 import Comments from "../Comment/Comments";
 import { PostType } from "../../Types/Post.types";
 import { formatDistanceToNow } from "date-fns";
+import noAvatar from "../../assets/noAvatar.png";
+
 type Props = {
   currentUserId: string | undefined;
   currentUserFullName: string | undefined;
@@ -31,7 +33,7 @@ const Post: React.FC<Props> = ({
         <div className="flex flex-col sm:flex-row gap-3">
           <UserImage
             className="w-14 !mb-0"
-            src={post.userPicture}
+            src={post.userPicture || noAvatar}
             alt={post.firstName + " " + post.lastName}
             id={post.username}
           />

@@ -24,7 +24,6 @@ const Settings = () => {
     setPreviewImage(URL.createObjectURL(file));
   };
 
-  const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -73,7 +72,6 @@ const Settings = () => {
 
   const submitHandler = () => {
     console.log(image);
-    console.log(username);
     console.log(firstName);
     console.log(lastName);
     console.log(email);
@@ -106,14 +104,6 @@ const Settings = () => {
             />
           </div>
           <div className="mb-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
-            <Input
-              label="Username"
-              id="username"
-              value={username}
-              onChange={(prev) => setUsername(prev)}
-              type="text"
-              placeholder="MrGhost"
-            />
             <Input
               label="First Name"
               id="firstName"
