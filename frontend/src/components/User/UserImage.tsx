@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import noAvatar from "../../assets/noAvatar.png";
 type Props = {
+  id: string;
   src: string | undefined;
-  alt?: string | undefined;
+  alt: string;
   className?: string;
-  id?: string | undefined;
 };
 
 const UserImage: React.FC<Props> = (props) => {

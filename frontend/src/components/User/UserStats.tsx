@@ -2,8 +2,8 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
 type Props = {
-  following: string | number | Array<string>;
-  followers: string | number | Array<string>;
+  following: number;
+  followers: number;
 };
 
 const UserStats: React.FC<Props> = (props) => {

@@ -5,7 +5,7 @@ type Props = {
     id: string
     image: string;
     fullName: string;
-    followers: number;
+    followers: string[];
   }[];
 };
 

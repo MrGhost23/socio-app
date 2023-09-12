@@ -7,7 +7,7 @@ type Props = {
   image: string;
   id: string;
   fullName: string;
-  followers: number;
+  followers: string[];
   changeStyle: boolean;
   mode: string;
 };
@@ -57,7 +57,7 @@ const SuggestedUser: React.FC<Props> = ({
           fullName={fullName}
           id={id}
         />
-        <p className="text-sm whitespace-nowrap">{followers} followers</p>
+        <p className="text-sm whitespace-nowrap">{followers.length} followers</p>
         <Button
           text={mode === "follow" ? "Follow" : "Unblock"}
           bg={false}

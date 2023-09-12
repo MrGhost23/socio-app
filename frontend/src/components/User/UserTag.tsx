@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
 type Props = {
-  id: string | undefined;
-  tag: string | undefined;
+  id: string;
+  tag: string;
   className?: string;
 };
 

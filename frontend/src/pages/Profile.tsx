@@ -1,37 +1,27 @@
-import PostForm from "../components/Post/PostForm";
-import Posts from "../components/Post/Posts";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import useUserProfile from "../hooks/useUserProfile";
-import { selectUser } from "../store/slices/authSlice";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
-import noAvatar from "../assets/noAvatar.png";
-
-import {
-  fetchUserPosts,
-  selectPost,
-  selectUserPosts,
-} from "../store/slices/postsSlice";
-import { useEffect } from "react";
+import { selectUser } from "../store/slices/authSlice";
+import { fetchUserPosts, selectUserPosts } from "../store/slices/postsSlice";
+import useUserProfile from "../hooks/useUserProfile";
+import PostForm from "../components/Post/PostForm";
+import Posts from "../components/Post/Posts";
 
 const Profile = () => {
   const user = useSelector(selectUser);
   const userPosts = useSelector(selectUserPosts);
-  const posts = useSelector(selectPost);
 
-  const { id: userId } = useParams();
-  const { profile, loading, error } = useUserProfile(userId);
+  const { id: username } = useParams();
+  const { profile, loading, error } = useUserProfile(username!);
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchUserPosts(userId));
-  }, [dispatch, userId, posts]);
+    dispatch(fetchUserPosts(username));
+  }, [dispatch, username]);
 
   const isMyProfile = user?.username === profile?.username;
-  const currentUserId = profile?.userId;
-  const currentUserFullName = profile?.firstName;
-  const currentUserImage = profile?.userPicture || noAvatar;
 
   if (loading) {
     return <div>Loading...</div>;
@@ -40,12 +30,12 @@ const Profile = () => {
   } else {
     return (
       <>
-        {isMyProfile && <PostForm src={currentUserImage} />}
+        {isMyProfile && <PostForm />}
         {userPosts.length > 0 ? (
           <Posts
             currentUserFullName={user?.firstName + " " + user?.lastName}
             currentUserId={user?.userId}
-            currentUserImage={user?.userPicture || noAvatar}
+            currentUserImage={user?.userPicture}
             posts={userPosts}
           />
         ) : (
