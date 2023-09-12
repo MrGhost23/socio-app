@@ -3,14 +3,14 @@ import { toast } from "react-toastify";
 import { selectUser } from "../store/slices/authSlice";
 
 const useProfileActions = (
-  userId: string | undefined,
+  username: string | undefined,
   userFirstName: string | undefined,
   userLastName: string | undefined
   ) => {
   const currentUser = useSelector(selectUser);
 
   console.log(currentUser)
-  console.log(userId)
+  console.log(username)
 
   const followUser = () => {
     try {
@@ -68,7 +68,7 @@ const useProfileActions = (
     }
   };
 
-  const ReportUser = () => {
+  const reportUser = () => {
     try {
       // Report logic goes here
 
@@ -87,7 +87,7 @@ const useProfileActions = (
     unFollowUser,
     blockUser,
     unBlockUser,
-    ReportUser
+    reportUser
   }
 };
 
