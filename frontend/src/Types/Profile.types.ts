@@ -1,15 +1,15 @@
 export interface ProfileType {
+  role: string;
   firstName: string;
   lastName: string;
-  createdAt: Date | string;
-  country: string;
-  followings: Array<string>;
-  followers: Array<string>;
-  role: string;
-  userPicture: string | undefined;
   username: string;
-  userId: string;
   email: string;
-  occupation: string | undefined;
-  bio: string | undefined;
+  country: string;
+  userId: string;
+  createdAt: Date | string;
+  following: string[];
+  followers: string[];
+  userPicture?: string;
+  occupation?: string;
+  bio?: string;
 }
