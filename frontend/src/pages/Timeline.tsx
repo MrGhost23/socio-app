@@ -1,20 +1,17 @@
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Posts from "../components/Post/Posts";
+import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
 import {
   fetchFeedPosts,
   selectFeedPosts,
   selectPost,
 } from "../store/slices/postsSlice";
-import { useEffect, useState } from "react";
-import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
-import { selectUser } from "../store/slices/authSlice";
+import Posts from "../components/Post/Posts";
 import PostForm from "../components/Post/PostForm";
-import noAvatar from "../assets/noAvatar.png";
 
 const Timeline = () => {
   const [loading, setLoading] = useState(true);
-  const user = useSelector(selectUser);
   const feedPosts = useSelector(selectFeedPosts);
   const posts = useSelector(selectPost);
 
@@ -32,12 +29,7 @@ const Timeline = () => {
       ) : (
         <div>
           <PostForm />
-          <Posts
-            currentUserFullName={user?.firstName + " " + user?.lastName}
-            currentUserId={user?.userId}
-            currentUserImage={user?.userPicture || noAvatar}
-            posts={feedPosts}
-          />
+          <Posts posts={feedPosts} />
           {/* {feedPosts.map((post) => (
             <div
               key={post._id}

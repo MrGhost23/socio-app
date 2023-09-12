@@ -32,12 +32,7 @@ const Profile = () => {
       <>
         {isMyProfile && <PostForm />}
         {userPosts.length > 0 ? (
-          <Posts
-            currentUserFullName={user?.firstName + " " + user?.lastName}
-            currentUserId={user?.userId}
-            currentUserImage={user?.userPicture}
-            posts={userPosts}
-          />
+          <Posts posts={userPosts} />
         ) : (
           <div className="text-center text-gray-800 text-xl">
             There are no posts yet for this user.
