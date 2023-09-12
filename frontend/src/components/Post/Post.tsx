@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { formatDistanceToNow } from "date-fns";
+import { PostType } from "../../Types/Post.types";
 import Card from "../../ui/Card";
 import UserImage from "../User/UserImage";
 import UserTag from "../User/UserTag";
@@ -9,27 +12,42 @@ import PostStats from "./PostStats";
 import CommentForm from "../Comment/CommentForm";
 import VerticalLine from "../../ui/VerticalLine";
 import Comments from "../Comment/Comments";
-import { PostType } from "../../Types/Post.types";
-import { formatDistanceToNow } from "date-fns";
-import noAvatar from "../../assets/noAvatar.png";
 import PostMenu from "./PostMenu";
-import { useState } from "react";
 import PostForm from "./PostForm";
 
 type Props = {
-  currentUserId: string | undefined;
-  currentUserFullName: string | undefined;
-  currentUserImage: string | undefined;
   post: PostType;
 };
 
-const Post: React.FC<Props> = ({
-  currentUserId,
-  currentUserFullName,
-  currentUserImage,
-  post,
-}) => {
+const Post: React.FC<Props> = ({ post }) => {
   const [isEditing, setIsEditing] = useState(false);
+
+  const DUMMY_COMMENTS = [
+    {
+      id: '1',
+      text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, atque?',
+      date: 'about 9 hours ago',
+      authorId: 'Heisenberg',
+      authorFullName: 'Omar Adel',
+      authorImage: 'https://cdn.discordapp.com/avatars/683014296342364286/30889b16f6a06a146378d9d10554582b.png?size=1024',
+    },
+    {
+      id: '2',
+      text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, atque?',
+      date: 'about 9 hours ago',
+      authorId: 'Heisenberg',
+      authorFullName: 'Omar Adel',
+      authorImage: 'https://cdn.discordapp.com/avatars/683014296342364286/30889b16f6a06a146378d9d10554582b.png?size=1024',
+    },
+    {
+      id: '3',
+      text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, atque?',
+      date: 'about 9 hours ago',
+      authorId: 'Heisenberg',
+      authorFullName: 'Omar Adel',
+      authorImage: 'https://cdn.discordapp.com/avatars/683014296342364286/30889b16f6a06a146378d9d10554582b.png?size=1024',
+    },
+  ];
   
   return (
     <Card className="px-8 py-6 !text-left">
@@ -37,7 +55,7 @@ const Post: React.FC<Props> = ({
         <div className="flex flex-col sm:flex-row gap-3">
           <UserImage
             className="w-14 !mb-0"
-            src={post.userPicture || noAvatar}
+            src={post.userPicture}
             alt={post.firstName + " " + post.lastName}
             id={post.username}
           />
@@ -84,13 +102,8 @@ const Post: React.FC<Props> = ({
           postId={post._id}
         />
         <VerticalLine className="mb-5" />
-        <Comments comments={post.comments} />
-        <CommentForm
-          postId={post._id}
-          currentUserId={currentUserId}
-          currentUserImage={currentUserImage}
-          currentUserFullName={currentUserFullName}
-        />
+        <Comments comments={DUMMY_COMMENTS} />
+        <CommentForm postId={post._id}  />
       </div>
     </Card>
   );
