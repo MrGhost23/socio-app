@@ -34,8 +34,8 @@ const UserInfo: React.FC<UserInfoProps> = ({ userInfo }) => {
       <UserCounty country={userInfo.country} />
       <UserBio bio={userInfo.bio ?? ""} />
       <UserStats
-        followers={userInfo.followers.length}
-        following={userInfo.following.length}
+        followers={userInfo.followers?.length}
+        following={userInfo.following?.length}
       />
     </>
   );

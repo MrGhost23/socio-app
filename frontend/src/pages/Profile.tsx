@@ -8,13 +8,17 @@ import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
 import noAvatar from "../assets/noAvatar.png";
 
-import { fetchUserPosts, selectUserPosts } from "../store/slices/postsSlice";
+import {
+  fetchUserPosts,
+  selectPost,
+  selectUserPosts,
+} from "../store/slices/postsSlice";
 import { useEffect } from "react";
 
 const Profile = () => {
   const user = useSelector(selectUser);
   const userPosts = useSelector(selectUserPosts);
-  const posts = useSelector(selectUserPosts);
+  const posts = useSelector(selectPost);
 
   const { id: userId } = useParams();
   const { profile, loading, error } = useUserProfile(userId);
@@ -22,7 +26,7 @@ const Profile = () => {
 
   useEffect(() => {
     dispatch(fetchUserPosts(userId));
-  }, [dispatch, posts]);
+  }, [dispatch, userId, posts]);
 
   const isMyProfile = user?.username === profile?.username;
   const currentUserId = profile?.userId;
