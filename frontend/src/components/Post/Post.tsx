@@ -62,7 +62,7 @@ const Post: React.FC<Props> = ({
         {post.postImage && <PostImage src={post.postImage} alt="" />}
         <VerticalLine className="my-2" />
         <PostStats
-          likes={Object.keys(post.likes).length}
+          likes={post.likes}
           comments={post.comments.length}
         />
         <VerticalLine className="mb-5" />

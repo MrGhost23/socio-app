@@ -1,18 +1,24 @@
 import { FaRegHeart, FaRegCommentDots } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../store/slices/authSlice";
 
 type Props = {
-  likes: any;
-  comments: any;
+  likes: object;
+  comments: number;
 };
 
 const PostStats: React.FC<Props> = ({ likes, comments }) => {
-  const [liked, setLiked] = useState(false);
+  const { username } = useSelector(selectUser)!;
+  const [liked, setLiked] = useState(username in likes);
 
   const likeClickHandler = () => {
     setLiked((prevState) => !prevState);
   };
+
+  console.log(likes)
+  console.log(username in likes)
 
   return (
     <div className="mb-2 flex flex-row gap-4 text-gray-500 font-medium">
@@ -28,7 +34,7 @@ const PostStats: React.FC<Props> = ({ likes, comments }) => {
             onClick={likeClickHandler}
           />
         )}
-        <span className="text-lg">{likes}</span>
+        <span className="text-lg">{Object.keys(likes).length}</span>
       </div>
       <div className="flex flex-row items-center gap-1.5">
         <FaRegCommentDots className="text-xl" />
