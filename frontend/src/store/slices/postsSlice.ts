@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import axios from 'axios';
 
@@ -16,9 +16,9 @@ interface PostsState {
 }
 
 interface CreatePostData {
-  username: string;
+  username: string | undefined;
   description: string;
-  postImage: string;
+  postImage?: string | object | null;
 }
 
 export const createPost = createAsyncThunk<PostType, CreatePostData>(
@@ -39,10 +39,9 @@ export const fetchFeedPosts = createAsyncThunk<PostType[]>(
 
 export const fetchUserPosts = createAsyncThunk<PostType[]>(
     'posts/fetchUserPosts',
-    async (username: string) => {
+    async (username: string | any) => {
       try {
         const response = await axios.get(`http://localhost:5000/api/v1/posts/${username}`);
-        console.log(response.data);
         return response.data;
       } catch (error) {
         throw new Error('Failed to fetch user posts.');

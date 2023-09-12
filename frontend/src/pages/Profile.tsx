@@ -12,7 +12,6 @@ import { useEffect } from "react";
 const Profile = () => {
   const user = useSelector(selectUser);
   const userPosts = useSelector(selectUserPosts);
-  console.log(userPosts);
   const { id: userId } = useParams();
   const { profile, loading, error } = useUserProfile(userId);
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();

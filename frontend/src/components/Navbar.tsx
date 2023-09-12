@@ -45,7 +45,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <header className="bg-white dark:bg-primaryDark z-10" ref={navRef}>
+    <header className="bg-white dark:bg-primaryDark z-50" ref={navRef}>
       {!user ? (
         <div className="flex justify-center items-center py-5">
           <Link className="font-bold text-4xl text-sky-500" to="/">
@@ -133,7 +133,9 @@ const Navbar: React.FC = () => {
             <span className="text-2xl">
               {sideOpen ? <MdClose /> : <FiMenu />}
             </span>
-            <span className="text-lg font-semibold hidden md:inline-block">Menu</span>
+            <span className="text-lg font-semibold hidden md:inline-block">
+              Menu
+            </span>
           </button>
         </div>
       )}
