@@ -34,6 +34,7 @@ interface RegistrationData {
     email: string;
     password: string;
     country: string;
+    username: string;
   }
 
 const token = localStorage.getItem('token');

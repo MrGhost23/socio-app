@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { BsImage } from "react-icons/bs";
 import { MdOutlineClose } from "react-icons/md";
@@ -7,6 +7,7 @@ import Card from "../../ui/Card";
 import Button from "../../ui/Button";
 import { createPost, selectPostLoading } from "../../store/slices/postsSlice";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
+import noAvatar from "../../assets/noAvatar.png";
 
 import { RootState } from "../../store/store";
 
@@ -68,7 +69,7 @@ const PostForm: React.FC = () => {
       <div className="mb-8 mx-10 py-6 flex flex-col items-center lg:items-start lg:flex-row gap-4">
         <img
           className="w-14 h-14 rounded-full shadow-lg"
-          src={user!.userPicture}
+          src={user!.userPicture || noAvatar}
           alt={`${user!.firstName} ${user!.lastName}'s profile picture`}
         />
         <div className="w-full flex flex-col items-center md:items-start gap-3">

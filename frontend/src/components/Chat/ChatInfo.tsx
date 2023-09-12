@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/authSlice";
 import Button from "../../ui/Button";
+import noAvatar from "../../assets/noAvatar.png";
 
 const ChatInfo = () => {
   const user = useSelector(selectUser);
@@ -8,7 +9,7 @@ const ChatInfo = () => {
     <div className="w-2/5 border-l-2 h-[calc(100vh-82px)] px-5 pt-5">
       <div className="flex flex-col items-center">
         <img
-          src={user?.userPicture}
+          src={user?.userPicture || noAvatar}
           className="object-cover rounded-full h-44 w-44"
           alt=""
         />

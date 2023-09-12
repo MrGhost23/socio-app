@@ -5,6 +5,7 @@ import UserCounty from "./UserCounty";
 import UserBio from "./UserBio";
 import UserStats from "./UserStats";
 import UserOccupation from "./UserOccupation";
+import noAvatar from "../../assets/noAvatar.png";
 
 import { ProfileType } from "../../Types/Profile.types";
 interface UserInfoProps {
@@ -16,7 +17,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ userInfo }) => {
     <>
       <UserImage
         className="w-32"
-        src={userInfo.userPicture}
+        src={userInfo.userPicture || noAvatar}
         alt={userInfo.firstName + " " + userInfo.lastName}
         id={userInfo.username}
       />
@@ -31,7 +32,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ userInfo }) => {
       <UserBio bio={userInfo.bio || ""} />
       <UserStats
         followers={userInfo.followers}
-        following={userInfo.following}
+        following={userInfo.followings}
       />
     </>
   );

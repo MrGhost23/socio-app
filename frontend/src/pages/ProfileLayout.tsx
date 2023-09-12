@@ -8,7 +8,8 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import useUserProfile from "../hooks/useUserProfile";
 import { selectUser } from "../store/slices/authSlice";
-import {toast} from 'react-toastify';
+import { toast } from "react-toastify";
+import noAvatar from "../assets/noAvatar.png";
 
 const ProfileLayout = () => {
   const navigate = useNavigate();
@@ -22,22 +23,30 @@ const ProfileLayout = () => {
   const [menuOpened, setMenuOpened] = useState(false);
 
   const followHandler = () => {
-    toast.info(`You've successfully followed ${profile!.firstName} ${profile!.lastName}`);
+    toast.info(
+      `You've successfully followed ${profile!.firstName} ${profile!.lastName}`
+    );
     setIsFollowing(true);
   };
 
   const unFollowHandler = () => {
-    toast.info(`You're not following ${profile!.firstName} ${profile!.lastName} anymore`);
+    toast.info(
+      `You're not following ${profile!.firstName} ${profile!.lastName} anymore`
+    );
     setIsFollowing(false);
   };
 
   const blockHandler = () => {
-    toast.info(`You've successfully blocked ${profile!.firstName} ${profile!.lastName}`);
+    toast.info(
+      `You've successfully blocked ${profile!.firstName} ${profile!.lastName}`
+    );
     setMenuOpened(false);
   };
 
   const ReportHandler = () => {
-    toast.info(`You've successfully reported ${profile!.firstName} ${profile!.lastName}`);
+    toast.info(
+      `You've successfully reported ${profile!.firstName} ${profile!.lastName}`
+    );
     setMenuOpened(false);
   };
 
@@ -46,7 +55,7 @@ const ProfileLayout = () => {
     username: profile?.username,
     firstName: profile?.firstName,
     lastName: profile?.lastName,
-    userPicture: profile?.userPicture,
+    userPicture: profile?.userPicture || noAvatar,
     country: profile?.country,
     occupation: "كلام في الحب",
     bio: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores, fugiat.",
@@ -133,9 +142,9 @@ const ProfileLayout = () => {
             {!isMyProfile ? (
               <>
                 <Button
-                text="Send Message"
-                onClick={() => navigate(`/chats/${userInfo.username}`)}
-                bg={true}
+                  text="Send Message"
+                  onClick={() => navigate(`/chats/${userInfo.username}`)}
+                  bg={true}
                 />
                 <Button
                   text={isFollowing ? "Unfollow" : "Follow"}

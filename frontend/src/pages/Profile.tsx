@@ -6,11 +6,9 @@ import useUserProfile from "../hooks/useUserProfile";
 import { selectUser } from "../store/slices/authSlice";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
-import {
-  fetchUserPosts,
-  selectPost,
-  selectUserPosts,
-} from "../store/slices/postsSlice";
+import noAvatar from "../assets/noAvatar.png";
+
+import { fetchUserPosts, selectUserPosts } from "../store/slices/postsSlice";
 import { useEffect } from "react";
 
 const Profile = () => {
@@ -29,7 +27,7 @@ const Profile = () => {
   const isMyProfile = user?.username === profile?.username;
   const currentUserId = profile?.userId;
   const currentUserFullName = profile?.firstName;
-  const currentUserImage = profile?.userPicture;
+  const currentUserImage = profile?.userPicture || noAvatar;
 
   if (loading) {
     return <div>Loading...</div>;
@@ -43,7 +41,7 @@ const Profile = () => {
           <Posts
             currentUserFullName={user?.firstName + " " + user?.lastName}
             currentUserId={user?.userId}
-            currentUserImage={user?.userPicture}
+            currentUserImage={user?.userPicture || noAvatar}
             posts={userPosts}
           />
         ) : (
