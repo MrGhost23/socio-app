@@ -2,7 +2,11 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { selectUser } from "../store/slices/authSlice";
 
-const useProfileActions = (userId: string, userFirstName: string, userLastName: string) => {
+const useProfileActions = (
+  userId: string | undefined,
+  userFirstName: string | undefined,
+  userLastName: string | undefined
+  ) => {
   const currentUser = useSelector(selectUser);
 
   console.log(currentUser)
