@@ -1,5 +1,4 @@
 export interface ProfileType {
-  role: string;
   firstName: string;
   lastName: string;
   username: string;
