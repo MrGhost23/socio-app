@@ -15,7 +15,7 @@ type Props = {
   username: string;
   userFirstName: string;
   userLastName: string;
-  setIsEditing:  React.Dispatch<React.SetStateAction<boolean>>;
+  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const PostMenu: React.FC<Props> = ({ postId, username, userFirstName, userLastName, setIsEditing }) => {
