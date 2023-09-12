@@ -55,6 +55,7 @@ const UserSchema = new mongoose.Schema(
     },
     bio: {
       type: String,
+      default: "",
       max: 50,
     },
     role: {

@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 import { selectUser } from "../store/slices/authSlice";
 import PostForm from "../components/Post/PostForm";
+import noAvatar from "../assets/noAvatar.png";
 
 const Timeline = () => {
   const [loading, setLoading] = useState(true);
@@ -34,7 +35,7 @@ const Timeline = () => {
           <Posts
             currentUserFullName={user?.firstName + " " + user?.lastName}
             currentUserId={user?.userId}
-            currentUserImage={user?.userPicture}
+            currentUserImage={user?.userPicture || noAvatar}
             posts={feedPosts}
           />
           {/* {feedPosts.map((post) => (

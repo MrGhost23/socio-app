@@ -12,6 +12,7 @@ import { RootState } from "../store/store";
 const Register = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [country, setCountry] = useState("");
@@ -27,6 +28,7 @@ const Register = () => {
         email,
         password,
         country,
+        username,
       })
     );
     setFirstName("");
@@ -34,6 +36,7 @@ const Register = () => {
     setEmail("");
     setPassword("");
     setCountry("");
+    setUsername("");
 
     navigate("/");
   };
@@ -67,6 +70,18 @@ const Register = () => {
                 onChange={(prev) => setLastName(prev)}
                 type="text"
                 placeholder="Mohamed"
+              />
+            </div>
+          </div>
+          <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="w-full px-3">
+              <Input
+                label="Username"
+                id="username"
+                value={username}
+                onChange={(prev) => setUsername(prev)}
+                type="text"
+                placeholder="whateveriam"
               />
             </div>
           </div>

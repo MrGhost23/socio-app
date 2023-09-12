@@ -6,8 +6,9 @@ import Textarea from "../ui/Textarea";
 import Button from "../ui/Button";
 import { useSelector } from "react-redux";
 import { selectSideOpen } from "../store/slices/sidebarSlice";
-import Sidebar from '../components/Sidebar';
+import Sidebar from "../components/Sidebar";
 import { selectUser } from "../store/slices/authSlice";
+import noAvatar from "../assets/noAvatar.png";
 
 const Settings = () => {
   const user = useSelector(selectUser);
@@ -82,7 +83,6 @@ const Settings = () => {
   };
 
   return (
-
     <div
       className={`w-full ${
         sideOpen ? "fixed" : ""
@@ -93,8 +93,17 @@ const Settings = () => {
         <Card className="!text-left p-8 col-span-2">
           <h3 className="mb-5 text-xl">Account Info</h3>
           <div className="relative w-fit mb-5 rounded-full overflow-hidden">
-            <img className="w-24 h-24" src={previewImage || user?.userPicture} alt="" />
-            <input className="absolute top-0 right-0 w-full h-full opacity-0 cursor-pointer" type="file" value="" onChange={uploadImageHandler} />
+            <img
+              className="w-24 h-24"
+              src={previewImage || user?.userPicture || noAvatar}
+              alt=""
+            />
+            <input
+              className="absolute top-0 right-0 w-full h-full opacity-0 cursor-pointer"
+              type="file"
+              value=""
+              onChange={uploadImageHandler}
+            />
           </div>
           <div className="mb-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
             <Input

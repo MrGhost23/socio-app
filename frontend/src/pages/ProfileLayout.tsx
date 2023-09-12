@@ -22,22 +22,30 @@ const ProfileLayout = () => {
   const [menuOpened, setMenuOpened] = useState(false);
 
   const followHandler = () => {
-    toast.info(`You've successfully followed ${profile!.firstName} ${profile!.lastName}`);
+    toast.info(
+      `You've successfully followed ${profile!.firstName} ${profile!.lastName}`
+    );
     setIsFollowing(true);
   };
 
   const unFollowHandler = () => {
-    toast.info(`You're not following ${profile!.firstName} ${profile!.lastName} anymore`);
+    toast.info(
+      `You're not following ${profile!.firstName} ${profile!.lastName} anymore`
+    );
     setIsFollowing(false);
   };
 
   const blockHandler = () => {
-    toast.info(`You've successfully blocked ${profile!.firstName} ${profile!.lastName}`);
+    toast.info(
+      `You've successfully blocked ${profile!.firstName} ${profile!.lastName}`
+    );
     setMenuOpened(false);
   };
 
   const ReportHandler = () => {
-    toast.info(`You've successfully reported ${profile!.firstName} ${profile!.lastName}`);
+    toast.info(
+      `You've successfully reported ${profile!.firstName} ${profile!.lastName}`
+    );
     setMenuOpened(false);
   };
 
@@ -122,9 +130,9 @@ const ProfileLayout = () => {
             {!isMyProfile ? (
               <>
                 <Button
-                text="Send Message"
-                onClick={() => navigate(`/chats/${profile!.username}`)}
-                bg={true}
+                  text="Send Message"
+                  onClick={() => navigate(`/chats/${profile!.username}`)}
+                  bg={true}
                 />
                 <Button
                   text={isFollowing ? "Unfollow" : "Follow"}
