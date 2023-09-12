@@ -20,7 +20,7 @@ const ProfileLayout = () => {
     followUser,
     unFollowUser,
     blockUser,
-    ReportUser
+    reportUser
   } = useProfileActions(profile?._id, profile?.firstName, profile?.lastName);
 
   const isMyProfile = user?.username === profile?.username;
@@ -44,7 +44,7 @@ const ProfileLayout = () => {
   };
 
   const ReportHandler = () => {
-    ReportUser();
+    reportUser();
     setMenuOpened(false);
   };
 
