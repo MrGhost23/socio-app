@@ -1,17 +1,17 @@
-import Users from "../components/User/Users";
-import Card from "../ui/Card";
-import Input from "../ui/Input";
 import { useState } from "react";
-import Textarea from "../ui/Textarea";
-import Button from "../ui/Button";
 import { useSelector } from "react-redux";
+import { selectUser } from "../store/slices/authSlice";
 import { selectSideOpen } from "../store/slices/sidebarSlice";
 import Sidebar from "../components/Sidebar";
-import { selectUser } from "../store/slices/authSlice";
+import Card from "../ui/Card";
+import Input from "../ui/Input";
+import Textarea from "../ui/Textarea";
+import Button from "../ui/Button";
+import Users from "../components/User/Users";
 import noAvatar from "../assets/noAvatar.png";
 
 const Settings = () => {
-  const user = useSelector(selectUser);
+  const currentUser = useSelector(selectUser);
 
   const sideOpen = useSelector(selectSideOpen);
 
@@ -24,12 +24,12 @@ const Settings = () => {
     setPreviewImage(URL.createObjectURL(file));
   };
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [country, setCountry] = useState("");
-  const [occupation, setOccupation] = useState("");
-  const [bio, setBio] = useState("");
+  const [firstName, setFirstName] = useState(currentUser!.firstName || "");
+  const [lastName, setLastName] = useState(currentUser!.lastName || "");
+  const [email, setEmail] = useState(currentUser!.email || "");
+  const [country, setCountry] = useState(currentUser!.country || "");
+  const [occupation, setOccupation] = useState(currentUser!.occupationy || "");
+  const [bio, setBio] = useState(currentUser!.bio || "");
   const [password, setPassword] = useState("");
 
   const suggestedUsers = [
@@ -93,7 +93,7 @@ const Settings = () => {
           <div className="relative w-fit mb-5 rounded-full overflow-hidden">
             <img
               className="w-24 h-24"
-              src={previewImage || user?.userPicture || noAvatar}
+              src={previewImage || currentUser?.userPicture || noAvatar}
               alt=""
             />
             <input
