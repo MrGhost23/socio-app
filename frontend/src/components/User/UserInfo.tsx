@@ -13,6 +13,7 @@ interface UserInfoProps {
 }
 
 const UserInfo: React.FC<UserInfoProps> = ({ userInfo }) => {
+  console.log(userInfo);
   return (
     <>
       <UserImage
@@ -27,12 +28,14 @@ const UserInfo: React.FC<UserInfoProps> = ({ userInfo }) => {
         id={userInfo.username}
       />
       <UserTag tag={userInfo.username} id={userInfo.username} />
-      <UserOccupation occupation={userInfo.occupation || ""} />
+      {userInfo.occupation && (
+        <UserOccupation occupation={userInfo.occupation} />
+      )}
       <UserCounty country={userInfo.country} />
-      <UserBio bio={userInfo.bio || ""} />
+      <UserBio bio={userInfo.bio ?? ""} />
       <UserStats
-        followers={userInfo.followers}
-        following={userInfo.followings}
+        followers={userInfo.followers.length}
+        following={userInfo.following.length}
       />
     </>
   );
