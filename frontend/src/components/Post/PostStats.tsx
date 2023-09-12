@@ -1,24 +1,31 @@
 import { FaRegHeart, FaRegCommentDots } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 import { selectUser } from "../../store/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
+import { RootState } from "../../store/store";
+import { toggleLikePost } from "../../store/slices/postsSlice";
 
 type Props = {
   likes: object;
   comments: number;
+  postId: string;
 };
 
-const PostStats: React.FC<Props> = ({ likes, comments }) => {
+const PostStats: React.FC<Props> = ({ likes, comments, postId }) => {
   const { username } = useSelector(selectUser)!;
+  const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
   const [liked, setLiked] = useState(username in likes);
 
   const likeClickHandler = () => {
     setLiked((prevState) => !prevState);
+    dispatch(toggleLikePost({ postId, username }));
   };
 
-  console.log(likes)
-  console.log(username in likes)
+  useEffect(() => {
+    console.log("LIKED");
+  }, [dispatch]);
 
   return (
     <div className="mb-2 flex flex-row gap-4 text-gray-500 font-medium">

@@ -21,6 +21,11 @@ interface CreatePostData {
   postImage?: string | object | null;
 }
 
+interface LikePostPayload {
+  postId: string;
+  username: string | undefined;
+}
+
 export const createPost = createAsyncThunk<PostType, CreatePostData>(
   'posts/createPost',
   async (postData) => {
@@ -47,6 +52,18 @@ export const fetchUserPosts = createAsyncThunk<PostType[]>(
       throw new Error('Failed to fetch user posts.');
   }}
 );
+
+  export const toggleLikePost = createAsyncThunk(
+    'posts/toggleLikePost',
+    async (payload: LikePostPayload) => {
+      const { postId, username } = payload;
+      const response = await axios.patch(`http://localhost:5000/api/v1/posts/${postId}/like`, {
+        username,
+      });
+      return response.data;
+    }
+  );
+  
 
 const initialState: PostsState = {
   post: null,
@@ -103,8 +120,19 @@ const postsSlice = createSlice({
         state.userPostsLoading = false
         state.error = action.error.message;
       })
+      .addCase(toggleLikePost.fulfilled, (state, action) => {
+        const updatedPost = action.payload;
 
-      
+        const feedPostIndex = state.feedPosts.findIndex((post) => post._id === updatedPost._id);
+        if (feedPostIndex !== -1) {
+          state.feedPosts[feedPostIndex] = updatedPost;
+        }
+
+        const userPostIndex = state.userPosts.findIndex((post) => post._id === updatedPost._id);
+        if (userPostIndex !== -1) {
+          state.userPosts[userPostIndex] = updatedPost;
+        }
+      });
   },
 });
 

@@ -64,6 +64,7 @@ const Post: React.FC<Props> = ({
         <PostStats
           likes={post.likes}
           comments={post.comments.length}
+          postId={post._id}
         />
         <VerticalLine className="mb-5" />
         <Comments comments={post.comments} />
