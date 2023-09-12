@@ -21,6 +21,7 @@ import { FaPen, FaRegTrashAlt } from "react-icons/fa";
 import { ImBlocked } from "react-icons/im";
 import { IoWarningOutline } from "react-icons/io5";
 import { PiWarningBold } from "react-icons/pi";
+import PostMenu from "./PostMenu";
 
 type Props = {
   currentUserId: string | undefined;
@@ -35,8 +36,6 @@ const Post: React.FC<Props> = ({
   currentUserImage,
   post,
 }) => {
-  const [menuOpened, setMenuOpened] = useState(false);
-
   return (
     <Card className="px-8 py-6 !text-left">
       <div className="relative mb-2 flex flex-row justify-between gap-3">
@@ -65,31 +64,7 @@ const Post: React.FC<Props> = ({
             </div>
           </div>
         </div>
-        <BsThreeDots className="text-xl cursor-pointer" onClick={() => setMenuOpened((prevState) => !prevState)} />
-        {menuOpened && (
-          <ul className="absolute top-6 right-0 px-4 py-5 bg-white rounded border border-gray-10 shadow-md flex flex-col gap-4">
-            <li className="flex flex-row items-center gap-2">
-              <FaRegBookmark />
-              <Button text="Bookmark" bg={false} />
-            </li>
-            <li className="flex flex-row items-center gap-2">
-              <FaPen />
-              <Button text="Edit Post" bg={false} />
-            </li>
-            <li className="flex flex-row items-center gap-2">
-              <FaRegTrashAlt />
-              <Button text="Delete Post" bg={false} />
-            </li>
-            <li className="flex flex-row items-center gap-2">
-              <ImBlocked />
-              <Button text="Block User" bg={false} />
-            </li>
-            <li className="flex flex-row items-center gap-2">
-              <PiWarningBold className="text-lg"  />
-              <Button text="Report User" bg={false} />
-            </li>
-          </ul>
-        )}
+        <PostMenu />
       </div>
       <div className="flex flex-col">
         <PostText description={post.description} />
