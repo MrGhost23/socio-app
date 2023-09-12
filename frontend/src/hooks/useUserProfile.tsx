@@ -9,7 +9,7 @@ interface UserProfileHook {
 }
 
 // Custom hook for fetching user profile data
-const useUserProfile = (userId?: string): UserProfileHook => {
+const useUserProfile = (username?: string): UserProfileHook => {
   const [profile, setProfile] = useState<ProfileType | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -18,7 +18,7 @@ const useUserProfile = (userId?: string): UserProfileHook => {
     const fetchUserProfile = async () => {
       try {
         const response = await axios.get<ProfileType[]>(
-          `http://localhost:5000/api/v1/users/${userId}`
+          `http://localhost:5000/api/v1/users/${username}`
         );
         setProfile(response.data[0]);
         setLoading(false);
@@ -29,7 +29,7 @@ const useUserProfile = (userId?: string): UserProfileHook => {
     };
 
     fetchUserProfile();
-  }, [userId]);
+  }, [username]);
 
   return { profile, loading, error };
 };
