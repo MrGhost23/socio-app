@@ -126,7 +126,7 @@ const ProfileLayout = () => {
               </ul>
             )}
           </div>
-          <UserInfo userInfo={{...profile!, following: profile!.followings}} />
+          <UserInfo userInfo={profile!} />
           <div className="w-full flex flex-col gap-4">
             {!isMyProfile ? (
               <>
