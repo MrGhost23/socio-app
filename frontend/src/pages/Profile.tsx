@@ -6,19 +6,25 @@ import useUserProfile from "../hooks/useUserProfile";
 import { selectUser } from "../store/slices/authSlice";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
-import { fetchUserPosts, selectUserPosts } from "../store/slices/postsSlice";
+import {
+  fetchUserPosts,
+  selectPost,
+  selectUserPosts,
+} from "../store/slices/postsSlice";
 import { useEffect } from "react";
 
 const Profile = () => {
   const user = useSelector(selectUser);
   const userPosts = useSelector(selectUserPosts);
+  const posts = useSelector(selectUserPosts);
+
   const { id: userId } = useParams();
   const { profile, loading, error } = useUserProfile(userId);
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
 
   useEffect(() => {
     dispatch(fetchUserPosts(userId));
-  }, [dispatch]);
+  }, [dispatch, posts]);
 
   const isMyProfile = user?.username === profile?.username;
   const currentUserId = profile?.userId;
