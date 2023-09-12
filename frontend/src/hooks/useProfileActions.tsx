@@ -8,7 +8,7 @@ const useProfileActions = (userId: string, userFirstName: string, userLastName: 
   console.log(currentUser)
   console.log(userId)
 
-  const followHandler = () => {
+  const followUser = () => {
     try {
       // Follow logic goes here
 
@@ -22,7 +22,7 @@ const useProfileActions = (userId: string, userFirstName: string, userLastName: 
     }
   };
 
-  const unFollowHandler = () => {
+  const unFollowUser = () => {
     try {
       // Unfollow logic goes here
 
@@ -36,7 +36,7 @@ const useProfileActions = (userId: string, userFirstName: string, userLastName: 
     }
   };
 
-  const blockHandler = () => {
+  const blockUser = () => {
     try {
       // Block logic goes here
 
@@ -50,7 +50,7 @@ const useProfileActions = (userId: string, userFirstName: string, userLastName: 
     }
   };
 
-  const unBlockHandler = () => {
+  const unBlockUser = () => {
     try {
       // Unblock logic goes here
 
@@ -64,7 +64,7 @@ const useProfileActions = (userId: string, userFirstName: string, userLastName: 
     }
   };
 
-  const ReportHandler = () => {
+  const ReportUser = () => {
     try {
       // Report logic goes here
 
@@ -79,11 +79,11 @@ const useProfileActions = (userId: string, userFirstName: string, userLastName: 
   };
 
   return {
-    followHandler,
-    unFollowHandler,
-    blockHandler,
-    unBlockHandler,
-    ReportHandler
+    followUser,
+    unFollowUser,
+    blockUser,
+    unBlockUser,
+    ReportUser
   }
 };
 
