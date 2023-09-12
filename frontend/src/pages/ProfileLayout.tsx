@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Outlet, useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { toast } from 'react-toastify';
 import { selectUser } from "../store/slices/authSlice";
 import useUserProfile from "../hooks/useUserProfile";
+import useProfileActions from "../hooks/useProfileActions";
 import Card from "../ui/Card";
 import UserInfo from "../components/User/UserInfo";
 import RecentActivities from "../components/RecentActivities";
@@ -15,6 +15,13 @@ const ProfileLayout = () => {
   const user = useSelector(selectUser);
   const { id: username } = useParams();
   const { profile, loading, error } = useUserProfile(username!);
+  
+  const {
+    followUser,
+    unFollowUser,
+    blockUser,
+    ReportUser
+  } = useProfileActions(profile?._id, profile?.firstName, profile?.lastName);
 
   const isMyProfile = user?.username === profile?.username;
 
@@ -22,30 +29,22 @@ const ProfileLayout = () => {
   const [menuOpened, setMenuOpened] = useState(false);
 
   const followHandler = () => {
-    toast.info(
-      `You've successfully followed ${profile!.firstName} ${profile!.lastName}`
-    );
+    followUser();
     setIsFollowing(true);
   };
 
   const unFollowHandler = () => {
-    toast.info(
-      `You're not following ${profile!.firstName} ${profile!.lastName} anymore`
-    );
+    unFollowUser();
     setIsFollowing(false);
   };
 
   const blockHandler = () => {
-    toast.info(
-      `You've successfully blocked ${profile!.firstName} ${profile!.lastName}`
-    );
+    blockUser();
     setMenuOpened(false);
   };
 
   const ReportHandler = () => {
-    toast.info(
-      `You've successfully reported ${profile!.firstName} ${profile!.lastName}`
-    );
+    ReportUser();
     setMenuOpened(false);
   };
 
