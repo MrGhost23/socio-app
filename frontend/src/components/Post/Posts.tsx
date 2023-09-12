@@ -1,9 +1,6 @@
 import Post from "./Post";
 
 type Props = {
-  currentUserId: string | undefined;
-  currentUserFullName: string | undefined;
-  currentUserImage: string | undefined;
   posts: {
     _id: string | any;
     description: string;
@@ -18,20 +15,12 @@ type Props = {
   }[];
 };
 
-const Posts: React.FC<Props> = ({
-  currentUserId,
-  currentUserFullName,
-  currentUserImage,
-  posts,
-}) => {
+const Posts: React.FC<Props> = ({ posts }) => {
   return (
     <div className="flex flex-col gap-8">
       {posts.map((post) => (
         <Post
           key={post._id}
-          currentUserId={currentUserId}
-          currentUserFullName={currentUserFullName}
-          currentUserImage={currentUserImage}
           post={post}
         />
       ))}
