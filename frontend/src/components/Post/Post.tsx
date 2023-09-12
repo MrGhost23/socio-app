@@ -2,7 +2,6 @@ import Card from "../../ui/Card";
 import UserImage from "../User/UserImage";
 import UserTag from "../User/UserTag";
 import UserFullName from "../User/UserFullName";
-import PostBookmarkIcon from "./PostBookmarkIcon";
 import PostText from "./PostText";
 import PostImage from "./PostImage";
 import PostDate from "./PostDate";
@@ -13,15 +12,9 @@ import Comments from "../Comment/Comments";
 import { PostType } from "../../Types/Post.types";
 import { formatDistanceToNow } from "date-fns";
 import noAvatar from "../../assets/noAvatar.png";
-import { BsThreeDots } from "react-icons/bs";
-import { useState } from "react";
-import Button from '../../ui/Button';
-import {FaRegBookmark} from 'react-icons/fa6';
-import { FaPen, FaRegTrashAlt } from "react-icons/fa";
-import { ImBlocked } from "react-icons/im";
-import { IoWarningOutline } from "react-icons/io5";
-import { PiWarningBold } from "react-icons/pi";
 import PostMenu from "./PostMenu";
+import { useState } from "react";
+import PostForm from "./PostForm";
 
 type Props = {
   currentUserId: string | undefined;
@@ -36,6 +29,8 @@ const Post: React.FC<Props> = ({
   currentUserImage,
   post,
 }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  
   return (
     <Card className="px-8 py-6 !text-left">
       <div className="relative mb-2 flex flex-row justify-between gap-3">
@@ -64,11 +59,24 @@ const Post: React.FC<Props> = ({
             </div>
           </div>
         </div>
-        <PostMenu />
+        <PostMenu
+          postId={post._id}
+          username={post.username}
+          userFirstName={post.firstName}
+          userLastName={post.lastName}
+          setIsEditing={setIsEditing}
+        />
       </div>
       <div className="flex flex-col">
-        <PostText description={post.description} />
-        {post.postImage && <PostImage src={post.postImage} alt="" />}
+        {
+          isEditing ?
+          <PostForm />
+          :
+            <>
+              <PostText description={post.description} />
+              {post.postImage && <PostImage src={post.postImage} alt="" />}
+            </>
+        }
         <VerticalLine className="my-2" />
         <PostStats
           likes={post.likes}
