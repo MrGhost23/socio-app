@@ -52,7 +52,7 @@ export const register = createAsyncThunk<User, RegistrationData, { rejectValue: 
     "auth/register",
     async (registrationData, { rejectWithValue }) => {
       try {
-        const response: AxiosResponse<User> = await axios.post("https://socio-irdl.onrender.com/api/v1/auth/register", registrationData);
+        const response: AxiosResponse<User> = await axios.post("https://localhost:5000/api/v1/auth/register", registrationData);
         if (response.data.token) {
           localStorage.setItem('token', response.data.token);
           console.log('Token stored in local storage:', response.data.token);
@@ -75,7 +75,7 @@ export const login = createAsyncThunk<User, LoginCredentials, { rejectValue: str
   "auth/login",
   async (credentials, { rejectWithValue }) => {
     try {
-      const response: AxiosResponse<User> = await axios.post("https://socio-irdl.onrender.com/api/v1/auth/login", credentials);
+      const response: AxiosResponse<User> = await axios.post("https://localhost:5000/api/v1/auth/login", credentials);
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
         console.log('Token stored in local storage:', response.data.token);
