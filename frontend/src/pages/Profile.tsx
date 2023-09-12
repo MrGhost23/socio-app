@@ -34,48 +34,12 @@ const Profile = () => {
       <>
         {isMyProfile && <PostForm src={currentUserImage} />}
         {userPosts.length > 0 ? (
-          userPosts.map((post) => (
-            <div
-              key={post._id}
-              className="mx-auto bg-white rounded-xl shadow-md overflow-hidden py-2 my-8"
-            >
-              {post.postImage && (
-                <img
-                  className="w-full h-64 object-cover"
-                  src={post.postImage}
-                  alt="Post"
-                />
-              )}
-              <div className="px-6 py-4">
-                <div className="flex items-center">
-                  <img
-                    className="w-10 h-10 rounded-full mr-4"
-                    src={post.userPicture}
-                    alt={`Avatar of ${post.username}`}
-                  />
-                  <div>
-                    <div className="text-xl font-medium">
-                      {post.firstName + " " + post.lastName}
-                    </div>
-                    <div className="text-sm text-gray-400 font-medium">
-                      {post.username}
-                    </div>
-                  </div>
-                </div>
-                <p className="mt-4 text-gray-800">{post.description}</p>
-              </div>
-              <div className="px-6 py-2 border-t border-gray-200">
-                <div className="flex justify-between">
-                  <div className="flex items-center my-2 space-x-4">
-                    <span>0 Likes</span>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <span>0 Comments</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))
+          <Posts
+            currentUserFullName={user?.firstName + " " + user?.lastName}
+            currentUserId={user?.userId}
+            currentUserImage={user?.userPicture}
+            posts={userPosts}
+          />
         ) : (
           <div className="text-center text-gray-800 text-xl">
             There are no posts yet for this user.
