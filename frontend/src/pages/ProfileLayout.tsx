@@ -1,20 +1,20 @@
+import { useState } from "react";
 import { Outlet, useParams, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { toast } from 'react-toastify';
+import { selectUser } from "../store/slices/authSlice";
+import useUserProfile from "../hooks/useUserProfile";
 import Card from "../ui/Card";
 import UserInfo from "../components/User/UserInfo";
-import Button from "../ui/Button";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import RecentActivities from "../components/RecentActivities";
-import { useState } from "react";
-import { useSelector } from "react-redux";
-import useUserProfile from "../hooks/useUserProfile";
-import { selectUser } from "../store/slices/authSlice";
-import {toast} from 'react-toastify';
+import Button from "../ui/Button";
 
 const ProfileLayout = () => {
   const navigate = useNavigate();
   const user = useSelector(selectUser);
-  const { id: userId } = useParams();
-  const { profile, loading, error } = useUserProfile(userId);
+  const { id: username } = useParams();
+  const { profile, loading, error } = useUserProfile(username);
 
   const isMyProfile = user?.username === profile?.username;
 
@@ -39,23 +39,6 @@ const ProfileLayout = () => {
   const ReportHandler = () => {
     toast.info(`You've successfully reported ${profile!.firstName} ${profile!.lastName}`);
     setMenuOpened(false);
-  };
-
-  const userInfo = {
-    id: profile?.username,
-    username: profile?.username,
-    firstName: profile?.firstName,
-    lastName: profile?.lastName,
-    userPicture: profile?.userPicture,
-    country: profile?.country,
-    occupation: "كلام في الحب",
-    bio: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores, fugiat.",
-    followers: profile?.followers?.length,
-    following: profile?.followings?.length,
-    createdAt: profile?.createdAt,
-    role: profile?.role,
-    userId: profile?.userId,
-    email: profile?.email,
   };
 
   const recentActivities = [
@@ -100,6 +83,12 @@ const ProfileLayout = () => {
       postAuthorLastName: "Quigley",
     },
   ];
+  
+  if (loading && !profile) return;
+  if (!loading && !profile) {
+    navigate("/");
+    return;
+  }
 
   return (
     <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-12 mx-4 sm:mx-10 md:mx-20 my-10">
@@ -128,13 +117,13 @@ const ProfileLayout = () => {
               </ul>
             )}
           </div>
-          <UserInfo userInfo={userInfo} />
+          <UserInfo userInfo={{...profile!, following: profile!.followings}} />
           <div className="w-full flex flex-col gap-4">
             {!isMyProfile ? (
               <>
                 <Button
                 text="Send Message"
-                onClick={() => navigate(`/chats/${userInfo.username}`)}
+                onClick={() => navigate(`/chats/${profile!.username}`)}
                 bg={true}
                 />
                 <Button
@@ -161,7 +150,7 @@ const ProfileLayout = () => {
           <Card className="sticky top-32 -z-10 px-8 py-4 pb-6 flex flex-col !text-left">
             <h3 className="mb-5 text-xl">Recent Activities</h3>
             <RecentActivities
-              userFirstName={userInfo.firstName}
+              userFirstName={profile!.firstName}
               recentActivities={recentActivities}
             />
           </Card>
