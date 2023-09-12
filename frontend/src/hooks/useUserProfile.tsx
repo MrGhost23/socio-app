@@ -9,7 +9,7 @@ interface UserProfileHook {
 }
 
 // Custom hook for fetching user profile data
-const useUserProfile = (username?: string): UserProfileHook => {
+const useUserProfile = (username: string): UserProfileHook => {
   const [profile, setProfile] = useState<ProfileType | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
