@@ -13,7 +13,6 @@ interface UserInfoProps {
 }
 
 const UserInfo: React.FC<UserInfoProps> = ({ userInfo }) => {
-  console.log(userInfo);
   return (
     <>
       <UserImage
