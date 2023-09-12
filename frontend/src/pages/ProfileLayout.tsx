@@ -14,7 +14,7 @@ const ProfileLayout = () => {
   const navigate = useNavigate();
   const user = useSelector(selectUser);
   const { id: username } = useParams();
-  const { profile, loading, error } = useUserProfile(username);
+  const { profile, loading, error } = useUserProfile(username!);
 
   const isMyProfile = user?.username === profile?.username;
 
@@ -97,6 +97,7 @@ const ProfileLayout = () => {
     navigate("/");
     return;
   }
+  if (error) console.log(error);
 
   return (
     <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-12 mx-4 sm:mx-10 md:mx-20 my-10">
