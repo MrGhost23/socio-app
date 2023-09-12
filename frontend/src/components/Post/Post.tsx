@@ -27,7 +27,6 @@ const Post: React.FC<Props> = ({
   currentUserImage,
   post,
 }) => {
-  console.log(Object.keys(post.likes).length)
   return (
     <Card className="px-8 py-6 !text-left">
       <div className="relative mb-2 flex flex-row justify-between gap-3">
