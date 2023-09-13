@@ -1,21 +1,17 @@
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { selectUser } from "../store/slices/authSlice";
+import axios from 'axios';
 
-const useProfileActions = (
-  username: string | undefined,
-  userFirstName: string | undefined,
-  userLastName: string | undefined
-) => {
+const useProfileActions = () => {
   const currentUser = useSelector(selectUser);
 
-  const followUser = () => {
+  const followUser = async (username: string) => {
     try {
-      // Follow logic goes here
+      await axios.put(`http://localhost:5000/api/v1/users/${username}/follow`, {
+        username: currentUser!.username
+      });
 
-      toast.info(
-        `You've successfully followed ${userFirstName} ${userLastName}!`
-      );
     } catch (error) {
       toast.info(`Something went wrong!`);
     }
@@ -24,34 +20,26 @@ const useProfileActions = (
   const unFollowUser = () => {
     try {
       // Unfollow logic goes here
-
-      toast.info(
-        `You're not following ${userFirstName} ${userLastName} anymore!`
-      );
     } catch (error) {
       toast.info(`Something went wrong!`);
     }
   };
 
-  const blockUser = () => {
+  const blockUser = async (username: string) => {
     try {
-      // Block logic goes here
-
-      toast.info(
-        `You've successfully blocked ${userFirstName} ${userLastName}!`
-      );
+      await axios.post(`http://localhost:5000/api/v1/users/${username}/block-unblock`, {
+        username: currentUser!.username
+      });
     } catch (error) {
       toast.info(`Something went wrong!`);
     }
   };
 
-  const unBlockUser = () => {
+  const unBlockUser = async (username: string) => {
     try {
-      // Unblock logic goes here
-
-      toast.info(
-        `You've successfully unblocked ${userFirstName} ${userLastName}!`
-      );
+      await axios.post(`http://localhost:5000/api/v1/users/${username}/block-unblock`, {
+        username: currentUser!.username
+      });
     } catch (error) {
       toast.info(`Something went wrong!`);
     }
@@ -60,10 +48,6 @@ const useProfileActions = (
   const reportUser = () => {
     try {
       // Report logic goes here
-
-      toast.info(
-        `You've successfully reported ${userFirstName} ${userLastName}!`
-      );
     } catch (error) {
       toast.info(`Something went wrong!`);
     }
