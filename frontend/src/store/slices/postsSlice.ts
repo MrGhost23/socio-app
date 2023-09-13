@@ -46,7 +46,7 @@ export const fetchUserPosts = createAsyncThunk<PostType[]>(
   'posts/fetchUserPosts',
   async (username: any) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/v1/posts/${username}`);
+      const response = await axios.get(`http://localhost:5000/api/v1/posts/user/${username}`);
       return response.data;
     } catch (error) {
       throw new Error('Failed to fetch user posts.');

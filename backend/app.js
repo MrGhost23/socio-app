@@ -13,7 +13,6 @@ const authRouter = require("./routes/authRoutes");
 const userRouter = require("./routes/usersRoutes");
 const postRouter = require("./routes/postsRoutes");
 const cookieParser = require("cookie-parser");
-const { authenticateUser } = require("./middleware/authentication");
 const jwt = require("jsonwebtoken");
 const CustomError = require("./errors/index");
 

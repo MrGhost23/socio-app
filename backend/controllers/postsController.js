@@ -36,6 +36,66 @@ const createPost = async (req, res) => {
   }
 };
 
+const getSinglePost = async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postId);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    res.json(post);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const editPost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const { description, postImage } = req.body;
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "Post not found" });
+    }
+
+    post.description = description;
+    post.postImage = postImage;
+
+    await post.save();
+
+    res.status(StatusCodes.OK).json(post);
+  } catch (error) {
+    res.status(StatusCodes.CONFLICT).json({ message: error.message });
+  }
+};
+
+const deletePost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "Post not found" });
+    }
+
+    await post.deleteOne();
+
+    res.json({ success: true, message: "Post deleted successfully!" });
+  } catch (error) {
+    res
+      .status(StatusCodes.CONFLICT)
+      .json({ success: false, message: "Post deleted successfully!" });
+  }
+};
+
 const getFeedPosts = async (req, res) => {
   try {
     const post = await Post.find().sort({ createdAt: -1 }).exec();
@@ -81,6 +141,9 @@ const likePosts = async (req, res) => {
 
 module.exports = {
   createPost,
+  getSinglePost,
+  editPost,
+  deletePost,
   getFeedPosts,
   getUserPosts,
   likePosts,
