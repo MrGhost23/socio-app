@@ -1,12 +1,13 @@
-import { toast } from 'react-toastify';
+import useProfileActions from '../../hooks/useProfileActions';
 import UserImage from "./UserImage";
 import UserFullName from "./UserFullName";
 import Button from "../../ui/Button";
 
 type Props = {
   image: string;
-  id: string;
-  fullName: string;
+  username: string;
+  firstName: string;
+  lastName: string;
   followers: string[];
   changeStyle: boolean;
   mode: string;
@@ -14,8 +15,9 @@ type Props = {
 
 const SuggestedUser: React.FC<Props> = ({
   image,
-  id,
-  fullName,
+  username,
+  firstName,
+  lastName,
   followers,
   changeStyle,
   mode,
@@ -23,12 +25,17 @@ const SuggestedUser: React.FC<Props> = ({
   const mainContainerClasses = "flex items-center";
   const infoContainerClasses = "flex flex-col text-gray-600";
 
+  const {
+    followUser,
+    blockUser,
+  } = useProfileActions(username, firstName, lastName);
+
   const followHandler = () => {
-    toast.info(`You've successfully followed ${fullName}`);
+    followUser();
   };
 
   const unBlockHandler = () => {
-    toast.info(`You've successfully unblocked ${fullName}`);
+    blockUser();
   };
 
   return (
@@ -42,8 +49,8 @@ const SuggestedUser: React.FC<Props> = ({
       <UserImage
         className="w-16 h-16"
         src={image}
-        alt={fullName}
-        id={id}
+        alt=""
+        username={username}
       />
       <div
         className={
@@ -54,8 +61,8 @@ const SuggestedUser: React.FC<Props> = ({
       >
         <UserFullName
           className="!text-base font-medium whitespace-nowrap"
-          fullName={fullName}
-          id={id}
+          fullName={firstName + " " + lastName}
+          username={username}
         />
         <p className="text-sm whitespace-nowrap">{followers.length} followers</p>
         <Button

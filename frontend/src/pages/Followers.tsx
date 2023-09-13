@@ -5,39 +5,44 @@ import SearchInput from "../ui/SearchInput";
 const Followers = () => {
   const suggestedUsers = [
     {
-      id: '1',
+      username: 'MrGhost',
       image:
         "https://cdn.discordapp.com/attachments/700993218850062381/1140480477833203742/ce7ca87cc7bd870fc40642fd245b011b.png",
-      fullName: "Omar Mohamed",
-      followers: 400,
+      firstName: "Omar",
+      lastName: "Mohamed",
+      followers: [],
     },
     {
-      id: '2',
+      username: 'TomasaRunolfsson',
       image:
         "https://cdn.discordapp.com/attachments/700993218850062381/1140480078644531220/352a1b49195bfa773765b4fdfb17da42.png",
-      fullName: "Tomasa Runolfsson",
-      followers: 400,
+      firstName: "Tomasa",
+      lastName: "Runolfsson",
+      followers: [],
     },
     {
-      id: '3',
+      username: 'HubertWhite',
       image:
         "https://cdn.discordapp.com/attachments/700993218850062381/1140479590012309534/50e2e84b6427e2112ea02507b5bc849f.png",
-      fullName: "Hubert White",
-      followers: 400,
+      firstName: "Hubert",
+      lastName: "White",
+      followers: [],
     },
     {
-      id: '4',
+      username: 'AdelbertSawayn',
       image:
         "https://cdn.discordapp.com/attachments/700993218850062381/1140477104467742791/6183b49eced8a25862b25a0f2f110f94.png",
-      fullName: "Adelbert Sawayn",
-      followers: 400,
+      firstName: "Adelbert",
+      lastName: "Sawayn",
+      followers: [],
     },
     {
-      id: '5',
+      username: 'YvetteMayer',
       image:
         "https://cdn.discordapp.com/attachments/700993218850062381/1140476544339427468/38f761c6e7dd7701cacaa81409ffbaa2.png",
-      fullName: "Yvette Mayer",
-      followers: 400,
+      firstName: "Yvette",
+      lastName: "Mayer",
+      followers: [],
     },
   ];
 

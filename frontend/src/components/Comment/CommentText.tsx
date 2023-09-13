@@ -4,7 +4,9 @@ type Props = {
 
 const CommentText: React.FC<Props> = ({ text }) => {
   return (
-    <p className="text-sm text-gray-700">{text}</p>
+    <p className="text-sm text-gray-700">
+      {text}
+    </p>
   );
 };
 

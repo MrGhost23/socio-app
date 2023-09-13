@@ -2,9 +2,11 @@ type Props = {
   bio: string;
 }
 
-const UserBio: React.FC<Props> = (props) => {
+const UserBio: React.FC<Props> = ({ bio }) => {
   return (
-    <p className='mb-4 tracking-wide'>{props.bio}</p>
+    <p className='mb-4 tracking-wide'>
+      {bio}
+    </p>
   );
 };
 

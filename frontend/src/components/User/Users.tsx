@@ -3,9 +3,10 @@ import User from './User';
 
 type Props = {
   users: {
-    id: string
+    username: string
     image: string;
-    fullName: string;
+    firstName: string;
+    lastName: string;
     followers: string[];
   }[];
   mode: string;
@@ -19,7 +20,7 @@ const Users:React.FC<Props> = ({ users, mode }) => {
       <div className={`grid grid-cols-1 ${classes} gap-3`}>
       {
         users.map(user =>
-          <User key={user.id} id={user.id} image={user.image} fullName={user.fullName} followers={user.followers} changeStyle={false} mode={mode} />
+          <User key={user.username} {...user} changeStyle={false} mode={mode} />
         )
       }
     </div>
