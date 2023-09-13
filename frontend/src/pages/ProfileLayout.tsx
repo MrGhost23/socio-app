@@ -13,7 +13,7 @@ import Button from "../ui/Button";
 const ProfileLayout = () => {
   const navigate = useNavigate();
   const user = useSelector(selectUser);
-  const { id: username } = useParams();
+  const { username } = useParams();
   const { profile, loading, error } = useUserProfile(username!);
   
   const {

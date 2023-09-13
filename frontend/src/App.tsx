@@ -83,9 +83,9 @@ const App: React.FC = () => {
         </Route>
         <Route path="/settings" element={user ? <Settings /> : <Navigate to="/login" />} />
         <Route element={user ? <ProfileLayout /> : <Navigate to="/login" />}>
-          <Route path="/profile/:id" element={<Profile />} />
-          <Route path="/profile/:id/followers" element={<Followers />} />
-          <Route path="/profile/:id/following" element={<Followings />} />
+          <Route path="/profile/:username" element={<Profile />} />
+          <Route path="/profile/:username/followers" element={<Followers />} />
+          <Route path="/profile/:username/following" element={<Followings />} />
         </Route>
       </Routes>
       <ToastContainer

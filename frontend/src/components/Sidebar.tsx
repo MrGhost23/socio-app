@@ -10,7 +10,6 @@ import VerticalLine from "../ui/VerticalLine";
 import UserFullName from "./User/UserFullName";
 import UserTag from "./User/UserTag";
 import { useDispatch, useSelector } from "react-redux";
-import noAvatar from "../assets/noAvatar.png";
 import { selectUser } from "../store/slices/authSlice";
 import { closeSidebar, selectSideOpen } from "../store/slices/sidebarSlice";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
@@ -18,14 +17,14 @@ import { RootState } from "../store/store";
 import Backdrop from "./Backdrop";
 
 const Sidebar = () => {
-  const user = useSelector(selectUser);
-  const sideOpen = useSelector(selectSideOpen);
-  const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
-  console.log(user);
-  const currentUserFullName = user?.firstName + " " + user?.lastName;
-  const currentUserTag = user?.username;
-  const currentUserImage = user?.userPicture || noAvatar;
+  const currentUser = useSelector(selectUser);
+  const currentUserFullName = currentUser!.firstName + " " + currentUser!.lastName;
+  const currentUserTag = currentUser!.username;
+  const currentUserImage = currentUser!.userPicture;
 
+  const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
+
+  const sideOpen = useSelector(selectSideOpen);
   const sideRef = useRef<HTMLDivElement | null>(null);
 
   const stickySidebar = () => {
@@ -77,15 +76,15 @@ const Sidebar = () => {
               className="w-20 lg:w-16 !m-0"
               src={currentUserImage}
               alt={currentUserFullName}
-              id={currentUserTag}
+              username={currentUserTag}
             />
             <div className="flex flex-col">
               <UserFullName
                 className="!text-lg font-medium group-hover:text-gray-700"
                 fullName={currentUserFullName}
-                id={currentUserTag}
+                username={currentUserTag}
               />
-              <UserTag tag={currentUserTag} id={currentUserTag} />
+              <UserTag username={currentUserTag} />
             </div>
           </div>
           <VerticalLine className="my-3" />
