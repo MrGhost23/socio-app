@@ -45,7 +45,7 @@ const ProfileLayout = () => {
     setMenuOpened(false);
   };
 
-  const ReportHandler = () => {
+  const reportHandler = () => {
     reportUser();
     setMenuOpened(false);
   };
@@ -118,13 +118,11 @@ const ProfileLayout = () => {
 
             {menuOpened && (
               <ul className="absolute top-7 -right-2 md:translate-x-full px-6 py-4 bg-white rounded border border-gray-10 shadow-md flex flex-col gap-4">
-                <li className="flex flex-row items-center gap-2 cursor-pointer group">
-                  <ImBlocked className="transition duration-500 group-hover:text-sky-500" />
-                  <Button className="group-hover:text-sky-500" text="Block" bg={false} onClick={blockHandler} />
+                <li>
+                  <Button text="Block" bg={false} onClick={blockHandler} icon={ImBlocked} />
                 </li>
-                <li className="flex flex-row items-center gap-2 cursor-pointer group">
-                  <PiWarningBold  className="text-lg transition duration-500 group-hover:text-sky-500" />
-                  <Button className="group-hover:text-sky-500" text="Report" bg={false} onClick={ReportHandler} />
+                <li>
+                  <Button text="Report" bg={false} onClick={reportHandler} icon={PiWarningBold} iconClasses="!text-lg" />
                 </li>
               </ul>
             )}

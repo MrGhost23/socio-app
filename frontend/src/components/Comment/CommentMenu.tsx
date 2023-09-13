@@ -48,13 +48,11 @@ const CommentMenu: React.FC<Props> = ({
           {
             menuOpened &&
             <ul className="absolute top-6 right-0 z-40 px-4 py-5 bg-white rounded border border-gray-10 shadow-md flex flex-col gap-4">
-              <li className="flex flex-row items-center gap-2 cursor-pointer group">
-                <FaPen className="text-sm transition duration-500 group-hover:text-sky-500" />
-                <Button className="text-sm group-hover:text-sky-500" text="Edit" bg={false} onClick={editHandler} />
+              <li>
+                <Button className="text-sm" text="Edit" bg={false} onClick={editHandler} icon={FaPen} />
               </li>
-              <li className="flex flex-row items-center gap-2 cursor-pointer group">
-                <FaRegTrashAlt className="text-sm transition duration-500 group-hover:text-sky-500" />
-                <Button className="text-sm group-hover:text-sky-500" text="Delete" bg={false} onClick={deleteHandler} />
+              <li>
+                <Button className="text-sm" text="Delete" bg={false} onClick={deleteHandler} icon={FaRegTrashAlt} />
               </li>
             </ul>
           }

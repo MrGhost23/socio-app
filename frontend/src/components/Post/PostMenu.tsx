@@ -74,43 +74,33 @@ const PostMenu: React.FC<Props> = ({ postId, username, userFirstName, userLastNa
         {
           menuOpened && (
           <ul className="absolute top-6 right-0 px-4 py-5 bg-white rounded border border-gray-10 shadow-md flex flex-col gap-4">
-            <li className="flex flex-row items-center gap-2 cursor-pointer group">
+            <li>
               {
                 inBookmarks ?
-                  <>
-                    <FaBookmark className="transition duration-500 group-hover:text-sky-500" />
-                    <Button className="group-hover:text-sky-500" text="Unbookmark" bg={false} onClick={unBookmarkHandler} />
-                  </>
+                  <Button text="Unbookmark" bg={false} onClick={unBookmarkHandler} icon={FaBookmark} />
                 :
-                  <>
-                    <FaRegBookmark className="transition duration-500 group-hover:text-sky-500" />
-                    <Button className="group-hover:text-sky-500" text="Bookmark" bg={false} onClick={bookmarkHandler} />
-                  </>
+                  <Button text="Bookmark" bg={false} onClick={bookmarkHandler} icon={FaRegBookmark} />
               }
             </li>
             {
               currentUser!.username === username &&
               <>
-                <li className="flex flex-row items-center gap-2 cursor-pointer group">
-                <FaPen className="transition duration-500 group-hover:text-sky-500" />
-                <Button className="group-hover:text-sky-500" text="Edit Post" bg={false} onClick={editHandler} />
+              <li>
+                <Button text="Edit Post" bg={false} onClick={editHandler} icon={FaPen} />
               </li>
-              <li className="flex flex-row items-center gap-2 cursor-pointer group">
-                <FaRegTrashAlt className="transition duration-500 group-hover:text-sky-500" />
-                <Button className="group-hover:text-sky-500" text="Delete Post" bg={false} onClick={deleteHandler} />
+              <li>
+                <Button text="Delete Post" bg={false} onClick={deleteHandler} icon={FaRegTrashAlt} />
               </li>
               </>
             }
             {
               currentUser!.username !== username &&
               <>
-                <li className="flex flex-row items-center gap-2 cursor-pointer group">
-                  <ImBlocked className="transition duration-500 group-hover:text-sky-500" />
-                  <Button className="group-hover:text-sky-500" text="Block User" bg={false} onClick={blockHandler} />
+                <li>
+                  <Button text="Block" bg={false} onClick={blockHandler} icon={ImBlocked} />
                 </li>
-                <li className="flex flex-row items-center gap-2 cursor-pointer group">
-                  <PiWarningBold  className="text-lg transition duration-500 group-hover:text-sky-500" />
-                  <Button className="group-hover:text-sky-500" text="Report User" bg={false} onClick={reportHandler} />
+                <li>
+                  <Button text="Report" bg={false} onClick={reportHandler} icon={PiWarningBold} iconClasses="!text-lg" />
                 </li>
               </>
             }
