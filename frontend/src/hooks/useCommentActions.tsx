@@ -9,10 +9,6 @@ const useCommentActions = () => {
           text
         }
       )
-
-      toast.info(
-        `Comment published successfully!`
-      );
     } catch (error) {
       toast.info(
         `Something went wrong!`
