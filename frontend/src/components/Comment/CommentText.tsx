@@ -3,11 +3,7 @@ type Props = {
 };
 
 const CommentText: React.FC<Props> = ({ text }) => {
-  return (
-    <p className="text-sm text-gray-700">
-      {text}
-    </p>
-  );
+  return <p className="text-sm text-gray-800">{text}</p>;
 };
 
 export default CommentText;
