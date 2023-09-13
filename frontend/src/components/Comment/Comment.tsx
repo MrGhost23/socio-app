@@ -25,7 +25,7 @@ const Comment: React.FC<Props> = ({ comment, reFetchFunction }) => {
           reFetchFunction={reFetchFunction}
         />
       ) : (
-        <div className="flex flex-row items-start gap-2">
+        <div className="flex flex-row items-start gap-2 group">
           <UserImage
             className="min-w-[2.5rem] min-h-[2.5rem] w-10 h-10 !mb-0"
             src={comment.author.userPicture}
