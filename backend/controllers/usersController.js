@@ -176,7 +176,7 @@ const getBookmarkedPosts = async (req, res) => {
     }
 
     const bookmarkedPosts = currentUser.bookmarks;
-    res.status(200).json({ bookmarkedPosts });
+    res.status(200).json(bookmarkedPosts);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
