@@ -9,8 +9,6 @@ const usePostActions = () => {
   const bookmarkPost = async (postId: string) => {
     try {
       await axios.post(`http://localhost:5000/api/v1/users/${currentUser!.username}/toggle-bookmark/${postId}`);
-
-      toast.info(`Added post to bookmarks!`);
     } catch (error) {
       toast.info(`Something went wrong!`);
     }
@@ -19,18 +17,18 @@ const usePostActions = () => {
   const unBookmarkPost = async (postId: string) => {
     try {
       await axios.post(`http://localhost:5000/api/v1/users/${currentUser!.username}/toggle-bookmark/${postId}`);
-
-      toast.info(`Removed post from bookmarks!`);
     } catch (error) {
       toast.info(`Something went wrong!`);
     }
   };
 
-  const editPost = () => {
+  const editPost = async (postId: string, description: string, postImage: object | null) => {
     try {
-      // Edit logic goes here
-
-      toast.info(`Post edited successfully!`);
+      await axios.patch(`http://localhost:5000/api/v1/posts/${postId}`, {
+        description,
+        postImage
+      }
+    );
     } catch (error) {
       toast.info(`Something went wrong!`);
     }
@@ -39,8 +37,6 @@ const usePostActions = () => {
   const deletePost = async (postId: string) => {
     try {
       await axios.delete(`http://localhost:5000/api/v1/posts/${postId}`);
-
-      toast.info(`Post deleted successfully!`);
     } catch (error) {
       toast.info(`Something went wrong!`);
     }
