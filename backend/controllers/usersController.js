@@ -55,7 +55,91 @@ const followUser = async (req, res) => {
   }
 };
 
+const getFollowers = async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.params.username }).populate(
+      "followers",
+      "username"
+    );
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const followers = user.followers;
+    res.status(200).json({ followers });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+const getFollowing = async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.params.username }).populate(
+      "following",
+      "username"
+    );
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const following = user.following;
+    res.status(200).json({ following });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+const blockUnblockUser = async (req, res) => {
+  try {
+    const currentUser = await User.findOne({ username: req.body.username });
+    const userToModify = await User.findOne({ username: req.params.username });
+
+    if (!currentUser || !userToModify) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isBlocked = currentUser.blockedUsers.includes(userToModify.username);
+
+    if (isBlocked) {
+      currentUser.blockedUsers = currentUser.blockedUsers.filter(
+        (blockedUsername) => blockedUsername !== userToModify.username
+      );
+      await currentUser.save();
+      res.status(200).json({ message: "User has been unblocked" });
+    } else {
+      currentUser.blockedUsers.push(userToModify.username);
+      await currentUser.save();
+      res.status(200).json({ message: "User has been blocked" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+const getBlockedUsers = async (req, res) => {
+  try {
+    const currentUser = await User.findOne({
+      username: req.params.username,
+    }).populate("blockedUsers", "username");
+
+    if (!currentUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const blockedUsers = currentUser.blockedUsers;
+    res.status(200).json({ blockedUsers });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   getUser,
   followUser,
+  getFollowing,
+  getFollowers,
+  blockUnblockUser,
+  getBlockedUsers,
 };
