@@ -12,6 +12,7 @@ const { createPost } = require("./controllers/postsController");
 const authRouter = require("./routes/authRoutes");
 const userRouter = require("./routes/usersRoutes");
 const postRouter = require("./routes/postsRoutes");
+const commentRouter = require("./routes/commentsRoutes");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const CustomError = require("./errors/index");
@@ -60,6 +61,7 @@ app.use("/api/v1/validateToken", async (req, res) => {
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/posts", postRouter);
+app.use("/api/v1/posts", commentRouter);
 
 const port = process.env.PORT || 5000;
 const start = async () => {
