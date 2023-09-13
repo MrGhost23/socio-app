@@ -1,13 +1,21 @@
+import axios from "axios";
 import { toast } from "react-toastify";
 
 const useCommentActions = (
   commentId: string | undefined,
   ) => {
 
-  const editComment = (text: string) => {
+  const editComment = async (text: string) => {
     try {
       // Edit logic goes here
       console.log(commentId, text)
+
+        const response = await axios.patch(
+          `http://localhost:5000/api/v1/posts/comments/${commentId}`, {
+            text
+          }
+        )
+        console.log(response.data);
 
       toast.info(
         `Comment edited successfully!`
