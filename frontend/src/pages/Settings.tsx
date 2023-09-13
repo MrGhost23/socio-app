@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useState, useEffect} from 'react';
 import { useSelector } from "react-redux";
 import { selectUser } from "../store/slices/authSlice";
 import { selectSideOpen } from "../store/slices/sidebarSlice";
@@ -9,6 +9,9 @@ import Textarea from "../ui/Textarea";
 import Button from "../ui/Button";
 import Users from "../components/User/Users";
 import noAvatar from "../assets/noAvatar.png";
+import axios from 'axios';
+import {UserType} from '../Types/User.types';
+import Loading from '../ui/Loading';
 
 const Settings = () => {
   const currentUser = useSelector(selectUser);
@@ -32,49 +35,6 @@ const Settings = () => {
   const [bio, setBio] = useState(currentUser!.bio || "");
   const [password, setPassword] = useState("");
 
-  const suggestedUsers = [
-    {
-      username: 'MrGhost',
-      image:
-        "https://cdn.discordapp.com/attachments/700993218850062381/1140480477833203742/ce7ca87cc7bd870fc40642fd245b011b.png",
-      firstName: "Omar",
-      lastName: "Mohamed",
-      followers: [],
-    },
-    {
-      username: 'TomasaRunolfsson',
-      image:
-        "https://cdn.discordapp.com/attachments/700993218850062381/1140480078644531220/352a1b49195bfa773765b4fdfb17da42.png",
-      firstName: "Tomasa",
-      lastName: "Runolfsson",
-      followers: [],
-    },
-    {
-      username: 'HubertWhite',
-      image:
-        "https://cdn.discordapp.com/attachments/700993218850062381/1140479590012309534/50e2e84b6427e2112ea02507b5bc849f.png",
-      firstName: "Hubert",
-      lastName: "White",
-      followers: [],
-    },
-    {
-      username: 'AdelbertSawayn',
-      image:
-        "https://cdn.discordapp.com/attachments/700993218850062381/1140477104467742791/6183b49eced8a25862b25a0f2f110f94.png",
-      firstName: "Adelbert",
-      lastName: "Sawayn",
-      followers: [],
-    },
-    {
-      username: 'YvetteMayer',
-      image:
-        "https://cdn.discordapp.com/attachments/700993218850062381/1140476544339427468/38f761c6e7dd7701cacaa81409ffbaa2.png",
-      firstName: "Yvette",
-      lastName: "Mayer",
-      followers: [],
-    },
-  ];
-
   const submitHandler = () => {
     console.log(image);
     console.log(firstName);
@@ -84,6 +44,27 @@ const Settings = () => {
     console.log(bio);
     console.log(password);
   };
+
+  const [blockedUsers, setBlockedUsers] = useState<UserType[]>();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    const fetchPostData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/v1/users/${currentUser!.username}/blocked-users`);
+        setBlockedUsers(response.data);
+      } catch (error) {
+        setError(!!error)
+      }
+      setIsLoading(false);
+    }
+
+    fetchPostData();
+  }, [currentUser])
+
+  if (isLoading) return <Loading />;
+  if (error) return <p>An error occurred</p>;
 
   return (
     <div
@@ -175,7 +156,7 @@ const Settings = () => {
         </Card>
         <Card className="p-8 !text-left">
           <h3 className="mb-5 text-xl">Blocked Users</h3>
-          <Users users={suggestedUsers} mode="block" />
+          <Users users={blockedUsers!} mode="block" />
         </Card>
       </div>
     </div>
