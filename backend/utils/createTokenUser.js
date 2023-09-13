@@ -7,6 +7,7 @@ const createTokenUser = (user) => {
     role: user.role,
     followers: user.followers,
     following: user.following,
+    bookmarks: user.bookmarks,
     country: user.country,
     email: user.email,
     username: user.username,

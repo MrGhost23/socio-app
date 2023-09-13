@@ -1,13 +1,14 @@
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { selectUser } from "../store/slices/authSlice";
+import axios from "axios";
 
-const usePostActions = (postId: string | undefined) => {
+const usePostActions = () => {
   const currentUser = useSelector(selectUser);
 
-  const bookmarkPost = () => {
+  const bookmarkPost = async (postId: string) => {
     try {
-      // Bookmark logic goes here
+      await axios.post(`http://localhost:5000/api/v1/users/${currentUser!.username}/toggle-bookmark/${postId}`);
 
       toast.info(`Added post to bookmarks!`);
     } catch (error) {
@@ -15,9 +16,9 @@ const usePostActions = (postId: string | undefined) => {
     }
   };
 
-  const unBookmarkPost = () => {
+  const unBookmarkPost = async (postId: string) => {
     try {
-      // UNbookmark logic goes here
+      await axios.post(`http://localhost:5000/api/v1/users/${currentUser!.username}/toggle-bookmark/${postId}`);
 
       toast.info(`Removed post from bookmarks!`);
     } catch (error) {
@@ -35,9 +36,9 @@ const usePostActions = (postId: string | undefined) => {
     }
   };
 
-  const deletePost = () => {
+  const deletePost = async (postId: string) => {
     try {
-      // Delete logic goes here
+      await axios.delete(`http://localhost:5000/api/v1/posts/${postId}`);
 
       toast.info(`Post deleted successfully!`);
     } catch (error) {

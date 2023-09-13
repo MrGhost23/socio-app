@@ -1,32 +1,35 @@
 import { useState } from 'react';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa6';
 import usePostActions from '../../hooks/usePostActions';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../store/slices/authSlice';
 
 type Props = {
   postId: string;
 };
 
 const PostBookmarkIcon: React.FC<Props> = ({ postId }) => {
-  // This should be done in the parent component actually
+  const currentUser = useSelector(selectUser);
+  console.log(currentUser)
+
   const [inBookmarks, setInBookmarks] = useState(false);
 
   const {
     bookmarkPost,
     unBookmarkPost,
-  } = usePostActions(postId);
+  } = usePostActions();
 
   const toggleBookmark = () => {
     if (inBookmarks) {
-      unBookmarkPost();
+      unBookmarkPost(postId);
     } else {
-      bookmarkPost();
+      bookmarkPost(postId);
     }
 
     setInBookmarks(prevState => !prevState);
   };
 
   const classes = 'absolute top-1 right-0 text-2xl scale-y-110 cursor-pointer transition duration-500 hover:scale-x-110 hover:scale-y-[1.2]';
-
 
   return (
     <>

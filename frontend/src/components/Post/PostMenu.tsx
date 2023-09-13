@@ -34,16 +34,16 @@ const PostMenu: React.FC<Props> = ({ postId, username, userFirstName, userLastNa
     bookmarkPost,
     unBookmarkPost,
     deletePost
-  } = usePostActions(postId);
+  } = usePostActions();
 
   const bookmarkHandler = () => {
-    bookmarkPost();
+    bookmarkPost(postId);
     setInBookmarks(true);
     setMenuOpened(false);
   };
 
   const unBookmarkHandler = () => {
-    unBookmarkPost();
+    unBookmarkPost(postId);
     setInBookmarks(false);
     setMenuOpened(false);
   };
@@ -54,7 +54,7 @@ const PostMenu: React.FC<Props> = ({ postId, username, userFirstName, userLastNa
   };
 
   const deleteHandler = () => {
-    deletePost();
+    deletePost(postId);
     setMenuOpened(false);
   };
 
