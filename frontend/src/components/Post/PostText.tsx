@@ -1,12 +1,12 @@
 import { useState } from "react";
 
 type Props = {
-  description: string;
+  text: string;
 };
 
-const PostText: React.FC<Props> = ({ description }) => {
+const PostText: React.FC<Props> = ({ text }) => {
   const max = 300;
-  const [textSliced, setTextSliced] = useState(description?.length > max);
+  const [textSliced, setTextSliced] = useState(text?.length > max);
 
   const seeMore = () => {
     setTextSliced(false);
@@ -14,7 +14,7 @@ const PostText: React.FC<Props> = ({ description }) => {
 
   return (
     <p>
-      {textSliced ? description?.slice(0, max - 3) + "... " : description}
+      {textSliced ? text?.slice(0, max - 3) + "... " : text}
 
       {textSliced && (
         <span

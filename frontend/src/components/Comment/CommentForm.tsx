@@ -26,7 +26,7 @@ const CommentForm: React.FC<Props> = ({
 
   const currentUser = useSelector(selectUser);
 
-  const [text, setText] = useState(commentText || "");
+  const [text, setText] = useState(commentText ?? "");
   const [showSendIcon, setShowSendIcon] = useState(false);
   const [iconClasses, setIconClasses] = useState(classes);
 

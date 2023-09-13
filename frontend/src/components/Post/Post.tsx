@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { formatDistanceToNow } from "date-fns";
 import { PostType } from "../../Types/Post.types";
+import axios from "axios";
+import { Comment } from "../../Types/Comment.types";
 import Card from "../../ui/Card";
 import UserImage from "../User/UserImage";
 import UserTag from "../User/UserTag";
@@ -10,12 +11,10 @@ import PostImage from "./PostImage";
 import PostDate from "./PostDate";
 import PostStats from "./PostStats";
 import CommentForm from "../Comment/CommentForm";
+import PostForm from "./PostForm";
 import VerticalLine from "../../ui/VerticalLine";
 import Comments from "../Comment/Comments";
 import PostMenu from "./PostMenu";
-import PostForm from "./PostForm";
-import { Comment } from "../../Types/Comment.types";
-import axios from "axios";
 
 type Props = {
   post: PostType;
@@ -32,8 +31,6 @@ const Post: React.FC<Props> = ({ post }) => {
       .then((response) => setComments(response.data))
       .catch((error) => console.error(error));
   }, [post._id]);
-
-  console.log(comments)
 
   return (
     <Card className="px-8 py-6 !text-left">
@@ -55,9 +52,7 @@ const Post: React.FC<Props> = ({ post }) => {
                 <UserTag username={post.username} />
               </div>
               <PostDate
-                date={formatDistanceToNow(new Date(post.createdAt), {
-                  addSuffix: true,
-                })}
+                date={post.createdAt}
                 id={post._id}
               />
             </div>
@@ -76,7 +71,7 @@ const Post: React.FC<Props> = ({ post }) => {
           <PostForm />
         ) : (
           <>
-            <PostText description={post.description} />
+            <PostText text={post.description} />
             {post.postImage && <PostImage src={post.postImage} alt="" />}
           </>
         )}

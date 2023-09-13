@@ -1,18 +1,8 @@
 import Post from "./Post";
+import { PostType } from '../../Types/Post.types';
 
 type Props = {
-  posts: {
-    _id: string | any;
-    description: string;
-    postImage?: string;
-    likes: object | any;
-    comments: any[];
-    firstName: string;
-    lastName: string;
-    username: string;
-    userPicture: string;
-    createdAt: string | Date;
-  }[];
+  posts: PostType[];
 };
 
 const Posts: React.FC<Props> = ({ posts }) => {

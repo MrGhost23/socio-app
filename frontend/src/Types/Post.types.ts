@@ -7,7 +7,7 @@ export interface PostType {
   description: string;
   userPicture: string;
   postImage: string;
-  likes: string[];
-  createdAt: string | Date;
+  createdAt: string;
   updatedAt: string;
+  likes: string[];
 }

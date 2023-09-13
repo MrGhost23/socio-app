@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 import { BsImage } from "react-icons/bs";
 import { MdOutlineClose } from "react-icons/md";
 import { selectUser } from "../../store/slices/authSlice";
+import { createPost, selectPostLoading } from "../../store/slices/postsSlice";
 import Card from "../../ui/Card";
 import Button from "../../ui/Button";
-import { createPost, selectPostLoading } from "../../store/slices/postsSlice";
-import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 import noAvatar from "../../assets/noAvatar.png";
 
 import { RootState } from "../../store/store";

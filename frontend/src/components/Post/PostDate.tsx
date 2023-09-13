@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
+import { formatDistanceToNow } from "date-fns";
 
 type Props = {
   id: string;
-  date: string | Date | any;
+  date: string;
 };
 
 const PostDate: React.FC<Props> = ({ id, date }) => {
@@ -11,7 +12,11 @@ const PostDate: React.FC<Props> = ({ id, date }) => {
       to={`/post/${id}`}
       className="text-sm text-gray-500 font-medium tracking-tight"
     >
-      {date}
+      {
+        formatDistanceToNow(new Date(date), {
+          addSuffix: true,
+        })
+      }
     </Link>
   );
 };
