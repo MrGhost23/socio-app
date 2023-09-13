@@ -41,7 +41,7 @@ const BookmarkPost: React.FC<Props> = ({
               <UserImage className="min-w-[2rem] w-8 min-h-[2rem] h-8 !m-0" src={currentUserImage} alt={currentUserFullName} id={currentUserId} />
               <UserFullName className="!text-base text-gray-500 font-medium" fullName={currentUserFullName} id={currentUserId} />
             </div>
-            <PostBookmarkIcon />
+            <PostBookmarkIcon postId={post.id} />
           </div>
         </div>
       </div>

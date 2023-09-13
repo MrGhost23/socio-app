@@ -1,12 +1,27 @@
 import { useState } from 'react';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa6';
+import usePostActions from '../../hooks/usePostActions';
 
+type Props = {
+  postId: string;
+};
 
-const PostBookmarkIcon = () => {
+const PostBookmarkIcon: React.FC<Props> = ({ postId }) => {
   // This should be done in the parent component actually
   const [inBookmarks, setInBookmarks] = useState(false);
 
+  const {
+    bookmarkPost,
+    unBookmarkPost,
+  } = usePostActions(postId);
+
   const toggleBookmark = () => {
+    if (inBookmarks) {
+      unBookmarkPost();
+    } else {
+      bookmarkPost();
+    }
+
     setInBookmarks(prevState => !prevState);
   };
 
