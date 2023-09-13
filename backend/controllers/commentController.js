@@ -7,7 +7,9 @@ const createComment = async (req, res) => {
     const { text } = req.body;
     const { postId } = req.params;
     if (!mongoose.Types.ObjectId.isValid(postId)) {
-      return res.status(400).json({ message: "Invalid postId" });
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "Invalid postId" });
     }
     const newComment = new Comment({
       text,
@@ -15,9 +17,9 @@ const createComment = async (req, res) => {
       post: postId,
     });
     const savedComment = await newComment.save();
-    res.status(201).json(savedComment);
+    res.status(StatusCodes.CREATED).json(savedComment);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
   }
 };
 
@@ -37,18 +39,50 @@ const getCommentsForPost = async (req, res) => {
   }
 };
 
+const editComment = async (req, res) => {
+  try {
+    const { commentId } = req.params;
+    const { text } = req.body;
+
+    const comment = await Comment.findById(commentId);
+
+    if (!comment) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "Comment not found" });
+    }
+
+    if (comment.author.toString() !== req.user.userId.toString()) {
+      return res
+        .status(StatusCodes.FORBIDDEN)
+        .json({ message: "You don't have permission to edit this comment" });
+    }
+
+    comment.text = text;
+    const updatedComment = await comment.save();
+
+    res.json(updatedComment);
+  } catch (error) {
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: error.message });
+  }
+};
+
 const deleteComment = async (req, res) => {
   try {
     const { commentId } = req.params;
     const comment = await Comment.findById(commentId);
 
     if (!comment) {
-      return res.status(404).json({ message: "Comment not found" });
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "Comment not found" });
     }
 
     if (comment.author.toString() !== req.user.userId.toString()) {
       return res
-        .status(403)
+        .status(StatusCodes.FORBIDDEN)
         .json({ message: "You do not have permission to delete this comment" });
     }
 
@@ -62,5 +96,6 @@ const deleteComment = async (req, res) => {
 module.exports = {
   createComment,
   getCommentsForPost,
+  editComment,
   deleteComment,
 };
