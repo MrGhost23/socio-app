@@ -24,7 +24,11 @@ const createComment = async (req, res) => {
 const getCommentsForPost = async (req, res) => {
   try {
     const { postId } = req.params;
-    const comments = await Comment.find({ post: postId }).populate("author");
+    const comments = await Comment.find({ post: postId }).populate(
+      "author",
+      "firstName lastName username userPicture"
+    );
+
     res.status(StatusCodes.OK).json(comments);
   } catch (error) {
     res
