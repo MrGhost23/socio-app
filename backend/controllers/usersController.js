@@ -65,7 +65,7 @@ const getFollowers = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
     const followers = user.followers;
-    res.status(200).json({ followers });
+    res.status(200).json(followers);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -81,7 +81,7 @@ const getFollowing = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
     const following = user.following;
-    res.status(200).json({ following });
+    res.status(200).json(following);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -127,7 +127,7 @@ const getBlockedUsers = async (req, res) => {
     }
 
     const blockedUsers = currentUser.blockedUsers;
-    res.status(200).json({ blockedUsers });
+    res.status(200).json(blockedUsers);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
