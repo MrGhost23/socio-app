@@ -42,7 +42,6 @@ const deleteComment = async (req, res) => {
       return res.status(404).json({ message: "Comment not found" });
     }
 
-    // Check if the user has permission to delete the comment (e.g., the comment author)
     if (comment.author.toString() !== req.user.userId.toString()) {
       return res
         .status(403)
