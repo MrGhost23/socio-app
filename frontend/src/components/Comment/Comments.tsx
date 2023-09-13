@@ -7,7 +7,7 @@ type Props = {
     id: string;
     text: string;
     date: string;
-    authorId: string;
+    authorUsername: string;
     authorFullName: string;
     authorImage: string;
   }[];
