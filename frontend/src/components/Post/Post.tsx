@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { PostType } from "../../Types/Post.types";
 import Card from "../../ui/Card";
@@ -14,6 +14,8 @@ import VerticalLine from "../../ui/VerticalLine";
 import Comments from "../Comment/Comments";
 import PostMenu from "./PostMenu";
 import PostForm from "./PostForm";
+import { Comment } from "../../Types/Comment.types";
+import axios from "axios";
 
 type Props = {
   post: PostType;
@@ -22,33 +24,45 @@ type Props = {
 const Post: React.FC<Props> = ({ post }) => {
   const [isEditing, setIsEditing] = useState(false);
 
+  const [comments, setComments] = useState<Comment[]>([]);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/api/v1/posts/${post._id}/comments`)
+      .then((response) => setComments(response.data))
+      .catch((error) => console.error(error));
+  }, [post._id]);
+
   const DUMMY_COMMENTS = [
     {
-      id: '1',
-      text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, atque?',
-      date: 'about 9 hours ago',
-      authorUsername: 'Heisenberg',
-      authorFullName: 'Omar Adel',
-      authorImage: 'https://cdn.discordapp.com/avatars/683014296342364286/30889b16f6a06a146378d9d10554582b.png?size=1024',
+      id: "1",
+      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, atque?",
+      date: "about 9 hours ago",
+      authorUsername: "Heisenberg",
+      authorFullName: "Omar Adel",
+      authorImage:
+        "https://cdn.discordapp.com/avatars/683014296342364286/30889b16f6a06a146378d9d10554582b.png?size=1024",
     },
     {
-      id: '2',
-      text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, atque?',
-      date: 'about 9 hours ago',
-      authorUsername: 'Heisenberg',
-      authorFullName: 'Omar Adel',
-      authorImage: 'https://cdn.discordapp.com/avatars/683014296342364286/30889b16f6a06a146378d9d10554582b.png?size=1024',
+      id: "2",
+      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, atque?",
+      date: "about 9 hours ago",
+      authorUsername: "Heisenberg",
+      authorFullName: "Omar Adel",
+      authorImage:
+        "https://cdn.discordapp.com/avatars/683014296342364286/30889b16f6a06a146378d9d10554582b.png?size=1024",
     },
     {
-      id: '3',
-      text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, atque?',
-      date: 'about 9 hours ago',
-      authorUsername: 'Heisenberg',
-      authorFullName: 'Omar Adel',
-      authorImage: 'https://cdn.discordapp.com/avatars/683014296342364286/30889b16f6a06a146378d9d10554582b.png?size=1024',
+      id: "3",
+      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, atque?",
+      date: "about 9 hours ago",
+      authorUsername: "Heisenberg",
+      authorFullName: "Omar Adel",
+      authorImage:
+        "https://cdn.discordapp.com/avatars/683014296342364286/30889b16f6a06a146378d9d10554582b.png?size=1024",
     },
   ];
-  
+
   return (
     <Card className="px-8 py-6 !text-left">
       <div className="relative mb-2 flex flex-row justify-between gap-3">
@@ -86,15 +100,14 @@ const Post: React.FC<Props> = ({ post }) => {
         />
       </div>
       <div className="flex flex-col">
-        {
-          isEditing ?
+        {isEditing ? (
           <PostForm />
-          :
-            <>
-              <PostText description={post.description} />
-              {post.postImage && <PostImage src={post.postImage} alt="" />}
-            </>
-        }
+        ) : (
+          <>
+            <PostText description={post.description} />
+            {post.postImage && <PostImage src={post.postImage} alt="" />}
+          </>
+        )}
         <VerticalLine className="my-2" />
         <PostStats
           likes={post.likes}
@@ -102,8 +115,8 @@ const Post: React.FC<Props> = ({ post }) => {
           postId={post._id}
         />
         <VerticalLine className="mb-5" />
-        <Comments comments={DUMMY_COMMENTS} />
-        <CommentForm postId={post._id}  />
+        <Comments comments={comments} />
+        <CommentForm postId={post._id} />
       </div>
     </Card>
   );

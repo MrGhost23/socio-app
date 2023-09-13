@@ -6,11 +6,8 @@ const useProfileActions = (
   username: string | undefined,
   userFirstName: string | undefined,
   userLastName: string | undefined
-  ) => {
+) => {
   const currentUser = useSelector(selectUser);
-
-  console.log(currentUser)
-  console.log(username)
 
   const followUser = () => {
     try {
@@ -20,9 +17,7 @@ const useProfileActions = (
         `You've successfully followed ${userFirstName} ${userLastName}!`
       );
     } catch (error) {
-      toast.info(
-        `Something went wrong!`
-      );
+      toast.info(`Something went wrong!`);
     }
   };
 
@@ -32,11 +27,9 @@ const useProfileActions = (
 
       toast.info(
         `You're not following ${userFirstName} ${userLastName} anymore!`
-        );
-    } catch (error) {
-      toast.info(
-        `Something went wrong!`
       );
+    } catch (error) {
+      toast.info(`Something went wrong!`);
     }
   };
 
@@ -46,11 +39,9 @@ const useProfileActions = (
 
       toast.info(
         `You've successfully blocked ${userFirstName} ${userLastName}!`
-        );
-    } catch (error) {
-      toast.info(
-        `Something went wrong!`
       );
+    } catch (error) {
+      toast.info(`Something went wrong!`);
     }
   };
 
@@ -60,11 +51,9 @@ const useProfileActions = (
 
       toast.info(
         `You've successfully unblocked ${userFirstName} ${userLastName}!`
-        );
-    } catch (error) {
-      toast.info(
-        `Something went wrong!`
       );
+    } catch (error) {
+      toast.info(`Something went wrong!`);
     }
   };
 
@@ -74,11 +63,9 @@ const useProfileActions = (
 
       toast.info(
         `You've successfully reported ${userFirstName} ${userLastName}!`
-        );
-    } catch (error) {
-      toast.info(
-        `Something went wrong!`
       );
+    } catch (error) {
+      toast.info(`Something went wrong!`);
     }
   };
 
@@ -87,8 +74,8 @@ const useProfileActions = (
     unFollowUser,
     blockUser,
     unBlockUser,
-    reportUser
-  }
+    reportUser,
+  };
 };
 
 export default useProfileActions;

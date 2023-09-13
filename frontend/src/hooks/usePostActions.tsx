@@ -2,25 +2,16 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { selectUser } from "../store/slices/authSlice";
 
-const usePostActions = (
-  postId: string | undefined,
-  ) => {
+const usePostActions = (postId: string | undefined) => {
   const currentUser = useSelector(selectUser);
-
-  console.log(currentUser)
-  console.log(postId)
 
   const bookmarkPost = () => {
     try {
       // Bookmark logic goes here
 
-      toast.info(
-        `Added post to bookmarks!`
-      );
+      toast.info(`Added post to bookmarks!`);
     } catch (error) {
-      toast.info(
-        `Something went wrong!`
-      );
+      toast.info(`Something went wrong!`);
     }
   };
 
@@ -28,13 +19,9 @@ const usePostActions = (
     try {
       // UNbookmark logic goes here
 
-      toast.info(
-        `Removed post from bookmarks!`
-      );
+      toast.info(`Removed post from bookmarks!`);
     } catch (error) {
-      toast.info(
-        `Something went wrong!`
-      );
+      toast.info(`Something went wrong!`);
     }
   };
 
@@ -42,13 +29,9 @@ const usePostActions = (
     try {
       // Edit logic goes here
 
-      toast.info(
-        `Post edited successfully!`
-      );
+      toast.info(`Post edited successfully!`);
     } catch (error) {
-      toast.info(
-        `Something went wrong!`
-      );
+      toast.info(`Something went wrong!`);
     }
   };
 
@@ -56,13 +39,9 @@ const usePostActions = (
     try {
       // Delete logic goes here
 
-      toast.info(
-        `Post deleted successfully!`
-      );
+      toast.info(`Post deleted successfully!`);
     } catch (error) {
-      toast.info(
-        `Something went wrong!`
-      );
+      toast.info(`Something went wrong!`);
     }
   };
 
@@ -70,8 +49,8 @@ const usePostActions = (
     bookmarkPost,
     unBookmarkPost,
     editPost,
-    deletePost
-  }
+    deletePost,
+  };
 };
 
 export default usePostActions;
