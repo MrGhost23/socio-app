@@ -33,36 +33,6 @@ const Post: React.FC<Props> = ({ post }) => {
       .catch((error) => console.error(error));
   }, [post._id]);
 
-  const DUMMY_COMMENTS = [
-    {
-      id: "1",
-      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, atque?",
-      date: "about 9 hours ago",
-      authorUsername: "Heisenberg",
-      authorFullName: "Omar Adel",
-      authorImage:
-        "https://cdn.discordapp.com/avatars/683014296342364286/30889b16f6a06a146378d9d10554582b.png?size=1024",
-    },
-    {
-      id: "2",
-      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, atque?",
-      date: "about 9 hours ago",
-      authorUsername: "Heisenberg",
-      authorFullName: "Omar Adel",
-      authorImage:
-        "https://cdn.discordapp.com/avatars/683014296342364286/30889b16f6a06a146378d9d10554582b.png?size=1024",
-    },
-    {
-      id: "3",
-      text: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, atque?",
-      date: "about 9 hours ago",
-      authorUsername: "Heisenberg",
-      authorFullName: "Omar Adel",
-      authorImage:
-        "https://cdn.discordapp.com/avatars/683014296342364286/30889b16f6a06a146378d9d10554582b.png?size=1024",
-    },
-  ];
-
   return (
     <Card className="px-8 py-6 !text-left">
       <div className="relative mb-2 flex flex-row justify-between gap-3">
