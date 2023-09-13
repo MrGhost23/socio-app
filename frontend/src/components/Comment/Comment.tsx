@@ -9,9 +9,10 @@ import CommentText from "./CommentText";
 
 type Props = {
   comment: CommentType;
+  reFetchFunction: () => void;
 };
 
-const Comment: React.FC<Props> = ({ comment }) => {
+const Comment: React.FC<Props> = ({ comment, reFetchFunction }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
@@ -21,9 +22,10 @@ const Comment: React.FC<Props> = ({ comment }) => {
           commentId={comment._id}
           commentText={comment.text}
           setIsEditing={setIsEditing}
+          reFetchFunction={reFetchFunction}
         />
       ) : (
-        <div className="flex flex-row items-start gap-2">
+        <div className="flex flex-row items-start gap-2 group">
           <UserImage
             className="min-w-[2.5rem] min-h-[2.5rem] w-10 h-10 !mb-0"
             src={comment.author.userPicture}
@@ -44,6 +46,7 @@ const Comment: React.FC<Props> = ({ comment }) => {
                 commentId={comment._id}
                 commentAuthorUsername={comment.author.username}
                 setIsEditing={setIsEditing}
+                reFetchFunction={reFetchFunction}
               />
             </div>
             <CommentText text={comment.text} />

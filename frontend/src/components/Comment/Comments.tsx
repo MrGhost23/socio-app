@@ -5,9 +5,10 @@ import Comment from "./Comment";
 
 type Props = {
   comments: CommentType[];
+  reFetchFunction: () => void;
 };
 
-const Comments: React.FC<Props> = ({ comments }) => {
+const Comments: React.FC<Props> = ({ comments, reFetchFunction }) => {
   const max = 2;
   const [commentsSliced, setCommentsSliced] = useState(comments?.length > max);
 
@@ -29,12 +30,12 @@ const Comments: React.FC<Props> = ({ comments }) => {
             Show all
           </p>
           {comments?.slice(-2).map((comment) => (
-            <Comment key={comment._id} comment={comment} />
+            <Comment key={comment._id} comment={comment} reFetchFunction={reFetchFunction} />
           ))}
         </>
       ) : (
         comments?.map((comment) => (
-          <Comment key={comment._id} comment={comment} />
+          <Comment key={comment._id} comment={comment} reFetchFunction={reFetchFunction} />
         ))
       )}
     </div>

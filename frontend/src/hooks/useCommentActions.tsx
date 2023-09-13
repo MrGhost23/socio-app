@@ -1,24 +1,17 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const useCommentActions = (
-  commentId: string | undefined,
-  ) => {
-
-  const editComment = async (text: string) => {
+const useCommentActions = () => {
+  const submitComment = async (postId: string, text: string) => {
     try {
-      // Edit logic goes here
-      console.log(commentId, text)
-
-        const response = await axios.patch(
-          `http://localhost:5000/api/v1/posts/comments/${commentId}`, {
-            text
-          }
-        )
-        console.log(response.data);
+      await axios.post(
+        `http://localhost:5000/api/v1/posts/${postId}/comments`, {
+          text
+        }
+      )
 
       toast.info(
-        `Comment edited successfully!`
+        `Comment published successfully!`
       );
     } catch (error) {
       toast.info(
@@ -27,10 +20,27 @@ const useCommentActions = (
     }
   };
 
-  const deleteComment = () => {
+  const editComment = async (commentId: string, text: string) => {
     try {
-      // Delete logic goes here
-      console.log(commentId)
+      await axios.patch(
+        `http://localhost:5000/api/v1/posts/comments/${commentId}`, {
+          text
+        }
+      )
+
+      toast.info(
+        `Comment updated successfully!`
+      );
+    } catch (error) {
+      toast.info(
+        `Something went wrong!`
+      );
+    }
+  };
+
+  const deleteComment = async (commentId: string) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/v1/posts/comments/${commentId}`)
 
       toast.info(
         `Comment deleted successfully!`
@@ -43,6 +53,7 @@ const useCommentActions = (
   };
 
   return {
+    submitComment,
     editComment,
     deleteComment
   }
