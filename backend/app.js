@@ -20,7 +20,7 @@ const CustomError = require("./errors/index");
 const app = express();
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
-app.use(helmet());
+app.use(helmet({ crossOriginResourcePolicy: false }));
 app.use(morgan("common"));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
