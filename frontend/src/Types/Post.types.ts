@@ -1,5 +1,5 @@
 export interface PostType {
-  _id: string | any;
+  _id: string;
   userId: string;
   username: string;
   firstName: string;
@@ -7,8 +7,7 @@ export interface PostType {
   description: string;
   userPicture: string;
   postImage: string;
-  likes: Record<string, any> | any;
-  comments: any[];
+  likes: string[];
   createdAt: string | Date;
   updatedAt: string;
 }

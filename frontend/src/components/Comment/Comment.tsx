@@ -1,21 +1,14 @@
 import { useState } from "react";
+import { Comment as CommentType } from "../../Types/Comment.types";
 import CommentForm from "./CommentForm";
 import UserImage from "../User/UserImage";
 import UserFullName from "../User/UserFullName";
 import CommentDate from "./CommentDate";
 import CommentMenu from "./CommentMenu";
 import CommentText from "./CommentText";
-import { formatDistanceToNow } from "date-fns";
 
 type Props = {
-  comment: {
-    id: string;
-    text: string;
-    date: string;
-    authorUsername: string;
-    authorFullName: string;
-    authorImage: string;
-  };
+  comment: CommentType;
 };
 
 const Comment: React.FC<Props> = ({ comment }) => {
@@ -25,7 +18,7 @@ const Comment: React.FC<Props> = ({ comment }) => {
     <>
       {isEditing ? (
         <CommentForm
-          commentId={comment.id}
+          commentId={comment._id}
           commentText={comment.text}
           setIsEditing={setIsEditing}
         />
@@ -46,13 +39,9 @@ const Comment: React.FC<Props> = ({ comment }) => {
                 }
                 username={comment.author.username}
               />
-              <CommentDate
-                date={formatDistanceToNow(new Date(comment.createdAt), {
-                  addSuffix: true,
-                })}
-              />
+              <CommentDate date={comment.createdAt} />
               <CommentMenu
-                commentId={comment.id}
+                commentId={comment._id}
                 commentAuthorUsername={comment.author.username}
                 setIsEditing={setIsEditing}
               />

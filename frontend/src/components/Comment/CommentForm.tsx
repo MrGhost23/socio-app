@@ -64,7 +64,7 @@ const CommentForm: React.FC<Props> = ({
         className="w-10 !mb-0"
         src={currentUser!.userPicture}
         alt={""}
-        id={currentUser!.username}
+        username={currentUser!.username}
       />
       <form className="w-full">
         <div className="relative w-full">
