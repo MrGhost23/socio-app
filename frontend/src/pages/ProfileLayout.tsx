@@ -2,12 +2,14 @@ import { useState } from "react";
 import { Outlet, useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { ImBlocked } from "react-icons/im";
+import { PiWarningBold } from "react-icons/pi";
 import { selectUser } from "../store/slices/authSlice";
 import useUserProfile from "../hooks/useUserProfile";
 import useProfileActions from "../hooks/useProfileActions";
-import Card from "../ui/Card";
 import UserInfo from "../components/User/UserInfo";
 import RecentActivities from "../components/RecentActivities";
+import Card from "../ui/Card";
 import Button from "../ui/Button";
 
 const ProfileLayout = () => {
@@ -116,11 +118,13 @@ const ProfileLayout = () => {
 
             {menuOpened && (
               <ul className="absolute top-7 -right-2 md:translate-x-full px-6 py-4 bg-white rounded border border-gray-10 shadow-md flex flex-col gap-4">
-                <li>
-                  <Button text="Block" bg={false} onClick={blockHandler} />
+                <li className="flex flex-row items-center gap-2 cursor-pointer group">
+                  <ImBlocked className="transition duration-500 group-hover:text-sky-500" />
+                  <Button className="group-hover:text-sky-500" text="Block" bg={false} onClick={blockHandler} />
                 </li>
-                <li>
-                  <Button text="Report" bg={false} onClick={ReportHandler} />
+                <li className="flex flex-row items-center gap-2 cursor-pointer group">
+                  <PiWarningBold  className="text-lg transition duration-500 group-hover:text-sky-500" />
+                  <Button className="group-hover:text-sky-500" text="Report" bg={false} onClick={ReportHandler} />
                 </li>
               </ul>
             )}
