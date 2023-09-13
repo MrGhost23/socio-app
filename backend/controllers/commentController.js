@@ -43,14 +43,15 @@ const editComment = async (req, res) => {
   try {
     const { commentId } = req.params;
     const { text } = req.body;
-
+    
     const comment = await Comment.findById(commentId);
-
+    
     if (!comment) {
       return res
-        .status(StatusCodes.NOT_FOUND)
-        .json({ message: "Comment not found" });
+      .status(StatusCodes.NOT_FOUND)
+      .json({ message: "Comment not found" });
     }
+    console.log(comment.author._id)
 
     if (comment.author.toString() !== req.user.userId.toString()) {
       return res

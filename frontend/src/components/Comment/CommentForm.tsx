@@ -6,6 +6,7 @@ import useCommentActions from '../../hooks/useCommentActions';
 import UserImage from "../User/UserImage";
 
 type Props = {
+  reFetchFunction: () => void;
   postId?: string;
   commentId?: string;
   commentText?: string;
@@ -13,6 +14,7 @@ type Props = {
 };
 
 const CommentForm: React.FC<Props> = ({
+  reFetchFunction,
   postId,
   commentId,
   commentText,
@@ -40,20 +42,25 @@ const CommentForm: React.FC<Props> = ({
   const focusHandler = () => {
     setIconClasses(classes + " !opacity-100");
   }
+  
+  const {
+    submitComment,
+    editComment
+  } = useCommentActions();
 
-  const submitHandler = () => {
+  const submitHandler = async () => {
     if (text) {
-      console.log(text, postId, currentUser!.username);
+      await submitComment(postId!, text);
+      reFetchFunction();
       setText("");
       setIconClasses(classes);
     }
   }
 
-  const { editComment } = useCommentActions(commentId);
-
-  const editHandler = () => {
+  const editHandler = async () => {
     if (text) {
-      editComment(text);
+      await editComment(commentId!, text);
+      reFetchFunction();
       setIsEditing!(false);
     }
   }

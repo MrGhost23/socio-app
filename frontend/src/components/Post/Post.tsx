@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PostType } from "../../Types/Post.types";
 import axios from "axios";
 import { Comment } from "../../Types/Comment.types";
@@ -25,12 +25,16 @@ const Post: React.FC<Props> = ({ post }) => {
 
   const [comments, setComments] = useState<Comment[]>([]);
 
-  useEffect(() => {
+  const getPostComments = useCallback(() => {
     axios
       .get(`http://localhost:5000/api/v1/posts/${post._id}/comments`)
       .then((response) => setComments(response.data))
       .catch((error) => console.error(error));
   }, [post._id]);
+
+  useEffect(() => {
+    getPostComments()
+  }, [getPostComments]);
 
   return (
     <Card className="px-8 py-6 !text-left">
@@ -82,8 +86,8 @@ const Post: React.FC<Props> = ({ post }) => {
           postId={post._id}
         />
         <VerticalLine className="mb-5" />
-        <Comments comments={comments} />
-        <CommentForm postId={post._id} />
+        <Comments comments={comments} reFetchFunction={getPostComments} />
+        <CommentForm postId={post._id} reFetchFunction={getPostComments} />
       </div>
     </Card>
   );
