@@ -1,24 +1,17 @@
+import { UserType } from '../../Types/User.types';
 import useProfileActions from '../../hooks/useProfileActions';
 import UserImage from "./UserImage";
 import UserFullName from "./UserFullName";
 import Button from "../../ui/Button";
 
 type Props = {
-  image: string;
-  username: string;
-  firstName: string;
-  lastName: string;
-  followers: string[];
+  user: UserType;
   changeStyle: boolean;
   mode: string;
 };
 
 const SuggestedUser: React.FC<Props> = ({
-  image,
-  username,
-  firstName,
-  lastName,
-  followers,
+  user,
   changeStyle,
   mode,
 }) => {
@@ -28,7 +21,7 @@ const SuggestedUser: React.FC<Props> = ({
   const {
     followUser,
     blockUser,
-  } = useProfileActions(username, firstName, lastName);
+  } = useProfileActions(user.username, user.firstName, user.lastName);
 
   const followHandler = () => {
     followUser();
@@ -48,9 +41,9 @@ const SuggestedUser: React.FC<Props> = ({
     >
       <UserImage
         className="w-16 h-16"
-        src={image}
+        src={user.userPicture}
         alt=""
-        username={username}
+        username={user.username}
       />
       <div
         className={
@@ -61,10 +54,10 @@ const SuggestedUser: React.FC<Props> = ({
       >
         <UserFullName
           className="!text-base font-medium whitespace-nowrap"
-          fullName={firstName + " " + lastName}
-          username={username}
+          fullName={user.firstName + " " + user.lastName}
+          username={user.username}
         />
-        <p className="text-sm whitespace-nowrap">{followers.length} followers</p>
+        <p className="text-sm whitespace-nowrap">{user.followers} followers</p>
         <Button
           text={mode === "follow" ? "Follow" : "Unblock"}
           bg={false}

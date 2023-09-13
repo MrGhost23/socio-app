@@ -1,14 +1,9 @@
+import { UserType } from '../../Types/User.types';
 import ScrollableDiv from '../../ui/ScrollableDiv';
 import User from './User';
 
 type Props = {
-  users: {
-    username: string
-    image: string;
-    firstName: string;
-    lastName: string;
-    followers: string[];
-  }[];
+  users: UserType[];
   mode: string;
 };
 
@@ -20,7 +15,7 @@ const Users:React.FC<Props> = ({ users, mode }) => {
       <div className={`grid grid-cols-1 ${classes} gap-3`}>
       {
         users.map(user =>
-          <User key={user.username} {...user} changeStyle={false} mode={mode} />
+          <User key={user.username} user={user} changeStyle={false} mode={mode} />
         )
       }
     </div>
