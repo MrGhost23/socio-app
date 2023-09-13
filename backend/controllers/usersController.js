@@ -1,3 +1,4 @@
+const Post = require("../models/Post.js");
 const User = require("../models/User.js");
 
 const getUser = async (req, res) => {
@@ -58,8 +59,7 @@ const followUser = async (req, res) => {
 const getFollowers = async (req, res) => {
   try {
     const user = await User.findOne({ username: req.params.username }).populate(
-      "followers",
-      "username"
+      "followers"
     );
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -75,8 +75,7 @@ const getFollowers = async (req, res) => {
 const getFollowing = async (req, res) => {
   try {
     const user = await User.findOne({ username: req.params.username }).populate(
-      "following",
-      "username"
+      "following"
     );
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -135,6 +134,55 @@ const getBlockedUsers = async (req, res) => {
   }
 };
 
+const toggleBookmark = async (req, res) => {
+  try {
+    const currentUser = await User.findOne({ username: req.params.username });
+    const postToToggle = await Post.findById(req.params.postId);
+
+    if (!currentUser || !postToToggle) {
+      return res.status(404).json({ message: "User or post not found" });
+    }
+
+    const isBookmarked = currentUser.bookmarks.includes(postToToggle._id);
+
+    if (isBookmarked) {
+      currentUser.bookmarks = currentUser.bookmarks.filter(
+        (postId) => postId.toString() !== postToToggle._id.toString()
+      );
+      await currentUser.save();
+      res.status(200).json({ message: "Post has been unbookmarked" });
+    } else {
+      currentUser.bookmarks.push(postToToggle._id);
+      await currentUser.save();
+      res.status(200).json({ message: "Post has been bookmarked" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+const getBookmarkedPosts = async (req, res) => {
+  try {
+    const currentUser = await User.findOne({
+      username: req.params.username,
+    }).populate(
+      "bookmarks",
+      "_id username firstName lastName description postImage userPicture"
+    );
+
+    if (!currentUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const bookmarkedPosts = currentUser.bookmarks;
+    res.status(200).json({ bookmarkedPosts });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   getUser,
   followUser,
@@ -142,4 +190,6 @@ module.exports = {
   getFollowers,
   blockUnblockUser,
   getBlockedUsers,
+  toggleBookmark,
+  getBookmarkedPosts,
 };

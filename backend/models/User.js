@@ -49,10 +49,8 @@ const UserSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
-    blockedUsers: {
-      type: Array,
-      default: [],
-    },
+    blockedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    bookmarks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
     bio: {
       type: String,
       default: "",
