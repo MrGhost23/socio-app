@@ -5,14 +5,17 @@ const { StatusCodes } = require("http-status-codes");
 const createPost = async (req, res) => {
   try {
     const { username, description } = req.body;
-    const postImage = req.file.filename;
+    let postImage = null;
+    if (req.file) {
+      postImage = req.file.filename;
+    }
     const user = await User.findOne({ username });
     if (!user) {
       return res
         .status(StatusCodes.NOT_FOUND)
         .json({ message: "User not found" });
     }
-    if (!description) {
+    if (!description && !postImage) {
       return res
         .status(StatusCodes.FORBIDDEN)
         .json({ message: "You must type caption for you post" });

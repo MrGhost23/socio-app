@@ -53,13 +53,12 @@ const PostForm: React.FC = () => {
     // };
 
     if (image) {
-      formData.append("postImage", image); // Ensure the key matches the server's expectation
+      formData.append("postImage", image);
     }
     if (!description && !image) {
-      setDescriptionError("You must provide a description!");
+      setDescriptionError("You must provide a description or image at least!");
       return;
     }
-    console.log(formData);
     dispatch(createPost(formData));
 
     setDescription("");
