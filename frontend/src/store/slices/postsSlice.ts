@@ -18,7 +18,6 @@ interface PostsState {
 interface CreatePostData {
   username: string | undefined;
   description: string;
-  postImage?: string | object | null;
 }
 
 interface LikePostPayload {

@@ -4,7 +4,8 @@ const { StatusCodes } = require("http-status-codes");
 
 const createPost = async (req, res) => {
   try {
-    const { username, description, postImage } = req.body;
+    const { username, description } = req.body;
+    const postImage = req.file.filename;
     const user = await User.findOne({ username });
     if (!user) {
       return res

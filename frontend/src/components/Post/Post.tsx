@@ -51,10 +51,7 @@ const Post: React.FC<Props> = ({ post }) => {
                 />
                 <UserTag username={post.username} />
               </div>
-              <PostDate
-                date={post.createdAt}
-                id={post._id}
-              />
+              <PostDate date={post.createdAt} id={post._id} />
             </div>
           </div>
         </div>
@@ -72,7 +69,14 @@ const Post: React.FC<Props> = ({ post }) => {
         ) : (
           <>
             <PostText text={post.description} />
-            {post.postImage && <PostImage src={post.postImage} alt="" />}
+            {post.postImage && (
+              <PostImage
+                src={`http://localhost:5000/assets/${encodeURIComponent(
+                  post.postImage
+                )}`}
+                alt=""
+              />
+            )}
           </>
         )}
         <VerticalLine className="my-2" />

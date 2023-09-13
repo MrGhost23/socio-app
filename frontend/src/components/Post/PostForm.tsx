@@ -44,20 +44,23 @@ const PostForm: React.FC = () => {
   };
 
   const submitHandler = () => {
-    const postData: PostData = {
-      description,
-      username: user?.username,
-    };
+    const formData = new FormData();
+    formData.append("username", user?.username);
+    formData.append("description", description);
+    // const postData: PostData = {
+    //   description,
+    //   username: user?.username,
+    // };
 
     if (image) {
-      postData.postImage = image;
+      formData.append("postImage", image); // Ensure the key matches the server's expectation
     }
     if (!description && !image) {
       setDescriptionError("You must provide a description!");
       return;
     }
-
-    dispatch(createPost(postData));
+    console.log(formData);
+    dispatch(createPost(formData));
 
     setDescription("");
     setImage(null);
@@ -93,7 +96,9 @@ const PostForm: React.FC = () => {
               <input
                 className="absolute top-0 right-0 w-full h-full opacity-0"
                 type="file"
+                name="postImage"
                 value=""
+                accept="image/*"
                 onChange={uploadImageHandler}
               />
             </div>
