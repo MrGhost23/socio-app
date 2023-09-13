@@ -5,7 +5,7 @@ import Button from "../../ui/Button";
 
 type Props = {
   image: string;
-  id: string;
+  username: string;
   fullName: string;
   followers: string[];
   changeStyle: boolean;
@@ -14,7 +14,7 @@ type Props = {
 
 const SuggestedUser: React.FC<Props> = ({
   image,
-  id,
+  username,
   fullName,
   followers,
   changeStyle,
@@ -43,7 +43,7 @@ const SuggestedUser: React.FC<Props> = ({
         className="w-16 h-16"
         src={image}
         alt={fullName}
-        id={id}
+        username={username}
       />
       <div
         className={
@@ -55,7 +55,7 @@ const SuggestedUser: React.FC<Props> = ({
         <UserFullName
           className="!text-base font-medium whitespace-nowrap"
           fullName={fullName}
-          id={id}
+          username={username}
         />
         <p className="text-sm whitespace-nowrap">{followers.length} followers</p>
         <Button

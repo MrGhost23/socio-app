@@ -1,9 +1,9 @@
-import { PiNavigationArrowFill } from "react-icons/pi";
-import UserImage from "../User/UserImage";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { PiNavigationArrowFill } from "react-icons/pi";
 import { selectUser } from "../../store/slices/authSlice";
 import useCommentActions from '../../hooks/useCommentActions';
+import UserImage from "../User/UserImage";
 
 type Props = {
   postId?: string;

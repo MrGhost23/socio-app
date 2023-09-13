@@ -27,7 +27,7 @@ const Post: React.FC<Props> = ({ post }) => {
       id: '1',
       text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, atque?',
       date: 'about 9 hours ago',
-      authorId: 'Heisenberg',
+      authorUsername: 'Heisenberg',
       authorFullName: 'Omar Adel',
       authorImage: 'https://cdn.discordapp.com/avatars/683014296342364286/30889b16f6a06a146378d9d10554582b.png?size=1024',
     },
@@ -35,7 +35,7 @@ const Post: React.FC<Props> = ({ post }) => {
       id: '2',
       text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, atque?',
       date: 'about 9 hours ago',
-      authorId: 'Heisenberg',
+      authorUsername: 'Heisenberg',
       authorFullName: 'Omar Adel',
       authorImage: 'https://cdn.discordapp.com/avatars/683014296342364286/30889b16f6a06a146378d9d10554582b.png?size=1024',
     },
@@ -43,7 +43,7 @@ const Post: React.FC<Props> = ({ post }) => {
       id: '3',
       text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel, atque?',
       date: 'about 9 hours ago',
-      authorId: 'Heisenberg',
+      authorUsername: 'Heisenberg',
       authorFullName: 'Omar Adel',
       authorImage: 'https://cdn.discordapp.com/avatars/683014296342364286/30889b16f6a06a146378d9d10554582b.png?size=1024',
     },
@@ -57,16 +57,16 @@ const Post: React.FC<Props> = ({ post }) => {
             className="w-14 !mb-0"
             src={post.userPicture}
             alt={post.firstName + " " + post.lastName}
-            id={post.username}
+            username={post.username}
           />
           <div className="flex flex-col items-start gap-1">
             <div className="flex flex-col">
               <div className="flex flex-col md:flex-row items-center md:gap-2">
                 <UserFullName
                   fullName={post.firstName + " " + post.lastName}
-                  id={post.username}
+                  username={post.username}
                 />
-                <UserTag tag={post.username} id={post.username} />
+                <UserTag username={post.username} />
               </div>
               <PostDate
                 date={formatDistanceToNow(new Date(post.createdAt), {

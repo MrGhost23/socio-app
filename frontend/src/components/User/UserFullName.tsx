@@ -1,20 +1,20 @@
 import { Link } from "react-router-dom";
 
 type Props = {
+  username: string;
   fullName: string;
-  id: string | undefined;
   className?: string;
 };
 
-const UserFullName: React.FC<Props> = (props) => {
+const UserFullName: React.FC<Props> = ({ username, fullName, className }) => {
   let classes = "text-lg";
-  if (props.className) {
-    classes += " " + props.className;
+  if (className) {
+    classes += " " + className;
   }
 
   return (
-    <Link to={`/profile/${props.id}`} className={classes}>
-      {props.fullName}
+    <Link to={`/profile/${username}`} className={classes}>
+      {fullName}
     </Link>
   );
 };

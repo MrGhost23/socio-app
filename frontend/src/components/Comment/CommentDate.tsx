@@ -4,7 +4,9 @@ type Props = {
 
 const CommentDate: React.FC<Props> = ({ date }) => {
   return (
-    <span className="text-sm text-gray-600 tracking-tight">{date}</span>
+    <span className="text-sm text-gray-600 tracking-tight">
+      {date}
+    </span>
   );
 };
 
