@@ -30,7 +30,6 @@ const Followers = () => {
     fetchPostData();
   }, [username])
 
-
   if (isLoading) return <Loading />;
   if (error) return <p>An error occurred</p>;
 
