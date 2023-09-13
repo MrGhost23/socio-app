@@ -24,17 +24,25 @@ const Post: React.FC<Props> = ({ post }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const [comments, setComments] = useState<Comment[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const getPostComments = useCallback(() => {
     axios
       .get(`http://localhost:5000/api/v1/posts/${post._id}/comments`)
-      .then((response) => setComments(response.data))
-      .catch((error) => console.error(error));
+      .then((response) => {
+        setComments(response.data)
+        setIsLoading(false);
+      }).catch((error) => {
+        console.error(error)
+        setIsLoading(false);
+      });
   }, [post._id]);
 
   useEffect(() => {
     getPostComments()
   }, [getPostComments]);
+
+  if (isLoading) return;
 
   return (
     <Card className="px-8 py-6 !text-left">
