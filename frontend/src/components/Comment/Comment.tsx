@@ -32,7 +32,7 @@ const Comment: React.FC<Props> = ({ comment, reFetchFunction }) => {
             alt={comment.author.firstName + " " + comment.author.lastName}
             username={comment.author.username}
           />
-          <div className="flex flex-col gap-2 sm:gap-0.5  bg-[#f2f2f2] p-4 rounded-2xl">
+          <div className="flex flex-col gap-2 sm:gap-0.5 bg-[#f2f2f2] px-4 py-3 rounded-2xl">
             <div className="relative w-fit flex flex-col sm:flex-row sm:items-center sm:gap-2">
               <UserFullName
                 className="!text-base"
