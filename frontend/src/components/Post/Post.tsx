@@ -33,6 +33,8 @@ const Post: React.FC<Props> = ({ post }) => {
       .catch((error) => console.error(error));
   }, [post._id]);
 
+  console.log(comments)
+
   return (
     <Card className="px-8 py-6 !text-left">
       <div className="relative mb-2 flex flex-row justify-between gap-3">
@@ -81,7 +83,7 @@ const Post: React.FC<Props> = ({ post }) => {
         <VerticalLine className="my-2" />
         <PostStats
           likes={post.likes}
-          comments={post.comments.length}
+          comments={comments.length}
           postId={post._id}
         />
         <VerticalLine className="mb-5" />
