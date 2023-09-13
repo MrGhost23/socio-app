@@ -1,16 +1,10 @@
 import { useState } from "react";
 import { FaChevronUp } from "react-icons/fa";
+import { Comment as CommentType } from "../../Types/Comment.types";
 import Comment from "./Comment";
 
 type Props = {
-  comments: {
-    id: string;
-    text: string;
-    date: string;
-    authorUsername: string;
-    authorFullName: string;
-    authorImage: string;
-  }[];
+  comments: CommentType[];
 };
 
 const Comments: React.FC<Props> = ({ comments }) => {
@@ -35,12 +29,12 @@ const Comments: React.FC<Props> = ({ comments }) => {
             Show all
           </p>
           {comments?.slice(-2).map((comment) => (
-            <Comment key={comment.id} comment={comment} />
+            <Comment key={comment._id} comment={comment} />
           ))}
         </>
       ) : (
         comments?.map((comment) => (
-          <Comment key={comment.id} comment={comment} />
+          <Comment key={comment._id} comment={comment} />
         ))
       )}
     </div>
