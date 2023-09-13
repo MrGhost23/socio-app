@@ -13,7 +13,7 @@ const Profile = () => {
   const user = useSelector(selectUser);
   const userPosts = useSelector(selectUserPosts);
 
-  const { id: username } = useParams();
+  const { username } = useParams();
   const { profile, loading, error } = useUserProfile(username!);
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
 
