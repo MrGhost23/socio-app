@@ -34,8 +34,15 @@ const Followers = () => {
   return (
     <Card className="sticky top-32 px-8 py-4 pb-6 flex flex-col !text-left">
       <h3 className="mb-5 text-xl">Followers</h3>
-      <SearchInput className="mb-5" />
-      <Users users={followers!} mode='follow' />
+      {
+        followers!.length ?
+          <>
+            <SearchInput className="mb-5" />
+            <Users users={followers!} mode='follow' />
+          </>
+        :
+          <p>No one is following {username}</p>
+      }
     </Card>
   );
 };
