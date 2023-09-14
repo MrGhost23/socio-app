@@ -70,35 +70,23 @@ const followUser = async (req, res) => {
 
 const getFollowers = async (req, res) => {
   try {
-    const user = await User.aggregate([
-      {
-        $match: { username: req.params.username },
-      },
-      {
-        $lookup: {
-          from: "users",
-          localField: "followers",
-          foreignField: "_id",
-          as: "followersData",
-        },
-      },
-      {
-        $project: {
-          _id: 1,
-          username: 1,
-          firstName: 1,
-          lastName: 1,
-          userPicture: 1,
-          followers: { $size: "$followersData" },
-        },
-      },
-    ]);
-
-    if (user.length === 0) {
+    const user = await User.findOne({ username: req.params.username }).populate(
+      "followers",
+      `_id username firstName lastName userPicture followers`
+    );
+    if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+    const followers = user.followers.map((follower) => ({
+      _id: follower._id,
+      username: follower.username,
+      firstName: follower.firstName,
+      lastName: follower.lastName,
+      userPicture: follower.userPicture,
+      followers: follower.followers.length,
+    }));
 
-    res.status(200).json(user);
+    res.status(200).json(followers);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -107,35 +95,23 @@ const getFollowers = async (req, res) => {
 
 const getFollowing = async (req, res) => {
   try {
-    const user = await User.aggregate([
-      {
-        $match: { username: req.params.username },
-      },
-      {
-        $lookup: {
-          from: "users",
-          localField: "followers",
-          foreignField: "_id",
-          as: "followersData",
-        },
-      },
-      {
-        $project: {
-          _id: 1,
-          username: 1,
-          firstName: 1,
-          lastName: 1,
-          userPicture: 1,
-          followers: { $size: "$followersData" },
-        },
-      },
-    ]);
-
-    if (user.length === 0) {
+    const user = await User.findOne({ username: req.params.username }).populate(
+      "following",
+      `_id username firstName lastName userPicture followers`
+    );
+    if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+    const following = user.following.map((follower) => ({
+      _id: follower._id,
+      username: follower.username,
+      firstName: follower.firstName,
+      lastName: follower.lastName,
+      userPicture: follower.userPicture,
+      followers: follower.followers.length,
+    }));
 
-    res.status(200).json(user);
+    res.status(200).json(following);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
