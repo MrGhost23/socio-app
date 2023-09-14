@@ -48,18 +48,19 @@ app.use(express.static(path.join(__dirname, "build")));
 app.post("/api/v1/auth/register", upload.single("userPicture"), register);
 app.post("/api/v1/posts", verifyToken, upload.single("postImage"), createPost);
 
-app.use("/api/v1/validateToken", verifyToken, async (req, res) => {
-  const userData = req.user;
-  if (!userData) {
-    throw new CustomError.UnauthenticatedError("Token not valid");
-  }
-  res.status(200).json({ userData });
-});
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/posts", postRouter);
 app.use("/api/v1/posts", commentRouter);
 
+app.use("/api/v1/validateToken", verifyToken, async (req, res) => {
+  const userData = req.user;
+  console.log(userData);
+  if (!userData) {
+    throw new CustomError.UnauthenticatedError("Token not valid");
+  }
+  res.status(200).json({ userData });
+});
 const port = process.env.PORT || 5000;
 const start = async () => {
   try {

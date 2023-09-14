@@ -1,10 +1,10 @@
-import { UserType } from '../../Types/User.types';
-import useProfileActions from '../../hooks/useProfileActions';
+import { UserType } from "../../Types/User.types";
+import useProfileActions from "../../hooks/useProfileActions";
 import UserImage from "./UserImage";
 import UserFullName from "./UserFullName";
 import Button from "../../ui/Button";
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 type Props = {
   user: UserType;
@@ -12,25 +12,20 @@ type Props = {
   mode: string;
 };
 
-const SuggestedUser: React.FC<Props> = ({
-  user,
-  changeStyle,
-  mode,
-}) => {
+const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode }) => {
   const mainContainerClasses = "flex";
   const infoContainerClasses = "flex flex-col text-gray-600";
 
   const text = [
-    ['follow', 'unfollow'],
-    ['unblock', 'block'],
+    ["follow", "unfollow"],
+    ["unblock", "block"],
   ];
 
-  const [buttonText, setButtonText] = useState(mode === 'follow' ? text[0][0] : text[1][0]);
+  const [buttonText, setButtonText] = useState(
+    mode === "follow" ? text[0][0] : text[1][0]
+  );
 
-  const {
-    followUser,
-    blockUser,
-  } = useProfileActions();
+  const { followUser, blockUser } = useProfileActions();
 
   const buttonClickHandler = () => {
     if (mode === "follow") {
@@ -43,7 +38,7 @@ const SuggestedUser: React.FC<Props> = ({
       }
     } else {
       blockUser(user.username);
-      
+
       if (buttonText === text[1][0]) {
         setButtonText(text[1][1]);
       } else {
@@ -57,16 +52,17 @@ const SuggestedUser: React.FC<Props> = ({
   useEffect(() => {
     const fetchIsFollowing = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/v1/users/${user.username}/isFollowing`);
+        const response = await axios.get(
+          `http://localhost:5000/api/v1/users/${user.username}/isFollowing`
+        );
         setIsFollowing(response.data.isFollowing);
-        console.log(response.data.isFollowing)
+        console.log(response.data.isFollowing);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
+    };
     fetchIsFollowing();
-  }, [user.username])
-  
+  }, [user.username]);
 
   return (
     <div
@@ -94,9 +90,11 @@ const SuggestedUser: React.FC<Props> = ({
           fullName={user.firstName + " " + user.lastName}
           username={user.username}
         />
-        {
-          mode === 'follow' && <p className="text-sm whitespace-nowrap">{user.followers} followers</p>
-        }
+        {mode === "follow" && (
+          <p className="text-sm whitespace-nowrap">
+            {user.followers} followers
+          </p>
+        )}
         <Button
           text={buttonText}
           bg={false}
