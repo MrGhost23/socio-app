@@ -1,16 +1,17 @@
 import {useState, useEffect} from 'react';
 import { useSelector } from "react-redux";
+import axios from 'axios';
 import { selectUser } from "../store/slices/authSlice";
 import { selectSideOpen } from "../store/slices/sidebarSlice";
+import { UserType } from '../Types/User.types';
 import Sidebar from "../components/Sidebar";
+import Users from "../components/User/Users";
 import Card from "../ui/Card";
 import Input from "../ui/Input";
 import Textarea from "../ui/Textarea";
 import Button from "../ui/Button";
-import Users from "../components/User/Users";
+import SearchInput from '../ui/SearchInput';
 import noAvatar from "../assets/noAvatar.png";
-import axios from 'axios';
-import {UserType} from '../Types/User.types';
 import Loading from '../ui/Loading';
 
 const Settings = () => {
@@ -156,7 +157,15 @@ const Settings = () => {
         </Card>
         <Card className="p-8 !text-left">
           <h3 className="mb-5 text-xl">Blocked Users</h3>
-          <Users users={blockedUsers!} mode="block" />
+          {
+            blockedUsers!.length ?
+              <>
+                <SearchInput className="mb-5" />
+                <Users users={blockedUsers!} mode='follow' />
+              </>
+            :
+              <p>You don't have anyone in your block list</p>
+          }
         </Card>
       </div>
     </div>
