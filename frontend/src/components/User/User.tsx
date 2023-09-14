@@ -47,25 +47,24 @@ const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode }) => {
       }
     }
   };
-
   const [isFollowing, setIsFollowing] = useState<boolean>();
-
-  const { username } = useParams();
 
   useEffect(() => {
     const fetchIsFollowing = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/v1/users/${username}/isFollowing`
+          `http://localhost:5000/api/v1/users/${user.username}/isFollowing`
         );
         setIsFollowing(response.data.isFollowing);
+        console.log(user.username, "===========================");
+
         console.log(response.data.isFollowing);
       } catch (error) {
         console.log(error);
       }
     };
     fetchIsFollowing();
-  }, [username]);
+  }, [user.username]);
 
   return (
     <div
