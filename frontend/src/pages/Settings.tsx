@@ -161,7 +161,7 @@ const Settings = () => {
             blockedUsers!.length ?
               <>
                 <SearchInput className="mb-5" />
-                <Users users={blockedUsers!} mode='follow' />
+                <Users users={blockedUsers!} mode='block' />
               </>
             :
               <p>You don't have anyone in your block list</p>
