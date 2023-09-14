@@ -48,13 +48,8 @@ app.use(express.static(path.join(__dirname, "build")));
 app.post("/api/v1/auth/register", upload.single("userPicture"), register);
 app.post("/api/v1/posts", verifyToken, upload.single("postImage"), createPost);
 
-app.use("/api/v1/validateToken", async (req, res) => {
-  const { token } = req.body;
-  if (!token) {
-    throw new CustomError.NotFoundError("Could not find token");
-  }
-
-  const userData = jwt.decode(token, process.env.JWT_SECRET);
+app.use("/api/v1/validateToken", verifyToken, async (req, res) => {
+  const userData = req.user;
   if (!userData) {
     throw new CustomError.UnauthenticatedError("Token not valid");
   }
