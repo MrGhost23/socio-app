@@ -53,7 +53,7 @@ const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode }) => {
     const fetchIsFollowing = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/v1/users/${user.username}/isFollowing`
+          `http://localhost:5000/api/v1/users/MrGhost/isFollowing`
         );
         setIsFollowing(response.data.isFollowing);
         console.log(response.data.isFollowing);
