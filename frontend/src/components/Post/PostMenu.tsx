@@ -13,8 +13,6 @@ import Button from "../../ui/Button";
 type Props = {
   postId: string;
   username: string;
-  userFirstName: string;
-  userLastName: string;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   removePost: (postId: string) => void;
 };
@@ -22,8 +20,6 @@ type Props = {
 const PostMenu: React.FC<Props> = ({
   postId,
   username,
-  userFirstName,
-  userLastName,
   setIsEditing,
   removePost
 }) => {
@@ -31,10 +27,10 @@ const PostMenu: React.FC<Props> = ({
 
   const currentUser = useSelector(selectUser);
 
-  const [inBookmarks, setInBookmarks] = useState(currentUser!.bookmarks?.includes(postId));
+  const [inBookmarks, setInBookmarks] = useState<boolean>(currentUser!.bookmarks?.includes(postId));
 
   const {
-    blockUser,
+    toggleBlockUser,
     reportUser
   } = useProfileActions();
 
@@ -43,15 +39,9 @@ const PostMenu: React.FC<Props> = ({
     deletePost
   } = usePostActions();
 
-  const bookmarkHandler = () => {
+  const toggleBookmarkHandler = () => {
     toggleBookmarkPost(postId);
-    setInBookmarks(true);
-    setMenuOpened(false);
-  };
-
-  const unBookmarkHandler = () => {
-    toggleBookmarkPost(postId);
-    setInBookmarks(false);
+    setInBookmarks(prevState => !prevState);
     setMenuOpened(false);
   };
 
@@ -66,8 +56,8 @@ const PostMenu: React.FC<Props> = ({
     removePost(postId);
   };
 
-  const blockHandler = () => {
-    blockUser(username);
+  const toggleBlockHandler = () => {
+    toggleBlockUser(username);
     setMenuOpened(false);
   };
 
@@ -83,12 +73,12 @@ const PostMenu: React.FC<Props> = ({
           menuOpened && (
           <ul className="absolute top-6 right-0 px-4 py-5 bg-white rounded border border-gray-10 shadow-md flex flex-col gap-4">
             <li>
-              {
-                inBookmarks ?
-                  <Button text="Unbookmark" bg={false} onClick={unBookmarkHandler} icon={FaBookmark} />
-                :
-                  <Button text="Bookmark" bg={false} onClick={bookmarkHandler} icon={FaRegBookmark} />
-              }
+              <Button
+                text={inBookmarks ? "Unbookmark" : "Bookmark"}
+                bg={false}
+                onClick={toggleBookmarkHandler}
+                icon={inBookmarks ?FaBookmark : FaRegBookmark}
+              />
             </li>
             {
               currentUser!.username === username &&
@@ -105,7 +95,7 @@ const PostMenu: React.FC<Props> = ({
               currentUser!.username !== username &&
               <>
                 <li>
-                  <Button text="Block" bg={false} onClick={blockHandler} icon={ImBlocked} />
+                  <Button text="Block" bg={false} onClick={toggleBlockHandler} icon={ImBlocked} />
                 </li>
                 <li>
                   <Button text="Report" bg={false} onClick={reportHandler} icon={PiWarningBold} iconClasses="!text-lg" />
