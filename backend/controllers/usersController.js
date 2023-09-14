@@ -97,16 +97,17 @@ const blockUnblockUser = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const isBlocked = currentUser.blockedUsers.includes(userToModify.username);
+    const isBlocked = currentUser.blockedUsers.includes(userToModify._id);
 
     if (isBlocked) {
       currentUser.blockedUsers = currentUser.blockedUsers.filter(
-        (blockedUsername) => blockedUsername !== userToModify.username
+        (blockedUserId) =>
+          blockedUserId.toString() !== userToModify._id.toString()
       );
       await currentUser.save();
       res.status(200).json({ message: "User has been unblocked" });
     } else {
-      currentUser.blockedUsers.push(userToModify.username);
+      currentUser.blockedUsers.push(userToModify._id);
       await currentUser.save();
       res.status(200).json({ message: "User has been blocked" });
     }
@@ -120,7 +121,7 @@ const getBlockedUsers = async (req, res) => {
   try {
     const currentUser = await User.findOne({
       username: req.params.username,
-    }).populate("blockedUsers", "username");
+    }).populate("blockedUsers", "username firstName lastName userPicture");
 
     if (!currentUser) {
       return res.status(404).json({ message: "User not found" });
@@ -150,11 +151,17 @@ const toggleBookmark = async (req, res) => {
         (postId) => postId.toString() !== postToToggle._id.toString()
       );
       await currentUser.save();
-      res.status(200).json({ message: "Post has been unbookmarked" });
+      res.status(200).json({
+        message: "Post has been unbookmarked",
+        postImage: `http://localhost:5000/assets/${postToToggle.postImage}`,
+      });
     } else {
       currentUser.bookmarks.push(postToToggle._id);
       await currentUser.save();
-      res.status(200).json({ message: "Post has been bookmarked" });
+      res.status(200).json({
+        message: "Post has been bookmarked",
+        postImage: `http://localhost:5000/assets/${postToToggle.postImage}`,
+      });
     }
   } catch (error) {
     console.error(error);
