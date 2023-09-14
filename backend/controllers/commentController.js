@@ -54,7 +54,7 @@ const editComment = async (req, res) => {
     }
     console.log(comment.author._id)
 
-    if (comment.author.toString() !== req.user.userId.toString()) {
+    if (comment.author.toString() !== req.user._id.toString()) {
       return res
         .status(StatusCodes.FORBIDDEN)
         .json({ message: "You don't have permission to edit this comment" });
