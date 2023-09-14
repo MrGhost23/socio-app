@@ -103,6 +103,26 @@ const getFollowing = async (req, res) => {
   }
 };
 
+const isFollowing = async (req, res) => {
+  try {
+    const currentUser = req.user;
+
+    const userToCheck = await User.findOne({ username: req.params.username });
+    if (!userToCheck) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isFollowing = currentUser.following.includes(
+      userToCheck._id.toString()
+    );
+
+    res.status(200).json({ isFollowing });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 const blockUnblockUser = async (req, res) => {
   try {
     const currentUser = await User.findOne({ username: req.body.username });
@@ -208,6 +228,7 @@ module.exports = {
   followUser,
   getFollowing,
   getFollowers,
+  isFollowing,
   blockUnblockUser,
   getBlockedUsers,
   toggleBookmark,
