@@ -108,7 +108,7 @@ const Navbar: React.FC = () => {
                   className="w-14 !m-0"
                   src={user.userPicture}
                   alt={user.firstName + " " + user.lastName}
-                  id={user.username}
+                  username={user.username}
                 />
               ) : (
                 <svg
