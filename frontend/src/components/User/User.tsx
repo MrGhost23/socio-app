@@ -84,7 +84,7 @@ const SuggestedUser: React.FC<Props> = ({
           text={buttonText}
           bg={false}
           onClick={buttonClickHandler}
-          className="capitalize"
+          className="text-[0.95rem] capitalize"
         />
       </div>
     </div>
