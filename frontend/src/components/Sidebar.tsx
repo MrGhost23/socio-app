@@ -18,7 +18,8 @@ import Backdrop from "./Backdrop";
 
 const Sidebar = () => {
   const currentUser = useSelector(selectUser);
-  const currentUserFullName = currentUser!.firstName + " " + currentUser!.lastName;
+  const currentUserFullName =
+    currentUser!.firstName + " " + currentUser!.lastName;
   const currentUserTag = currentUser!.username;
   const currentUserImage = currentUser!.userPicture;
 
