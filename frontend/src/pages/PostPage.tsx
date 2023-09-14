@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 import Post from '../components/Post/Post';
 import { PostType } from "../Types/Post.types";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../ui/Loading";
 
 const PostPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   
   const [postData, setPostData] = useState<PostType>();
   const [isLoading, setIsLoading] = useState(true);
@@ -26,12 +27,28 @@ const PostPage = () => {
 
     fetchPostData();
   }, [id])
+
+  const removePost = (postId: string) => {
+    navigate("/");
+  };
+
+  const editPost = (postId: string, description: string, image: object) => {
+    setPostData(prevState => {
+      const updatedPost: PostType[] = [];
+      updatedPost.push({
+        ...prevState,
+        description,
+        image
+      });
+      return updatedPost;
+    });
+  };
   
   if (isLoading) return <Loading />;
   if (error) return <p>An error occurred</p>;
 
   return (
-    <Post post={postData!} />
+    <Post post={postData!} removePost={removePost} editPost={editPost} />
   );
 };
 
