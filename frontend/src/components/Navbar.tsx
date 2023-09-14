@@ -1,16 +1,16 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 import { BsSearch } from "react-icons/bs";
 import { FaMoon } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
 import { AiFillMessage } from "react-icons/ai";
-import { IoIosNotifications } from "react-icons/io";
-import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
-import { RootState } from "../store/store";
-import { selectSideOpen, toggleSidebar } from "../store/slices/sidebarSlice";
 import { MdClose } from "react-icons/md";
+import { IoIosNotifications } from "react-icons/io";
+import { RootState } from "../store/store";
 import { selectUser } from "../store/slices/authSlice";
+import { selectSideOpen, toggleSidebar } from "../store/slices/sidebarSlice";
 import UserImage from "./User/UserImage";
 
 const Navbar: React.FC = () => {
@@ -103,27 +103,12 @@ const Navbar: React.FC = () => {
 
           <div className="ml-8 hidden sm:flex flex-col font-bold">
             <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
-              {user.userPicture ? (
-                <UserImage
-                  className="w-14 !m-0"
-                  src={user.userPicture}
-                  alt={user.firstName + " " + user.lastName}
-                  username={user.username}
-                />
-              ) : (
-                <svg
-                  className="absolute w-12 h-12 text-gray-400 -left-1"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-              )}
+              <UserImage
+                className="w-14 !m-0"
+                src={user.userPicture}
+                alt={user.firstName + " " + user.lastName}
+                username={user.username}
+              />
             </div>
           </div>
           <button
