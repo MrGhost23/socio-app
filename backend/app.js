@@ -27,6 +27,7 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors({ origin: "http://localhost:3000" }));
 const path = require("path");
 const verifyToken = require("./middleware/auth");
+const authenticateUser = require("./middleware/authenticateUser");
 
 // EXPRESS STATIC HERE
 
@@ -53,9 +54,8 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/posts", postRouter);
 app.use("/api/v1/posts", commentRouter);
 
-app.use("/api/v1/validateToken", verifyToken, async (req, res) => {
+app.use("/api/v1/validateToken", authenticateUser, async (req, res) => {
   const userData = req.user;
-  console.log(userData);
   if (!userData) {
     throw new CustomError.UnauthenticatedError("Token not valid");
   }

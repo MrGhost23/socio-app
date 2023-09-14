@@ -10,17 +10,22 @@ const {
   isFollowing,
 } = require("../controllers/usersController.js");
 const verifyToken = require("../middleware/auth.js");
+const authenticateUser = require("../middleware/authenticateUser.js");
 
 const router = require("express").Router();
 
-router.get("/:username", verifyToken, getUser);
-router.put("/:username/follow", verifyToken, followUser);
-router.get("/:username/followers", verifyToken, getFollowers);
-router.get("/:username/following", verifyToken, getFollowing);
-router.get("/:username/isFollowing", verifyToken, isFollowing);
-router.post("/:username/block-unblock", verifyToken, blockUnblockUser);
-router.get("/:username/blocked-users", verifyToken, getBlockedUsers);
-router.post("/:username/toggle-bookmark/:postId", verifyToken, toggleBookmark);
-router.get("/:username/bookmarked-posts", verifyToken, getBookmarkedPosts);
+router.get("/:username", authenticateUser, getUser);
+router.put("/:username/follow", authenticateUser, followUser);
+router.get("/:username/followers", authenticateUser, getFollowers);
+router.get("/:username/following", authenticateUser, getFollowing);
+router.get("/:username/isFollowing", authenticateUser, isFollowing);
+router.post("/:username/block-unblock", authenticateUser, blockUnblockUser);
+router.get("/:username/blocked-users", authenticateUser, getBlockedUsers);
+router.post(
+  "/:username/toggle-bookmark/:postId",
+  authenticateUser,
+  toggleBookmark
+);
+router.get("/:username/bookmarked-posts", authenticateUser, getBookmarkedPosts);
 
 module.exports = router;

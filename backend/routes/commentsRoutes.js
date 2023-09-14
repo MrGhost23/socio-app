@@ -6,13 +6,14 @@ const {
   editComment,
 } = require("../controllers/commentController");
 const verifyToken = require("../middleware/auth");
+const authenticateUser = require("../middleware/authenticateUser");
 
-router.post("/:postId/comments", verifyToken, createComment);
+router.post("/:postId/comments", authenticateUser, createComment);
 
-router.get("/:postId/comments", verifyToken, getCommentsForPost);
+router.get("/:postId/comments", authenticateUser, getCommentsForPost);
 
-router.patch("/comments/:commentId", verifyToken, editComment);
+router.patch("/comments/:commentId", authenticateUser, editComment);
 
-router.delete("/comments/:commentId", verifyToken, deleteComment);
+router.delete("/comments/:commentId", authenticateUser, deleteComment);
 
 module.exports = router;

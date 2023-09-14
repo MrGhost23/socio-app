@@ -9,14 +9,15 @@ const {
   getSinglePost,
 } = require("../controllers/postsController");
 const verifyToken = require("../middleware/auth");
+const authenticateUser = require("../middleware/authenticateUser");
 
-router.get("/user/:username", verifyToken, getUserPosts);
+router.get("/user/:username", authenticateUser, getUserPosts);
 
-router.get("/:postId", verifyToken, getSinglePost);
-router.patch("/:postId", verifyToken, editPost);
-router.delete("/:postId", verifyToken, deletePost);
+router.get("/:postId", authenticateUser, getSinglePost);
+router.patch("/:postId", authenticateUser, editPost);
+router.delete("/:postId", authenticateUser, deletePost);
 
-router.get("/", verifyToken, getFeedPosts);
-router.patch("/:id/like", verifyToken, likePosts);
+router.get("/", authenticateUser, getFeedPosts);
+router.patch("/:id/like", authenticateUser, likePosts);
 
 module.exports = router;
