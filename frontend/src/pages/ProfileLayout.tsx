@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from 'react';
 import { Outlet, useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { ImBlocked } from "react-icons/im";
 import { PiWarningBold } from "react-icons/pi";
+import axios from 'axios';
 import { selectUser } from "../store/slices/authSlice";
 import useUserProfile from "../hooks/useUserProfile";
 import useProfileActions from "../hooks/useProfileActions";
@@ -14,34 +15,26 @@ import Button from "../ui/Button";
 
 const ProfileLayout = () => {
   const navigate = useNavigate();
-  const user = useSelector(selectUser);
+  const currentUser = useSelector(selectUser);
   const { username } = useParams();
   const { profile, loading, error } = useUserProfile(username!);
-  
-  const {
-    followUser,
-    unFollowUser,
-    blockUser,
-    reportUser
-  } = useProfileActions(profile?._id, profile?.firstName, profile?.lastName);
-
-  const isMyProfile = user?.username === profile?.username;
-
+  const isMyProfile = currentUser?.username === profile?.username;
   const [isFollowing, setIsFollowing] = useState(false);
   const [menuOpened, setMenuOpened] = useState(false);
+  
+  const {
+    toggleFollowUser,
+    toggleBlockUser,
+    reportUser
+  } = useProfileActions();
 
-  const followHandler = () => {
-    followUser();
-    setIsFollowing(true);
+  const toggleFollowHandler = () => {
+    toggleFollowUser(profile!.username);
+    setIsFollowing(prevState => !prevState);
   };
 
-  const unFollowHandler = () => {
-    unFollowUser();
-    setIsFollowing(false);
-  };
-
-  const blockHandler = () => {
-    blockUser();
+  const toggleBlockHandler = () => {
+    toggleBlockUser(profile!.username);
     setMenuOpened(false);
   };
 
@@ -92,6 +85,21 @@ const ProfileLayout = () => {
       postAuthorLastName: "Quigley",
     },
   ];
+
+  useEffect(() => {
+    const fetchIsFollowing = async () => {
+      if (isMyProfile) return;
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/v1/users/${username}/isFollowing`
+        );
+        setIsFollowing(response.data.isFollowing);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchIsFollowing();
+  }, [isMyProfile, username]);
   
   if (loading && !profile) return;
   if (!loading && !profile) {
@@ -119,7 +127,7 @@ const ProfileLayout = () => {
             {menuOpened && (
               <ul className="absolute top-7 -right-2 md:translate-x-full px-6 py-4 bg-white rounded border border-gray-10 shadow-md flex flex-col gap-4">
                 <li>
-                  <Button text="Block" bg={false} onClick={blockHandler} icon={ImBlocked} />
+                  <Button text="Block" bg={false} onClick={toggleBlockHandler} icon={ImBlocked} />
                 </li>
                 <li>
                   <Button text="Report" bg={false} onClick={reportHandler} icon={PiWarningBold} iconClasses="!text-lg" />
@@ -138,7 +146,7 @@ const ProfileLayout = () => {
                 />
                 <Button
                   text={isFollowing ? "Unfollow" : "Follow"}
-                  onClick={isFollowing ? unFollowHandler : followHandler}
+                  onClick={toggleFollowHandler}
                   bg={true}
                 />
               </>

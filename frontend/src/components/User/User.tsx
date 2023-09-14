@@ -1,10 +1,10 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { UserType } from "../../Types/User.types";
 import useProfileActions from "../../hooks/useProfileActions";
 import UserImage from "./UserImage";
 import UserFullName from "./UserFullName";
 import Button from "../../ui/Button";
-import { useState, useEffect } from "react";
-import axios from "axios";
 
 type Props = {
   user: UserType;
@@ -32,13 +32,16 @@ const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode }) => {
       }
     };
     fetchIsFollowing();
-  }, []);
+  }, [mode, user.username]);
 
-  const { followUser, blockUser } = useProfileActions();
+  const {
+    toggleFollowUser,
+    toggleBlockUser
+  } = useProfileActions();
 
   const buttonClickHandler = () => {
     if (mode === "follow") {
-      followUser(user.username);
+      toggleFollowUser(user.username);
 
       if (buttonText === 'Follow') {
         setButtonText('Unfollow');
@@ -46,7 +49,7 @@ const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode }) => {
         setButtonText('Follow');
       }
     } else {
-      blockUser(user.username);
+      toggleBlockUser(user.username);
 
       if (buttonText === "block") {
         setButtonText("unblock");
@@ -88,7 +91,7 @@ const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode }) => {
           </p>
         )}
         <Button
-          text={buttonText!}
+          text={buttonText}
           bg={false}
           onClick={buttonClickHandler}
           className="text-[0.95rem] capitalize"
