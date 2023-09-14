@@ -3,6 +3,7 @@ import useProfileActions from '../../hooks/useProfileActions';
 import UserImage from "./UserImage";
 import UserFullName from "./UserFullName";
 import Button from "../../ui/Button";
+import { useState } from 'react';
 
 type Props = {
   user: UserType;
@@ -15,20 +16,39 @@ const SuggestedUser: React.FC<Props> = ({
   changeStyle,
   mode,
 }) => {
-  const mainContainerClasses = "flex items-center";
+  const mainContainerClasses = "flex";
   const infoContainerClasses = "flex flex-col text-gray-600";
+
+  const text = [
+    ['follow', 'unfollow'],
+    ['block', 'unblock'],
+  ];
+
+  const [buttonText, setButtonText] = useState(mode === 'follow' ? text[0][0] : text[1][0]);
 
   const {
     followUser,
     blockUser,
-  } = useProfileActions(user.username, user.firstName, user.lastName);
+  } = useProfileActions();
 
-  const followHandler = () => {
-    followUser();
-  };
+  const buttonClickHandler = () => {
+    if (mode === "follow") {
+      followUser(user.username);
 
-  const unBlockHandler = () => {
-    blockUser();
+      if (buttonText === text[0][0]) {
+        setButtonText(text[0][1]);
+      } else {
+        setButtonText(text[0][0]);
+      }
+    } else {
+      blockUser(user.username);
+      
+      if (buttonText === text[1][0]) {
+        setButtonText(text[1][1]);
+      } else {
+        setButtonText(text[1][0]);
+      }
+    }
   };
 
   return (
@@ -53,16 +73,18 @@ const SuggestedUser: React.FC<Props> = ({
         }
       >
         <UserFullName
-          className="!text-base font-medium whitespace-nowrap"
+          className="!text-base font-semibold whitespace-nowrap"
           fullName={user.firstName + " " + user.lastName}
           username={user.username}
         />
-        <p className="text-sm whitespace-nowrap">{user.followers} followers</p>
+        {
+          mode === 'follow' && <p className="text-sm whitespace-nowrap">{user.followers} followers</p>
+        }
         <Button
-          text={mode === "follow" ? "Follow" : "Unblock"}
+          text={buttonText}
           bg={false}
-          onClick={mode === "follow" ? followHandler : unBlockHandler}
-          className="!text-sm"
+          onClick={buttonClickHandler}
+          className="capitalize"
         />
       </div>
     </div>
