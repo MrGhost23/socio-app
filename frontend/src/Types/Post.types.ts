@@ -6,8 +6,8 @@ export interface PostType {
   lastName: string;
   description: string;
   userPicture: string;
-  postImage: string;
+  postImage?: string;
   createdAt: string;
   updatedAt: string;
-  likes: string[];
+  likes: object;
 }
