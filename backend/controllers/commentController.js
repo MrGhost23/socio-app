@@ -13,9 +13,10 @@ const createComment = async (req, res) => {
     }
     const newComment = new Comment({
       text,
-      author: req.user.userId,
+      author: req.user._id,
       post: postId,
     });
+
     const savedComment = await newComment.save();
     res.status(StatusCodes.CREATED).json(savedComment);
   } catch (error) {
@@ -81,7 +82,7 @@ const deleteComment = async (req, res) => {
         .json({ message: "Comment not found" });
     }
 
-    if (comment.author.toString() !== req.user.userId.toString()) {
+    if (comment.author.toString() !== req.user._id.toString()) {
       return res
         .status(StatusCodes.FORBIDDEN)
         .json({ message: "You do not have permission to delete this comment" });
