@@ -16,9 +16,17 @@ type Props = {
   userFirstName: string;
   userLastName: string;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
+  removePost: (postId: string) => void;
 };
 
-const PostMenu: React.FC<Props> = ({ postId, username, userFirstName, userLastName, setIsEditing }) => {
+const PostMenu: React.FC<Props> = ({
+  postId,
+  username,
+  userFirstName,
+  userLastName,
+  setIsEditing,
+  removePost
+}) => {
   const [menuOpened, setMenuOpened] = useState(false);
 
   const currentUser = useSelector(selectUser);
@@ -31,19 +39,18 @@ const PostMenu: React.FC<Props> = ({ postId, username, userFirstName, userLastNa
   } = useProfileActions(username, userFirstName, userLastName);
 
   const {
-    bookmarkPost,
-    unBookmarkPost,
+    toggleBookmarkPost,
     deletePost
   } = usePostActions();
 
   const bookmarkHandler = () => {
-    bookmarkPost(postId);
+    toggleBookmarkPost(postId);
     setInBookmarks(true);
     setMenuOpened(false);
   };
 
   const unBookmarkHandler = () => {
-    unBookmarkPost(postId);
+    toggleBookmarkPost(postId);
     setInBookmarks(false);
     setMenuOpened(false);
   };
@@ -56,6 +63,7 @@ const PostMenu: React.FC<Props> = ({ postId, username, userFirstName, userLastNa
   const deleteHandler = () => {
     deletePost(postId);
     setMenuOpened(false);
+    removePost(postId);
   };
 
   const blockHandler = () => {
