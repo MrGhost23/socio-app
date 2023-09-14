@@ -5,6 +5,7 @@ import UserFullName from "./UserFullName";
 import Button from "../../ui/Button";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 
 type Props = {
   user: UserType;
@@ -49,11 +50,13 @@ const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode }) => {
 
   const [isFollowing, setIsFollowing] = useState<boolean>();
 
+  const { username } = useParams();
+
   useEffect(() => {
     const fetchIsFollowing = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/v1/users/MrGhost/isFollowing`
+          `http://localhost:5000/api/v1/users/${username}/isFollowing`
         );
         setIsFollowing(response.data.isFollowing);
         console.log(response.data.isFollowing);
@@ -62,7 +65,7 @@ const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode }) => {
       }
     };
     fetchIsFollowing();
-  }, [user.username]);
+  }, [username]);
 
   return (
     <div
