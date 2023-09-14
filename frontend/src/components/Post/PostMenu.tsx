@@ -36,7 +36,7 @@ const PostMenu: React.FC<Props> = ({
   const {
     blockUser,
     reportUser
-  } = useProfileActions(username, userFirstName, userLastName);
+  } = useProfileActions();
 
   const {
     toggleBookmarkPost,
@@ -67,7 +67,7 @@ const PostMenu: React.FC<Props> = ({
   };
 
   const blockHandler = () => {
-    blockUser();
+    blockUser(username);
     setMenuOpened(false);
   };
 
