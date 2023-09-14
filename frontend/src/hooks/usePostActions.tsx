@@ -6,15 +6,7 @@ import axios from "axios";
 const usePostActions = () => {
   const currentUser = useSelector(selectUser);
 
-  const bookmarkPost = async (postId: string) => {
-    try {
-      await axios.post(`http://localhost:5000/api/v1/users/${currentUser!.username}/toggle-bookmark/${postId}`);
-    } catch (error) {
-      toast.info(`Something went wrong!`);
-    }
-  };
-
-  const unBookmarkPost = async (postId: string) => {
+  const toggleBookmarkPost = async (postId: string) => {
     try {
       await axios.post(`http://localhost:5000/api/v1/users/${currentUser!.username}/toggle-bookmark/${postId}`);
     } catch (error) {
@@ -43,8 +35,7 @@ const usePostActions = () => {
   };
 
   return {
-    bookmarkPost,
-    unBookmarkPost,
+    toggleBookmarkPost,
     editPost,
     deletePost,
   };
