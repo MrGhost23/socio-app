@@ -19,9 +19,7 @@ const Followers = () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/v1/users/${username}/followers`);
         setFollowers(response.data);
-        console.log(response.data)
       } catch (error) {
-        console.log(error)
         setError(!!error)
       }
       setIsLoading(false);

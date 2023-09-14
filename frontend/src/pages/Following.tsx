@@ -10,7 +10,7 @@ import Loading from "../ui/Loading";
 const Following = () => {
   const { username } = useParams();
 
-  const [following, setFollowers] = useState<UserType[]>();
+  const [following, setFollowing] = useState<UserType[]>();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -20,10 +20,8 @@ const Following = () => {
         const response = await axios.get(
           `http://localhost:5000/api/v1/users/${username}/following`
         );
-        setFollowers(response.data);
-        console.log(response.data);
+        setFollowing(response.data);
       } catch (error) {
-        console.log(error);
         setError(!!error);
       }
       setIsLoading(false);
