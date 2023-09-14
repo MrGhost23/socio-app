@@ -12,9 +12,9 @@ const useCommentActions = () => {
     } catch (error) {
       toast.info(
         `Something went wrong!`
-      );
-    }
-  };
+        );
+      }
+    };
 
   const editComment = async (commentId: string, text: string) => {
     try {
