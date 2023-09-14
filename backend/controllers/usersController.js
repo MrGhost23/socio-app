@@ -31,35 +31,48 @@ const getUser = async (req, res) => {
 // };
 
 const followUser = async (req, res) => {
-  if (req.body.username !== req.params.username) {
-    try {
-      const user = await User.findOne({ username: req.params.username });
-      const currentUser = await User.findOne({ username: req.body.username });
+  try {
+    const userToFollow = await User.findOne({ username: req.params.username });
+    const currentUser = await User.findOne({ username: req.body.username });
 
-      if (!user.followers.includes(req.body.username)) {
-        user.followers.push(req.body.username);
-        currentUser.following.push(req.params.username);
-
-        await user.save();
-        await currentUser.save();
-
-        res.status(200).json("User has been followed!");
-      } else {
-        res.status(403).json("You already follow this user.");
-      }
-    } catch (err) {
-      console.error(err);
-      res.status(500).json("Internal Server Error.");
+    if (!userToFollow || !currentUser) {
+      return res.status(404).json({ message: "User not found" });
     }
-  } else {
-    res.status(403).json("You can't follow yourself.");
+
+    const isFollowing = currentUser.following.includes(userToFollow._id);
+
+    if (isFollowing) {
+      currentUser.following = currentUser.following.filter(
+        (userId) => userId.toString() !== userToFollow._id.toString()
+      );
+      await currentUser.save();
+
+      userToFollow.followers = userToFollow.followers.filter(
+        (userId) => userId.toString() !== currentUser._id.toString()
+      );
+      await userToFollow.save();
+
+      res.status(200).json("You have unfollowed this user.");
+    } else {
+      currentUser.following.push(userToFollow._id);
+      await currentUser.save();
+
+      userToFollow.followers.push(currentUser._id);
+      await userToFollow.save();
+
+      res.status(200).json("You are now following this user.");
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json("Internal Server Error.");
   }
 };
 
 const getFollowers = async (req, res) => {
   try {
     const user = await User.findOne({ username: req.params.username }).populate(
-      "followers"
+      "followers",
+      "_id username firstName lastName userPicture"
     );
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -75,11 +88,13 @@ const getFollowers = async (req, res) => {
 const getFollowing = async (req, res) => {
   try {
     const user = await User.findOne({ username: req.params.username }).populate(
-      "following"
+      "following",
+      "_id username firstName lastName userPicture"
     );
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
     const following = user.following;
     res.status(200).json(following);
   } catch (error) {
@@ -153,14 +168,12 @@ const toggleBookmark = async (req, res) => {
       await currentUser.save();
       res.status(200).json({
         message: "Post has been unbookmarked",
-        postImage: `http://localhost:5000/assets/${postToToggle.postImage}`,
       });
     } else {
       currentUser.bookmarks.push(postToToggle._id);
       await currentUser.save();
       res.status(200).json({
         message: "Post has been bookmarked",
-        postImage: `http://localhost:5000/assets/${postToToggle.postImage}`,
       });
     }
   } catch (error) {
@@ -175,14 +188,14 @@ const getBookmarkedPosts = async (req, res) => {
       username: req.params.username,
     }).populate(
       "bookmarks",
-      "_id username firstName lastName description postImage userPicture"
+      "_id username firstName lastName description postImage userPicture createdAt"
     );
 
     if (!currentUser) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const bookmarkedPosts = currentUser.bookmarks;
+    const bookmarkedPosts = currentUser.bookmarks.reverse();
     res.status(200).json(bookmarkedPosts);
   } catch (error) {
     console.error(error);
