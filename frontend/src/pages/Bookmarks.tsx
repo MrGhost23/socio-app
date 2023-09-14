@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSelector } from "react-redux";
 import { selectUser } from "../store/slices/authSlice";
 import axios from "axios";
@@ -13,28 +13,28 @@ const Bookmarks = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  useEffect(() => {
-    const getUserBookmarks = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/api/v1/users/${currentUser!.username}/bookmarked-posts`);
-        setBookmarkPosts(response.data);
-        console.log(response.data)
-      } catch (error) {
-        console.log(error)
-        setError(!!error)
-      }
-      setIsLoading(false);
+  const getUserBookmarks = useCallback( async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/v1/users/${currentUser!.username}/bookmarked-posts`);
+      setBookmarkPosts(response.data);
+    } catch (error) {
+      setError(!!error)
     }
+    setIsLoading(false);
+  }, [currentUser]);
 
+  useEffect(() => {
     getUserBookmarks();
-  }, [currentUser])
+  }, [getUserBookmarks])
 
   if (isLoading) return <Loading />;
   if (error) return <p>An error occurred</p>;
+  if (bookmarkPosts!.length === 0) return <p>You have no bookmarks</p>
 
   return (
     <BookmarkPosts
       posts={bookmarkPosts!}
+      reFetchFunction={getUserBookmarks}
     />
   );
 };
