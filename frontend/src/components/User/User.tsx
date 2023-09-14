@@ -5,7 +5,6 @@ import UserFullName from "./UserFullName";
 import Button from "../../ui/Button";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
 
 type Props = {
   user: UserType;
@@ -17,37 +16,7 @@ const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode }) => {
   const mainContainerClasses = "flex";
   const infoContainerClasses = "flex flex-col text-gray-600";
 
-  const text = [
-    ["follow", "unfollow"],
-    ["unblock", "block"],
-  ];
-
-  const [buttonText, setButtonText] = useState(
-    mode === "follow" ? text[0][0] : text[1][0]
-  );
-
-  const { followUser, blockUser } = useProfileActions();
-
-  const buttonClickHandler = () => {
-    if (mode === "follow") {
-      followUser(user.username);
-
-      if (buttonText === text[0][0]) {
-        setButtonText(text[0][1]);
-      } else {
-        setButtonText(text[0][0]);
-      }
-    } else {
-      blockUser(user.username);
-
-      if (buttonText === text[1][0]) {
-        setButtonText(text[1][1]);
-      } else {
-        setButtonText(text[1][0]);
-      }
-    }
-  };
-  const [isFollowing, setIsFollowing] = useState<boolean>();
+  const [buttonText, setButtonText] = useState("");
 
   useEffect(() => {
     const fetchIsFollowing = async () => {
@@ -55,16 +24,37 @@ const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode }) => {
         const response = await axios.get(
           `http://localhost:5000/api/v1/users/${user.username}/isFollowing`
         );
-        setIsFollowing(response.data.isFollowing);
-        console.log(user.username, "===========================");
-
-        console.log(response.data.isFollowing);
+        setButtonText(
+          mode === "follow" ? (response.data.isFollowing ? 'Unfollow' : 'Follow') : "unblock"
+        )
       } catch (error) {
         console.log(error);
       }
     };
     fetchIsFollowing();
-  }, [user.username]);
+  }, []);
+
+  const { followUser, blockUser } = useProfileActions();
+
+  const buttonClickHandler = () => {
+    if (mode === "follow") {
+      followUser(user.username);
+
+      if (buttonText === 'Follow') {
+        setButtonText('Unfollow');
+      } else {
+        setButtonText('Follow');
+      }
+    } else {
+      blockUser(user.username);
+
+      if (buttonText === "block") {
+        setButtonText("unblock");
+      } else {
+        setButtonText("block");
+      }
+    }
+  };
 
   return (
     <div
@@ -98,7 +88,7 @@ const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode }) => {
           </p>
         )}
         <Button
-          text={buttonText}
+          text={buttonText!}
           bg={false}
           onClick={buttonClickHandler}
           className="text-[0.95rem] capitalize"
