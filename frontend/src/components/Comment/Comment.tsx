@@ -9,10 +9,11 @@ import CommentText from "./CommentText";
 
 type Props = {
   comment: CommentType;
-  reFetchFunction: () => void;
+  removeCommentFunction: (commentId: string) => void;
+  editCommentFunction: (commentId: string, text: string) => void;
 };
 
-const Comment: React.FC<Props> = ({ comment, reFetchFunction }) => {
+const Comment: React.FC<Props> = ({ comment, removeCommentFunction, editCommentFunction }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
@@ -22,7 +23,7 @@ const Comment: React.FC<Props> = ({ comment, reFetchFunction }) => {
           commentId={comment._id}
           commentText={comment.text}
           setIsEditing={setIsEditing}
-          reFetchFunction={reFetchFunction}
+          editCommentFunction={editCommentFunction}
         />
       ) : (
         <div className="flex flex-row items-start gap-2 group">
@@ -46,7 +47,8 @@ const Comment: React.FC<Props> = ({ comment, reFetchFunction }) => {
                 commentId={comment._id}
                 commentAuthorUsername={comment.author.username}
                 setIsEditing={setIsEditing}
-                reFetchFunction={reFetchFunction}
+                removeCommentFunction={removeCommentFunction}
+                editCommentFunction={editCommentFunction} 
               />
             </div>
             <CommentText text={comment.text} />

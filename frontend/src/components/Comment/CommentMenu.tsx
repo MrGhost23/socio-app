@@ -10,14 +10,15 @@ type Props = {
   commentId: string;
   commentAuthorUsername: string;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
-  reFetchFunction: () => void;
+  removeCommentFunction: (commentId: string) => void;
+  editCommentFunction: (commentId: string, text: string) => void;
 };
 
 const CommentMenu: React.FC<Props> = ({
   commentId,
   commentAuthorUsername,
   setIsEditing,
-  reFetchFunction
+  removeCommentFunction
 }) => {
   const [menuOpened, setMenuOpened] = useState(false);
 
@@ -34,7 +35,7 @@ const CommentMenu: React.FC<Props> = ({
 
   const deleteHandler = async () => {
     await deleteComment(commentId);
-    reFetchFunction();
+    removeCommentFunction(commentId);
     setMenuOpened(false);
   };
 
