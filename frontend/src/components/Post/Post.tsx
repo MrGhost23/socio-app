@@ -18,9 +18,11 @@ import PostMenu from "./PostMenu";
 
 type Props = {
   post: PostType;
+  updatePost: (postId: string, description: string, image: object) => void;
+  removePost: (postId: string) => void;
 };
 
-const Post: React.FC<Props> = ({ post }) => {
+const Post: React.FC<Props> = ({ post, removePost, updatePost }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const [comments, setComments] = useState<Comment[]>([]);
@@ -33,10 +35,28 @@ const Post: React.FC<Props> = ({ post }) => {
         setComments(response.data)
         setIsLoading(false);
       }).catch((error) => {
-        console.error(error)
+        console.log(error)
         setIsLoading(false);
       });
   }, [post._id]);
+
+  const removeCommentFunction = (commentId: string) => {
+    setComments(prevState => prevState.filter((comment: Comment )=> comment._id !== commentId));
+  };
+
+  const editCommentFunction = (commentId: string, text: string) => {
+    setComments((prevState) => {
+      const updatedComments: Comment[] = [];
+      prevState.forEach(comment => {
+        if (comment._id === commentId) {
+          updatedComments.push({ ...comment, text });
+        } else {
+          updatedComments.push(comment);
+        }
+      });
+      return updatedComments;
+    });
+  };
 
   useEffect(() => {
     getPostComments()
@@ -70,14 +90,13 @@ const Post: React.FC<Props> = ({ post }) => {
         <PostMenu
           postId={post._id}
           username={post.username}
-          userFirstName={post.firstName}
-          userLastName={post.lastName}
           setIsEditing={setIsEditing}
+          removePost={removePost}
         />
       </div>
       <div className="flex flex-col">
         {isEditing ? (
-          <PostForm />
+          <PostForm text={post.description} postImage={post.postImage} postId={post._id} setIsEditing={setIsEditing} updatePost={updatePost} />
         ) : (
           <>
             <PostText text={post.description} />
@@ -98,7 +117,7 @@ const Post: React.FC<Props> = ({ post }) => {
           postId={post._id}
         />
         <VerticalLine className="mb-5" />
-        <Comments comments={comments} reFetchFunction={getPostComments} />
+        <Comments comments={comments} removeCommentFunction={removeCommentFunction} editCommentFunction={editCommentFunction} />
         <CommentForm postId={post._id} reFetchFunction={getPostComments} />
       </div>
     </Card>

@@ -1,31 +1,35 @@
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
+import { useSelector } from "react-redux";
 import { BsImage } from "react-icons/bs";
 import { MdOutlineClose } from "react-icons/md";
 import { selectUser } from "../../store/slices/authSlice";
-import { createPost, selectPostLoading } from "../../store/slices/postsSlice";
+import UserImage from "../User/UserImage";
 import Card from "../../ui/Card";
 import Button from "../../ui/Button";
-import noAvatar from "../../assets/noAvatar.png";
+import usePostActions from "../../hooks/usePostActions";
 
-import { RootState } from "../../store/store";
-
-interface PostData {
-  description: string;
-  username: string | undefined;
-  postImage?: File | string | object;
+type Props = {
+  fetchPosts?: () => void;
+  updatePost?: (postId: string, description: string, image: object) => void;
+  text?: string;
+  postId?: string;
+  postImage?: string;
+  setIsEditing?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const PostForm: React.FC = () => {
+const PostForm: React.FC<Props> = ({ fetchPosts, text, postImage, postId, setIsEditing, updatePost }) => {
   const user = useSelector(selectUser);
-  const createPostLoading = useSelector(selectPostLoading);
-  const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
 
-  const [description, setDescription] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [description, setDescription] = useState(text || "");
   const [descriptionError, setDescriptionError] = useState("");
-  const [image, setImage] = useState<object | null>(null);
-  const [previewImage, setPreviewImage] = useState<string>("");
+  const [image, setImage] = useState<object | null>(postImage || null);
+  const [previewImage, setPreviewImage] = useState<string>(
+    postImage ?
+      `http://localhost:5000/assets/${encodeURIComponent(postImage)}`
+    :
+      ""
+  );
 
   const changeHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDescription(e.target.value);
@@ -43,37 +47,54 @@ const PostForm: React.FC = () => {
     setPreviewImage("");
   };
 
-  const submitHandler = () => {
-    const formData = new FormData();
-    formData.append("username", user?.username);
-    formData.append("description", description);
-    // const postData: PostData = {
-    //   description,
-    //   username: user?.username,
-    // };
+  const { createPost, editPost } = usePostActions();
 
-    if (image) {
-      formData.append("postImage", image);
+  const submitHandler = async () => {
+    if (updatePost) {
+      await editPost(postId!, description, image);
+      updatePost(postId!, description, image!);
+      setIsEditing!(false);
+      return;
     }
+    const formData = new FormData();
+    formData.append("username", user!.username);
+    formData.append("description", description);
+    formData.append("postImage", image);
+
     if (!description && !image) {
       setDescriptionError("You must provide a description or image at least!");
       return;
     }
-    dispatch(createPost(formData));
 
+    setIsLoading(true);
+    createPost((formData));
+
+    fetchPosts!();
     setDescription("");
     setImage(null);
     setPreviewImage("");
+    setIsLoading(false);
   };
 
   return (
-    <Card>
-      <div className="mb-8 mx-10 py-6 flex flex-col items-center lg:items-start lg:flex-row gap-4">
-        <img
-          className="w-14 h-14 rounded-full shadow-lg"
-          src={user!.userPicture || noAvatar}
-          alt={`${user!.firstName} ${user!.lastName}'s profile picture`}
-        />
+    <Card className={text && "shadow-none"}>
+      <div
+        className={
+          text ?
+            "py-6 flex flex-col items-center lg:items-start lg:flex-row gap-4"
+          :
+            "mb-8 mx-10 py-6 flex flex-col items-center lg:items-start lg:flex-row gap-4"
+        }
+      >
+        {
+          !text &&
+          <UserImage
+            className="min-w-[3.5rem] min-h-[3.5rem] w-14 h-14 rounded-full shadow-lg"
+            src={user!.userPicture}
+            alt={`${user!.firstName} ${user!.lastName}'s profile picture`}
+            username={user!.username}
+          />
+        }
         <div className="w-full flex flex-col items-center md:items-start gap-3">
           <textarea
             className={`w-full min-h-[6rem] h-fit max-h-[14rem] resize-y pl-4 pr-7 py-1.5 border rounded-xl outline-none ${
@@ -103,11 +124,11 @@ const PostForm: React.FC = () => {
             </div>
             <div className="">
               <Button
-                text={createPostLoading ? "Loading..." : "Submit"}
+                text={isLoading ? "Loading..." : (!text ? "Submit" : "Save")}
                 bg={true}
-                onClick={createPostLoading ? null : submitHandler}
+                onClick={isLoading ? () => {} : submitHandler}
                 className={`!px-10 !py-1.5 ${
-                  createPostLoading ? "cursor-wait" : ""
+                  isLoading ? "cursor-wait" : ""
                 }`}
               />
             </div>

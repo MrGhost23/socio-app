@@ -50,8 +50,8 @@ const PostMenu: React.FC<Props> = ({
     setMenuOpened(false);
   };
 
-  const deleteHandler = () => {
-    deletePost(postId);
+  const deleteHandler = async () => {
+    await deletePost(postId);
     setMenuOpened(false);
     removePost(postId);
   };
