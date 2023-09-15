@@ -5,7 +5,6 @@ const {
   deleteComment,
   editComment,
 } = require("../controllers/commentController");
-const verifyToken = require("../middleware/auth");
 const authenticateUser = require("../middleware/authenticateUser");
 
 router.post("/:postId/comments", authenticateUser, createComment);

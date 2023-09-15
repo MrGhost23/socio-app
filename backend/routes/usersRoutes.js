@@ -9,7 +9,6 @@ const {
   getBookmarkedPosts,
   isFollowing,
 } = require("../controllers/usersController.js");
-const verifyToken = require("../middleware/auth.js");
 const authenticateUser = require("../middleware/authenticateUser.js");
 
 const router = require("express").Router();
