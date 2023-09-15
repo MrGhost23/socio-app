@@ -1,3 +1,7 @@
+interface Likes {
+  [key: string]: boolean;
+}
+
 export interface PostType {
   _id: string;
   userId: string;
@@ -9,5 +13,5 @@ export interface PostType {
   postImage?: string;
   createdAt: string;
   updatedAt: string;
-  likes: object;
+  likes: Likes;
 }
