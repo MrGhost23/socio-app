@@ -20,12 +20,21 @@ const ProfileLayout = () => {
   const currentUser = useSelector(selectUser);
   const { username } = useParams();
   const { profile, loading, error } = useUserProfile(username!);
+  const [followers, setFollowers] = useState<number>(0);
+
+  useEffect(() => {
+    if (profile) {
+      setFollowers(profile.followers.length);
+    }
+  }, [profile])
+  
   const [userActivities, setUserActivities] = useState<RecentActivityType[]>();
   const [userActivitiesLoading, setUserActivitiesLoading] = useState<boolean>(true);
   const [userActivitiesError, setUserActivitiesError] = useState<boolean>(false);
   const isMyProfile = currentUser?.username === profile?.username;
   const [isFollowing, setIsFollowing] = useState(false);
   const [menuOpened, setMenuOpened] = useState(false);
+  const [followButtonLoading, setFollowButtonLoading] = useState(false);
   
   const {
     toggleFollowUser,
@@ -33,9 +42,12 @@ const ProfileLayout = () => {
     reportUser
   } = useProfileActions();
 
-  const toggleFollowHandler = () => {
-    toggleFollowUser(profile!.username);
+  const toggleFollowHandler = async () => {
+    setFollowButtonLoading(true);
+    await toggleFollowUser(profile!.username);
+    setFollowers(prevState => isFollowing ? prevState - 1 : prevState + 1);
     setIsFollowing(prevState => !prevState);
+    setFollowButtonLoading(false);
   };
 
   const toggleBlockHandler = () => {
@@ -78,7 +90,7 @@ const ProfileLayout = () => {
     fetchUserActivities();
   }, [username])
   
-  if (loading && !profile) return;
+  if (loading || !profile) return;
   if (!loading && !profile) {
     navigate("/");
     return;
@@ -112,18 +124,21 @@ const ProfileLayout = () => {
               </ul>
             )}
           </div>
-          <UserInfo userInfo={profile!} />
+          <UserInfo userInfo={profile} followers={followers} />
           <div className="w-full flex flex-col gap-4">
             {!isMyProfile ? (
               <>
                 <Button
                   text="Send Message"
-                  onClick={() => navigate(`/chats/${profile!.username}`)}
+                  onClick={() => navigate(`/chats/${profile.username}`)}
                   bg={true}
                 />
                 <Button
-                  text={isFollowing ? "Unfollow" : "Follow"}
-                  onClick={toggleFollowHandler}
+                  text={
+                    followButtonLoading ?
+                    "Loading..."  : isFollowing ? "Unfollow" : "Follow"
+                  }
+                  onClick={followButtonLoading ? () => {} : toggleFollowHandler}
                   bg={true}
                 />
               </>

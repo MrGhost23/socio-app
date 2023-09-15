@@ -18,9 +18,12 @@ type Props = {
 const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode, center }) => {
   const currentUser = useSelector(selectUser);
 
+  const [followers, setFollowers] = useState<number>(user.followers);
+
   const mainContainerClasses = center ? "flex items-center" : "flex";
   const infoContainerClasses = "flex flex-col text-gray-600";
 
+  const [followButtonLoading, setFollowButtonLoading] = useState(false);
   const [buttonText, setButtonText] = useState("");
 
   useEffect(() => {
@@ -46,17 +49,21 @@ const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode, center }) => 
     toggleBlockUser
   } = useProfileActions();
 
-  const buttonClickHandler = () => {
+  const buttonClickHandler = async () => {
+    setFollowButtonLoading(true);
     if (mode === "follow") {
-      toggleFollowUser(user.username);
+      await toggleFollowUser(user.username);
 
       if (buttonText === 'Follow') {
+        setFollowers(prevState => prevState + 1);
         setButtonText('Unfollow');
       } else {
+        setFollowers(prevState => prevState - 1);
         setButtonText('Follow');
       }
+      setFollowButtonLoading(false);
     } else {
-      toggleBlockUser(user.username);
+      await toggleBlockUser(user.username);
 
       if (buttonText === "block") {
         setButtonText("unblock");
@@ -94,15 +101,15 @@ const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode, center }) => 
         />
         {mode === "follow" && (
           <p className="text-sm whitespace-nowrap">
-            {user.followers} followers
+            {followers} followers
           </p>
         )}
         {
           user.username !== currentUser!.username &&
           <Button
-            text={buttonText}
+            text={followButtonLoading ? "Loading..." : buttonText}
             bg={false}
-            onClick={buttonClickHandler}
+            onClick={followButtonLoading ? () => {} : buttonClickHandler}
             className="text-[0.95rem] capitalize"
           />
         }

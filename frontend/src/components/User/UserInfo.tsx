@@ -9,9 +9,10 @@ import UserStats from "./UserStats";
 
 interface UserInfoProps {
   userInfo: ProfileType;
+  followers: number;
 }
 
-const UserInfo: React.FC<UserInfoProps> = ({ userInfo }) => {
+const UserInfo: React.FC<UserInfoProps> = ({ userInfo, followers }) => {
   return (
     <>
       <UserImage
@@ -30,7 +31,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ userInfo }) => {
       <UserCounty country={userInfo.country} />
       <UserBio bio={userInfo.bio ?? ""} />
       <UserStats
-        followers={userInfo.followers.length}
+        followers={followers}
         following={userInfo.following.length}
       />
     </>
