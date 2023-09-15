@@ -1,16 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineMessage } from "react-icons/ai";
 import { BsPeople } from "react-icons/bs";
 import { MdOutlineRssFeed } from "react-icons/md";
 import { FaRegBookmark } from "react-icons/fa6";
-import { BiCog } from "react-icons/bi";
+import { BiCog, BiLogOut } from "react-icons/bi";
 import UserImage from "./User/UserImage";
 import { useEffect, useRef } from "react";
 import VerticalLine from "../ui/VerticalLine";
 import UserFullName from "./User/UserFullName";
 import UserTag from "./User/UserTag";
 import { useDispatch, useSelector } from "react-redux";
-import { selectUser } from "../store/slices/authSlice";
+import { logout, selectUser } from "../store/slices/authSlice";
 import { closeSidebar, selectSideOpen } from "../store/slices/sidebarSlice";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
@@ -49,6 +49,14 @@ const Sidebar = () => {
     return () => window.removeEventListener("scroll", stickySidebar);
   }, []);
 
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   const list = [
     { id: 1, text: "feed", path: "/", icon: <MdOutlineRssFeed /> },
     { id: 2, text: "chats", path: "/chats", icon: <AiOutlineMessage /> },
@@ -60,6 +68,7 @@ const Sidebar = () => {
       icon: <FaRegBookmark className="scale-90" />,
     },
     { id: 5, text: "settings", path: "/settings", icon: <BiCog /> },
+    { id: 6, text: "logout", path: "/login", icon: <BiLogOut /> },
   ];
 
   return (
@@ -94,7 +103,11 @@ const Sidebar = () => {
               <li
                 key={link.id}
                 className="mb-4 p-2 text-2xl text-gray-700 cursor-pointer hover:bg-gray-200"
-                onClick={() => dispatch(closeSidebar())}
+                onClick={
+                  link.text === "logout"
+                    ? handleLogout
+                    : () => dispatch(closeSidebar())
+                }
               >
                 <Link to={link.path} className="flex items-center gap-2">
                   {link.icon}
