@@ -30,7 +30,7 @@ const MainLayout = () => {
       setSuggestedUsersLoading(false);
     };
     fetchSuggestedUsers();
-  }, [currentUser?.username]);
+  }, [currentUser]);
 
   const sideOpen = useSelector(selectSideOpen);
 
@@ -53,9 +53,7 @@ const MainLayout = () => {
             : suggestedUsersError ?
               'An error occurred'
             : suggestedUsers?.length ?
-              suggestedUsers.map(user => (
-                <SuggestedUsers key={user.username} users={suggestedUsers} />
-              ))
+                <SuggestedUsers users={suggestedUsers} />
             :
               'Found no users to suggest'
           }
