@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { selectUser } from "../store/slices/authSlice";
+import { selectUser, setUser } from "../store/slices/authSlice";
 import { selectSideOpen } from "../store/slices/sidebarSlice";
 import { UserType } from "../Types/User.types";
 import Sidebar from "../components/Sidebar";
@@ -14,6 +14,8 @@ import SearchInput from "../ui/SearchInput";
 import noAvatar from "../assets/noAvatar.png";
 import Loading from "../ui/Loading";
 import { toast } from "react-toastify";
+import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
+import { RootState } from "../store/store";
 
 const Settings = () => {
   const currentUser = useSelector(selectUser);
@@ -35,7 +37,8 @@ const Settings = () => {
   const [country, setCountry] = useState(currentUser!.country || "");
   const [occupation, setOccupation] = useState(currentUser!.occupation || "");
   const [bio, setBio] = useState(currentUser!.bio || "");
-  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
 
   const submitHandler = async () => {
     console.log(image);
@@ -44,7 +47,7 @@ const Settings = () => {
     console.log(email);
     console.log(country);
     console.log(bio);
-    console.log(password);
+    console.log(confirmPassword);
 
     try {
       const response = await axios.patch(
@@ -56,10 +59,10 @@ const Settings = () => {
           lastName,
           country,
           occupation,
-          confirmPassword: password,
+          confirmPassword,
         }
       );
-      console.log(response.data);
+      dispatch(setUser(response.data));
       toast.info("Done.");
     } catch (error) {
       console.log(error);
@@ -168,10 +171,10 @@ const Settings = () => {
               placeholder="Web Dev."
             />
             <Input
-              label="Password"
-              id="password"
-              value={password}
-              onChange={(prev) => setPassword(prev)}
+              label="Confirm Password"
+              id="confirmPassword"
+              value={confirmPassword}
+              onChange={(prev) => setConfirmPassword(prev)}
               type="password"
               placeholder="***************"
             />
