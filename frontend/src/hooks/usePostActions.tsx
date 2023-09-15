@@ -52,12 +52,24 @@ const usePostActions = () => {
     }
   };
 
+  const toggleLikePost = async (postId: string) => {
+    try {
+      await axios.patch(`http://localhost:5000/api/v1/posts/${postId}/like`, {
+        username: currentUser!.username,
+      });
+    } catch (error) {
+      console.log(error)
+      toast.info(`Something went wrong!`);
+    }
+  };
+
   return {
     fetchFeedPosts,
     createPost,
     editPost,
     deletePost,
     toggleBookmarkPost,
+    toggleLikePost
   };
 };
 
