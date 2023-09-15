@@ -19,7 +19,7 @@ const getFindFriends = async (req, res) => {
       "firstName lastName username userPicture followers"
     );
 
-    const usersWithFollowersAsNumbers = users.map((user) => {
+    const findfriends = users.map((user) => {
       const { _id, ...rest } = user.toObject();
       return {
         ...rest,
@@ -27,7 +27,7 @@ const getFindFriends = async (req, res) => {
       };
     });
 
-    res.status(200).json(usersWithFollowersAsNumbers);
+    res.status(200).json(findfriends);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
