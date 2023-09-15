@@ -20,18 +20,21 @@ type Props = {
 const PostStats: React.FC<Props> = ({ likes, comments, postId, likeFunction, unLikeFunction }) => {
   const { username } = useSelector(selectUser)!;
   const [liked, setLiked] = useState(!!likes[username]);
+  const [likeButtonLoading, setLikeButtonLoading] = useState(false);
 
   const { toggleLikePost } = usePostActions();
 
-  const likeClickHandler = () => {
+  const likeClickHandler = async () => {
+    setLikeButtonLoading(true);
+    await toggleLikePost(postId);
     if (liked) {
       unLikeFunction();
     } else {
       likeFunction();
     }
-
+    
     setLiked((prevState) => !prevState);
-    toggleLikePost(postId);
+    setLikeButtonLoading(false);
   };
 
   return (
@@ -40,12 +43,12 @@ const PostStats: React.FC<Props> = ({ likes, comments, postId, likeFunction, unL
         {liked ? (
           <FaHeart
             className="text-xl text-sky-500 cursor-pointer transition duration-500 hover:scale-110"
-            onClick={likeClickHandler}
+            onClick={likeButtonLoading ? () => {} : likeClickHandler}
           />
         ) : (
           <FaRegHeart
             className="text-xl cursor-pointer transition duration-500 hover:text-sky-500 hover:scale-110"
-            onClick={likeClickHandler}
+            onClick={likeButtonLoading ? () => {} : likeClickHandler}
           />
         )}
         <span className="text-lg">{Object.keys(likes).length}</span>
