@@ -13,6 +13,7 @@ import Button from "../ui/Button";
 import SearchInput from '../ui/SearchInput';
 import noAvatar from "../assets/noAvatar.png";
 import Loading from '../ui/Loading';
+import { toast } from 'react-toastify';
 
 const Settings = () => {
   const currentUser = useSelector(selectUser);
@@ -36,7 +37,7 @@ const Settings = () => {
   const [bio, setBio] = useState(currentUser!.bio || "");
   const [password, setPassword] = useState("");
 
-  const submitHandler = () => {
+  const submitHandler = async () => {
     console.log(image);
     console.log(firstName);
     console.log(lastName);
@@ -44,6 +45,22 @@ const Settings = () => {
     console.log(country);
     console.log(bio);
     console.log(password);
+
+    try {
+      await axios.patch(`http://localhost:5000/api/v1/users/updateUser`, {
+        userPhoto: image,
+        bio,
+        firstName,
+        lastName,
+        country,
+        occupation,
+        confirmPassword: password
+      });
+      toast.info("Done.")
+    } catch (error) {
+      console.log(error)
+      toast.info("Error.")
+    }
   };
 
   const [blockedUsers, setBlockedUsers] = useState<UserType[]>();
