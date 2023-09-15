@@ -1,19 +1,19 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import axios from 'axios';
+import axios from "axios";
 import { selectUser } from "../store/slices/authSlice";
 import { selectSideOpen } from "../store/slices/sidebarSlice";
-import { UserType } from '../Types/User.types';
+import { UserType } from "../Types/User.types";
 import Sidebar from "../components/Sidebar";
 import Users from "../components/User/Users";
 import Card from "../ui/Card";
 import Input from "../ui/Input";
 import Textarea from "../ui/Textarea";
 import Button from "../ui/Button";
-import SearchInput from '../ui/SearchInput';
+import SearchInput from "../ui/SearchInput";
 import noAvatar from "../assets/noAvatar.png";
-import Loading from '../ui/Loading';
-import { toast } from 'react-toastify';
+import Loading from "../ui/Loading";
+import { toast } from "react-toastify";
 
 const Settings = () => {
   const currentUser = useSelector(selectUser);
@@ -33,7 +33,7 @@ const Settings = () => {
   const [lastName, setLastName] = useState(currentUser!.lastName || "");
   const [email, setEmail] = useState(currentUser!.email || "");
   const [country, setCountry] = useState(currentUser!.country || "");
-  const [occupation, setOccupation] = useState(currentUser!.occupationy || "");
+  const [occupation, setOccupation] = useState(currentUser!.occupation || "");
   const [bio, setBio] = useState(currentUser!.bio || "");
   const [password, setPassword] = useState("");
 
@@ -47,19 +47,23 @@ const Settings = () => {
     console.log(password);
 
     try {
-      await axios.patch(`http://localhost:5000/api/v1/users/updateUser`, {
-        userPhoto: image,
-        bio,
-        firstName,
-        lastName,
-        country,
-        occupation,
-        confirmPassword: password
-      });
-      toast.info("Done.")
+      const response = await axios.patch(
+        `http://localhost:5000/api/v1/users/updateUser`,
+        {
+          userPicture: image,
+          bio,
+          firstName,
+          lastName,
+          country,
+          occupation,
+          confirmPassword: password,
+        }
+      );
+      console.log(response.data);
+      toast.info("Done.");
     } catch (error) {
-      console.log(error)
-      toast.info("Error.")
+      console.log(error);
+      toast.info("Error.");
     }
   };
 
@@ -70,16 +74,20 @@ const Settings = () => {
   useEffect(() => {
     const fetchPostData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/v1/users/${currentUser!.username}/blocked-users`);
+        const response = await axios.get(
+          `http://localhost:5000/api/v1/users/${
+            currentUser!.username
+          }/blocked-users`
+        );
         setBlockedUsers(response.data);
       } catch (error) {
-        setError(!!error)
+        setError(!!error);
       }
       setIsLoading(false);
-    }
+    };
 
     fetchPostData();
-  }, [currentUser])
+  }, [currentUser]);
 
   if (isLoading) return <Loading />;
   if (error) return <p>An error occurred</p>;
@@ -174,15 +182,14 @@ const Settings = () => {
         </Card>
         <Card className="p-8 !text-left">
           <h3 className="mb-5 text-xl">Blocked Users</h3>
-          {
-            blockedUsers!.length ?
-              <>
-                <SearchInput className="mb-5" />
-                <Users users={blockedUsers!} mode='block' />
-              </>
-            :
-              <p>You don't have anyone in your block list</p>
-          }
+          {blockedUsers!.length ? (
+            <>
+              <SearchInput className="mb-5" />
+              <Users users={blockedUsers!} mode="block" />
+            </>
+          ) : (
+            <p>You don't have anyone in your block list</p>
+          )}
         </Card>
       </div>
     </div>
