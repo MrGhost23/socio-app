@@ -12,12 +12,13 @@ type Props = {
   user: UserType;
   changeStyle: boolean;
   mode: string;
+  center?: boolean;
 };
 
-const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode }) => {
+const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode, center }) => {
   const currentUser = useSelector(selectUser);
 
-  const mainContainerClasses = "flex";
+  const mainContainerClasses = center ? "flex items-center" : "flex";
   const infoContainerClasses = "flex flex-col text-gray-600";
 
   const [buttonText, setButtonText] = useState("");
@@ -38,7 +39,7 @@ const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode }) => {
       }
     };
     fetchIsFollowing();
-  }, [mode, user.username]);
+  }, [currentUser, mode, user.username]);
 
   const {
     toggleFollowUser,

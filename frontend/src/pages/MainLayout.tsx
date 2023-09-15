@@ -4,9 +4,33 @@ import SuggestedUsers from "../components/User/SuggestedUsers";
 import Card from "../ui/Card";
 import { selectSideOpen } from "../store/slices/sidebarSlice";
 import { useSelector } from "react-redux";
+import {useState, useEffect} from 'react';
+import axios from 'axios';
+import {UserType} from '../Types/User.types';
+import Loading from '../ui/Loading';
+import { selectUser } from "../store/slices/authSlice";
 
 const MainLayout = () => {
-  const suggestedUsers = [];
+  const currentUser = useSelector(selectUser);
+
+  const[suggestedUsers, setSuggestedUsers] = useState<UserType[]>();
+  const[suggestedUsersLoading, setSuggestedUsersLoading] = useState<boolean>(true);
+  const[suggestedUsersError, setSuggestedUsersError] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchSuggestedUsers = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/v1/users/${currentUser!.username}/suggested-users`
+        );
+        setSuggestedUsers(response.data);
+      } catch (error) {
+        setSuggestedUsersError(!!error);
+      }
+      setSuggestedUsersLoading(false);
+    };
+    fetchSuggestedUsers();
+  }, [currentUser?.username]);
 
   const sideOpen = useSelector(selectSideOpen);
 
@@ -23,7 +47,18 @@ const MainLayout = () => {
         </div>
         <Card className="xl:sticky xl:top-32 mt-10 xl:mt-0 xl:mb-10 px-8 py-4 pb-6 flex flex-col !text-left order-1 xl:order-2">
           <h3 className="mb-5 text-xl">Suggested for you</h3>
-          <SuggestedUsers users={suggestedUsers} />
+          {
+            suggestedUsersLoading ?
+              <Loading />
+            : suggestedUsersError ?
+              'An error occurred'
+            : suggestedUsers?.length ?
+              suggestedUsers.map(user => (
+                <SuggestedUsers key={user.username} users={suggestedUsers} />
+              ))
+            :
+              'Found no users to suggest'
+          }
         </Card>
       </div>
     </div>
