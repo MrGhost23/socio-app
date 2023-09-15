@@ -1,6 +1,39 @@
 const Post = require("../models/Post.js");
 const User = require("../models/User.js");
 
+const getFindFriends = async (req, res) => {
+  try {
+    const currentUserUsername = req.params.username;
+    const currentUser = await User.findOne({ username: currentUserUsername });
+
+    if (!currentUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const followingUserIds = currentUser.following.map((user) => user._id);
+
+    const users = await User.find(
+      {
+        _id: { $ne: currentUser._id, $nin: followingUserIds },
+      },
+      "firstName lastName username userPicture followers"
+    );
+
+    const usersWithFollowersAsNumbers = users.map((user) => {
+      const { _id, ...rest } = user.toObject();
+      return {
+        ...rest,
+        followers: user.followers.length,
+      };
+    });
+
+    res.status(200).json(usersWithFollowersAsNumbers);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 const getUser = async (req, res) => {
   try {
     const { username } = req.params;
@@ -224,6 +257,7 @@ const getBookmarkedPosts = async (req, res) => {
 };
 
 module.exports = {
+  getFindFriends,
   getUser,
   followUser,
   getFollowing,
