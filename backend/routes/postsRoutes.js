@@ -8,7 +8,6 @@ const {
   deletePost,
   getSinglePost,
 } = require("../controllers/postsController");
-const verifyToken = require("../middleware/auth");
 const authenticateUser = require("../middleware/authenticateUser");
 
 router.get("/user/:username", authenticateUser, getUserPosts);
