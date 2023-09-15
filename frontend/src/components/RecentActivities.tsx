@@ -1,13 +1,9 @@
 import RecentActivity from "./RecentActivity";
+import {RecentActivityType} from '../Types/RecentActivity.type';
 
 type Props = {
   userFirstName: string;
-  recentActivities: {
-    _id: string;
-    actionType: string;
-    postId: string;
-    postAuthorUsername: string;
-  }[];
+  recentActivities: RecentActivityType[];
 };
 
 const RecentActivities: React.FC<Props> = ({

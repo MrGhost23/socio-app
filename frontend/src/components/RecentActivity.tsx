@@ -1,14 +1,10 @@
 import { Link } from "react-router-dom";
 import { FaRegCommentDots, FaRegHeart } from "react-icons/fa";
+import {RecentActivityType} from '../Types/RecentActivity.type';
 
 type Props = {
   userFirstName: string;
-  recentActivity: {
-    _id: string;
-    actionType: string;
-    postId: string;
-    postAuthorUsername: string;
-  };
+  recentActivity: RecentActivityType;
 };
 
 const RecentActivity: React.FC<Props> = ({ userFirstName, recentActivity }) => {
