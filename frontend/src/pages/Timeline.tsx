@@ -1,28 +1,25 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
-import { RootState } from "../store/store";
-import { fetchFeedPosts, selectFeedPosts } from "../store/slices/postsSlice";
+import { useEffect, useState, useCallback } from "react";
 import Posts from "../components/Post/Posts";
 import PostForm from "../components/Post/PostForm";
-import {PostType} from '../Types/Post.types';
+import { PostType } from '../Types/Post.types';
 import Loading from "../ui/Loading";
+import usePostActions from "../hooks/usePostActions";
 
 const Timeline = () => {
-  const posts = useSelector(selectFeedPosts);
-  const [feedPosts, setFeedPosts] = useState(posts);
+  const { fetchFeedPosts } = usePostActions();
+
+  const [feedPosts, setFeedPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchFeedPosts());
-    setLoading(false);
-  }, [dispatch]);
-
-  useEffect(() => {
+  const fetchPosts = useCallback( async () => {
+    const posts = await fetchFeedPosts();
     setFeedPosts(posts);
-  }, [posts])
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    fetchPosts();
+  }, [fetchPosts]);
 
   const removePost = (postId: string) => {
     setFeedPosts(prevState => prevState.filter((post: PostType )=> post._id !== postId));
@@ -50,7 +47,7 @@ const Timeline = () => {
 
   return (
     <>
-      <PostForm />
+      <PostForm fetchPosts={fetchPosts} />
       {
         feedPosts.length > 0 ?
           <Posts posts={feedPosts} removePost={removePost} updatePost={updatePost} />
