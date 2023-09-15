@@ -5,6 +5,8 @@ import useProfileActions from "../../hooks/useProfileActions";
 import UserImage from "./UserImage";
 import UserFullName from "./UserFullName";
 import Button from "../../ui/Button";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../store/slices/authSlice";
 
 type Props = {
   user: UserType;
@@ -13,12 +15,16 @@ type Props = {
 };
 
 const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode }) => {
+  const currentUser = useSelector(selectUser);
+
   const mainContainerClasses = "flex";
   const infoContainerClasses = "flex flex-col text-gray-600";
 
   const [buttonText, setButtonText] = useState("");
 
   useEffect(() => {
+    if (user.username === currentUser!.username) return;
+
     const fetchIsFollowing = async () => {
       try {
         const response = await axios.get(
@@ -90,12 +96,15 @@ const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode }) => {
             {user.followers} followers
           </p>
         )}
-        <Button
-          text={buttonText}
-          bg={false}
-          onClick={buttonClickHandler}
-          className="text-[0.95rem] capitalize"
-        />
+        {
+          user.username !== currentUser!.username &&
+          <Button
+            text={buttonText}
+            bg={false}
+            onClick={buttonClickHandler}
+            className="text-[0.95rem] capitalize"
+          />
+        }
       </div>
     </div>
   );
