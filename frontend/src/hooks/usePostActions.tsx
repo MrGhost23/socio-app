@@ -58,7 +58,6 @@ const usePostActions = () => {
         username: currentUser!.username,
       });
     } catch (error) {
-      console.log(error)
       toast.info(`Something went wrong!`);
     }
   };
