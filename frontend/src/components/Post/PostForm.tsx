@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { BsImage } from "react-icons/bs";
 import { MdOutlineClose } from "react-icons/md";
@@ -17,7 +17,7 @@ type Props = {
   setIsEditing?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const PostForm: React.FC<Props> = ({ fetchPosts, text, postImage, postId, setIsEditing, updatePost }) => {
+const PostForm: React.FC<Props> = ({ fetchPosts, text, postImage, postId, setIsEditing, updatePost, loading }) => {
   const user = useSelector(selectUser);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -50,6 +50,7 @@ const PostForm: React.FC<Props> = ({ fetchPosts, text, postImage, postId, setIsE
   const { createPost, editPost } = usePostActions();
 
   const submitHandler = async () => {
+    setIsLoading(true);
     if (updatePost) {
       await editPost(postId!, description, image);
       updatePost(postId!, description, image!);
@@ -66,8 +67,7 @@ const PostForm: React.FC<Props> = ({ fetchPosts, text, postImage, postId, setIsE
       return;
     }
 
-    setIsLoading(true);
-    createPost((formData));
+    await createPost(formData);
 
     fetchPosts!();
     setDescription("");
