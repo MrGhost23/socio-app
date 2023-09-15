@@ -12,12 +12,17 @@ import UserInfo from "../components/User/UserInfo";
 import RecentActivities from "../components/RecentActivities";
 import Card from "../ui/Card";
 import Button from "../ui/Button";
+import { RecentActivityType } from '../Types/RecentActivity.type';
+import Loading from '../ui/Loading';
 
 const ProfileLayout = () => {
   const navigate = useNavigate();
   const currentUser = useSelector(selectUser);
   const { username } = useParams();
   const { profile, loading, error } = useUserProfile(username!);
+  const [userActivities, setUserActivities] = useState<RecentActivityType[]>();
+  const [userActivitiesLoading, setUserActivitiesLoading] = useState<boolean>(true);
+  const [userActivitiesError, setUserActivitiesError] = useState<boolean>(false);
   const isMyProfile = currentUser?.username === profile?.username;
   const [isFollowing, setIsFollowing] = useState(false);
   const [menuOpened, setMenuOpened] = useState(false);
@@ -43,49 +48,6 @@ const ProfileLayout = () => {
     setMenuOpened(false);
   };
 
-  const recentActivities = [
-    {
-      id: "1",
-      action: "like",
-      postId: "1",
-      postAuthorId: "2198437676231",
-      postAuthorFirstName: "Louie",
-      postAuthorLastName: "Mayert",
-    },
-    {
-      id: "2",
-      action: "comment",
-      postId: "1",
-      postAuthorId: "2198437676231",
-      postAuthorFirstName: "Forrest",
-      postAuthorLastName: "Auer",
-    },
-    {
-      id: "3",
-      action: "like",
-      postId: "1",
-      postAuthorId: "2198437676231",
-      postAuthorFirstName: "Jamel",
-      postAuthorLastName: "McCullough",
-    },
-    {
-      id: "4",
-      action: "like",
-      postId: "1",
-      postAuthorId: "2198437676231",
-      postAuthorFirstName: "Chanel",
-      postAuthorLastName: "Gulgowski",
-    },
-    {
-      id: "5",
-      action: "comment",
-      postId: "1",
-      postAuthorId: "2198437676231",
-      postAuthorFirstName: "Rubie",
-      postAuthorLastName: "Quigley",
-    },
-  ];
-
   useEffect(() => {
     const fetchIsFollowing = async () => {
       if (isMyProfile) return;
@@ -100,6 +62,21 @@ const ProfileLayout = () => {
     };
     fetchIsFollowing();
   }, [isMyProfile, username]);
+
+  useEffect(() => {
+    const fetchUserActivities = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/v1/users/${username}/activities`
+        );
+        setUserActivities(response.data);
+      } catch (error) {
+        setUserActivitiesError(!!error);
+      }
+      setUserActivitiesLoading(false);
+    };
+    fetchUserActivities();
+  }, [username])
   
   if (loading && !profile) return;
   if (!loading && !profile) {
@@ -165,12 +142,17 @@ const ProfileLayout = () => {
           <Outlet />
         </div>
         <div className="mb-8 xl:mb-0 xl:col-span-1 order-1 xl:order-2">
-          <Card className="sticky top-32 -z-10 px-8 py-4 pb-6 flex flex-col !text-left">
+          <Card className="sticky top-32 px-8 py-4 pb-6 flex flex-col !text-left">
             <h3 className="mb-5 text-xl">Recent Activities</h3>
-            <RecentActivities
-              userFirstName={profile!.firstName}
-              recentActivities={recentActivities}
-            />
+            {
+              userActivitiesLoading ?
+                <Loading />
+              : userActivitiesError ? 'An error occurred':
+              <RecentActivities
+                userFirstName={profile!.firstName}
+                recentActivities={userActivities!}
+              />
+            }
           </Card>
         </div>
       </div>

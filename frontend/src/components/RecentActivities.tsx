@@ -1,15 +1,9 @@
 import RecentActivity from "./RecentActivity";
+import {RecentActivityType} from '../Types/RecentActivity.type';
 
 type Props = {
-  userFirstName: string | undefined;
-  recentActivities: {
-    id: string;
-    action: string;
-    postId: string;
-    postAuthorId: string;
-    postAuthorFirstName: string | undefined;
-    postAuthorLastName: string | undefined;
-  }[];
+  userFirstName: string;
+  recentActivities: RecentActivityType[];
 };
 
 const RecentActivities: React.FC<Props> = ({
@@ -18,13 +12,18 @@ const RecentActivities: React.FC<Props> = ({
 }) => {
   return (
     <div className="flex flex-col gap-4 text-gray-600">
-      {recentActivities.map((recentActivity) => (
-        <RecentActivity
-          key={recentActivity.id}
-          userFirstName={userFirstName}
-          recentActivity={recentActivity}
-        />
-      ))}
+      {
+      recentActivities.length ?
+        recentActivities.map((recentActivity) => (
+          <RecentActivity
+            key={recentActivity._id}
+            userFirstName={userFirstName}
+            recentActivity={recentActivity}
+          />
+        ))
+      :
+        <p>{userFirstName} doesn't have any recent activities</p>
+      }
     </div>
   );
 };
