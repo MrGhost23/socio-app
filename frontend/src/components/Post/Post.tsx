@@ -15,6 +15,12 @@ import PostForm from "./PostForm";
 import VerticalLine from "../../ui/VerticalLine";
 import Comments from "../Comment/Comments";
 import PostMenu from "./PostMenu";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../store/slices/authSlice";
+
+interface Likes {
+  [key: string]: boolean;
+}
 
 type Props = {
   post: PostType;
@@ -23,6 +29,26 @@ type Props = {
 };
 
 const Post: React.FC<Props> = ({ post, removePost, updatePost }) => {
+  const { username } = useSelector(selectUser)!;
+  const [likes, setLikes] = useState<Likes>(post.likes)
+
+  const likeFunction = () => {
+    setLikes(prevState => {
+      return {
+        ...prevState,
+        [username]: true
+      }
+    })
+  };
+
+  const unLikeFunction = () => {
+    setLikes(prevState => {
+      const updatedLikes = { ...prevState };
+      delete updatedLikes[username];
+      return updatedLikes;
+    });
+  };
+
   const [isEditing, setIsEditing] = useState(false);
 
   const [comments, setComments] = useState<Comment[]>([]);
@@ -112,9 +138,11 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost }) => {
         )}
         <VerticalLine className="my-2" />
         <PostStats
-          likes={post.likes}
+          likes={likes}
           comments={comments.length}
           postId={post._id}
+          likeFunction={likeFunction}
+          unLikeFunction={unLikeFunction}
         />
         <VerticalLine className="mb-5" />
         <Comments comments={comments} removeCommentFunction={removeCommentFunction} editCommentFunction={editCommentFunction} />

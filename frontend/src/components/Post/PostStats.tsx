@@ -1,26 +1,37 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
+import { useSelector } from "react-redux";
 import { FaRegHeart, FaRegCommentDots } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa6";
 import { selectUser } from "../../store/slices/authSlice";
-import { toggleLikePost } from "../../store/slices/postsSlice";
-import { RootState } from "../../store/store";
+import usePostActions from "../../hooks/usePostActions";
+
+interface Likes {
+  [key: string]: boolean;
+}
 
 type Props = {
-  likes: object;
+  likes: Likes;
   comments: number;
   postId: string;
+  likeFunction: () => void;
+  unLikeFunction: () => void;
 };
 
-const PostStats: React.FC<Props> = ({ likes, comments, postId }) => {
+const PostStats: React.FC<Props> = ({ likes, comments, postId, likeFunction, unLikeFunction }) => {
   const { username } = useSelector(selectUser)!;
-  const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
-  const [liked, setLiked] = useState(username in likes);
+  const [liked, setLiked] = useState(!!likes[username]);
+
+  const { toggleLikePost } = usePostActions();
 
   const likeClickHandler = () => {
+    if (liked) {
+      unLikeFunction();
+    } else {
+      likeFunction();
+    }
+
     setLiked((prevState) => !prevState);
-    dispatch(toggleLikePost({ postId, username }));
+    toggleLikePost(postId);
   };
 
   return (
