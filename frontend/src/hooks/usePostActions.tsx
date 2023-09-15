@@ -30,8 +30,7 @@ const usePostActions = () => {
       await axios.patch(`http://localhost:5000/api/v1/posts/${postId}`, {
         description,
         postImage
-      }
-      );
+      });
     } catch (error) {
       toast.info(`Something went wrong!`);
     }

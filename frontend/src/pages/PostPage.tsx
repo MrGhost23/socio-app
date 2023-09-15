@@ -19,7 +19,6 @@ const PostPage = () => {
         const response = await axios.get(`http://localhost:5000/api/v1/posts/${id}`);
         setPostData(response.data);
       } catch (error) {
-        console.log(error)
         setError(!!error)
       }
       setIsLoading(false);
@@ -28,19 +27,27 @@ const PostPage = () => {
     fetchPostData();
   }, [id])
 
-  const removePost = (postId: string) => {
+  const removePost = () => {
     navigate("/");
   };
 
-  const editPost = (postId: string, description: string, image: object) => {
-    setPostData(prevState => {
-      const updatedPost: PostType[] = [];
-      updatedPost.push({
-        ...prevState,
-        description,
-        image
-      });
-      return updatedPost;
+  const updatePost = (postId: string, description: string, image: string): void => {
+    setPostData((prevState) => {
+      const updatedPostData: PostType = {
+        userId: prevState!.userId,
+        username: prevState!.username,
+        firstName: prevState!.firstName,
+        lastName: prevState!.lastName,
+        userPicture: prevState!.userPicture,
+        createdAt: prevState!.createdAt,
+        updatedAt: prevState!.updatedAt,
+        likes: prevState!.likes,
+        _id: postId,
+        description: description,
+        postImage: image
+      };
+
+      return updatedPostData;
     });
   };
   
@@ -48,7 +55,7 @@ const PostPage = () => {
   if (error) return <p>An error occurred</p>;
 
   return (
-    <Post post={postData!} removePost={removePost} editPost={editPost} />
+    <Post post={postData!} removePost={removePost} updatePost={updatePost} />
   );
 };
 
