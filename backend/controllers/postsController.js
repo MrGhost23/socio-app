@@ -1,6 +1,8 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
 const { StatusCodes } = require("http-status-codes");
+const { deleteActivity, createActivity } = require("../utils/activityUtils");
+const Activity = require("../models/Activity");
 
 const createPost = async (req, res) => {
   try {
@@ -129,8 +131,20 @@ const likePosts = async (req, res) => {
     const isLiked = post.likes.get(username);
     if (isLiked) {
       post.likes.delete(username);
+      await Activity.findOneAndDelete({
+        userId: req.user._id,
+        postId: req.params.id,
+        actionType: "like",
+      });
     } else {
       post.likes.set(username, true);
+      const newActivity = new Activity({
+        userId: req.user._id,
+        postId: req.params.id,
+        actionType: "like",
+        timestamp: Date.now(),
+      });
+      await newActivity.save();
     }
     const updatedPost = await Post.findByIdAndUpdate(
       id,
