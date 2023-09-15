@@ -77,6 +77,57 @@ const getUser = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const {
+      userPhoto,
+      bio,
+      firstName,
+      lastName,
+      country,
+      occupation,
+      confirmPassword,
+    } = req.body;
+
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isPasswordValid = await user.comparePasswords(confirmPassword);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Invalid password" });
+    }
+
+    user.userPhoto = userPhoto;
+    user.bio = bio;
+    user.firstName = firstName;
+    user.lastName = lastName;
+    user.country = country;
+    user.occupation = occupation;
+
+    await user.save();
+
+    await Post.updateMany(
+      { userId: req.user._id },
+      {
+        $set: {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          userPicture: user.userPhoto,
+        },
+      }
+    );
+
+    res.status(200).json({ message: "User information updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 const followUser = async (req, res) => {
   try {
     const userToFollow = await User.findOne({ username: req.params.username });
@@ -293,6 +344,7 @@ module.exports = {
   getFindFriends,
   getSuggestedUsers,
   getUser,
+  updateUser,
   followUser,
   getFollowing,
   getFollowers,
