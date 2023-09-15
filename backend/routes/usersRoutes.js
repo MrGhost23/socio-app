@@ -15,7 +15,7 @@ const authenticateUser = require("../middleware/authenticateUser.js");
 const router = require("express").Router();
 
 router.get("/:username", authenticateUser, getUser);
-router.get("/:username/find-friends", getFindFriends);
+router.get("/:username/find-friends", authenticateUser, getFindFriends);
 router.put("/:username/follow", authenticateUser, followUser);
 router.get("/:username/followers", authenticateUser, getFollowers);
 router.get("/:username/following", authenticateUser, getFollowing);
