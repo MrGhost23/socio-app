@@ -1,7 +1,11 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
 const { StatusCodes } = require("http-status-codes");
-const { deleteActivity, createActivity } = require("../utils/activityUtils");
+const {
+  deleteActivity,
+  createActivity,
+  cleanupActivities,
+} = require("../utils/activityUtils");
 const Activity = require("../models/Activity");
 
 const createPost = async (req, res) => {
@@ -151,6 +155,12 @@ const likePosts = async (req, res) => {
       { likes: post.likes },
       { new: true }
     );
+
+    const user = await User.findOne({ username });
+    if (user) {
+      await cleanupActivities(user._id);
+    }
+
     res.status(StatusCodes.OK).json(updatedPost);
   } catch (error) {
     res.status(StatusCodes.NOT_FOUND).json({ message: error.message });
