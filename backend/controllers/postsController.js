@@ -1,11 +1,7 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
 const { StatusCodes } = require("http-status-codes");
-const {
-  deleteActivity,
-  createActivity,
-  cleanupActivities,
-} = require("../utils/activityUtils");
+const { cleanupActivities } = require("../utils/activityUtils");
 const Activity = require("../models/Activity");
 
 const createPost = async (req, res) => {
