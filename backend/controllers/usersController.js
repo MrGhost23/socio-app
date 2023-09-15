@@ -11,25 +11,6 @@ const getUser = async (req, res) => {
   }
 };
 
-// const getUserFriends = async (req, res) => {
-//   try {
-//     const user = await User.findById(req.params.userId);
-//     const friends = await Promise.all(
-//       user.followings.map((friendId) => {
-//         return User.find(friendId);
-//       })
-//     );
-//     let friendList = [];
-//     friends.map((friend) => {
-//       const { _id, username, profilePicture } = friend;
-//       friendList.push({ _id, username, profilePicture });
-//     });
-//     res.status(200).json(friendList);
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// };
-
 const followUser = async (req, res) => {
   try {
     const userToFollow = await User.findOne({ username: req.params.username });
@@ -37,6 +18,10 @@ const followUser = async (req, res) => {
 
     if (!userToFollow || !currentUser) {
       return res.status(404).json({ message: "User not found" });
+    }
+
+    if (userToFollow._id.toString() === currentUser._id.toString()) {
+      return res.status(400).json({ message: "You can't follow yourself" });
     }
 
     const isFollowing = currentUser.following.includes(userToFollow._id);
