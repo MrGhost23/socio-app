@@ -26,7 +26,6 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors({ origin: "http://localhost:3000" }));
 const path = require("path");
-const verifyToken = require("./middleware/auth");
 const authenticateUser = require("./middleware/authenticateUser");
 
 // EXPRESS STATIC HERE
@@ -47,7 +46,12 @@ app.use("/assets", express.static(path.join(__dirname, "public", "assets")));
 app.use(express.static(path.join(__dirname, "build")));
 
 app.post("/api/v1/auth/register", upload.single("userPicture"), register);
-app.post("/api/v1/posts", verifyToken, upload.single("postImage"), createPost);
+app.post(
+  "/api/v1/posts",
+  authenticateUser,
+  upload.single("postImage"),
+  createPost
+);
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
