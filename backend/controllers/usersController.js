@@ -80,7 +80,7 @@ const getUser = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const {
-      userPhoto,
+      userPicture,
       bio,
       firstName,
       lastName,
@@ -101,7 +101,7 @@ const updateUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid password" });
     }
 
-    user.userPhoto = userPhoto;
+    user.userPicture = userPicture;
     user.bio = bio;
     user.firstName = firstName;
     user.lastName = lastName;
@@ -116,7 +116,7 @@ const updateUser = async (req, res) => {
         $set: {
           firstName: user.firstName,
           lastName: user.lastName,
-          userPicture: user.userPhoto,
+          userPicture: user.userPicture,
         },
       }
     );
