@@ -14,13 +14,26 @@ type Props = {
     iconClasses?: string;
     showIf: boolean;
   }[];
+  menuIconClasses?: string;
 };
 
-const Menu: React.FC<Props> = ({ isOpen, setIsOpen, list }) => {
+const Menu: React.FC<Props> = ({
+  isOpen,
+  setIsOpen,
+  list,
+  menuIconClasses,
+}) => {
+  let iconClasses =
+    "text-gray-500 text-lg cursor-pointer transition duration-500";
+
+  if (menuIconClasses) {
+    iconClasses += " " + menuIconClasses;
+  }
+
   return (
     <>
       <BsThreeDots
-        className="text-gray-500 text-lg cursor-pointer md:opacity-0 transition duration-500 group-hover:text-gray-700 group-hover:opacity-100"
+        className={iconClasses}
         onClick={() => setIsOpen((prevState) => !prevState)}
       />
       {isOpen && (

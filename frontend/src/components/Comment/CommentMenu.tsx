@@ -58,7 +58,12 @@ const CommentMenu: React.FC<Props> = ({
   return (
     <>
       {currentUser!.username === commentAuthorUsername && (
-        <Menu isOpen={menuOpened} setIsOpen={setMenuOpened} list={menuList} />
+        <Menu
+          isOpen={menuOpened}
+          setIsOpen={setMenuOpened}
+          list={menuList}
+          menuIconClasses="md:opacity-0 group-hover:opacity-100"
+        />
       )}
     </>
   );
