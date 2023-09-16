@@ -1,4 +1,4 @@
-import {BsSearch} from 'react-icons/bs';
+import { BsSearch } from "react-icons/bs";
 
 type Props = {
   className?: string;
@@ -6,7 +6,13 @@ type Props = {
 
 const SearchInput: React.FC<Props> = ({ className }) => {
   return (
-    <form className={className ? className + " flex items-center w-full" : "flex items-center w-full"}>
+    <form
+      className={
+        className
+          ? className + " flex items-center w-full"
+          : "flex items-center w-full"
+      }
+    >
       <label className="sr-only">Search</label>
       <div className="relative w-full">
         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">

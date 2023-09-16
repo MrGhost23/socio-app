@@ -15,7 +15,12 @@ type Props = {
   center?: boolean;
 };
 
-const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode, center }) => {
+const SuggestedUser: React.FC<Props> = ({
+  user,
+  changeStyle,
+  mode,
+  center,
+}) => {
   const currentUser = useSelector(selectUser);
 
   const [followers, setFollowers] = useState<number>(user.followers);
@@ -35,8 +40,12 @@ const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode, center }) => 
           `http://localhost:5000/api/v1/users/${user.username}/isFollowing`
         );
         setButtonText(
-          mode === "follow" ? (response.data.isFollowing ? 'Unfollow' : 'Follow') : "unblock"
-        )
+          mode === "follow"
+            ? response.data.isFollowing
+              ? "Unfollow"
+              : "Follow"
+            : "unblock"
+        );
       } catch (error) {
         console.log(error);
       }
@@ -44,22 +53,19 @@ const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode, center }) => 
     fetchIsFollowing();
   }, [currentUser, mode, user.username]);
 
-  const {
-    toggleFollowUser,
-    toggleBlockUser
-  } = useProfileActions();
+  const { toggleFollowUser, toggleBlockUser } = useProfileActions();
 
   const buttonClickHandler = async () => {
     setFollowButtonLoading(true);
     if (mode === "follow") {
       await toggleFollowUser(user.username);
 
-      if (buttonText === 'Follow') {
-        setFollowers(prevState => prevState + 1);
-        setButtonText('Unfollow');
+      if (buttonText === "Follow") {
+        setFollowers((prevState) => prevState + 1);
+        setButtonText("Unfollow");
       } else {
-        setFollowers(prevState => prevState - 1);
-        setButtonText('Follow');
+        setFollowers((prevState) => prevState - 1);
+        setButtonText("Follow");
       }
       setFollowButtonLoading(false);
     } else {
@@ -100,19 +106,16 @@ const SuggestedUser: React.FC<Props> = ({ user, changeStyle, mode, center }) => 
           username={user.username}
         />
         {mode === "follow" && (
-          <p className="text-sm whitespace-nowrap">
-            {followers} followers
-          </p>
+          <p className="text-sm whitespace-nowrap">{followers} followers</p>
         )}
-        {
-          user.username !== currentUser!.username &&
+        {user.username !== currentUser!.username && (
           <Button
             text={followButtonLoading ? "Loading..." : buttonText}
             bg={false}
             onClick={followButtonLoading ? () => {} : buttonClickHandler}
             className="text-[0.95rem] capitalize"
           />
-        }
+        )}
       </div>
     </div>
   );

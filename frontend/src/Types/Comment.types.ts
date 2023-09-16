@@ -7,5 +7,5 @@ export interface Comment {
     firstName: string;
     lastName: string;
     userPicture: string;
-  }
+  };
 }

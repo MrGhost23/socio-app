@@ -13,7 +13,11 @@ type Props = {
   editCommentFunction: (commentId: string, text: string) => void;
 };
 
-const Comment: React.FC<Props> = ({ comment, removeCommentFunction, editCommentFunction }) => {
+const Comment: React.FC<Props> = ({
+  comment,
+  removeCommentFunction,
+  editCommentFunction,
+}) => {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
@@ -50,7 +54,7 @@ const Comment: React.FC<Props> = ({ comment, removeCommentFunction, editCommentF
                 commentAuthorUsername={comment.author.username}
                 setIsEditing={setIsEditing}
                 removeCommentFunction={removeCommentFunction}
-                editCommentFunction={editCommentFunction} 
+                editCommentFunction={editCommentFunction}
               />
             </div>
             <CommentText text={comment.text} />

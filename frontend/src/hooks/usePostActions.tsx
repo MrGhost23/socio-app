@@ -8,7 +8,7 @@ const usePostActions = () => {
 
   const fetchFeedPosts = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/v1/posts');
+      const response = await axios.get("http://localhost:5000/api/v1/posts");
 
       return response.data;
     } catch (error) {
@@ -18,18 +18,21 @@ const usePostActions = () => {
 
   const createPost = async (postData: FormData) => {
     try {
-      await axios.post('http://localhost:5000/api/v1/posts', postData);
-      
+      await axios.post("http://localhost:5000/api/v1/posts", postData);
     } catch (error) {
       toast.info(`Something went wrong!`);
     }
   };
-  
-  const editPost = async (postId: string, description: string, postImage: object | null) => {
+
+  const editPost = async (
+    postId: string,
+    description: string,
+    postImage: object | null
+  ) => {
     try {
       await axios.patch(`http://localhost:5000/api/v1/posts/${postId}`, {
         description,
-        postImage
+        postImage,
       });
     } catch (error) {
       toast.info(`Something went wrong!`);
@@ -43,10 +46,14 @@ const usePostActions = () => {
       toast.info(`Something went wrong!`);
     }
   };
-  
+
   const toggleBookmarkPost = async (postId: string) => {
     try {
-      await axios.post(`http://localhost:5000/api/v1/users/${currentUser!.username}/toggle-bookmark/${postId}`);
+      await axios.post(
+        `http://localhost:5000/api/v1/users/${
+          currentUser!.username
+        }/toggle-bookmark/${postId}`
+      );
     } catch (error) {
       toast.info(`Something went wrong!`);
     }
@@ -68,7 +75,7 @@ const usePostActions = () => {
     editPost,
     deletePost,
     toggleBookmarkPost,
-    toggleLikePost
+    toggleLikePost,
   };
 };
 

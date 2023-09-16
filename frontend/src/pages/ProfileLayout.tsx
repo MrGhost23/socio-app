@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import { Outlet, useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { ImBlocked } from "react-icons/im";
 import { PiWarningBold } from "react-icons/pi";
-import axios from 'axios';
+import axios from "axios";
 import { selectUser } from "../store/slices/authSlice";
 import useUserProfile from "../hooks/useUserProfile";
 import useProfileActions from "../hooks/useProfileActions";
@@ -12,8 +12,8 @@ import UserInfo from "../components/User/UserInfo";
 import RecentActivities from "../components/RecentActivities";
 import Card from "../ui/Card";
 import Button from "../ui/Button";
-import { RecentActivityType } from '../Types/RecentActivity.type';
-import Loading from '../ui/Loading';
+import { RecentActivityType } from "../Types/RecentActivity.type";
+import Loading from "../ui/Loading";
 
 const ProfileLayout = () => {
   const navigate = useNavigate();
@@ -26,27 +26,25 @@ const ProfileLayout = () => {
     if (profile) {
       setFollowers(profile.followers.length);
     }
-  }, [profile])
-  
+  }, [profile]);
+
   const [userActivities, setUserActivities] = useState<RecentActivityType[]>();
-  const [userActivitiesLoading, setUserActivitiesLoading] = useState<boolean>(true);
-  const [userActivitiesError, setUserActivitiesError] = useState<boolean>(false);
+  const [userActivitiesLoading, setUserActivitiesLoading] =
+    useState<boolean>(true);
+  const [userActivitiesError, setUserActivitiesError] =
+    useState<boolean>(false);
   const isMyProfile = currentUser?.username === profile?.username;
   const [isFollowing, setIsFollowing] = useState(false);
   const [menuOpened, setMenuOpened] = useState(false);
   const [followButtonLoading, setFollowButtonLoading] = useState(false);
-  
-  const {
-    toggleFollowUser,
-    toggleBlockUser,
-    reportUser
-  } = useProfileActions();
+
+  const { toggleFollowUser, toggleBlockUser, reportUser } = useProfileActions();
 
   const toggleFollowHandler = async () => {
     setFollowButtonLoading(true);
     await toggleFollowUser(profile!.username);
-    setFollowers(prevState => isFollowing ? prevState - 1 : prevState + 1);
-    setIsFollowing(prevState => !prevState);
+    setFollowers((prevState) => (isFollowing ? prevState - 1 : prevState + 1));
+    setIsFollowing((prevState) => !prevState);
     setFollowButtonLoading(false);
   };
 
@@ -88,8 +86,8 @@ const ProfileLayout = () => {
       setUserActivitiesLoading(false);
     };
     fetchUserActivities();
-  }, [username])
-  
+  }, [username]);
+
   if (loading || !profile) return;
   if (!loading && !profile) {
     navigate("/");
@@ -116,10 +114,21 @@ const ProfileLayout = () => {
             {menuOpened && (
               <ul className="absolute top-7 -right-2 md:translate-x-full px-6 py-4 bg-white rounded border border-gray-10 shadow-md flex flex-col gap-4">
                 <li>
-                  <Button text="Block" bg={false} onClick={toggleBlockHandler} icon={ImBlocked} />
+                  <Button
+                    text="Block"
+                    bg={false}
+                    onClick={toggleBlockHandler}
+                    icon={ImBlocked}
+                  />
                 </li>
                 <li>
-                  <Button text="Report" bg={false} onClick={reportHandler} icon={PiWarningBold} iconClasses="!text-lg" />
+                  <Button
+                    text="Report"
+                    bg={false}
+                    onClick={reportHandler}
+                    icon={PiWarningBold}
+                    iconClasses="!text-lg"
+                  />
                 </li>
               </ul>
             )}
@@ -135,8 +144,11 @@ const ProfileLayout = () => {
                 />
                 <Button
                   text={
-                    followButtonLoading ?
-                    "Loading..."  : isFollowing ? "Unfollow" : "Follow"
+                    followButtonLoading
+                      ? "Loading..."
+                      : isFollowing
+                      ? "Unfollow"
+                      : "Follow"
                   }
                   onClick={followButtonLoading ? () => {} : toggleFollowHandler}
                   bg={true}
@@ -159,16 +171,17 @@ const ProfileLayout = () => {
         <div className="w-full xl:col-span-1 order-1 xl:order-2">
           <Card className="sticky top-32 px-8 py-4 pb-6 flex flex-col !text-left">
             <h3 className="mb-5 text-xl">Recent Activities</h3>
-            {
-              userActivitiesLoading ?
-                <Loading />
-              : userActivitiesError ? 'An error occurred':
+            {userActivitiesLoading ? (
+              <Loading />
+            ) : userActivitiesError ? (
+              "An error occurred"
+            ) : (
               <RecentActivities
                 isMyProfile={isMyProfile}
                 userFirstName={profile.firstName}
                 recentActivities={userActivities!}
               />
-            }
+            )}
           </Card>
         </div>
       </div>

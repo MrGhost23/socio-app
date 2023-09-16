@@ -30,10 +30,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ userInfo, followers }) => {
       <UserOccupation occupation={userInfo.occupation} />
       <UserCounty country={userInfo.country} />
       <UserBio bio={userInfo.bio ?? ""} />
-      <UserStats
-        followers={followers}
-        following={userInfo.following.length}
-      />
+      <UserStats followers={followers} following={userInfo.following.length} />
     </>
   );
 };

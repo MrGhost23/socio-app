@@ -17,7 +17,13 @@ type Props = {
   unLikeFunction: () => void;
 };
 
-const PostStats: React.FC<Props> = ({ likes, comments, postId, likeFunction, unLikeFunction }) => {
+const PostStats: React.FC<Props> = ({
+  likes,
+  comments,
+  postId,
+  likeFunction,
+  unLikeFunction,
+}) => {
   const { username } = useSelector(selectUser)!;
   const [liked, setLiked] = useState(!!likes[username]);
   const [likeButtonLoading, setLikeButtonLoading] = useState(false);
@@ -32,7 +38,7 @@ const PostStats: React.FC<Props> = ({ likes, comments, postId, likeFunction, unL
     } else {
       likeFunction();
     }
-    
+
     setLiked((prevState) => !prevState);
     setLikeButtonLoading(false);
   };
@@ -51,7 +57,9 @@ const PostStats: React.FC<Props> = ({ likes, comments, postId, likeFunction, unL
             onClick={likeButtonLoading ? () => {} : likeClickHandler}
           />
         )}
-        <span className="text-base sm:text-lg">{Object.keys(likes).length}</span>
+        <span className="text-base sm:text-lg">
+          {Object.keys(likes).length}
+        </span>
       </div>
       <div className="flex flex-row items-center gap-1.5">
         <FaRegCommentDots className="text-lg sm:text-xl" />

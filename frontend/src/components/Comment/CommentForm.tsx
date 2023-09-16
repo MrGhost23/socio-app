@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { PiNavigationArrowFill } from "react-icons/pi";
 import { selectUser } from "../../store/slices/authSlice";
-import useCommentActions from '../../hooks/useCommentActions';
+import useCommentActions from "../../hooks/useCommentActions";
 import UserImage from "../User/UserImage";
 
 type Props = {
@@ -20,12 +20,13 @@ const CommentForm: React.FC<Props> = ({
   postId,
   commentId,
   commentText,
-  setIsEditing
+  setIsEditing,
 }) => {
-  let classes = "absolute bottom-4 right-6 text-lg sm:text-xl text-gray-600 opacity-0 cursor-pointer rotate-[135deg] transition duration-500";
-  
+  let classes =
+    "absolute bottom-4 right-6 text-lg sm:text-xl text-gray-600 opacity-0 cursor-pointer rotate-[135deg] transition duration-500";
+
   if (commentId) {
-    classes += " !text-sky-500 opacity-100 hover:text-sky-600 hover:scale-110"
+    classes += " !text-sky-500 opacity-100 hover:text-sky-600 hover:scale-110";
   }
 
   const currentUser = useSelector(selectUser);
@@ -38,17 +39,18 @@ const CommentForm: React.FC<Props> = ({
     setText(e.target.value);
 
     setShowSendIcon(true);
-    setIconClasses((e.target.value.trim().length !== 0  && !commentId) ? classes + " !text-sky-500 hover:text-sky-600 hover:scale-110" : classes);
+    setIconClasses(
+      e.target.value.trim().length !== 0 && !commentId
+        ? classes + " !text-sky-500 hover:text-sky-600 hover:scale-110"
+        : classes
+    );
   };
 
   const focusHandler = () => {
     setIconClasses(classes + " !opacity-100");
-  }
-  
-  const {
-    submitComment,
-    editComment
-  } = useCommentActions();
+  };
+
+  const { submitComment, editComment } = useCommentActions();
 
   const submitHandler = async () => {
     if (text) {
@@ -57,7 +59,7 @@ const CommentForm: React.FC<Props> = ({
       setText("");
       setIconClasses(classes);
     }
-  }
+  };
 
   const editHandler = async () => {
     if (text) {
@@ -65,7 +67,7 @@ const CommentForm: React.FC<Props> = ({
       editCommentFunction!(commentId!, text);
       setIsEditing!(false);
     }
-  }
+  };
 
   return (
     <div className="flex flex-row gap-0 sm:gap-3">
@@ -86,7 +88,9 @@ const CommentForm: React.FC<Props> = ({
           />
           <PiNavigationArrowFill
             className={
-              (showSendIcon && !commentId) ? iconClasses + " !opacity-100" : iconClasses
+              showSendIcon && !commentId
+                ? iconClasses + " !opacity-100"
+                : iconClasses
             }
             onClick={commentId ? editHandler : submitHandler}
           />

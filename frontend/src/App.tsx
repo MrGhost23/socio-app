@@ -81,7 +81,10 @@ const App: React.FC = () => {
           <Route path="/find-friends" element={<FindFriends />} />
           <Route path="/bookmarks" element={<Bookmarks />} />
         </Route>
-        <Route path="/settings" element={user ? <Settings /> : <Navigate to="/login" />} />
+        <Route
+          path="/settings"
+          element={user ? <Settings /> : <Navigate to="/login" />}
+        />
         <Route element={user ? <ProfileLayout /> : <Navigate to="/login" />}>
           <Route path="/profile/:username" element={<Profile />} />
           <Route path="/profile/:username/followers" element={<Followers />} />

@@ -7,11 +7,11 @@ import { RootState } from "../store";
 interface User {
   firstName: string;
   lastName: string;
-  userId: string
+  userId: string;
   email: string;
   role: string;
   token: string;
-  username:string;
+  username: string;
   createdAt: Date | string | undefined;
   userPicture: string | undefined;
 }
@@ -29,77 +29,89 @@ interface AuthState {
 }
 
 interface RegistrationData {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    country: string;
-    username: string;
-  }
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  country: string;
+  username: string;
+}
 
-const token = localStorage.getItem('token');
+const token = localStorage.getItem("token");
 
-axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
 const initialState: AuthState = {
   mode: "light",
-  user:  null,
+  user: null,
   loading: false,
   error: null,
 };
 
-export const register = createAsyncThunk<User, RegistrationData, { rejectValue: string }>(
-    "auth/register",
-    async (registrationData, { rejectWithValue }) => {
-      try {
-        const response: AxiosResponse<User> = await axios.post("http://localhost:5000/api/v1/auth/register", registrationData);
-        if (response.data.token) {
-          localStorage.setItem('token', response.data.token);
-          console.log('Token stored in local storage:', response.data.token);
-          
-          axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-        }
-        return response.data; 
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          if (error.response) {
-            return rejectWithValue(error.response.data.msg);
-          }
-        }
-        return rejectWithValue("An error occurred while registering.");
+export const register = createAsyncThunk<
+  User,
+  RegistrationData,
+  { rejectValue: string }
+>("auth/register", async (registrationData, { rejectWithValue }) => {
+  try {
+    const response: AxiosResponse<User> = await axios.post(
+      "http://localhost:5000/api/v1/auth/register",
+      registrationData
+    );
+    if (response.data.token) {
+      localStorage.setItem("token", response.data.token);
+      console.log("Token stored in local storage:", response.data.token);
+
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${response.data.token}`;
+    }
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        return rejectWithValue(error.response.data.msg);
       }
     }
-  );
-
-export const login = createAsyncThunk<User, LoginCredentials, { rejectValue: string }>(
-  "auth/login",
-  async (credentials, { rejectWithValue }) => {
-    try {
-      const response: AxiosResponse<User> = await axios.post("http://localhost:5000/api/v1/auth/login", credentials);
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-        console.log('Token stored in local storage:', response.data.token);
-        
-        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-      }
-      return response.data;
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-          if (error.response) {
-            return rejectWithValue(error.response.data.msg);
-          }
-        }
-        return rejectWithValue("An error occurred while logging in.");
-      }
+    return rejectWithValue("An error occurred while registering.");
   }
-);
+});
+
+export const login = createAsyncThunk<
+  User,
+  LoginCredentials,
+  { rejectValue: string }
+>("auth/login", async (credentials, { rejectWithValue }) => {
+  try {
+    const response: AxiosResponse<User> = await axios.post(
+      "http://localhost:5000/api/v1/auth/login",
+      credentials
+    );
+    if (response.data.token) {
+      localStorage.setItem("token", response.data.token);
+      console.log("Token stored in local storage:", response.data.token);
+
+      axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${response.data.token}`;
+    }
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        return rejectWithValue(error.response.data.msg);
+      }
+    }
+    return rejectWithValue("An error occurred while logging in.");
+  }
+});
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
     setMode: (state) => {
-      state.mode = state.mode === "light" ? "light" : "dark"
+      state.mode = state.mode === "light" ? "light" : "dark";
     },
     setUser: (state, action) => {
       state.user = action.payload;

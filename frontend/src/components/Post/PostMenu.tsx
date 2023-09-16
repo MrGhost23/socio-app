@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { BsThreeDots } from "react-icons/bs";
 import { FaPen, FaRegBookmark, FaRegTrashAlt } from "react-icons/fa";
-import { FaBookmark } from 'react-icons/fa6';
+import { FaBookmark } from "react-icons/fa6";
 import { ImBlocked } from "react-icons/im";
 import { PiWarningBold } from "react-icons/pi";
 import { selectUser } from "../../store/slices/authSlice";
-import useProfileActions from '../../hooks/useProfileActions';
+import useProfileActions from "../../hooks/useProfileActions";
 import usePostActions from "../../hooks/usePostActions";
 import Button from "../../ui/Button";
 
@@ -21,27 +21,23 @@ const PostMenu: React.FC<Props> = ({
   postId,
   username,
   setIsEditing,
-  removePost
+  removePost,
 }) => {
   const [menuOpened, setMenuOpened] = useState(false);
 
   const currentUser = useSelector(selectUser);
 
-  const [inBookmarks, setInBookmarks] = useState<boolean>(currentUser!.bookmarks?.includes(postId));
+  const [inBookmarks, setInBookmarks] = useState<boolean>(
+    currentUser!.bookmarks?.includes(postId)
+  );
 
-  const {
-    toggleBlockUser,
-    reportUser
-  } = useProfileActions();
+  const { toggleBlockUser, reportUser } = useProfileActions();
 
-  const {
-    toggleBookmarkPost,
-    deletePost
-  } = usePostActions();
+  const { toggleBookmarkPost, deletePost } = usePostActions();
 
   const toggleBookmarkHandler = () => {
     toggleBookmarkPost(postId);
-    setInBookmarks(prevState => !prevState);
+    setInBookmarks((prevState) => !prevState);
     setMenuOpened(false);
   };
 
@@ -68,23 +64,24 @@ const PostMenu: React.FC<Props> = ({
 
   return (
     <>
-      <BsThreeDots className="text-base sm:text-xl cursor-pointer" onClick={() => setMenuOpened((prevState) => !prevState)} />
-        {
-          menuOpened && (
-          <ul className="absolute top-6 right-0 px-4 py-5 bg-white rounded border border-gray-10 shadow-md flex flex-col gap-2 sm:gap-4">
-            <li>
-              <Button
-                text={inBookmarks ? "Unbookmark" : "Bookmark"}
-                bg={false}
-                onClick={toggleBookmarkHandler}
-                icon={inBookmarks ?FaBookmark : FaRegBookmark}
-                className="text-sm sm:text-base"
-                iconClasses="!text-xs sm:!text-sm"
-              />
-            </li>
-            {
-              currentUser!.username === username &&
-              <>
+      <BsThreeDots
+        className="text-base sm:text-xl cursor-pointer"
+        onClick={() => setMenuOpened((prevState) => !prevState)}
+      />
+      {menuOpened && (
+        <ul className="absolute top-6 right-0 px-4 py-5 bg-white rounded border border-gray-10 shadow-md flex flex-col gap-2 sm:gap-4">
+          <li>
+            <Button
+              text={inBookmarks ? "Unbookmark" : "Bookmark"}
+              bg={false}
+              onClick={toggleBookmarkHandler}
+              icon={inBookmarks ? FaBookmark : FaRegBookmark}
+              className="text-sm sm:text-base"
+              iconClasses="!text-xs sm:!text-sm"
+            />
+          </li>
+          {currentUser!.username === username && (
+            <>
               <li>
                 <Button
                   text="Edit Post"
@@ -105,35 +102,34 @@ const PostMenu: React.FC<Props> = ({
                   iconClasses="!text-xs sm:!text-sm"
                 />
               </li>
-              </>
-            }
-            {
-              currentUser!.username !== username &&
-              <>
-                <li>
-                  <Button
-                    text="Block"
-                    bg={false}
-                    onClick={toggleBlockHandler}
-                    icon={ImBlocked}
-                    className="text-sm sm:text-base"
-                    iconClasses="!text-xs sm:!text-sm"
-                    />
-                </li>
-                <li>
-                  <Button
-                    text="Report"
-                    bg={false}
-                    onClick={reportHandler}
-                    icon={PiWarningBold}
-                    className="text-sm sm:text-base"
-                    iconClasses="!text-xs sm:!text-lg"
-                  />
-                </li>
-              </>
-            }
-          </ul>
-        )}
+            </>
+          )}
+          {currentUser!.username !== username && (
+            <>
+              <li>
+                <Button
+                  text="Block"
+                  bg={false}
+                  onClick={toggleBlockHandler}
+                  icon={ImBlocked}
+                  className="text-sm sm:text-base"
+                  iconClasses="!text-xs sm:!text-sm"
+                />
+              </li>
+              <li>
+                <Button
+                  text="Report"
+                  bg={false}
+                  onClick={reportHandler}
+                  icon={PiWarningBold}
+                  className="text-sm sm:text-base"
+                  iconClasses="!text-xs sm:!text-lg"
+                />
+              </li>
+            </>
+          )}
+        </ul>
+      )}
     </>
   );
 };

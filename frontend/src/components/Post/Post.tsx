@@ -111,7 +111,7 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost }) => {
                   username={post.username}
                   className="!text-base sm:!text-lg"
                 />
-                <UserTag 
+                <UserTag
                   username={post.username}
                   className="!text-xs sm:!text-sm"
                 />

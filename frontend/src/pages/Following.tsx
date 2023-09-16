@@ -36,15 +36,14 @@ const Following = () => {
   return (
     <Card className="sticky top-32 px-8 py-4 pb-6 flex flex-col !text-left">
       <h3 className="mb-5 text-xl">Following</h3>
-      {
-        following!.length ?
-          <>
-            <SearchInput className="mb-5" />
-            <Users users={following!} mode='follow' />
-          </>
-        :
-          <p>{username} is not following anyone</p>
-      }
+      {following!.length ? (
+        <>
+          <SearchInput className="mb-5" />
+          <Users users={following!} mode="follow" />
+        </>
+      ) : (
+        <p>{username} is not following anyone</p>
+      )}
     </Card>
   );
 };

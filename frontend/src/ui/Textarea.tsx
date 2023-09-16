@@ -17,7 +17,7 @@ const Textarea: React.FC<Props> = ({
 }) => {
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) =>
     onChange(event.target.value);
-    
+
   return (
     <div className="relative">
       <label

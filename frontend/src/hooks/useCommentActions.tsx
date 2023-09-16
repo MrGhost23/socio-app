@@ -5,54 +5,48 @@ const useCommentActions = () => {
   const submitComment = async (postId: string, text: string) => {
     try {
       await axios.post(
-        `http://localhost:5000/api/v1/posts/${postId}/comments`, {
-          text
+        `http://localhost:5000/api/v1/posts/${postId}/comments`,
+        {
+          text,
         }
-      )
+      );
     } catch (error) {
-      toast.info(
-        `Something went wrong!`
-        );
-      }
-    };
+      toast.info(`Something went wrong!`);
+    }
+  };
 
   const editComment = async (commentId: string, text: string) => {
     try {
       await axios.patch(
-        `http://localhost:5000/api/v1/posts/comments/${commentId}`, {
-          text
+        `http://localhost:5000/api/v1/posts/comments/${commentId}`,
+        {
+          text,
         }
-      )
+      );
 
-      toast.info(
-        `Comment updated successfully!`
-      );
+      toast.info(`Comment updated successfully!`);
     } catch (error) {
-      toast.info(
-        `Something went wrong!`
-      );
+      toast.info(`Something went wrong!`);
     }
   };
 
   const deleteComment = async (commentId: string) => {
     try {
-      await axios.delete(`http://localhost:5000/api/v1/posts/comments/${commentId}`)
+      await axios.delete(
+        `http://localhost:5000/api/v1/posts/comments/${commentId}`
+      );
 
-      toast.info(
-        `Comment deleted successfully!`
-      );
+      toast.info(`Comment deleted successfully!`);
     } catch (error) {
-      toast.info(
-        `Something went wrong!`
-      );
+      toast.info(`Something went wrong!`);
     }
   };
 
   return {
     submitComment,
     editComment,
-    deleteComment
-  }
+    deleteComment,
+  };
 };
 
 export default useCommentActions;
