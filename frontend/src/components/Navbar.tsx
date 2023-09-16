@@ -13,6 +13,7 @@ import { selectUser } from "../store/slices/authSlice";
 import { selectSideOpen, toggleSidebar } from "../store/slices/sidebarSlice";
 import UserImage from "./User/UserImage";
 import Button from "../ui/Button";
+import axios from "axios";
 
 const Navbar: React.FC = () => {
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
@@ -86,6 +87,31 @@ const Navbar: React.FC = () => {
 
   const [isOpen, setIsOpen] = useState(false);
 
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState({ users: [], posts: [] });
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchSearchResults = async () => {
+      if (query.length > 2) {
+        setLoading(true);
+        try {
+          const response = await axios.get(
+            `http://localhost:5000/api/v1/search?query=${query}`
+          );
+          setResults(response.data);
+          console.log(response.data);
+          setLoading(false);
+        } catch (error) {
+          console.error("Error searching:", error);
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchSearchResults();
+  }, [query]);
+
   return (
     <header className="bg-white dark:bg-primaryDark z-50" ref={navRef}>
       {!user ? (
@@ -102,19 +128,103 @@ const Navbar: React.FC = () => {
             </Link>
           </div>
 
-          <div className="w-full mr-auto max-w-xs xl:max-w-lg 2xl:max-w-2xl bg-gray-100 rounded-md hidden lg:flex items-center">
+          <div className="w-full mr-auto max-w-md xl:max-w-lg 2xl:max-w-2xl bg-gray-100 rounded-md hidden lg:flex items-center">
             <form className="flex items-center w-full">
               <label className="sr-only">Search</label>
               <div className="relative w-full">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                   <BsSearch className="w-4 h-4 text-gray-500" />
                 </div>
+
                 <input
                   type="text"
                   className="bg-gray-200 border outline-none appearance-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-sky-500 dark:focus:border-sky-500 focus:bg-gray-50"
                   placeholder="Search..."
                   required
+                  onChange={(e) => setQuery(e.target.value)}
                 />
+                {loading && (
+                  <div className="absolute px-4 py-4 shadow-md max-h-[400px] overflow-y-auto hidden b-0 z-[998] w-full bg-white p-2 md:grid grid-cols-1">
+                    <span className="font-bold text-center">Loading...</span>
+                  </div>
+                )}
+                {!loading && query.length > 2 && (
+                  <div className="absolute px-4 py-4 shadow-md max-h-[400px] overflow-y-auto hidden b-0 z-[998] w-full bg-white p-2 md:grid grid-cols-1">
+                    {results.users.length > 1 && (
+                      <p className=" text-gray-400 font-semibold text-base ">
+                        USERS
+                      </p>
+                    )}
+                    {results.users.length > 1 &&
+                      results.users.map((user) => (
+                        <Link
+                          to={`/profile/${user.username}`}
+                          className="flex font-semibold my-2 pt-2"
+                          key={user.username}
+                          onClick={() => setQuery("")}
+                        >
+                          <UserImage
+                            src={user.userPicture}
+                            alt={user.username}
+                            username={user.username}
+                            className="w-14 h-14"
+                          />
+                          <div className="flex flex-col">
+                            <p className="ml-2 text-gray-600 font-semibold">
+                              {user.firstName + " " + user.lastName}
+                            </p>
+                            <p className="ml-2 font-light text-sm text-gray-400">
+                              @{user.username}
+                            </p>
+                          </div>
+                        </Link>
+                      ))}
+
+                    {results.posts.length !== 0 && (
+                      <p className=" text-gray-400 font-semibold text-base ">
+                        POSTS
+                      </p>
+                    )}
+                    {results.posts &&
+                      results.posts.map((post) => (
+                        <Link
+                          to={`/post/${post._id}`}
+                          className="flex font-semibold my-2 pt-2"
+                          key={post._id}
+                          onClick={() => setQuery("")}
+                        >
+                          <UserImage
+                            src={post.userPicture}
+                            alt={post.username}
+                            username={post.username}
+                            className="w-14 h-14"
+                          />
+                          <div className="flex flex-col">
+                            <p className="ml-2 text-gray-600 font-semibold">
+                              {post.firstName + " " + post.lastName}
+                            </p>
+                            <p className="ml-2 font-light text-sm text-gray-400">
+                              @{post.username}
+                            </p>
+                            <p className="ml-2 font-light text-sm text-gray-800">
+                              <span className="font-semibold">
+                                {post.description.length > 25
+                                  ? `${post.description.slice(0, 45)}...`
+                                  : post.description}
+                              </span>
+                            </p>
+                          </div>
+                        </Link>
+                      ))}
+                    {results.users.length === 0 &&
+                      results.posts.length === 0 && (
+                        <p className="text-center font-semibold p-4">
+                          We didn't find{" "}
+                          <span className="text-sky-600">{`${query}`}</span>
+                        </p>
+                      )}
+                  </div>
+                )}
               </div>
             </form>
           </div>
