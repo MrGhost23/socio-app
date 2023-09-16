@@ -18,6 +18,8 @@ const MainLayout = () => {
   const[suggestedUsersError, setSuggestedUsersError] = useState<boolean>(false);
 
   useEffect(() => {
+    if (!currentUser!.username) return;
+    
     const fetchSuggestedUsers = async () => {
       try {
         const response = await axios.get(
