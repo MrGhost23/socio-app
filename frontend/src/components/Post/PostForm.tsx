@@ -89,7 +89,7 @@ const PostForm: React.FC<Props> = ({
         className={
           text
             ? "py-6 flex flex-col items-center lg:items-start lg:flex-row gap-4"
-            : "mb-8 mx-10 py-6 flex flex-col items-center lg:items-start lg:flex-row gap-4"
+            : "mb-8 mx-6 md:mx-8 lg:mx-10 py-6 flex flex-col items-center lg:items-start lg:flex-row gap-4"
         }
       >
         {!text && (

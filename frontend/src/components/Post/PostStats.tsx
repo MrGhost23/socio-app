@@ -42,20 +42,20 @@ const PostStats: React.FC<Props> = ({ likes, comments, postId, likeFunction, unL
       <div className="flex flex-row items-center gap-1.5">
         {liked ? (
           <FaHeart
-            className="text-xl text-sky-500 cursor-pointer transition duration-500 hover:scale-110"
+            className="text-lg sm:text-xl text-sky-500 cursor-pointer transition duration-500 hover:scale-110"
             onClick={likeButtonLoading ? () => {} : likeClickHandler}
           />
         ) : (
           <FaRegHeart
-            className="text-xl cursor-pointer transition duration-500 hover:text-sky-500 hover:scale-110"
+            className="text-lg sm:text-xl cursor-pointer transition duration-500 hover:text-sky-500 hover:scale-110"
             onClick={likeButtonLoading ? () => {} : likeClickHandler}
           />
         )}
-        <span className="text-lg">{Object.keys(likes).length}</span>
+        <span className="text-base sm:text-lg">{Object.keys(likes).length}</span>
       </div>
       <div className="flex flex-row items-center gap-1.5">
-        <FaRegCommentDots className="text-xl" />
-        <span className="text-lg">{comments}</span>
+        <FaRegCommentDots className="text-lg sm:text-xl" />
+        <span className="text-base sm:text-lg">{comments}</span>
       </div>
     </div>
   );

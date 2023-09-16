@@ -4,13 +4,23 @@ import { formatDistanceToNow } from "date-fns";
 type Props = {
   id: string;
   date: string;
+  className?: string;
 };
 
-const PostDate: React.FC<Props> = ({ id, date }) => {
+const PostDate: React.FC<Props> = ({
+  id,
+  date,
+  className
+}) => {
+  let classes = "text-sm text-gray-500 font-medium tracking-tight";
+  if (className) {
+    classes += " " + className;
+  }
+
   return (
     <Link
       to={`/post/${id}`}
-      className="text-sm text-gray-500 font-medium tracking-tight"
+      className={classes}
     >
       {
         formatDistanceToNow(new Date(date), {

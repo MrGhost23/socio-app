@@ -96,9 +96,9 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost }) => {
   return (
     <Card className="px-8 py-6 !text-left">
       <div className="relative mb-2 flex flex-row justify-between gap-3">
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex flex-row gap-3">
           <UserImage
-            className="w-14 !mb-0"
+            className="min-w-[3rem] w-12 sm:min-w-[3.5rem] sm:w-14 !mb-0"
             src={post.userPicture}
             alt={post.firstName + " " + post.lastName}
             username={post.username}
@@ -109,10 +109,18 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost }) => {
                 <UserFullName
                   fullName={post.firstName + " " + post.lastName}
                   username={post.username}
+                  className="!text-base sm:!text-lg"
                 />
-                <UserTag username={post.username} />
+                <UserTag 
+                  username={post.username}
+                  className="!text-xs sm:!text-sm"
+                />
               </div>
-              <PostDate date={post.createdAt} id={post._id} />
+              <PostDate
+                date={post.createdAt}
+                id={post._id}
+                className="!text-xs sm:!text-sm"
+              />
             </div>
           </div>
         </div>
