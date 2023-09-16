@@ -28,28 +28,54 @@ app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors({ origin: "http://localhost:3000" }));
 const path = require("path");
 const authenticateUser = require("./middleware/authenticateUser");
+const { updateUserPicture } = require("./controllers/usersController");
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/assets");
+const profilePictureStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/uploads/profile_pics");
   },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, `${uniqueSuffix}-${file.originalname}`);
   },
 });
 
-const upload = multer({ storage });
+const postAssetStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/uploads/post_assets");
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, `${uniqueSuffix}-${file.originalname}`);
+  },
+});
 
-app.use("/assets", express.static(path.join(__dirname, "public", "assets")));
+const uploadProfilePicture = multer({ storage: profilePictureStorage });
+const uploadPostAsset = multer({ storage: postAssetStorage });
+
+app.use(
+  "/profile_pics",
+  express.static(path.join(__dirname, "public/uploads/profile_pics"))
+);
+app.use(
+  "/post_assets",
+  express.static(path.join(__dirname, "public/uploads/post_assets"))
+);
 
 app.use(express.static(path.join(__dirname, "build")));
 
-app.post("/api/v1/auth/register", upload.single("userPicture"), register);
 app.post(
   "/api/v1/posts",
   authenticateUser,
-  upload.single("postImage"),
+  uploadPostAsset.single("postImage"),
   createPost
+);
+
+app.post(
+  "/api/v1/updateUserPicture",
+  authenticateUser,
+  uploadProfilePicture.single("userPicture"),
+  updateUserPicture
 );
 
 app.use("/api/v1/auth", authRouter);
