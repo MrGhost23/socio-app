@@ -4,12 +4,14 @@ import { RecentActivityType } from "../Types/RecentActivity.type";
 
 type Props = {
   isMyProfile: boolean;
+  username: string;
   userFirstName: string;
   recentActivity: RecentActivityType;
 };
 
 const RecentActivity: React.FC<Props> = ({
   isMyProfile,
+  username,
   userFirstName,
   recentActivity,
 }) => {
@@ -30,7 +32,11 @@ const RecentActivity: React.FC<Props> = ({
           recentActivity.actionType === "like" ? "liked" : "commented on"
         } 
           ${
-            isMyProfile ? "your" : `${recentActivity.postAuthorUsername}'s`
+            isMyProfile && username === recentActivity.postAuthorUsername
+              ? "your"
+              : !isMyProfile && username === recentActivity.postAuthorUsername
+              ? "their"
+              : `${recentActivity.postAuthorUsername}'s`
           } post.
         `}
       </p>

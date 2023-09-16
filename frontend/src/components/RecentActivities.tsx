@@ -3,12 +3,14 @@ import { RecentActivityType } from "../Types/RecentActivity.type";
 
 type Props = {
   isMyProfile: boolean;
+  username: string;
   userFirstName: string;
   recentActivities: RecentActivityType[];
 };
 
 const RecentActivities: React.FC<Props> = ({
   isMyProfile,
+  username,
   userFirstName,
   recentActivities,
 }) => {
@@ -19,6 +21,7 @@ const RecentActivities: React.FC<Props> = ({
           <RecentActivity
             key={recentActivity._id}
             isMyProfile={isMyProfile}
+            username={username}
             userFirstName={userFirstName}
             recentActivity={recentActivity}
           />

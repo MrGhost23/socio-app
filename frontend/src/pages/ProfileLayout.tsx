@@ -137,6 +137,7 @@ const ProfileLayout = () => {
             ) : (
               <RecentActivities
                 isMyProfile={isMyProfile}
+                username={profile.username}
                 userFirstName={profile.firstName}
                 recentActivities={userActivities!}
               />
