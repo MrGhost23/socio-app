@@ -105,7 +105,7 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost }) => {
           />
           <div className="flex flex-col items-start gap-1">
             <div className="flex flex-col">
-              <div className="flex flex-col md:flex-row items-center md:gap-2">
+              <div className="flex flex-col md:flex-row md:items-center md:gap-2">
                 <UserFullName
                   fullName={post.firstName + " " + post.lastName}
                   username={post.username}
