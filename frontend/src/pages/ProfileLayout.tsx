@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
 import { Outlet, useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { ImBlocked } from "react-icons/im";
-import { PiWarningBold } from "react-icons/pi";
 import axios from "axios";
 import { selectUser } from "../store/slices/authSlice";
 import useUserProfile from "../hooks/useUserProfile";
@@ -14,6 +11,7 @@ import Card from "../ui/Card";
 import Button from "../ui/Button";
 import { RecentActivityType } from "../Types/RecentActivity.type";
 import Loading from "../ui/Loading";
+import UserMenu from "../components/User/UserMenu";
 
 const ProfileLayout = () => {
   const navigate = useNavigate();
@@ -35,10 +33,9 @@ const ProfileLayout = () => {
     useState<boolean>(false);
   const isMyProfile = currentUser?.username === profile?.username;
   const [isFollowing, setIsFollowing] = useState(false);
-  const [menuOpened, setMenuOpened] = useState(false);
   const [followButtonLoading, setFollowButtonLoading] = useState(false);
 
-  const { toggleFollowUser, toggleBlockUser, reportUser } = useProfileActions();
+  const { toggleFollowUser } = useProfileActions();
 
   const toggleFollowHandler = async () => {
     setFollowButtonLoading(true);
@@ -46,16 +43,6 @@ const ProfileLayout = () => {
     setFollowers((prevState) => (isFollowing ? prevState - 1 : prevState + 1));
     setIsFollowing((prevState) => !prevState);
     setFollowButtonLoading(false);
-  };
-
-  const toggleBlockHandler = () => {
-    toggleBlockUser(profile!.username);
-    setMenuOpened(false);
-  };
-
-  const reportHandler = () => {
-    reportUser();
-    setMenuOpened(false);
   };
 
   useEffect(() => {
@@ -100,38 +87,10 @@ const ProfileLayout = () => {
       <div className="col-span-2 lg:col-span-1 order-1">
         <Card className="sticky top-32 px-10 py-8 flex flex-col items-center">
           <div className="relative top-0 right-2 left-full self-start">
-            {!isMyProfile && (
-              <BsThreeDotsVertical
-                className={
-                  menuOpened
-                    ? "absolute text-xl text-sky-500 cursor-pointer"
-                    : "absolute text-xl text-gray-500 cursor-pointer transition duration-500 hover:text-sky-500"
-                }
-                onClick={() => setMenuOpened((prevState) => !prevState)}
-              />
-            )}
-
-            {menuOpened && (
-              <ul className="absolute top-7 -right-2 md:translate-x-full px-6 py-4 bg-white rounded border border-gray-10 shadow-md flex flex-col gap-4">
-                <li>
-                  <Button
-                    text="Block"
-                    bg={false}
-                    onClick={toggleBlockHandler}
-                    icon={ImBlocked}
-                  />
-                </li>
-                <li>
-                  <Button
-                    text="Report"
-                    bg={false}
-                    onClick={reportHandler}
-                    icon={PiWarningBold}
-                    iconClasses="!text-lg"
-                  />
-                </li>
-              </ul>
-            )}
+            <UserMenu
+              isMyProfile={isMyProfile}
+              profileUsername={profile.username}
+            />
           </div>
           <UserInfo userInfo={profile} followers={followers} />
           <div className="w-full flex flex-col gap-4">
