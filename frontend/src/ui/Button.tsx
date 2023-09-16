@@ -1,8 +1,8 @@
-import { IconType } from 'react-icons';
+import { IconType } from "react-icons";
 
 type Props = {
   text: string;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   bg?: boolean;
   className?: string;
   icon?: IconType;
@@ -27,22 +27,21 @@ const Button: React.FC<Props> = (props) => {
 
   return (
     <button
-      className={props.icon ? classes + " flex flex-row items-center gap-2 cursor-pointer" : classes}
+      className={
+        props.icon
+          ? classes + " flex flex-row items-center gap-2 cursor-pointer"
+          : classes
+      }
       onClick={props.onClick}
     >
-      {
-        props.icon ?
-          <>
-            <props.icon className={iconClasses} />
-            <span>
-              {props.text}
-            </span>
-          </>
-        :
-        <span>
-          {props.text}
-        </span>
-      }
+      {props.icon ? (
+        <>
+          <props.icon className={iconClasses} />
+          <span>{props.text}</span>
+        </>
+      ) : (
+        <span>{props.text}</span>
+      )}
     </button>
   );
 };
