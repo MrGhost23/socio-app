@@ -164,7 +164,8 @@ const ProfileLayout = () => {
                 <Loading />
               : userActivitiesError ? 'An error occurred':
               <RecentActivities
-                userFirstName={profile!.firstName}
+                isMyProfile={isMyProfile}
+                userFirstName={profile.firstName}
                 recentActivities={userActivities!}
               />
             }

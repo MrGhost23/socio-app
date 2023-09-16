@@ -2,11 +2,13 @@ import RecentActivity from "./RecentActivity";
 import {RecentActivityType} from '../Types/RecentActivity.type';
 
 type Props = {
+  isMyProfile: boolean;
   userFirstName: string;
   recentActivities: RecentActivityType[];
 };
 
 const RecentActivities: React.FC<Props> = ({
+  isMyProfile,
   userFirstName,
   recentActivities,
 }) => {
@@ -17,12 +19,13 @@ const RecentActivities: React.FC<Props> = ({
         recentActivities.map((recentActivity) => (
           <RecentActivity
             key={recentActivity._id}
+            isMyProfile={isMyProfile}
             userFirstName={userFirstName}
             recentActivity={recentActivity}
           />
         ))
       :
-        <p>{userFirstName} doesn't have any recent activities</p>
+        <p>{isMyProfile ? "You don't" : `${userFirstName} doesn't`}  have any recent activities.</p>
       }
     </div>
   );
