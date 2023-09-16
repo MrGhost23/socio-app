@@ -14,6 +14,8 @@ type Props = {
     iconClasses?: string;
     showIf: boolean;
   }[];
+  menuIcon?: IconType;
+  menuClasses?: string;
   menuIconClasses?: string;
 };
 
@@ -21,6 +23,8 @@ const Menu: React.FC<Props> = ({
   isOpen,
   setIsOpen,
   list,
+  menuIcon,
+  menuClasses,
   menuIconClasses,
 }) => {
   let iconClasses =
@@ -30,14 +34,23 @@ const Menu: React.FC<Props> = ({
     iconClasses += " " + menuIconClasses;
   }
 
+  let ulClasses =
+    "absolute top-6 right-0 z-40 px-4 py-5 bg-white rounded border border-gray-10 shadow-md flex flex-col gap-2 sm:gap-4";
+
+  if (menuIconClasses) {
+    ulClasses += " " + menuClasses;
+  }
+
+  const MenuIcon = menuIcon || BsThreeDots;
+
   return (
     <>
-      <BsThreeDots
+      <MenuIcon
         className={iconClasses}
         onClick={() => setIsOpen((prevState) => !prevState)}
       />
       {isOpen && (
-        <ul className="absolute top-6 right-0 z-40 px-4 py-5 bg-white rounded border border-gray-10 shadow-md flex flex-col gap-2 sm:gap-4">
+        <ul className={ulClasses}>
           {list.map(
             (item) =>
               item.showIf && (
