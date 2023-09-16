@@ -67,7 +67,7 @@ const Profile = () => {
           <Posts posts={userPosts!} removePost={removePost} updatePost={updatePost} />
         ) : (
           <div className="text-center text-gray-800 text-xl">
-            There are no posts yet for this user.
+            {isMyProfile ? "You" : "This user"} didn't post anything yet.
           </div>
         )}
       </>
