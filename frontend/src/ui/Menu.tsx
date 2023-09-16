@@ -10,8 +10,8 @@ type Props = {
     text: string;
     action: () => void;
     icon: IconType;
-    buttonClasses: string;
-    iconClasses: string;
+    buttonClasses?: string;
+    iconClasses?: string;
     showIf: boolean;
   }[];
 };
