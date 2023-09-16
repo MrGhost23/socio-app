@@ -19,7 +19,7 @@ const MainLayout = () => {
 
   useEffect(() => {
     if (!currentUser!.username) return;
-    
+
     const fetchSuggestedUsers = async () => {
       try {
         const response = await axios.get(
@@ -38,7 +38,7 @@ const MainLayout = () => {
 
   return (
     <div
-      className={`w-full ${
+      className={`w-full min-h-screen ${
         sideOpen ? "fixed" : ""
       } px-4 sm:px-10 md:px-20 lg:pl-0 flex flex-col lg:grid lg:grid-cols-4 gap-8 lg:gap-16`}
     >
