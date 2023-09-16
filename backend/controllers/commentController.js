@@ -1,6 +1,8 @@
 const { default: mongoose } = require("mongoose");
 const Comment = require("../models/Comment");
 const { StatusCodes } = require("http-status-codes");
+const Activity = require("../models/Activity");
+const { cleanupActivities } = require("../utils/activityUtils");
 
 const createComment = async (req, res) => {
   try {
@@ -18,6 +20,18 @@ const createComment = async (req, res) => {
     });
 
     const savedComment = await newComment.save();
+
+    const newActivity = new Activity({
+      userId: req.user._id,
+      postId,
+      actionType: "comment",
+      timestamp: Date.now(),
+    });
+    await newActivity.save();
+    if (req.user) {
+      await cleanupActivities(req.user._id);
+    }
+
     res.status(StatusCodes.CREATED).json(savedComment);
   } catch (error) {
     res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
@@ -44,15 +58,15 @@ const editComment = async (req, res) => {
   try {
     const { commentId } = req.params;
     const { text } = req.body;
-    
+
     const comment = await Comment.findById(commentId);
-    
+
     if (!comment) {
       return res
-      .status(StatusCodes.NOT_FOUND)
-      .json({ message: "Comment not found" });
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "Comment not found" });
     }
-    console.log(comment.author._id)
+    console.log(comment.author._id);
 
     if (comment.author.toString() !== req.user._id.toString()) {
       return res
@@ -89,6 +103,12 @@ const deleteComment = async (req, res) => {
     }
 
     await comment.deleteOne();
+    await Activity.findOneAndDelete({
+      userId: req.user._id,
+      postId: comment.post,
+      actionType: "comment",
+    });
+
     res.json({ message: "Comment deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });

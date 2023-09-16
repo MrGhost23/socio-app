@@ -1,6 +1,28 @@
 const Post = require("../models/Post.js");
 const User = require("../models/User.js");
 
+const updateUserPicture = async (req, res) => {
+  try {
+    const imageUrl = "http://localhost:5000/profile_pics/" + req.file.filename;
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      { userPicture: imageUrl },
+      { new: true }
+    );
+
+    await Post.updateMany(
+      { userId: req.user._id },
+      { $set: { userPicture: updatedUser.userPicture } }
+    );
+
+    res.status(200).json({ updatedImage: imageUrl });
+  } catch (error) {
+    console.error("Error updating profile picture:", error);
+    res.status(500).json({ message: "Error updating profile picture" });
+  }
+};
+
 const getFindFriends = async (req, res) => {
   try {
     const currentUserUsername = req.params.username;
@@ -79,15 +101,8 @@ const getUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const {
-      userPicture,
-      bio,
-      firstName,
-      lastName,
-      country,
-      occupation,
-      confirmPassword,
-    } = req.body;
+    const { bio, firstName, lastName, country, occupation, confirmPassword } =
+      req.body;
 
     let user = await User.findById(req.user._id);
 
@@ -101,7 +116,6 @@ const updateUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid password" });
     }
 
-    user.userPicture = userPicture;
     user.bio = bio;
     user.firstName = firstName;
     user.lastName = lastName;
@@ -116,7 +130,6 @@ const updateUser = async (req, res) => {
         $set: {
           firstName: user.firstName,
           lastName: user.lastName,
-          userPicture: user.userPicture,
         },
       }
     );
@@ -346,6 +359,7 @@ module.exports = {
   getSuggestedUsers,
   getUser,
   updateUser,
+  updateUserPicture,
   followUser,
   getFollowing,
   getFollowers,

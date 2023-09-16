@@ -15,9 +15,17 @@ type Props = {
   postId?: string;
   postImage?: string;
   setIsEditing?: React.Dispatch<React.SetStateAction<boolean>>;
-}
+};
 
-const PostForm: React.FC<Props> = ({ fetchPosts, text, postImage, postId, setIsEditing, updatePost, loading }) => {
+const PostForm: React.FC<Props> = ({
+  fetchPosts,
+  text,
+  postImage,
+  postId,
+  setIsEditing,
+  updatePost,
+  loading,
+}) => {
   const user = useSelector(selectUser);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -25,10 +33,9 @@ const PostForm: React.FC<Props> = ({ fetchPosts, text, postImage, postId, setIsE
   const [descriptionError, setDescriptionError] = useState("");
   const [image, setImage] = useState<object | null>(postImage || null);
   const [previewImage, setPreviewImage] = useState<string>(
-    postImage ?
-      `http://localhost:5000/assets/${encodeURIComponent(postImage)}`
-    :
-      ""
+    postImage
+      ? `http://localhost:5000/post-assets/${encodeURIComponent(postImage)}`
+      : ""
   );
 
   const changeHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -80,21 +87,19 @@ const PostForm: React.FC<Props> = ({ fetchPosts, text, postImage, postId, setIsE
     <Card className={text && "shadow-none"}>
       <div
         className={
-          text ?
-            "py-6 flex flex-col items-center lg:items-start lg:flex-row gap-4"
-          :
-            "mb-8 mx-10 py-6 flex flex-col items-center lg:items-start lg:flex-row gap-4"
+          text
+            ? "py-6 flex flex-col items-center lg:items-start lg:flex-row gap-4"
+            : "mb-8 mx-10 py-6 flex flex-col items-center lg:items-start lg:flex-row gap-4"
         }
       >
-        {
-          !text &&
+        {!text && (
           <UserImage
             className="min-w-[3.5rem] min-h-[3.5rem] w-14 h-14 rounded-full shadow-lg"
             src={user!.userPicture}
             alt={`${user!.firstName} ${user!.lastName}'s profile picture`}
             username={user!.username}
           />
-        }
+        )}
         <div className="w-full flex flex-col items-center md:items-start gap-3">
           <textarea
             className={`w-full min-h-[6rem] h-fit max-h-[14rem] resize-y pl-4 pr-7 py-1.5 border rounded-xl outline-none ${
@@ -124,12 +129,10 @@ const PostForm: React.FC<Props> = ({ fetchPosts, text, postImage, postId, setIsE
             </div>
             <div className="">
               <Button
-                text={isLoading ? "Loading..." : (!text ? "Submit" : "Save")}
+                text={isLoading ? "Loading..." : !text ? "Submit" : "Save"}
                 bg={true}
                 onClick={isLoading ? () => {} : submitHandler}
-                className={`!px-10 !py-1.5 ${
-                  isLoading ? "cursor-wait" : ""
-                }`}
+                className={`!px-10 !py-1.5 ${isLoading ? "cursor-wait" : ""}`}
               />
             </div>
           </div>
