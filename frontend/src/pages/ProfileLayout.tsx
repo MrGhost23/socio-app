@@ -98,7 +98,7 @@ const ProfileLayout = () => {
   if (error) console.log(error);
 
   return (
-    <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-12 mx-4 sm:mx-10 md:mx-20 my-10">
+    <div className="flex flex-col lg:grid lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-12 mx-4 sm:mx-10 md:mx-20 my-10">
       <div className="col-span-2 lg:col-span-1 order-1">
         <Card className="sticky top-32 px-10 py-8 flex flex-col items-center">
           <div className="relative top-0 right-2 left-full self-start">
@@ -152,11 +152,11 @@ const ProfileLayout = () => {
           </div>
         </Card>
       </div>
-      <div className="grid grid-cols-1 xl:grid-cols-3 col-span-2 xl:col-span-3 order-2 xl:gap-12">
-        <div className="col-span-2 order-2 xl:order-1">
+      <div className="flex flex-col xl:grid xl:grid-cols-3 col-span-2 xl:col-span-3 order-2 gap-8 xl:gap-12">
+        <div className="w-full xl:col-span-2 order-2 xl:order-1">
           <Outlet />
         </div>
-        <div className="mb-8 xl:mb-0 xl:col-span-1 order-1 xl:order-2">
+        <div className="w-full xl:col-span-1 order-1 xl:order-2">
           <Card className="sticky top-32 px-8 py-4 pb-6 flex flex-col !text-left">
             <h3 className="mb-5 text-xl">Recent Activities</h3>
             {
