@@ -30,19 +30,19 @@ type Props = {
 
 const Post: React.FC<Props> = ({ post, removePost, updatePost }) => {
   const { username } = useSelector(selectUser)!;
-  const [likes, setLikes] = useState<Likes>(post.likes)
+  const [likes, setLikes] = useState<Likes>(post.likes);
 
   const likeFunction = () => {
-    setLikes(prevState => {
+    setLikes((prevState) => {
       return {
         ...prevState,
-        [username]: true
-      }
-    })
+        [username]: true,
+      };
+    });
   };
 
   const unLikeFunction = () => {
-    setLikes(prevState => {
+    setLikes((prevState) => {
       const updatedLikes = { ...prevState };
       delete updatedLikes[username];
       return updatedLikes;
@@ -58,22 +58,25 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost }) => {
     axios
       .get(`http://localhost:5000/api/v1/posts/${post._id}/comments`)
       .then((response) => {
-        setComments(response.data)
+        setComments(response.data);
         setIsLoading(false);
-      }).catch((error) => {
-        console.log(error)
+      })
+      .catch((error) => {
+        console.log(error);
         setIsLoading(false);
       });
   }, [post._id]);
 
   const removeCommentFunction = (commentId: string) => {
-    setComments(prevState => prevState.filter((comment: Comment )=> comment._id !== commentId));
+    setComments((prevState) =>
+      prevState.filter((comment: Comment) => comment._id !== commentId)
+    );
   };
 
   const editCommentFunction = (commentId: string, text: string) => {
     setComments((prevState) => {
       const updatedComments: Comment[] = [];
-      prevState.forEach(comment => {
+      prevState.forEach((comment) => {
         if (comment._id === commentId) {
           updatedComments.push({ ...comment, text });
         } else {
@@ -85,7 +88,7 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost }) => {
   };
 
   useEffect(() => {
-    getPostComments()
+    getPostComments();
   }, [getPostComments]);
 
   if (isLoading) return;
@@ -122,13 +125,19 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost }) => {
       </div>
       <div className="flex flex-col">
         {isEditing ? (
-          <PostForm text={post.description} postImage={post.postImage} postId={post._id} setIsEditing={setIsEditing} updatePost={updatePost} />
+          <PostForm
+            text={post.description}
+            postImage={post.postImage}
+            postId={post._id}
+            setIsEditing={setIsEditing}
+            updatePost={updatePost}
+          />
         ) : (
           <>
             <PostText text={post.description} />
             {post.postImage && (
               <PostImage
-                src={`http://localhost:5000/assets/${encodeURIComponent(
+                src={`http://localhost:5000/post_assets/${encodeURIComponent(
                   post.postImage
                 )}`}
                 alt=""
@@ -145,7 +154,11 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost }) => {
           unLikeFunction={unLikeFunction}
         />
         <VerticalLine className="mb-5" />
-        <Comments comments={comments} removeCommentFunction={removeCommentFunction} editCommentFunction={editCommentFunction} />
+        <Comments
+          comments={comments}
+          removeCommentFunction={removeCommentFunction}
+          editCommentFunction={editCommentFunction}
+        />
         <CommentForm postId={post._id} reFetchFunction={getPostComments} />
       </div>
     </Card>
