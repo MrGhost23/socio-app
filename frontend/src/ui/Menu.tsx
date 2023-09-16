@@ -1,5 +1,6 @@
 import { IconType } from "react-icons";
 import { BsThreeDots } from "react-icons/bs";
+import useClickOutside from "../hooks/useClickOutside";
 import Button from "./Button";
 
 type Props = {
@@ -43,14 +44,20 @@ const Menu: React.FC<Props> = ({
 
   const MenuIcon = menuIcon || BsThreeDots;
 
+  const onClickOutside = () => {
+    setIsOpen(false);
+  };
+
+  const selectBoxRef = useClickOutside(onClickOutside);
+
   return (
-    <>
+    <div>
       <MenuIcon
         className={iconClasses}
         onClick={() => setIsOpen((prevState) => !prevState)}
       />
       {isOpen && (
-        <ul className={ulClasses}>
+        <ul className={ulClasses} ref={selectBoxRef}>
           {list.map(
             (item) =>
               item.showIf && (
@@ -68,7 +75,7 @@ const Menu: React.FC<Props> = ({
           )}
         </ul>
       )}
-    </>
+    </div>
   );
 };
 
