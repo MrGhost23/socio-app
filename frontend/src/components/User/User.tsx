@@ -76,6 +76,7 @@ const SuggestedUser: React.FC<Props> = ({
       } else {
         setButtonText("block");
       }
+      setFollowButtonLoading(false);
     }
   };
 
