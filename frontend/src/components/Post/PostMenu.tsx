@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { BsThreeDots } from "react-icons/bs";
 import { FaPen, FaRegBookmark, FaRegTrashAlt } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa6";
 import { ImBlocked } from "react-icons/im";
@@ -8,7 +7,7 @@ import { PiWarningBold } from "react-icons/pi";
 import { selectUser } from "../../store/slices/authSlice";
 import useProfileActions from "../../hooks/useProfileActions";
 import usePostActions from "../../hooks/usePostActions";
-import Button from "../../ui/Button";
+import Menu from "../../ui/Menu";
 
 type Props = {
   postId: string;
@@ -23,8 +22,6 @@ const PostMenu: React.FC<Props> = ({
   setIsEditing,
   removePost,
 }) => {
-  const [menuOpened, setMenuOpened] = useState(false);
-
   const currentUser = useSelector(selectUser);
 
   const [inBookmarks, setInBookmarks] = useState<boolean>(
@@ -62,76 +59,57 @@ const PostMenu: React.FC<Props> = ({
     setMenuOpened(false);
   };
 
-  return (
-    <>
-      <BsThreeDots
-        className="text-base sm:text-xl cursor-pointer"
-        onClick={() => setMenuOpened((prevState) => !prevState)}
-      />
-      {menuOpened && (
-        <ul className="absolute top-6 right-0 px-4 py-5 bg-white rounded border border-gray-10 shadow-md flex flex-col gap-2 sm:gap-4">
-          <li>
-            <Button
-              text={inBookmarks ? "Unbookmark" : "Bookmark"}
-              bg={false}
-              onClick={toggleBookmarkHandler}
-              icon={inBookmarks ? FaBookmark : FaRegBookmark}
-              className="text-sm sm:text-base"
-              iconClasses="!text-xs sm:!text-sm"
-            />
-          </li>
-          {currentUser!.username === username && (
-            <>
-              <li>
-                <Button
-                  text="Edit Post"
-                  bg={false}
-                  onClick={editHandler}
-                  icon={FaPen}
-                  className="text-sm sm:text-base"
-                  iconClasses="!text-xs sm:!text-sm"
-                />
-              </li>
-              <li>
-                <Button
-                  text="Delete Post"
-                  bg={false}
-                  onClick={deleteHandler}
-                  icon={FaRegTrashAlt}
-                  className="text-sm sm:text-base"
-                  iconClasses="!text-xs sm:!text-sm"
-                />
-              </li>
-            </>
-          )}
-          {currentUser!.username !== username && (
-            <>
-              <li>
-                <Button
-                  text="Block"
-                  bg={false}
-                  onClick={toggleBlockHandler}
-                  icon={ImBlocked}
-                  className="text-sm sm:text-base"
-                  iconClasses="!text-xs sm:!text-sm"
-                />
-              </li>
-              <li>
-                <Button
-                  text="Report"
-                  bg={false}
-                  onClick={reportHandler}
-                  icon={PiWarningBold}
-                  className="text-sm sm:text-base"
-                  iconClasses="!text-xs sm:!text-lg"
-                />
-              </li>
-            </>
-          )}
-        </ul>
-      )}
-    </>
-  );
+  const [menuOpened, setMenuOpened] = useState(false);
+
+  const menuList = [
+    {
+      id: 1,
+      text: inBookmarks ? "Unbookmark" : "Bookmark",
+      action: toggleBookmarkHandler,
+      icon: inBookmarks ? FaBookmark : FaRegBookmark,
+      buttonClasses: "text-sm sm:text-base",
+      iconClasses: "!text-xs sm:!text-sm",
+      showIf: true,
+    },
+    {
+      id: 2,
+      text: "Edit Post",
+      action: editHandler,
+      icon: FaPen,
+      buttonClasses: "text-sm sm:text-base",
+      iconClasses: "!text-xs sm:!text-sm",
+      showIf: currentUser!.username === username,
+    },
+    {
+      id: 3,
+      text: "Delete Post",
+      action: deleteHandler,
+      icon: FaRegTrashAlt,
+      buttonClasses: "text-sm sm:text-base",
+      iconClasses: "!text-xs sm:!text-sm",
+      showIf: currentUser!.username === username,
+    },
+    {
+      id: 4,
+      text: "Block",
+      action: toggleBlockHandler,
+      icon: ImBlocked,
+      buttonClasses: "text-sm sm:text-base",
+      iconClasses: "!text-xs sm:!text-sm",
+      showIf: currentUser!.username !== username,
+    },
+    {
+      id: 3,
+      text: "Report",
+      action: reportHandler,
+      icon: PiWarningBold,
+      buttonClasses: "text-sm sm:text-base",
+      iconClasses: "!text-xs sm:!text-lg",
+      showIf: currentUser!.username !== username,
+    },
+  ];
+
+  return <Menu isOpen={menuOpened} setIsOpen={setMenuOpened} list={menuList} />;
 };
 
 export default PostMenu;
