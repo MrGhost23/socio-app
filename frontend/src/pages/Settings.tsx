@@ -69,6 +69,33 @@ const Settings = () => {
     }
   };
 
+  const uploadPic = async (e) => {
+    e.preventDefault();
+
+    if (!image) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("userPicture", image);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/updateUserPicture",
+        formData
+      );
+
+      if (response.status === 200) {
+        // idk, gonna add some functionality later
+      } else {
+        // idk, gonna add some error state later
+        console.error("Error updating profile picture:", response.status);
+      }
+    } catch (error) {
+      console.error("Error updating profile picture:", error);
+    }
+  };
+
   const [blockedUsers, setBlockedUsers] = useState<UserType[]>();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -116,6 +143,12 @@ const Settings = () => {
                 type="file"
                 value=""
                 onChange={uploadImageHandler}
+              />
+              <Button
+                text="Save"
+                bg={true}
+                onClick={uploadPic}
+                className="opacity-80"
               />
             </div>
           </div>
