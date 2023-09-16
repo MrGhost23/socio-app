@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
@@ -12,6 +12,7 @@ import { RootState } from "../store/store";
 import { selectUser } from "../store/slices/authSlice";
 import { selectSideOpen, toggleSidebar } from "../store/slices/sidebarSlice";
 import UserImage from "./User/UserImage";
+import Button from "../ui/Button";
 
 const Navbar: React.FC = () => {
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
@@ -43,6 +44,47 @@ const Navbar: React.FC = () => {
   const handleSidebar = () => {
     dispatch(toggleSidebar());
   };
+
+  const notifications = [
+    {
+      firstName: "Omar",
+      lastName: "Adel",
+      userPicture:
+        "https://cdn.discordapp.com/avatars/683014296342364286/30889b16f6a06a146378d9d10554582b.png?size=1024",
+      isLiked: false,
+      isCommented: false,
+      isFollowed: true,
+    },
+    {
+      firstName: "سا",
+      lastName: "را",
+      userPicture:
+        "https://i.pinimg.com/564x/69/e5/91/69e5910fa609615eff2704c928e24354.jpg",
+      isLiked: false,
+      isCommented: true,
+      isFollowed: false,
+    },
+    {
+      firstName: "Bob",
+      lastName: "Johnson",
+      userPicture:
+        "http://localhost:5000/profile_pics/1694862840973-273453682-c758a5b04e0e7080dc19187e8c62a9c3.jpg",
+      isLiked: true,
+      isCommented: false,
+      isFollowed: false,
+    },
+    {
+      firstName: "Emily",
+      lastName: "Brown",
+      userPicture:
+        "http://localhost:5000/profile_pics/1694862840973-273453682-c758a5b04e0e7080dc19187e8c62a9c3.jpg",
+      isLiked: false,
+      isCommented: false,
+      isFollowed: true,
+    },
+  ];
+
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <header className="bg-white dark:bg-primaryDark z-50" ref={navRef}>
@@ -96,7 +138,42 @@ const Navbar: React.FC = () => {
                 <div className="absolute -top-2 -right-1 bg-sky-500 text-xs font-bold px-1 py-0.5 rounded-lg text-white">
                   1
                 </div>
-                <IoIosNotifications className="text-3xl text-gray-700 dark:text-gray-200" />
+                <div onClick={() => setIsOpen((prev) => !prev)}>
+                  <IoIosNotifications className="text-3xl text-gray-700 cursor-pointer dark:text-gray-200" />
+                </div>
+                {isOpen && (
+                  <div className="relative">
+                    <div className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg overflow-hidden z-20">
+                      <div className="py-2">
+                        {notifications.map((notification, index) => (
+                          <a
+                            key={index}
+                            href="#"
+                            className="flex items-center px-4 py-3 border-b hover:bg-gray-100 -mx-2"
+                          >
+                            <img
+                              className="h-8 w-8 rounded-full object-cover mx-1"
+                              src={notification.userPicture}
+                              alt="avatar"
+                            />
+                            <p className="text-gray-600 text-sm mx-2">
+                              <span className="font-bold">
+                                {notification.firstName} {notification.lastName}
+                              </span>{" "}
+                              {notification.isLiked && "liked your post."}{" "}
+                              {notification.isCommented &&
+                                "commented on your post."}{" "}
+                              {notification.isFollowed &&
+                                "started following you."}{" "}
+                              1h
+                            </p>
+                          </a>
+                        ))}
+                      </div>
+                      <Button bg={true} text="See all notifications" />
+                    </div>
+                  </div>
+                )}
               </li>
             </ul>
           </nav>
