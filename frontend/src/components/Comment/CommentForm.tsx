@@ -22,7 +22,7 @@ const CommentForm: React.FC<Props> = ({
   commentText,
   setIsEditing
 }) => {
-  let classes = "absolute bottom-4 right-6 text-xl text-gray-600 opacity-0 cursor-pointer rotate-[135deg] transition duration-500";
+  let classes = "absolute bottom-4 right-6 text-lg sm:text-xl text-gray-600 opacity-0 cursor-pointer rotate-[135deg] transition duration-500";
   
   if (commentId) {
     classes += " !text-sky-500 opacity-100 hover:text-sky-600 hover:scale-110"
@@ -68,9 +68,9 @@ const CommentForm: React.FC<Props> = ({
   }
 
   return (
-    <div className="flex flex-row gap-3">
+    <div className="flex flex-row gap-0 sm:gap-3">
       <UserImage
-        className="w-10 !mb-0"
+        className="hidden sm:block w-10 !mb-0"
         src={currentUser!.userPicture}
         alt={""}
         username={currentUser!.username}
@@ -78,7 +78,7 @@ const CommentForm: React.FC<Props> = ({
       <form className="w-full">
         <div className="relative w-full">
           <textarea
-            className="w-full min-h-[2.5rem] h-fit max-h-[8rem] resize-y pl-4 pr-7 py-1.5 border rounded-xl outline-none"
+            className="w-full min-h-[2.5rem] h-fit max-h-[8rem] resize-y pl-4 pr-7 py-1.5 border rounded-xl outline-none text-sm sm:text-base"
             placeholder="Write your comment"
             value={text}
             onChange={changeHandler}

@@ -68,26 +68,42 @@ const PostMenu: React.FC<Props> = ({
 
   return (
     <>
-      <BsThreeDots className="text-xl cursor-pointer" onClick={() => setMenuOpened((prevState) => !prevState)} />
+      <BsThreeDots className="text-base sm:text-xl cursor-pointer" onClick={() => setMenuOpened((prevState) => !prevState)} />
         {
           menuOpened && (
-          <ul className="absolute top-6 right-0 px-4 py-5 bg-white rounded border border-gray-10 shadow-md flex flex-col gap-4">
+          <ul className="absolute top-6 right-0 px-4 py-5 bg-white rounded border border-gray-10 shadow-md flex flex-col gap-2 sm:gap-4">
             <li>
               <Button
                 text={inBookmarks ? "Unbookmark" : "Bookmark"}
                 bg={false}
                 onClick={toggleBookmarkHandler}
                 icon={inBookmarks ?FaBookmark : FaRegBookmark}
+                className="text-sm sm:text-base"
+                iconClasses="!text-xs sm:!text-sm"
               />
             </li>
             {
               currentUser!.username === username &&
               <>
               <li>
-                <Button text="Edit Post" bg={false} onClick={editHandler} icon={FaPen} />
+                <Button
+                  text="Edit Post"
+                  bg={false}
+                  onClick={editHandler}
+                  icon={FaPen}
+                  className="text-sm sm:text-base"
+                  iconClasses="!text-xs sm:!text-sm"
+                />
               </li>
               <li>
-                <Button text="Delete Post" bg={false} onClick={deleteHandler} icon={FaRegTrashAlt} />
+                <Button
+                  text="Delete Post"
+                  bg={false}
+                  onClick={deleteHandler}
+                  icon={FaRegTrashAlt}
+                  className="text-sm sm:text-base"
+                  iconClasses="!text-xs sm:!text-sm"
+                />
               </li>
               </>
             }
@@ -95,10 +111,24 @@ const PostMenu: React.FC<Props> = ({
               currentUser!.username !== username &&
               <>
                 <li>
-                  <Button text="Block" bg={false} onClick={toggleBlockHandler} icon={ImBlocked} />
+                  <Button
+                    text="Block"
+                    bg={false}
+                    onClick={toggleBlockHandler}
+                    icon={ImBlocked}
+                    className="text-sm sm:text-base"
+                    iconClasses="!text-xs sm:!text-sm"
+                    />
                 </li>
                 <li>
-                  <Button text="Report" bg={false} onClick={reportHandler} icon={PiWarningBold} iconClasses="!text-lg" />
+                  <Button
+                    text="Report"
+                    bg={false}
+                    onClick={reportHandler}
+                    icon={PiWarningBold}
+                    className="text-sm sm:text-base"
+                    iconClasses="!text-xs sm:!text-lg"
+                  />
                 </li>
               </>
             }
