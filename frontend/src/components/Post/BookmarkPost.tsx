@@ -18,7 +18,7 @@ const BookmarkPost: React.FC<Props> = ({ post, reFetchFunction }) => {
         <div className="flex flex-col sm:flex-row gap-4">
           {post.postImage && (
             <BookmarkImage
-              src={`http://localhost:5000/assets/${post.postImage}`}
+              src={`http://localhost:5000/post_assets/${post.postImage}`}
               alt=""
               id={post._id}
             />
