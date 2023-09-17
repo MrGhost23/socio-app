@@ -5,9 +5,12 @@ import connection from "../assets/connection.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../store/slices/authSlice";
 import { useDispatch } from "react-redux";
+import Select from "react-select";
+import { countries } from "../utils/countries";
 
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
+import Button from "../ui/Button";
 
 const Register = () => {
   const [firstName, setFirstName] = useState("");
@@ -16,29 +19,26 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [country, setCountry] = useState("");
+  const [countryError, setCountryError] = useState("");
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!country) {
+      setCountryError("You must provide a country");
+      return;
+    }
     dispatch(
       register({
         firstName,
         lastName,
         email,
         password,
-        country,
+        country: country.label,
         username,
       })
     );
-    setFirstName("");
-    setLastName("");
-    setEmail("");
-    setPassword("");
-    setCountry("");
-    setUsername("");
-
-    navigate("/");
   };
 
   return (
@@ -114,22 +114,23 @@ const Register = () => {
           </div>
           <div className="flex flex-wrap -mx-3 mb-6">
             <div className="w-full px-3">
-              <Input
-                label="Country"
-                id="country"
-                value={country}
-                onChange={(prev) => setCountry(prev)}
-                type="text"
-                placeholder="Egypt"
+              <Select
+                placeholder="Country"
+                isSearchable
+                name="countries"
+                onChange={setCountry}
+                options={countries}
+                noOptionsMessage={() => "Please select a country"}
               />
+              {countryError && <p className="text-red-600">{countryError}</p>}
             </div>
           </div>
-          <button
+          <Button
+            text="Sign Up"
+            bg={true}
             type="submit"
             className="block bg-sky-500 text-white w-full py-2 hover:bg-sky-600 mb-4"
-          >
-            Sign Up
-          </button>
+          />
           <p>
             Have an account?
             <Link to="/login" className="font-bold ml-1">
