@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 const Chats = () => {
   const user = useSelector(selectUser);
   const [chats, setChats] = useState([]);
+  const [currentChat, setCurrentChat] = useState(null);
 
   useEffect(() => {
     const getChats = async () => {
@@ -27,9 +28,13 @@ const Chats = () => {
   return (
     <div className="h-[calc(100vh-82px)] shadow-lg rounded-lg">
       <div className="flex flex-row justify-between bg-white">
-        <Conversations chats={chats} currentUser={user?.username} />
-        <Messages />
-        <ChatInfo />
+        <Conversations
+          chats={chats}
+          currentUser={user?.username}
+          setCurrentChat={setCurrentChat}
+        />
+        <Messages chat={currentChat} currentUser={user?.username} />
+        <ChatInfo chat={currentChat} currentUser={user?.username} />
       </div>
     </div>
   );
