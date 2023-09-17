@@ -1,18 +1,21 @@
-import { useEffect } from "react";
 import useUserProfile from "../../hooks/useUserProfile";
 import noAvatar from "../../assets/noAvatar.png";
 
-const Conversation = ({ chat, currentUserId }) => {
-  const username = chat.members.find((username) => username !== currentUserId);
-  const { profile, loading } = useUserProfile(username, true);
-  console.log(profile?.firstName);
+const Conversation = ({ chat, currentUserId, onClick }) => {
+  const username = chat?.members?.find(
+    (username) => username !== currentUserId
+  );
+  const { profile, loading } = useUserProfile(username);
 
   return (
     <>
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <div className="flex flex-row py-4 px-2 justify-center items-center border-b-2">
+        <div
+          className="flex flex-row py-4 px-2 justify-center items-center border-b-2 cursor-pointer hover:bg-slate-200"
+          onClick={onClick}
+        >
           <div className="w-1/4">
             <img
               src={profile?.userPicture || noAvatar}
@@ -28,7 +31,7 @@ const Conversation = ({ chat, currentUserId }) => {
               <span className="text-sm text-gray-500">12:23AM</span>
             </div>
 
-            <span className="text-gray-500 font-medium">بدخله براحة خالص</span>
+            <span className="text-gray-500 font-medium">خالص</span>
           </div>
         </div>
       )}
