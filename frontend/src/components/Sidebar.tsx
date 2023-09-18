@@ -5,7 +5,6 @@ import { MdOutlineRssFeed } from "react-icons/md";
 import { FaRegBookmark } from "react-icons/fa6";
 import { BiCog, BiLogOut } from "react-icons/bi";
 import UserImage from "./User/UserImage";
-import { useEffect, useRef } from "react";
 import VerticalLine from "../ui/VerticalLine";
 import UserFullName from "./User/UserFullName";
 import UserTag from "./User/UserTag";
@@ -16,7 +15,11 @@ import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 import { RootState } from "../store/store";
 import Backdrop from "./Backdrop";
 
-const Sidebar = () => {
+type Props = {
+  navIsSticky: boolean;
+};
+
+const Sidebar: React.FC<Props> = ({ navIsSticky }) => {
   const currentUser = useSelector(selectUser);
   const currentUserFullName =
     currentUser!.firstName + " " + currentUser!.lastName;
@@ -26,28 +29,6 @@ const Sidebar = () => {
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
 
   const sideOpen = useSelector(selectSideOpen);
-  const sideRef = useRef<HTMLDivElement | null>(null);
-
-  const stickySidebar = () => {
-    window.addEventListener("scroll", () => {
-      if (
-        document.body.scrollTop > 120 ||
-        document.documentElement.scrollTop > 120
-      ) {
-        if (sideRef.current) {
-          sideRef.current.classList.add("sticky-sidebar");
-        }
-      } else if (sideRef.current) {
-        sideRef.current.classList.remove("sticky-sidebar");
-      }
-    });
-  };
-
-  useEffect(() => {
-    stickySidebar();
-
-    return () => window.removeEventListener("scroll", stickySidebar);
-  }, []);
 
   const navigate = useNavigate();
 
@@ -74,16 +55,21 @@ const Sidebar = () => {
   return (
     <>
       {sideOpen && <Backdrop onClick={() => dispatch(closeSidebar())} />}
-
       <div
-        className={`sidebar fixed z-40 transition-all bottom-0 duration-300 inset-y-0 bg-white transform ${
+        className={`sidebar fixed z-40 h-[calc(100vh)] transition-all bottom-0 duration-300 inset-y-0 bg-white transform ${
           sideOpen ? "left-0 w-fit py-7 px-5" : "left-[-100%]"
-        } lg:translate-x-0 lg:sticky lg:top-0 lg:left-0 lg:bottom-auto lg:shadow-lg`}
+        } lg:sticky lg:shadow-lg`}
       >
-        <div className="pl-5 pt-10">
-          <div className="mb-5 flex flex-col lg:flex-row lg:text-left text-center items-center gap-3 group">
+        <div
+          className={
+            navIsSticky
+              ? "lg:absolute lg:top-20 w-full px-5 xl:px-10 pt-10"
+              : "lg:absolute lg:top-0  w-full px-5 xl:px-10 pt-10"
+          }
+        >
+          <div className="mb-5 flex flex-col xl:flex-row text-center xl:text-left items-center gap-3 group">
             <UserImage
-              className="w-20 lg:w-16 !m-0"
+              className="w-20 lg:w-[4.5rem] !m-0"
               src={currentUserImage}
               alt={currentUserFullName}
               username={currentUserTag}

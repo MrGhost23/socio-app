@@ -12,8 +12,30 @@ import Button from "../ui/Button";
 import { RecentActivityType } from "../Types/RecentActivity.type";
 import Loading from "../ui/Loading";
 import UserMenu from "../components/User/UserMenu";
+import Navbar from "../components/Navbar";
 
 const ProfileLayout = () => {
+  const [navIsSticky, setNavIsSticky] = useState(false);
+
+  const stickyNav = () => {
+    window.addEventListener("scroll", () => {
+      if (
+        document.body.scrollTop > 120 ||
+        document.documentElement.scrollTop > 120
+      ) {
+        setNavIsSticky(true);
+      } else {
+        setNavIsSticky(false);
+      }
+    });
+  };
+
+  useEffect(() => {
+    stickyNav();
+
+    return () => window.removeEventListener("scroll", stickyNav);
+  }, []);
+
   const navigate = useNavigate();
   const currentUser = useSelector(selectUser);
   const { username } = useParams();
@@ -83,69 +105,74 @@ const ProfileLayout = () => {
   if (error) console.log(error);
 
   return (
-    <div className="flex flex-col lg:grid lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-12 mx-4 sm:mx-10 md:mx-20 my-10">
-      <div className="col-span-2 lg:col-span-1 order-1">
-        <Card className="sticky top-32 px-10 py-8 flex flex-col items-center">
-          <div className="relative top-0 right-2 left-full self-start">
-            <UserMenu
-              isMyProfile={isMyProfile}
-              profileUsername={profile.username}
-            />
-          </div>
-          <UserInfo userInfo={profile} followers={followers} />
-          <div className="w-full flex flex-col gap-4">
-            {!isMyProfile ? (
-              <>
-                <Button
-                  text="Send Message"
-                  onClick={() => navigate(`/chats/${profile.username}`)}
-                  bg={true}
-                />
-                <Button
-                  text={
-                    followButtonLoading
-                      ? "Loading..."
-                      : isFollowing
-                      ? "Unfollow"
-                      : "Follow"
-                  }
-                  onClick={followButtonLoading ? () => {} : toggleFollowHandler}
-                  bg={true}
-                />
-              </>
-            ) : (
-              <Button
-                text="Edit profile"
-                onClick={() => navigate("/settings")}
-                bg={true}
-              />
-            )}
-          </div>
-        </Card>
-      </div>
-      <div className="flex flex-col xl:grid xl:grid-cols-3 col-span-2 xl:col-span-3 order-2 gap-8 xl:gap-12">
-        <div className="w-full xl:col-span-2 order-2 xl:order-1">
-          <Outlet />
-        </div>
-        <div className="w-full xl:col-span-1 order-1 xl:order-2">
-          <Card className="sticky top-32 px-8 py-4 pb-6 flex flex-col !text-left">
-            <h3 className="mb-5 text-xl">Recent Activities</h3>
-            {userActivitiesLoading ? (
-              <Loading />
-            ) : userActivitiesError ? (
-              "An error occurred"
-            ) : (
-              <RecentActivities
+    <>
+      <Navbar navIsSticky={navIsSticky} />
+      <div className="flex flex-col lg:grid lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-12 mx-4 sm:mx-10 md:mx-10 my-10">
+        <div className="col-span-2 lg:col-span-1 order-1">
+          <Card className="sticky top-32 px-10 py-8 flex flex-col items-center">
+            <div className="relative top-0 right-2 left-full self-start">
+              <UserMenu
                 isMyProfile={isMyProfile}
-                username={profile.username}
-                userFirstName={profile.firstName}
-                recentActivities={userActivities!}
+                profileUsername={profile.username}
               />
-            )}
+            </div>
+            <UserInfo userInfo={profile} followers={followers} />
+            <div className="w-full flex flex-col gap-4">
+              {!isMyProfile ? (
+                <>
+                  <Button
+                    text="Send Message"
+                    onClick={() => navigate(`/chats/${profile.username}`)}
+                    bg={true}
+                  />
+                  <Button
+                    text={
+                      followButtonLoading
+                        ? "Loading..."
+                        : isFollowing
+                        ? "Unfollow"
+                        : "Follow"
+                    }
+                    onClick={
+                      followButtonLoading ? () => {} : toggleFollowHandler
+                    }
+                    bg={true}
+                  />
+                </>
+              ) : (
+                <Button
+                  text="Edit profile"
+                  onClick={() => navigate("/settings")}
+                  bg={true}
+                />
+              )}
+            </div>
           </Card>
         </div>
+        <div className="flex flex-col xl:grid xl:grid-cols-3 col-span-2 xl:col-span-3 order-2 gap-8 xl:gap-12">
+          <div className="w-full xl:col-span-2 order-2 xl:order-1">
+            <Outlet />
+          </div>
+          <div className="w-full xl:col-span-1 order-1 xl:order-2">
+            <Card className="sticky top-32 px-8 py-4 pb-6 flex flex-col !text-left">
+              <h3 className="mb-5 text-xl">Recent Activities</h3>
+              {userActivitiesLoading ? (
+                <Loading />
+              ) : userActivitiesError ? (
+                "An error occurred"
+              ) : (
+                <RecentActivities
+                  isMyProfile={isMyProfile}
+                  username={profile.username}
+                  userFirstName={profile.firstName}
+                  recentActivities={userActivities!}
+                />
+              )}
+            </Card>
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

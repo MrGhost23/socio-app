@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { forwardRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
@@ -14,32 +14,17 @@ import { selectSideOpen, toggleSidebar } from "../store/slices/sidebarSlice";
 import UserImage from "./User/UserImage";
 import Button from "../ui/Button";
 
-const Navbar: React.FC = () => {
+type Props = {
+  navIsSticky: boolean;
+};
+
+const Navbar: React.ForwardRefRenderFunction<HTMLDivElement, Props> = (
+  { navIsSticky },
+  ref
+) => {
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
   const user = useSelector(selectUser);
-  const navRef = useRef<HTMLDivElement | null>(null);
   const sideOpen = useSelector(selectSideOpen);
-
-  const stickyNav = () => {
-    window.addEventListener("scroll", () => {
-      if (
-        document.body.scrollTop > 120 ||
-        document.documentElement.scrollTop > 120
-      ) {
-        if (navRef.current) {
-          navRef.current.classList.add("sticky-nav");
-        }
-      } else if (navRef.current) {
-        navRef.current.classList.remove("sticky-nav");
-      }
-    });
-  };
-
-  useEffect(() => {
-    stickyNav();
-
-    return () => window.removeEventListener("scroll", stickyNav);
-  }, []);
 
   const handleSidebar = () => {
     dispatch(toggleSidebar());
@@ -87,7 +72,14 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="bg-white dark:bg-primaryDark z-50" ref={navRef}>
+    <header
+      ref={ref}
+      className={
+        navIsSticky
+          ? "sticky-nav bg-white dark:bg-primaryDark z-50"
+          : "bg-white dark:bg-primaryDark z-50"
+      }
+    >
       {!user ? (
         <div className="flex justify-center items-center py-5">
           <Link className="font-bold text-4xl text-sky-500" to="/">
@@ -95,13 +87,12 @@ const Navbar: React.FC = () => {
           </Link>
         </div>
       ) : (
-        <div className="mx-auto px-4 sm:px-10 md:px-20 py-5 flex items-center">
+        <div className="mx-auto px-4 sm:px-10 md:px-10 py-5 flex items-center">
           <div className="md:w-48 flex-shrink-0 mr-auto">
             <Link className="font-bold text-4xl text-sky-500" to="/">
               Socio
             </Link>
           </div>
-
           <div className="w-full mr-auto max-w-xs xl:max-w-lg 2xl:max-w-2xl bg-gray-100 rounded-md hidden lg:flex items-center">
             <form className="flex items-center w-full">
               <label className="sr-only">Search</label>
@@ -118,7 +109,6 @@ const Navbar: React.FC = () => {
               </div>
             </form>
           </div>
-
           <nav className="contents">
             <ul className="ml-4 xl:w-48 flex items-center gap-2 justify-end">
               <li className="ml-2 lg:ml-4 relative inline-block">
@@ -177,7 +167,6 @@ const Navbar: React.FC = () => {
               </li>
             </ul>
           </nav>
-
           <div className="ml-8 hidden sm:flex flex-col font-bold">
             <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
               <UserImage
@@ -201,10 +190,9 @@ const Navbar: React.FC = () => {
           </button>
         </div>
       )}
-
       <hr />
     </header>
   );
 };
 
-export default Navbar;
+export default forwardRef(Navbar);

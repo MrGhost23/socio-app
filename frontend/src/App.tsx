@@ -62,7 +62,6 @@ const App: React.FC = () => {
 
   return (
     <>
-      <Navbar />
       <Routes>
         <Route path="*" element={<ErrorPage />} />
         <Route
