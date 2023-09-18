@@ -67,6 +67,7 @@ const App: React.FC = () => {
   useEffect(() => {
     if (user) {
       socket.current = io("ws://localhost:8800");
+      console.log(socket.current);
       socket.current.emit("new-user-add", user?.username);
       socket.current.on("get-users", (users) => {
         setOnlineUsers(users);

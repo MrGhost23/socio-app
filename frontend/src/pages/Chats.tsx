@@ -23,18 +23,30 @@ const Chats = ({
   useEffect(() => {
     socket.current = io("ws://localhost:8800");
     if (sendMessage !== null) {
+      console.log("YOOOO");
       socket.current.emit("send-message", sendMessage);
     }
   }, [sendMessage]);
 
   useEffect(() => {
-    socket.current = io("ws://localhost:8800");
+    const socket = io("ws://localhost:8800");
+    console.log("Socket connected:", socket.connected);
+    if (user) {
+      // Emit the "new-user-add" event when the component mounts.
+      socket.emit("new-user-add", user?.username);
 
-    socket.current.on("recieve-message", (data) => {
-      setReceiveMessage(data);
-    });
-  }, []);
+      // Listen for incoming messages
+      socket.on("receive-message", (data) => {
+        setReceiveMessage(data);
+        console.log(data);
+      });
+    }
 
+    // Clean up the socket connection when the component unmounts
+    return () => {
+      socket.disconnect();
+    };
+  }, [user?.username]);
   useEffect(() => {
     const getChats = async () => {
       try {

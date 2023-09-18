@@ -14,13 +14,10 @@ const Messages = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
-  console.log(receiveMessage);
-
   useEffect(() => {
-    console.log("daa");
+    console.log("RECIEVER MESSGE", receiveMessage);
     if (receiveMessage !== null && receiveMessage.chatId === chat._id) {
       setMessages([...messages, receiveMessage]);
-      console.log("RECIEVER MESSGE", receiveMessage);
     }
   }, [receiveMessage]);
 
