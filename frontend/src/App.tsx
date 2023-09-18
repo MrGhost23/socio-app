@@ -79,8 +79,6 @@ const App: React.FC = () => {
   useEffect(() => {
     socketio.on("receive-message", (data) => {
       setReceiveMessage(data);
-      console.log(data);
-      console.log("RECEIEVEVEV");
     });
   }, []);
 

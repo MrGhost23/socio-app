@@ -15,7 +15,6 @@ const Messages = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
   const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
-    console.log("RECIEVER MESSGE", receiveMessage);
     if (receiveMessage !== null && receiveMessage.chatId === chat._id) {
       setMessages([...messages, receiveMessage]);
     }
