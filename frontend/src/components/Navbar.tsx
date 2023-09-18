@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
@@ -8,21 +8,18 @@ import { FiMenu } from "react-icons/fi";
 import { AiFillMessage } from "react-icons/ai";
 import { MdClose } from "react-icons/md";
 import { IoIosNotifications } from "react-icons/io";
+import axios from "axios";
 import { RootState } from "../store/store";
 import { selectUser } from "../store/slices/authSlice";
 import { selectSideOpen, toggleSidebar } from "../store/slices/sidebarSlice";
 import UserImage from "./User/UserImage";
 import Button from "../ui/Button";
-import axios from "axios";
 
 type Props = {
   navIsSticky: boolean;
 };
 
-const Navbar: React.ForwardRefRenderFunction<HTMLDivElement, Props> = (
-  { navIsSticky },
-  ref
-) => {
+const Navbar: React.FC<Props> = ({ navIsSticky }) => {
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
   const user = useSelector(selectUser);
   const sideOpen = useSelector(selectSideOpen);
@@ -99,7 +96,6 @@ const Navbar: React.ForwardRefRenderFunction<HTMLDivElement, Props> = (
 
   return (
     <header
-      ref={ref}
       className={
         navIsSticky
           ? "sticky-nav bg-white dark:bg-primaryDark z-50"
@@ -305,4 +301,4 @@ const Navbar: React.ForwardRefRenderFunction<HTMLDivElement, Props> = (
   );
 };
 
-export default forwardRef(Navbar);
+export default Navbar;

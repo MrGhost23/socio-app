@@ -3,39 +3,17 @@ import { Outlet, useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { selectUser } from "../store/slices/authSlice";
+import { RecentActivityType } from "../Types/RecentActivity.type";
 import useUserProfile from "../hooks/useUserProfile";
 import useProfileActions from "../hooks/useProfileActions";
 import UserInfo from "../components/User/UserInfo";
+import UserMenu from "../components/User/UserMenu";
 import RecentActivities from "../components/RecentActivities";
 import Card from "../ui/Card";
 import Button from "../ui/Button";
-import { RecentActivityType } from "../Types/RecentActivity.type";
 import Loading from "../ui/Loading";
-import UserMenu from "../components/User/UserMenu";
-import Navbar from "../components/Navbar";
 
 const ProfileLayout = () => {
-  const [navIsSticky, setNavIsSticky] = useState(false);
-
-  const stickyNav = () => {
-    window.addEventListener("scroll", () => {
-      if (
-        document.body.scrollTop > 120 ||
-        document.documentElement.scrollTop > 120
-      ) {
-        setNavIsSticky(true);
-      } else {
-        setNavIsSticky(false);
-      }
-    });
-  };
-
-  useEffect(() => {
-    stickyNav();
-
-    return () => window.removeEventListener("scroll", stickyNav);
-  }, []);
-
   const navigate = useNavigate();
   const currentUser = useSelector(selectUser);
   const { username } = useParams();
@@ -106,7 +84,6 @@ const ProfileLayout = () => {
 
   return (
     <>
-      <Navbar navIsSticky={navIsSticky} />
       <div className="flex flex-col lg:grid lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-12 mx-4 sm:mx-10 md:mx-10 my-10">
         <div className="col-span-2 lg:col-span-1 order-1">
           <Card className="sticky top-32 px-10 py-8 flex flex-col items-center">

@@ -33,6 +33,27 @@ import { io } from "socket.io-client";
 import Chats from "./pages/Chats";
 
 const App: React.FC = () => {
+  const [navIsSticky, setNavIsSticky] = useState(false);
+
+  const stickyNav = () => {
+    window.addEventListener("scroll", () => {
+      if (
+        document.body.scrollTop > 120 ||
+        document.documentElement.scrollTop > 120
+      ) {
+        setNavIsSticky(true);
+      } else {
+        setNavIsSticky(false);
+      }
+    });
+  };
+
+  useEffect(() => {
+    stickyNav();
+
+    return () => window.removeEventListener("scroll", stickyNav);
+  }, []);
+
   const [isLoading, setIsLoading] = useState(true);
   const user = useSelector(selectUser);
   const [onlineUsers, setOnlineUsers] = useState([]);
@@ -85,6 +106,7 @@ const App: React.FC = () => {
   if (isLoading) return;
   return (
     <>
+      <Navbar navIsSticky={navIsSticky} />
       <Routes>
         <Route path="*" element={<ErrorPage />} />
         <Route
@@ -111,7 +133,15 @@ const App: React.FC = () => {
           }
         />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route element={user ? <MainLayout /> : <Navigate to="/login" />}>
+        <Route
+          element={
+            user ? (
+              <MainLayout navIsSticky={navIsSticky} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        >
           <Route path="/" element={<Timeline />} />
           <Route path="/post/:id" element={<PostPage />} />
           <Route path="/find-friends" element={<FindFriends />} />
@@ -119,7 +149,13 @@ const App: React.FC = () => {
         </Route>
         <Route
           path="/settings"
-          element={user ? <Settings /> : <Navigate to="/login" />}
+          element={
+            user ? (
+              <Settings navIsSticky={navIsSticky} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
         <Route element={user ? <ProfileLayout /> : <Navigate to="/login" />}>
           <Route path="/profile/:username" element={<Profile />} />
