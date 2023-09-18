@@ -14,6 +14,9 @@ const userRouter = require("./routes/usersRoutes");
 const postRouter = require("./routes/postsRoutes");
 const activityRouter = require("./routes/activityRoutes");
 const commentRouter = require("./routes/commentsRoutes");
+const searchRouter = require("./routes/searchRoutes");
+const chatRouter = require("./routes/chatRoutes");
+const messageRouter = require("./routes/messagesRoutes");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const CustomError = require("./errors/index");
@@ -83,6 +86,9 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/users", activityRouter);
 app.use("/api/v1/posts", postRouter);
 app.use("/api/v1/posts", commentRouter);
+app.use("/api/v1/search", searchRouter);
+app.use("/api/v1/chat", chatRouter);
+app.use("/api/v1/message", messageRouter);
 
 app.use("/api/v1/validateToken", authenticateUser, async (req, res) => {
   const userData = req.user;

@@ -1,7 +1,17 @@
 import { BsSearch } from "react-icons/bs";
 import Conversation from "./Conversation";
 
-const Conversations = () => {
+type Props = {
+  chats: any[];
+  currentUser: string | undefined;
+  setCurrentChat: any;
+};
+
+const Conversations: React.FC<Props> = ({
+  chats,
+  currentUser,
+  setCurrentChat,
+}) => {
   return (
     <div className="flex flex-col w-2/5 border-r-2 h-[calc(100vh-82px)] overflow-y-auto">
       <div className="border-b-2 py-4 px-2">
@@ -22,8 +32,14 @@ const Conversations = () => {
           </form>
         </div>
       </div>
-
-      <Conversation />
+      {chats.map((chat) => (
+        <Conversation
+          chat={chat}
+          currentUserId={currentUser}
+          onClick={() => setCurrentChat(chat)}
+          key={currentUser}
+        />
+      ))}
     </div>
   );
 };

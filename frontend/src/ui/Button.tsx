@@ -7,6 +7,7 @@ type Props = {
   className?: string;
   icon?: IconType;
   iconClasses?: string;
+  type?: string;
 };
 
 const Button: React.FC<Props> = (props) => {
@@ -27,6 +28,7 @@ const Button: React.FC<Props> = (props) => {
 
   return (
     <button
+      type={"submit" || "button"}
       className={
         props.icon
           ? classes + " flex flex-row items-center gap-2 cursor-pointer"
