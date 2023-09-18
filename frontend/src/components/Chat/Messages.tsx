@@ -1,5 +1,4 @@
 import axios from "axios";
-import useUserProfile from "../../hooks/useUserProfile";
 import RecieverMsg from "./RecieverMsg";
 import SenderMsg from "./SenderMsg";
 import TypeMsg from "./TypeMsg";
@@ -8,11 +7,43 @@ import { ProfileType } from "../../Types/Profile.types";
 import { selectUser } from "../../store/slices/authSlice";
 import { useSelector } from "react-redux";
 
-const Messages = ({ chat, currentUser }) => {
+const Messages = ({ chat, currentUser, setSendMessage, receiveMessage }) => {
   const username = chat?.members?.find((username) => username !== currentUser);
   const user = useSelector(selectUser);
   const [userData, setUserData] = useState(null);
   const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
+
+  console.log(receiveMessage);
+
+  useEffect(() => {
+    console.log("daa");
+    if (receiveMessage !== null && receiveMessage.chatId === chat._id) {
+      setMessages([...messages, receiveMessage]);
+      console.log("RECIEVER MESSGE", receiveMessage);
+    }
+  }, [receiveMessage]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const message = {
+      senderUsername: currentUser,
+      text: newMessage,
+      chatId: chat._id,
+    };
+    try {
+      const { data } = await axios.post(
+        "http://localhost:5000/api/v1/message",
+        message
+      );
+      setMessages([...messages, data]);
+      setNewMessage("");
+    } catch (error) {
+      console.log(error);
+    }
+
+    setSendMessage({ ...message, receiverUsername: username });
+  };
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -48,7 +79,7 @@ const Messages = ({ chat, currentUser }) => {
       <div className="flex flex-col mt-5">
         {chat ? (
           messages.map((message) => (
-            <>
+            <div>
               {message?.senderUsername !== userData?.username ? (
                 <SenderMsg userPicture={user?.userPicture} msg={message.text} />
               ) : (
@@ -57,7 +88,7 @@ const Messages = ({ chat, currentUser }) => {
                   msg={message.text}
                 />
               )}
-            </>
+            </div>
           ))
         ) : (
           <div className="flex justify-center items-center">
@@ -67,7 +98,13 @@ const Messages = ({ chat, currentUser }) => {
           </div>
         )}
       </div>
-      {chat && <TypeMsg />}
+      {chat && (
+        <TypeMsg
+          handleSubmit={handleSubmit}
+          newMessage={newMessage}
+          setNewMessage={setNewMessage}
+        />
+      )}
     </div>
   );
 };
