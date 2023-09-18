@@ -29,11 +29,10 @@ io.on("connection", (socket) => {
 
     console.log("Sending from socket to:", receiverUsername);
     console.log("Data:", data);
-
     if (user) {
       io.to(user.socketId).emit("receive-message", data);
-    } else {
-      console.log(`User ${receiverUsername} is not online.`);
+      console.log(user.socketId);
+      console.log("RECEVIEED");
     }
   });
 });

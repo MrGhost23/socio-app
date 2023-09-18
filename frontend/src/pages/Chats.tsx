@@ -1,52 +1,25 @@
 import Conversations from "../components/Chat/Conversations";
 import Messages from "../components/Chat/Messages";
 import ChatInfo from "../components/Chat/ChatInfo";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { selectUser } from "../store/slices/authSlice";
 import { useSelector } from "react-redux";
 import { ProfileType } from "../Types/Profile.types";
-import { io } from "socket.io-client";
 
-const Chats = ({
-  setSendMessage,
-  sendMessage,
-  setReceiveMessage,
-  receiveMessage,
-}) => {
+const Chats = ({ setSendMessage, sendMessage, receiveMessage, socket }) => {
   const user = useSelector(selectUser);
   const [chats, setChats] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [userData, setUserData] = useState(null);
-  const socket = useRef();
 
   useEffect(() => {
-    socket.current = io("ws://localhost:8800");
     if (sendMessage !== null) {
       console.log("YOOOO");
-      socket.current.emit("send-message", sendMessage);
+      socket.emit("send-message", sendMessage);
     }
   }, [sendMessage]);
 
-  useEffect(() => {
-    const socket = io("ws://localhost:8800");
-    console.log("Socket connected:", socket.connected);
-    if (user) {
-      // Emit the "new-user-add" event when the component mounts.
-      socket.emit("new-user-add", user?.username);
-
-      // Listen for incoming messages
-      socket.on("receive-message", (data) => {
-        setReceiveMessage(data);
-        console.log(data);
-      });
-    }
-
-    // Clean up the socket connection when the component unmounts
-    return () => {
-      socket.disconnect();
-    };
-  }, [user?.username]);
   useEffect(() => {
     const getChats = async () => {
       try {

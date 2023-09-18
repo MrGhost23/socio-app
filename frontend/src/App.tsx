@@ -64,16 +64,25 @@ const App: React.FC = () => {
     fetchToken();
   }, [dispatch, localToken]);
 
+  const [socketio, setSocket] = useState(io("ws://localhost:8800"));
+
   useEffect(() => {
     if (user) {
-      socket.current = io("ws://localhost:8800");
-      console.log(socket.current);
-      socket.current.emit("new-user-add", user?.username);
-      socket.current.on("get-users", (users) => {
+      setSocket(io("ws://localhost:8800"));
+      socketio.emit("new-user-add", user?.username);
+      socketio.on("get-users", (users) => {
         setOnlineUsers(users);
       });
     }
   }, [user]);
+
+  useEffect(() => {
+    socketio.on("receive-message", (data) => {
+      setReceiveMessage(data);
+      console.log(data);
+      console.log("RECEIEVEVEV");
+    });
+  }, [receiveMessage]);
 
   if (isLoading) return;
   return (
@@ -97,8 +106,8 @@ const App: React.FC = () => {
               <Chats
                 setSendMessage={setSendMessage}
                 sendMessage={sendMessage}
-                setReceiveMessage={setReceiveMessage}
                 receiveMessage={receiveMessage}
+                socket={socketio}
               />
             )
           }
