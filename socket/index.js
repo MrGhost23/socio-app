@@ -8,7 +8,7 @@ let onlineUsers = [];
 
 io.on("connection", (socket) => {
   socket.on("new-user-add", (newUsername) => {
-    // Check if the user is already online to avoid duplicates
+    if (!onlineUsers.some((user) => user.username === newUsername)) {
       onlineUsers.push({ username: newUsername, socketId: socket.id });
       console.log("New User Connected", onlineUsers);
     }
