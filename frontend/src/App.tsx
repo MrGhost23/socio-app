@@ -24,15 +24,21 @@ import Bookmarks from "./pages/Bookmarks";
 import Settings from "./pages/Settings";
 import FindFriends from "./pages/FindFriends";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser, setUser } from "./store/slices/authSlice";
+import { io } from "socket.io-client";
+
 import Chats from "./pages/Chats";
 
 const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const user = useSelector(selectUser);
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const [sendMessage, setSendMessage] = useState(null);
+  const [receiveMessage, setReceiveMessage] = useState(null);
+  const socket = useRef();
 
   const dispatch = useDispatch();
   const localToken = localStorage.getItem("token");
@@ -58,8 +64,17 @@ const App: React.FC = () => {
     fetchToken();
   }, [dispatch, localToken]);
 
-  if (isLoading) return;
+  useEffect(() => {
+    if (user) {
+      socket.current = io("ws://localhost:8800");
+      socket.current.emit("new-user-add", user?.username);
+      socket.current.on("get-users", (users) => {
+        setOnlineUsers(users);
+      });
+    }
+  }, [user]);
 
+  if (isLoading) return;
   return (
     <>
       <Navbar />
@@ -73,7 +88,21 @@ const App: React.FC = () => {
           path="/login"
           element={!user ? <LogIn /> : <Navigate to="/" />}
         />
-        <Route path="/chats" element={!user ? <LogIn /> : <Chats />} />
+        <Route
+          path="/chats"
+          element={
+            !user ? (
+              <LogIn />
+            ) : (
+              <Chats
+                setSendMessage={setSendMessage}
+                sendMessage={sendMessage}
+                setReceiveMessage={setReceiveMessage}
+                receiveMessage={receiveMessage}
+              />
+            )
+          }
+        />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route element={user ? <MainLayout /> : <Navigate to="/login" />}>
           <Route path="/" element={<Timeline />} />
