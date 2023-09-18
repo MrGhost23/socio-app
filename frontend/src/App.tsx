@@ -59,7 +59,6 @@ const App: React.FC = () => {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [sendMessage, setSendMessage] = useState(null);
   const [receiveMessage, setReceiveMessage] = useState(null);
-  const socket = useRef();
 
   const dispatch = useDispatch();
   const localToken = localStorage.getItem("token");
