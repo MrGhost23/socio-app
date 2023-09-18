@@ -15,7 +15,6 @@ const Chats = ({ setSendMessage, sendMessage, receiveMessage, socket }) => {
 
   useEffect(() => {
     if (sendMessage !== null) {
-      console.log("YOOOO");
       socket.emit("send-message", sendMessage);
     }
   }, [sendMessage]);
