@@ -82,7 +82,7 @@ const App: React.FC = () => {
       console.log(data);
       console.log("RECEIEVEVEV");
     });
-  }, [receiveMessage]);
+  }, []);
 
   if (isLoading) return;
   return (
