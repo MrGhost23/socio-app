@@ -5,7 +5,7 @@ type Props = {
   msg: string;
 };
 
-const RecieverMsg: React.FC<Props> = ({ userPicture, msg }) => {
+const ReceiverMsg: React.FC<Props> = ({ userPicture, msg }) => {
   return (
     <div className="flex justify-start mb-4">
       <UserImage src={userPicture} className="w-10 h-10 object-cover" />
@@ -15,4 +15,4 @@ const RecieverMsg: React.FC<Props> = ({ userPicture, msg }) => {
     </div>
   );
 };
-export default RecieverMsg;
+export default ReceiverMsg;
