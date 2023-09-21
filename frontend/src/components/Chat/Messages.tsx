@@ -17,6 +17,7 @@ const Messages = ({ chat, setSendMessage, receiveMessage }) => {
   );
   const [userData, setUserData] = useState(null);
   const [messages, setMessages] = useState<MessageType[]>([]);
+  console.log(messages);
   const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const Messages = ({ chat, setSendMessage, receiveMessage }) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const message = {
-      senderUsername: currentUser,
+      senderUsername: currentUser!.username,
       text: newMessage,
       chatId: chat._id,
     };
