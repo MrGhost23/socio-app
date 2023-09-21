@@ -1,19 +1,19 @@
+import { useSelector } from "react-redux";
 import { BsSearch } from "react-icons/bs";
+import { selectUser } from "../../store/slices/authSlice";
+import { ChatType } from "../../Types/Chat.types";
 import Conversation from "./Conversation";
 
 type Props = {
-  chats: any[];
-  currentUser: string | undefined;
-  setCurrentChat: any;
+  chats: ChatType[];
+  setCurrentChat: React.Dispatch<React.SetStateAction<ChatType>>;
 };
 
-const Conversations: React.FC<Props> = ({
-  chats,
-  currentUser,
-  setCurrentChat,
-}) => {
+const Conversations: React.FC<Props> = ({ chats, setCurrentChat }) => {
+  const currentUser = useSelector(selectUser);
+
   return (
-    <div className="flex flex-col w-2/5 border-r-2 h-[calc(100vh-82px)] overflow-y-auto">
+    <div className="col-span-1 flex flex-col border-r-2 h-[calc(100vh-82px)] overflow-y-auto">
       <div className="border-b-2 py-4 px-2">
         <div className="w-full mr-auto max-w-xs xl:max-w-lg 2xl:max-w-2xl bg-gray-100 rounded-md hidden lg:flex items-center">
           <form className="flex items-center w-full">
@@ -34,10 +34,11 @@ const Conversations: React.FC<Props> = ({
       </div>
       {chats.map((chat) => (
         <Conversation
+          key={chat.members.find(
+            (username) => username !== currentUser!.username
+          )}
           chat={chat}
-          currentUserId={currentUser}
           onClick={() => setCurrentChat(chat)}
-          key={currentUser}
         />
       ))}
     </div>

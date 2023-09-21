@@ -1,22 +1,57 @@
-const TypeMsg = ({ handleSubmit, newMessage, setNewMessage }) => {
+import { useState } from "react";
+import { PiNavigationArrowFill } from "react-icons/pi";
+
+type Props = {
+  setNewMessage: React.Dispatch<React.SetStateAction<string>>;
+  newMessage: string;
+  handleSubmit: React.MouseEventHandler<HTMLFormElement>;
+};
+
+const TypeMsg: React.FC<Props> = ({
+  newMessage,
+  setNewMessage,
+  handleSubmit,
+}) => {
+  const classes =
+    "absolute bottom-4 right-6 text-lg sm:text-xl text-gray-600 opacity-0 cursor-pointer rotate-[135deg] transition duration-500";
+
+  const [showSendIcon, setShowSendIcon] = useState(false);
+  const [iconClasses, setIconClasses] = useState(classes);
+
+  const changeHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setNewMessage(e.target.value);
+
+    setShowSendIcon(true);
+    setIconClasses(
+      e.target.value.trim().length !== 0
+        ? classes + " !text-sky-500 hover:text-sky-600 hover:scale-110"
+        : classes
+    );
+  };
+
+  const focusHandler = () => {
+    setIconClasses(classes + " !opacity-100");
+  };
+
   return (
-    <div className="py-5">
-      <div className="w-full bg-gray-100 rounded-md hidden lg:flex items-center">
-        <form className="flex items-center w-full">
-          <div className="relative w-full">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"></div>
-            <input
-              type="text"
-              className="bg-gray-200 border outline-none appearance-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-sky-500 dark:focus:border-sky-500 focus:bg-gray-50"
-              placeholder="Type your message here..."
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              required
-            />
-            <button onClick={handleSubmit}>Send</button>
-          </div>
-        </form>
-      </div>
+    <div className="sticky bottom-0 right-0 left-0 w-full py-5 bg-white rounded-md hidden lg:flex items-center">
+      <form className="w-full">
+        <div className="relative w-full">
+          <textarea
+            className="w-full min-h-[2.5rem] h-fit max-h-[8rem] resize-y pl-4 pr-7 py-1.5 border rounded-xl outline-none text-sm sm:text-base"
+            placeholder="Type your message here..."
+            value={newMessage}
+            onChange={changeHandler}
+            onFocus={focusHandler}
+          />
+          <PiNavigationArrowFill
+            className={
+              showSendIcon ? iconClasses + " !opacity-100" : iconClasses
+            }
+            onClick={handleSubmit}
+          />
+        </div>
+      </form>
     </div>
   );
 };
