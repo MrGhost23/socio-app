@@ -1,10 +1,12 @@
 import { useState } from "react";
+import isArabic from "../../utils/IsArabic";
 
 type Props = {
   text: string;
 };
 
 const PostText: React.FC<Props> = ({ text }) => {
+  const textIsInArabic = isArabic(text);
   const max = 300;
   const [textSliced, setTextSliced] = useState(text?.length > max);
 
@@ -13,7 +15,7 @@ const PostText: React.FC<Props> = ({ text }) => {
   };
 
   return (
-    <p>
+    <p className={textIsInArabic ? "text-right" : "text-left"}>
       {textSliced ? text?.slice(0, max - 3) + "... " : text}
 
       {textSliced && (
