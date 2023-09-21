@@ -1,4 +1,9 @@
+import { useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { io, Socket } from "socket.io-client";
+import { selectUser, setUser } from "./store/slices/authSlice";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,14 +28,15 @@ import PostPage from "./pages/PostPage";
 import Bookmarks from "./pages/Bookmarks";
 import Settings from "./pages/Settings";
 import FindFriends from "./pages/FindFriends";
-
-import { useEffect, useState, useRef } from "react";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { selectUser, setUser } from "./store/slices/authSlice";
-import { io } from "socket.io-client";
-
 import Chats from "./pages/Chats";
+import { MessageType } from "./Types/Message.types";
+
+interface Message {
+  senderUsername: string;
+  text: string;
+  chatId: string;
+  receiverUsername: string;
+}
 
 const App: React.FC = () => {
   const [navIsSticky, setNavIsSticky] = useState(false);
@@ -57,8 +63,10 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const user = useSelector(selectUser);
   const [onlineUsers, setOnlineUsers] = useState([]);
-  const [sendMessage, setSendMessage] = useState(null);
-  const [receiveMessage, setReceiveMessage] = useState(null);
+  const [sendMessage, setSendMessage] = useState<Message | null>(null);
+  const [receiveMessage, setReceiveMessage] = useState<MessageType | null>(
+    null
+  );
 
   const dispatch = useDispatch();
   const localToken = localStorage.getItem("token");
@@ -84,7 +92,7 @@ const App: React.FC = () => {
     fetchToken();
   }, [dispatch, localToken]);
 
-  const [socketio, setSocket] = useState(io("ws://localhost:8800"));
+  const [socketio, setSocket] = useState<Socket>(io("ws://localhost:8800"));
 
   useEffect(() => {
     if (user) {
@@ -118,6 +126,21 @@ const App: React.FC = () => {
         />
         <Route
           path="/chats"
+          element={
+            !user ? (
+              <LogIn />
+            ) : (
+              <Chats
+                setSendMessage={setSendMessage}
+                sendMessage={sendMessage}
+                receiveMessage={receiveMessage}
+                socket={socketio}
+              />
+            )
+          }
+        />
+        <Route
+          path="/chats/:username"
           element={
             !user ? (
               <LogIn />

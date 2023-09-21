@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/authSlice";
 import { ChatType } from "../../Types/Chat.types";
@@ -8,23 +9,30 @@ import ChatDate from "./ChatDate";
 
 type Props = {
   chat: ChatType;
-  onClick: () => void;
+  changeChat: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
-const Conversation: React.FC<Props> = ({ chat, onClick }) => {
+const Conversation: React.FC<Props> = ({ chat, changeChat }) => {
+  const navigate = useNavigate();
   const currentUser = useSelector(selectUser);
 
-  const username = chat.members.find(
+  const receiverUsername = chat.members.find(
     (username) => username !== currentUser!.username
   );
-  const { profile, loading } = useUserProfile(username!);
+
+  const changeChatHandler = () => {
+    changeChat(chat._id);
+    navigate(`/chats/${receiverUsername}`);
+  };
+
+  const { profile, loading } = useUserProfile(receiverUsername!);
 
   if (loading) return <div>Loading...</div>;
 
   return (
     <div
       className="flex flex-row gap-2 py-4 px-2 justify-center items-start border-b-2 cursor-pointer hover:bg-slate-200"
-      onClick={onClick}
+      onClick={changeChatHandler}
     >
       <UserImage
         className="min-h-[3.5rem] h-14 min-w-[3.5rem] w-14"

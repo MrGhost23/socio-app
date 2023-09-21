@@ -6,7 +6,7 @@ import Conversation from "./Conversation";
 
 type Props = {
   chats: ChatType[];
-  setCurrentChat: React.Dispatch<React.SetStateAction<ChatType>>;
+  setCurrentChat: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 const Conversations: React.FC<Props> = ({ chats, setCurrentChat }) => {
@@ -38,7 +38,7 @@ const Conversations: React.FC<Props> = ({ chats, setCurrentChat }) => {
             (username) => username !== currentUser!.username
           )}
           chat={chat}
-          onClick={() => setCurrentChat(chat)}
+          changeChat={setCurrentChat}
         />
       ))}
     </div>

@@ -1,23 +1,40 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { selectUser } from "../../store/slices/authSlice";
 import { MessageType } from "../../Types/Message.types";
 import { ProfileType } from "../../Types/Profile.types";
 import useAxios from "../../hooks/useAxios";
+import { ChatType } from "../../Types/Chat.types";
 import Receiver from "./ReceiverMsg";
 import SenderMsg from "./SenderMsg";
 import TypeMsg from "./TypeMsg";
 import ScrollableDiv from "../../ui/ScrollableDiv";
 
-const Messages = ({ chat, setSendMessage, receiveMessage }) => {
+interface Message {
+  senderUsername: string;
+  text: string;
+  chatId: string;
+  receiverUsername: string;
+}
+
+type Props = {
+  chat: ChatType;
+  setSendMessage: React.Dispatch<React.SetStateAction<Message | null>>;
+  receiveMessage: MessageType | null;
+};
+
+const Messages: React.FC<Props> = ({
+  chat,
+  setSendMessage,
+  receiveMessage,
+}) => {
   const currentUser = useSelector(selectUser);
-  const username = chat?.members?.find(
+  const receiverUsername = chat?.members?.find(
     (username: string) => username !== currentUser!.username
   );
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState<ProfileType | null>(null);
   const [messages, setMessages] = useState<MessageType[]>([]);
-  console.log(messages);
   const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
@@ -44,7 +61,7 @@ const Messages = ({ chat, setSendMessage, receiveMessage }) => {
       console.log(error);
     }
 
-    setSendMessage({ ...message, receiverUsername: username });
+    setSendMessage({ ...message, receiverUsername: receiverUsername! });
   };
 
   const {
@@ -62,31 +79,42 @@ const Messages = ({ chat, setSendMessage, receiveMessage }) => {
     }
   }, [chatMessages]);
 
+  const lastItemRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (lastItemRef.current) {
+      lastItemRef.current.scrollIntoView({
+        behavior: "instant",
+      });
+    }
+  }, [messages]);
+
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
         const response = await axios.get<ProfileType[]>(
-          `http://localhost:5000/api/v1/users/${username}`
+          `http://localhost:5000/api/v1/users/${receiverUsername}`
         );
         setUserData(response.data[0]);
-        console.log(response.data[0]);
       } catch (error) {
         console.log(error);
       }
     };
     if (chat !== null) fetchUserProfile();
-  }, [chat]);
+  }, [chat, receiverUsername]);
 
   if (chatMessagesIsLoading) return <p>Loading</p>;
   if (chatMessagesHasError) console.log(chatMessagesHasError);
 
   return (
-    <ScrollableDiv className="col-span-2 relative">
-      <div className="w-full px-5 flex flex-col h-[calc(100vh-82px)] justify-between">
-        <div className="flex flex-col mt-5">
+    <div className="col-span-2 px-5 flex flex-col h-[calc(100vh-82px)] justify-between">
+      <ScrollableDiv>
+        <div className="flex flex-col gap-5">
           {chat ? (
-            messages.map((message) => (
-              <div key={message._id}>
+            messages.map((message, index) => (
+              <div
+                key={message._id}
+                ref={index === messages.length - 1 ? lastItemRef : null}
+              >
                 {message?.senderUsername !== userData?.username ? (
                   <SenderMsg
                     userPicture={currentUser!.userPicture!}
@@ -94,7 +122,7 @@ const Messages = ({ chat, setSendMessage, receiveMessage }) => {
                   />
                 ) : (
                   <Receiver
-                    userPicture={userData.userPicture}
+                    userPicture={userData.userPicture!}
                     msg={message.text}
                   />
                 )}
@@ -108,15 +136,16 @@ const Messages = ({ chat, setSendMessage, receiveMessage }) => {
             </div>
           )}
         </div>
-        {chat && (
-          <TypeMsg
-            handleSubmit={handleSubmit}
-            newMessage={newMessage}
-            setNewMessage={setNewMessage}
-          />
-        )}
-      </div>
-    </ScrollableDiv>
+      </ScrollableDiv>
+
+      {chat && (
+        <TypeMsg
+          handleSubmit={handleSubmit}
+          newMessage={newMessage}
+          setNewMessage={setNewMessage}
+        />
+      )}
+    </div>
   );
 };
 export default Messages;
