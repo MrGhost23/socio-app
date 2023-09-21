@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 import noAvatar from "../../assets/noAvatar.png";
 
 type Props = {
-  username: string;
   src: string | undefined;
-  alt: string;
+  alt?: string;
+  username?: string;
   className?: string;
 };
 
@@ -15,9 +15,19 @@ const UserImage: React.FC<Props> = ({ username, src, alt, className }) => {
   }
 
   return (
-    <Link to={`/profile/${username}`}>
-      <img className={classes} src={src || noAvatar} alt={alt} />
-    </Link>
+    <>
+      {username ? (
+        <Link to={`/profile/${username}`}>
+          <img
+            className={classes}
+            src={src || noAvatar}
+            alt={`${username}'s profile picture`}
+          />
+        </Link>
+      ) : (
+        <img className={classes} src={src || noAvatar} alt={alt || ""} />
+      )}
+    </>
   );
 };
 
