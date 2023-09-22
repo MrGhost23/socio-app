@@ -115,9 +115,8 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
                         >
                           <UserImage
                             src={user.userPicture}
-                            alt={user.username}
                             username={user.username}
-                            className="w-14 h-14"
+                            className="min-w-[3.5rem] w-14 min-h-[3.5rem] h-14"
                           />
                           <div className="flex flex-col">
                             <p className="ml-2 text-gray-600 font-semibold">
@@ -145,9 +144,8 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
                         >
                           <UserImage
                             src={post.userPicture}
-                            alt={post.username}
                             username={post.username}
-                            className="w-14 h-14"
+                            className="min-w-[3.5rem] w-14 min-h-[3.5rem] h-14"
                           />
                           <div className="flex flex-col">
                             <p className="ml-2 text-gray-600 font-semibold">
@@ -238,12 +236,12 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
             </ul>
           </nav>
           <div className="ml-8 hidden sm:flex flex-col font-bold">
-            <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+            <div className="relative overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
               <UserImage
-                className="w-14 !m-0"
+                className="min-w-[2.5rem] w-10 min-h-[2.5rem] h-10"
                 src={user.userPicture}
-                alt={user.firstName + " " + user.lastName}
                 username={user.username}
+                link={true}
               />
             </div>
           </div>

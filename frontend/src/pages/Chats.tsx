@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
 import { selectUser } from "../store/slices/authSlice";
 import { ChatType } from "../Types/Chat.types";
 import useAxios from "../hooks/useAxios";
-import Conversations from "../components/Chat/Conversations";
-import Messages from "../components/Chat/Messages";
-import ChatInfo from "../components/Chat/ChatInfo";
-import { useParams } from "react-router-dom";
 import { MessageType } from "../Types/Message.types";
+import Conversations from "../components/Chat/Conversations";
+import Chat from "../components/Chat/Chat";
 
 interface Message {
   senderUsername: string;
@@ -44,8 +43,27 @@ const Chats: React.FC<Props> = ({
     "get"
   );
 
+  const [conversationsIsVisible, setConversationsIsVisible] = useState(true);
+  const [messagesIsVisible, setMessagesIsVisible] = useState(true);
+  const [chatInfoIsVisible, setChatInfoIsVisible] = useState(true);
+
+  const showUserInfo = () => {
+    setMessagesIsVisible(false);
+    setMessagesIsVisible(false);
+    setChatInfoIsVisible(true);
+  };
+
+  const hideUserInfo = () => {
+    setMessagesIsVisible(false);
+    setMessagesIsVisible(true);
+    setChatInfoIsVisible(false);
+  };
+
   useEffect(() => {
     if (userChats && receiverUsername) {
+      setConversationsIsVisible(false);
+      setMessagesIsVisible(true);
+      setChatInfoIsVisible(false);
       setCurrentChat(
         userChats.find((chat) =>
           chat.members.find((user) => user === receiverUsername)
@@ -65,23 +83,33 @@ const Chats: React.FC<Props> = ({
 
   return (
     <div className="h-[calc(100vh-82px)] shadow-lg rounded-lg">
-      <div className="grid grid-cols-4 flex-row justify-between bg-white">
-        <Conversations chats={userChats!} setCurrentChat={setCurrentChat} />
-        {currentChat && (
-          <Messages
-            chat={userChats!.find((chat) => chat._id === currentChat)!}
+      <div className="grid grid-cols-1 lg:grid-cols-4 justify-between bg-white">
+        <div
+          className={
+            conversationsIsVisible
+              ? "col-span-1 lg:h-[calc(100vh-82px)] flex flex-col border-r-2 overflow-y-auto"
+              : "col-span-1 lg:h-[calc(100vh-82px)] hidden lg:flex lg:flex-col border-r-2 overflow-y-auto"
+          }
+        >
+          <Conversations chats={userChats!} setCurrentChat={setCurrentChat} />
+        </div>
+        {currentChat ? (
+          <Chat
+            currentChat={currentChat}
+            userChats={userChats!}
             setSendMessage={setSendMessage}
             receiveMessage={receiveMessage}
+            messagesIsVisible={messagesIsVisible}
+            chatInfoIsVisible={chatInfoIsVisible}
+            showUserInfo={showUserInfo}
+            hideUserInfo={hideUserInfo}
           />
-        )}
-        {userChats && currentChat && (
-          <ChatInfo
-            receiverUsername={
-              userChats
-                .find((chat) => chat._id === currentChat)!
-                .members.find((username) => username !== currentUser!.username)!
-            }
-          />
+        ) : (
+          <div className="col-span-3 hidden lg:flex lg:justify-center lg:items-center">
+            <p className="text-gray-600 font-semibold text-center">
+              Tap on chat to start a conversation!
+            </p>
+          </div>
         )}
       </div>
     </div>

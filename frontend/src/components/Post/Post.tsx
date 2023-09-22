@@ -104,10 +104,10 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost, socket }) => {
       <div className="relative mb-2 flex flex-row justify-between gap-3">
         <div className="flex flex-row gap-3">
           <UserImage
-            className="min-w-[3rem] w-12 sm:min-w-[3.5rem] sm:w-14 !mb-0"
+            className="min-w-[3rem] sm:min-w-[3.5rem] w-12 sm:w-14 min-h-[3rem] sm:min-h-[3.5rem] h-12 sm:h-14"
             src={post.userPicture}
-            alt={post.firstName + " " + post.lastName}
             username={post.username}
+            link={true}
           />
           <div className="flex flex-col items-start gap-1">
             <div className="flex flex-col">

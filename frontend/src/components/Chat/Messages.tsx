@@ -6,7 +6,7 @@ import { MessageType } from "../../Types/Message.types";
 import { ProfileType } from "../../Types/Profile.types";
 import useAxios from "../../hooks/useAxios";
 import { ChatType } from "../../Types/Chat.types";
-import Receiver from "./ReceiverMsg";
+import ReceiverMsg from "./ReceiverMsg";
 import SenderMsg from "./SenderMsg";
 import TypeMsg from "./TypeMsg";
 import ScrollableDiv from "../../ui/ScrollableDiv";
@@ -20,20 +20,23 @@ interface Message {
 
 type Props = {
   chat: ChatType;
+  receiverData: ProfileType;
   setSendMessage: React.Dispatch<React.SetStateAction<Message | null>>;
   receiveMessage: MessageType | null;
+  setChatInfoIsVisible: () => void;
 };
 
 const Messages: React.FC<Props> = ({
   chat,
+  receiverData,
   setSendMessage,
   receiveMessage,
+  setChatInfoIsVisible,
 }) => {
   const currentUser = useSelector(selectUser);
   const receiverUsername = chat?.members?.find(
     (username: string) => username !== currentUser!.username
   );
-  const [userData, setUserData] = useState<ProfileType | null>(null);
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [newMessage, setNewMessage] = useState("");
 
@@ -88,53 +91,35 @@ const Messages: React.FC<Props> = ({
     }
   }, [messages]);
 
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const response = await axios.get<ProfileType[]>(
-          `http://localhost:5000/api/v1/users/${receiverUsername}`
-        );
-        setUserData(response.data[0]);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    if (chat !== null) fetchUserProfile();
-  }, [chat, receiverUsername]);
-
   if (chatMessagesIsLoading) return <p>Loading</p>;
   if (chatMessagesHasError) console.log(chatMessagesHasError);
 
   return (
-    <div className="col-span-2 px-5 flex flex-col h-[calc(100vh-82px)] justify-between">
-      <ScrollableDiv>
+    <>
+      <ScrollableDiv className="pt-5">
         <div className="flex flex-col gap-5">
-          {chat ? (
+          {chat &&
             messages.map((message, index) => (
               <div
                 key={message._id}
                 ref={index === messages.length - 1 ? lastItemRef : null}
               >
-                {message?.senderUsername !== userData?.username ? (
+                {message?.senderUsername !== receiverData?.username ? (
                   <SenderMsg
                     userPicture={currentUser!.userPicture!}
+                    username={currentUser!.username}
                     msg={message.text}
                   />
                 ) : (
-                  <Receiver
-                    userPicture={userData.userPicture!}
+                  <ReceiverMsg
+                    userPicture={receiverData.userPicture!}
+                    username={receiverData.username}
                     msg={message.text}
+                    setChatInfoIsVisible={setChatInfoIsVisible}
                   />
                 )}
               </div>
-            ))
-          ) : (
-            <div className="flex justify-center items-center">
-              <p className="text-gray-600 font-semibold text-center">
-                Tap on chat to start a conversation!
-              </p>
-            </div>
-          )}
+            ))}
         </div>
       </ScrollableDiv>
 
@@ -145,7 +130,7 @@ const Messages: React.FC<Props> = ({
           setNewMessage={setNewMessage}
         />
       )}
-    </div>
+    </>
   );
 };
 export default Messages;

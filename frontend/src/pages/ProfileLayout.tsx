@@ -12,6 +12,7 @@ import RecentActivities from "../components/RecentActivities";
 import Card from "../ui/Card";
 import Button from "../ui/Button";
 import Loading from "../ui/Loading";
+import { toast } from "react-toastify";
 
 const ProfileLayout = () => {
   const navigate = useNavigate();
@@ -75,6 +76,18 @@ const ProfileLayout = () => {
     fetchUserActivities();
   }, [username]);
 
+  const sendMessageHandler = async () => {
+    try {
+      await axios.post(`http://localhost:5000/api/v1/chat`, {
+        senderUsername: currentUser!.username,
+        receiverUsername: profile!.username,
+      });
+      navigate(`/chats/${profile!.username}`);
+    } catch (error) {
+      toast.info(`Something went wrong!`);
+    }
+  };
+
   if (loading || !profile) return;
   if (!loading && !profile) {
     navigate("/");
@@ -99,7 +112,7 @@ const ProfileLayout = () => {
                 <>
                   <Button
                     text="Send Message"
-                    onClick={() => navigate(`/chats/${profile.username}`)}
+                    onClick={sendMessageHandler}
                     bg={true}
                   />
                   <Button

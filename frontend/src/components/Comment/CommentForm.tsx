@@ -72,9 +72,8 @@ const CommentForm: React.FC<Props> = ({
   return (
     <div className="flex flex-row gap-0 sm:gap-3">
       <UserImage
-        className="hidden sm:block w-10 !mb-0"
+        className="hidden sm:block min-w-[2.5rem] w-10 min-h-[2.5rem] h-10"
         src={currentUser!.userPicture}
-        alt={""}
         username={currentUser!.username}
       />
       <form className="w-full">
