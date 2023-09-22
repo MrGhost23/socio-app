@@ -1,9 +1,11 @@
+import { useSelector } from "react-redux";
+import { ChatType } from "../../Types/Chat.types";
+import { MessageType } from "../../Types/Message.types";
+import { selectUser } from "../../store/slices/authSlice";
 import Messages from "./Messages";
 import ChatInfo from "./ChatInfo";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../store/slices/authSlice";
-import { MessageType } from "../../Types/Message.types";
-import {ChatType} from '../../Types/Chat.types';
+import { ProfileType } from "../../Types/Profile.types";
+import useAxios from "../../hooks/useAxios";
 
 interface Message {
   senderUsername: string;
@@ -34,6 +36,21 @@ const Chat: React.FC<Props> = ({
   hideUserInfo,
 }) => {
   const currentUser = useSelector(selectUser);
+  const receiverUsername = userChats
+    .find((chat) => chat._id === currentChat)!
+    .members.find((username) => username !== currentUser!.username)!;
+
+  const {
+    data: receiverData,
+    loading: receiverDataIsLoading,
+    error: receiverDataHasError,
+  } = useAxios<ProfileType[]>(
+    `http://localhost:5000/api/v1/users/${receiverUsername}`,
+    "get"
+  );
+
+  if (receiverDataIsLoading) return "loading";
+  if (receiverDataHasError) console.log(receiverDataHasError);
 
   return (
     <>
@@ -46,6 +63,7 @@ const Chat: React.FC<Props> = ({
       >
         <Messages
           chat={userChats.find((chat) => chat._id === currentChat)!}
+          receiverData={receiverData![0]}
           setSendMessage={setSendMessage}
           receiveMessage={receiveMessage}
           setChatInfoIsVisible={showUserInfo}
@@ -58,14 +76,7 @@ const Chat: React.FC<Props> = ({
             : "col-span-1 h-[calc(100vh-82px)] hidden lg:block border-l-2 px-4 sm:px-10 lg:px-4 pt-5"
         }
       >
-        <ChatInfo
-          receiverUsername={
-            userChats
-              .find((chat) => chat._id === currentChat)!
-              .members.find((username) => username !== currentUser!.username)!
-          }
-          hideUserInfo={hideUserInfo}
-        />
+        <ChatInfo receiverData={receiverData![0]} hideUserInfo={hideUserInfo} />
       </div>
     </>
   );

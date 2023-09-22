@@ -20,6 +20,7 @@ interface Message {
 
 type Props = {
   chat: ChatType;
+  receiverData: ProfileType;
   setSendMessage: React.Dispatch<React.SetStateAction<Message | null>>;
   receiveMessage: MessageType | null;
   setChatInfoIsVisible: () => void;
@@ -27,6 +28,7 @@ type Props = {
 
 const Messages: React.FC<Props> = ({
   chat,
+  receiverData,
   setSendMessage,
   receiveMessage,
   setChatInfoIsVisible,
@@ -35,7 +37,6 @@ const Messages: React.FC<Props> = ({
   const receiverUsername = chat?.members?.find(
     (username: string) => username !== currentUser!.username
   );
-  const [userData, setUserData] = useState<ProfileType | null>(null);
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [newMessage, setNewMessage] = useState("");
 
@@ -90,20 +91,6 @@ const Messages: React.FC<Props> = ({
     }
   }, [messages]);
 
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const response = await axios.get<ProfileType[]>(
-          `http://localhost:5000/api/v1/users/${receiverUsername}`
-        );
-        setUserData(response.data[0]);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    if (chat !== null) fetchUserProfile();
-  }, [chat, receiverUsername]);
-
   if (chatMessagesIsLoading) return <p>Loading</p>;
   if (chatMessagesHasError) console.log(chatMessagesHasError);
 
@@ -117,14 +104,14 @@ const Messages: React.FC<Props> = ({
                 key={message._id}
                 ref={index === messages.length - 1 ? lastItemRef : null}
               >
-                {message?.senderUsername !== userData?.username ? (
+                {message?.senderUsername !== receiverData?.username ? (
                   <SenderMsg
                     userPicture={currentUser!.userPicture!}
                     msg={message.text}
                   />
                 ) : (
                   <Receiver
-                    userPicture={userData.userPicture!}
+                    userPicture={receiverData.userPicture!}
                     msg={message.text}
                     setChatInfoIsVisible={setChatInfoIsVisible}
                   />
