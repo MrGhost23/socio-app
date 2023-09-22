@@ -18,7 +18,7 @@ const ChatInfo: React.FC<Props> = ({ receiverData, hideUserInfo }) => {
   return (
     <div className="relative flex flex-col items-center pt-8 lg:pt-0">
       <UserImage
-        className="min-w-[9rem] w-36 min-h-[9rem] h-36"
+        className="min-w-[9rem] w-36 min-h-[9rem] h-36 mb-4"
         src={receiverData.userPicture}
         username={receiverData.username}
         link={true}

@@ -9,7 +9,7 @@ type Props = {
 };
 
 const UserImage: React.FC<Props> = ({ username, src, link, className }) => {
-  let classes = "mb-4 rounded-full shadow-lg";
+  let classes = "rounded-full shadow-lg";
   if (className) {
     classes += " " + className;
   }

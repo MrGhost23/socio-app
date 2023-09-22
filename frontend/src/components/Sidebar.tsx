@@ -69,7 +69,7 @@ const Sidebar: React.FC<Props> = ({ navIsSticky }) => {
         >
           <div className="mb-5 flex flex-col xl:flex-row text-center xl:text-left items-center gap-3 group">
             <UserImage
-              className="min-w-[5rem] w-20 lg:w-[4.5rem] min-h[5rem] h-20 !m-0"
+              className="min-w-[5rem] w-20 lg:w-[4.5rem] min-h[5rem] h-20"
               src={currentUserImage}
               username={currentUserTag}
               link={true}

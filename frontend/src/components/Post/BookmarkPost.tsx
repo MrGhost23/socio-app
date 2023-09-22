@@ -27,7 +27,7 @@ const BookmarkPost: React.FC<Props> = ({ post, reFetchFunction }) => {
             <BookmarkText text={post.description} id={post._id} />
             <div className="flex flex-row items-center gap-2">
               <UserImage
-                className="min-w-[2rem] w-8 min-h-[2rem] h-8 !m-0"
+                className="min-w-[2rem] w-8 min-h-[2rem] h-8"
                 src={post.userPicture}
                 username={post.username}
                 link={true}

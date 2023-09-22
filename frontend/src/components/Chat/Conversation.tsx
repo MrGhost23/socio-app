@@ -35,7 +35,7 @@ const Conversation: React.FC<Props> = ({ chat, changeChat }) => {
       onClick={changeChatHandler}
     >
       <UserImage
-        className="min-h-[3.5rem] h-14 min-w-[3.5rem] w-14 !mb-0"
+        className="min-h-[3.5rem] h-14 min-w-[3.5rem] w-14"
         src={profile!.userPicture}
         username={profile!.username}
       />

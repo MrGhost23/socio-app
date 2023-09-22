@@ -16,7 +16,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ userInfo, followers }) => {
   return (
     <>
       <UserImage
-        className="min-w-[8rem] w-32 min-h-[8rem] h-32"
+        className="min-w-[8rem] w-32 min-h-[8rem] h-32 mb-4"
         src={userInfo.userPicture}
         username={userInfo.username}
       />

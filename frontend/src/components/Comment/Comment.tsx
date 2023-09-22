@@ -32,7 +32,7 @@ const Comment: React.FC<Props> = ({
       ) : (
         <div className="flex flex-row items-start gap-2 group">
           <UserImage
-            className="min-w-[2.5rem] min-h-[2.5rem] w-10 h-10 !mb-0 translate-y-2"
+            className="min-w-[2.5rem] min-h-[2.5rem] w-10 h-10 translate-y-2"
             src={comment.author.userPicture}
             username={comment.author.username}
             link={true}
