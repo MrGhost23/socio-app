@@ -19,7 +19,7 @@ type Props = {
   navIsSticky: boolean;
 };
 
-const Navbar: React.FC<Props> = ({ navIsSticky }) => {
+const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
   const user = useSelector(selectUser);
   const sideOpen = useSelector(selectSideOpen);
@@ -28,44 +28,7 @@ const Navbar: React.FC<Props> = ({ navIsSticky }) => {
     dispatch(toggleSidebar());
   };
 
-  const notifications = [
-    {
-      firstName: "Omar",
-      lastName: "Adel",
-      userPicture:
-        "https://cdn.discordapp.com/avatars/683014296342364286/30889b16f6a06a146378d9d10554582b.png?size=1024",
-      isLiked: false,
-      isCommented: false,
-      isFollowed: true,
-    },
-    {
-      firstName: "سا",
-      lastName: "را",
-      userPicture:
-        "https://i.pinimg.com/564x/69/e5/91/69e5910fa609615eff2704c928e24354.jpg",
-      isLiked: false,
-      isCommented: true,
-      isFollowed: false,
-    },
-    {
-      firstName: "Bob",
-      lastName: "Johnson",
-      userPicture:
-        "http://localhost:5000/profile_pics/1694862840973-273453682-c758a5b04e0e7080dc19187e8c62a9c3.jpg",
-      isLiked: true,
-      isCommented: false,
-      isFollowed: false,
-    },
-    {
-      firstName: "Emily",
-      lastName: "Brown",
-      userPicture:
-        "http://localhost:5000/profile_pics/1694862840973-273453682-c758a5b04e0e7080dc19187e8c62a9c3.jpg",
-      isLiked: false,
-      isCommented: false,
-      isFollowed: true,
-    },
-  ];
+  console.log(notifications);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -232,7 +195,7 @@ const Navbar: React.FC<Props> = ({ navIsSticky }) => {
               </li>
               <li className="ml-2 lg:ml-4 relative inline-block">
                 <div className="absolute -top-2 -right-1 bg-sky-500 text-xs font-bold px-1 py-0.5 rounded-lg text-white">
-                  1
+                  {notifications.length}
                 </div>
                 <div onClick={() => setIsOpen((prev) => !prev)}>
                   <IoIosNotifications className="text-3xl text-gray-700 cursor-pointer dark:text-gray-200" />
@@ -256,10 +219,11 @@ const Navbar: React.FC<Props> = ({ navIsSticky }) => {
                               <span className="font-bold">
                                 {notification.firstName} {notification.lastName}
                               </span>{" "}
-                              {notification.isLiked && "liked your post."}{" "}
-                              {notification.isCommented &&
+                              {notification.actionType === "like" &&
+                                "liked your post."}{" "}
+                              {notification.actionType === "comment" &&
                                 "commented on your post."}{" "}
-                              {notification.isFollowed &&
+                              {notification.actionType === "follow" &&
                                 "started following you."}{" "}
                               1h
                             </p>
