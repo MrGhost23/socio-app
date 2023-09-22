@@ -43,6 +43,8 @@ const Chats: React.FC<Props> = ({
     "get"
   );
 
+  console.log(userChats);
+
   const [conversationsIsVisible, setConversationsIsVisible] = useState(true);
   const [messagesIsVisible, setMessagesIsVisible] = useState(true);
   const [chatInfoIsVisible, setChatInfoIsVisible] = useState(true);
@@ -67,7 +69,7 @@ const Chats: React.FC<Props> = ({
       setCurrentChat(
         userChats.find((chat) =>
           chat.members.find((user) => user === receiverUsername)
-        )?._id || null
+        )?.chatId || null
       );
     }
   }, [currentUser?.username, userChats, receiverUsername]);
