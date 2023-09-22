@@ -7,13 +7,14 @@ type Props = {
   removePost: (postId: string) => void;
 };
 
-const Posts: React.FC<Props> = ({ posts, removePost, updatePost }) => {
+const Posts: React.FC<Props> = ({ posts, removePost, updatePost, socket }) => {
   return (
     <div className="flex flex-col gap-8">
       {posts.map((post) => (
         <Post
           key={post._id}
           post={post}
+          socket={socket}
           removePost={removePost}
           updatePost={updatePost}
         />

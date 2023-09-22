@@ -5,7 +5,7 @@ import { PostType } from "../Types/Post.types";
 import Loading from "../ui/Loading";
 import usePostActions from "../hooks/usePostActions";
 
-const Timeline = () => {
+const Timeline = ({ socket }) => {
   const { fetchFeedPosts } = usePostActions();
 
   const [feedPosts, setFeedPosts] = useState([]);
@@ -53,6 +53,7 @@ const Timeline = () => {
       {feedPosts.length > 0 ? (
         <Posts
           posts={feedPosts}
+          socket={socket}
           removePost={removePost}
           updatePost={updatePost}
         />

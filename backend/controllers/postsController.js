@@ -3,6 +3,7 @@ const User = require("../models/User");
 const { StatusCodes } = require("http-status-codes");
 const { cleanupActivities } = require("../utils/activityUtils");
 const Activity = require("../models/Activity");
+const Notification = require("../models/Notification");
 
 const createPost = async (req, res) => {
   try {
@@ -130,6 +131,8 @@ const likePosts = async (req, res) => {
     const { id } = req.params;
     const { username } = req.body;
     const post = await Post.findById(id);
+    const receiverUser = await User.findById(post.userId);
+
     const isLiked = post.likes.get(username);
     if (isLiked) {
       post.likes.delete(username);
@@ -147,6 +150,14 @@ const likePosts = async (req, res) => {
         timestamp: Date.now(),
       });
       await newActivity.save();
+
+      const notification = new Notification({
+        sender: req.user._id,
+        receiver: receiverUser._id,
+        actionType: "like",
+        postId: req.params.id,
+      });
+      await notification.save();
     }
     const updatedPost = await Post.findByIdAndUpdate(
       id,
