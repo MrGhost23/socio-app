@@ -17,6 +17,7 @@ const commentRouter = require("./routes/commentsRoutes");
 const searchRouter = require("./routes/searchRoutes");
 const chatRouter = require("./routes/chatRoutes");
 const messageRouter = require("./routes/messagesRoutes");
+const notificationRouter = require("./routes/notificationRoutes");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const CustomError = require("./errors/index");
@@ -89,6 +90,7 @@ app.use("/api/v1/posts", commentRouter);
 app.use("/api/v1/search", searchRouter);
 app.use("/api/v1/chat", chatRouter);
 app.use("/api/v1/message", messageRouter);
+app.use("/api/v1/notifications", notificationRouter);
 
 app.use("/api/v1/validateToken", authenticateUser, async (req, res) => {
   const userData = req.user;
