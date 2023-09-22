@@ -6,6 +6,10 @@ const io = require("socket.io")(8800, {
 
 let onlineUsers = [];
 
+const getUsers = (username) => {
+  return onlineUsers.find((user) => user.username === username);
+};
+
 io.on("connection", (socket) => {
   socket.on("new-user-add", (newUsername) => {
     if (!onlineUsers.some((user) => user.username === newUsername)) {
@@ -35,4 +39,16 @@ io.on("connection", (socket) => {
       console.log("RECEVIEED");
     }
   });
+
+  socket.on(
+    "sendNotification",
+    ({ senderUsername, receiverUsername, actionType, postId }) => {
+      const receiver = getUsers(receiverUsername);
+      io.to(receiver.socketId).emit("getNotification", {
+        senderUsername,
+        actionType,
+        postId,
+      });
+    }
+  );
 });
