@@ -37,7 +37,7 @@ const Chat: React.FC<Props> = ({
 }) => {
   const currentUser = useSelector(selectUser);
   const receiverUsername = userChats
-    .find((chat) => chat._id === currentChat)!
+    .find((chat) => chat.chatId === currentChat)!
     .members.find((username) => username !== currentUser!.username)!;
 
   const {
@@ -62,7 +62,7 @@ const Chat: React.FC<Props> = ({
         }
       >
         <Messages
-          chat={userChats.find((chat) => chat._id === currentChat)!}
+          chat={userChats.find((chat) => chat.chatId === currentChat)!}
           receiverData={receiverData![0]}
           setSendMessage={setSendMessage}
           receiveMessage={receiveMessage}

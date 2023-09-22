@@ -41,17 +41,17 @@ const Messages: React.FC<Props> = ({
   const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
-    if (receiveMessage !== null && receiveMessage.chatId === chat._id) {
+    if (receiveMessage !== null && receiveMessage.chatId === chat.chatId) {
       setMessages((prevMessages) => [...prevMessages, receiveMessage]);
     }
-  }, [chat._id, receiveMessage]);
+  }, [chat.chatId, receiveMessage]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const message = {
       senderUsername: currentUser!.username,
       text: newMessage,
-      chatId: chat._id,
+      chatId: chat.chatId,
     };
     try {
       const { data } = await axios.post(
@@ -72,7 +72,7 @@ const Messages: React.FC<Props> = ({
     loading: chatMessagesIsLoading,
     error: chatMessagesHasError,
   } = useAxios<MessageType[]>(
-    `http://localhost:5000/api/v1/message/${chat._id}`,
+    `http://localhost:5000/api/v1/message/${chat.chatId}`,
     "get"
   );
 

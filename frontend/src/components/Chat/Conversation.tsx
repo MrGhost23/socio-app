@@ -21,7 +21,7 @@ const Conversation: React.FC<Props> = ({ chat, changeChat }) => {
   );
 
   const changeChatHandler = () => {
-    changeChat(chat._id);
+    changeChat(chat.chatId);
     navigate(`/chats/${receiverUsername}`);
   };
 
@@ -45,9 +45,13 @@ const Conversation: React.FC<Props> = ({ chat, changeChat }) => {
             className="text-lg font-semibold"
             fullName={profile!.firstName + " " + profile!.lastName}
           />
-          <ChatDate date={chat.updatedAt} />
+          {chat.latestMessage?.createdAt && (
+            <ChatDate date={chat.latestMessage.createdAt} />
+          )}
         </div>
-        <span className="text-gray-500 font-medium">خالص</span>
+        <span className="text-gray-500 font-medium">
+          {chat.latestMessage?.text}
+        </span>
       </div>
     </div>
   );
