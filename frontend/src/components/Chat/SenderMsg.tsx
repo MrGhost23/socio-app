@@ -3,10 +3,11 @@ import isArabic from "../../utils/IsArabic";
 
 type Props = {
   userPicture: string;
+  username: string;
   msg: string;
 };
 
-const SenderMsg: React.FC<Props> = ({ userPicture, msg }) => {
+const SenderMsg: React.FC<Props> = ({ userPicture, username, msg }) => {
   const textIsInArabic = isArabic(msg);
 
   return (
@@ -20,7 +21,11 @@ const SenderMsg: React.FC<Props> = ({ userPicture, msg }) => {
       >
         {msg}
       </div>
-      <UserImage src={userPicture} className="w-10 h-10 object-cover" />
+      <UserImage
+        src={userPicture}
+        username={username}
+        className="min-w-[2.5rem] w-10 min-h-[2.5rem] h-10 object-cover"
+      />
     </div>
   );
 };

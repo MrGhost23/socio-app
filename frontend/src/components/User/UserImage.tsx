@@ -3,12 +3,12 @@ import noAvatar from "../../assets/noAvatar.png";
 
 type Props = {
   src: string | undefined;
-  alt?: string;
-  username?: string;
+  username: string;
+  link?: boolean;
   className?: string;
 };
 
-const UserImage: React.FC<Props> = ({ username, src, alt, className }) => {
+const UserImage: React.FC<Props> = ({ username, src, link, className }) => {
   let classes = "mb-4 rounded-full shadow-lg";
   if (className) {
     classes += " " + className;
@@ -16,7 +16,7 @@ const UserImage: React.FC<Props> = ({ username, src, alt, className }) => {
 
   return (
     <>
-      {username ? (
+      {link ? (
         <Link to={`/profile/${username}`}>
           <img
             className={classes}
@@ -25,7 +25,11 @@ const UserImage: React.FC<Props> = ({ username, src, alt, className }) => {
           />
         </Link>
       ) : (
-        <img className={classes} src={src || noAvatar} alt={alt || ""} />
+        <img
+          className={classes}
+          src={src || noAvatar}
+          alt={`${username}'s profile picture`}
+        />
       )}
     </>
   );

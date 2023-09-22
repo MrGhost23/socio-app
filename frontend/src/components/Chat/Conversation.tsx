@@ -37,7 +37,7 @@ const Conversation: React.FC<Props> = ({ chat, changeChat }) => {
       <UserImage
         className="min-h-[3.5rem] h-14 min-w-[3.5rem] w-14 !mb-0"
         src={profile!.userPicture}
-        alt={`${profile?.username}'s profile picture`}
+        username={profile!.username}
       />
       <div className="w-full flex flex-col">
         <div className="flex items-center flex-wrap gap-2">

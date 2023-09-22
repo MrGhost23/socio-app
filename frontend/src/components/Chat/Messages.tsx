@@ -6,7 +6,7 @@ import { MessageType } from "../../Types/Message.types";
 import { ProfileType } from "../../Types/Profile.types";
 import useAxios from "../../hooks/useAxios";
 import { ChatType } from "../../Types/Chat.types";
-import Receiver from "./ReceiverMsg";
+import ReceiverMsg from "./ReceiverMsg";
 import SenderMsg from "./SenderMsg";
 import TypeMsg from "./TypeMsg";
 import ScrollableDiv from "../../ui/ScrollableDiv";
@@ -107,11 +107,13 @@ const Messages: React.FC<Props> = ({
                 {message?.senderUsername !== receiverData?.username ? (
                   <SenderMsg
                     userPicture={currentUser!.userPicture!}
+                    username={currentUser!.username}
                     msg={message.text}
                   />
                 ) : (
-                  <Receiver
+                  <ReceiverMsg
                     userPicture={receiverData.userPicture!}
+                    username={receiverData.username}
                     msg={message.text}
                     setChatInfoIsVisible={setChatInfoIsVisible}
                   />

@@ -23,14 +23,14 @@ const BookmarkPost: React.FC<Props> = ({ post, reFetchFunction }) => {
               id={post._id}
             />
           )}
-          <div className=" w-full pr-8 flex flex-col gap-4">
+          <div className="w-full pr-8 flex flex-col gap-4">
             <BookmarkText text={post.description} id={post._id} />
             <div className="flex flex-row items-center gap-2">
               <UserImage
                 className="min-w-[2rem] w-8 min-h-[2rem] h-8 !m-0"
                 src={post.userPicture}
-                alt={post.firstName + " " + post.lastName}
                 username={post.username}
+                link={true}
               />
               <UserFullName
                 className="!text-base text-gray-500 font-medium"

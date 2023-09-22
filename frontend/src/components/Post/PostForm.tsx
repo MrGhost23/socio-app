@@ -94,9 +94,8 @@ const PostForm: React.FC<Props> = ({
       >
         {!text && (
           <UserImage
-            className="min-w-[3.5rem] min-h-[3.5rem] w-14 h-14 rounded-full shadow-lg"
+            className="min-w-[3.5rem] w-14 min-h-[3.5rem] h-14 rounded-full shadow-lg"
             src={user!.userPicture}
-            alt={`${user!.firstName} ${user!.lastName}'s profile picture`}
             username={user!.username}
           />
         )}
