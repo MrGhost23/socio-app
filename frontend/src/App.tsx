@@ -63,6 +63,7 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const user = useSelector(selectUser);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [notifications, setNotifications] = useState([]);
   const [sendMessage, setSendMessage] = useState<Message | null>(null);
   const [receiveMessage, setReceiveMessage] = useState<MessageType | null>(
     null
@@ -110,10 +111,31 @@ const App: React.FC = () => {
     });
   }, []);
 
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      const response = await axios.get(
+        "http://localhost:5000/api/v1/notifications"
+      );
+      setNotifications(response.data);
+    };
+    fetchNotifications();
+  }, []);
+
+  useEffect(() => {
+    socketio.on("getNotification", (data) => {
+      setNotifications((prev) => [...prev, data]);
+      console.log(data);
+    });
+  }, []);
+
   if (isLoading) return;
   return (
     <>
-      <Navbar navIsSticky={navIsSticky} />
+      <Navbar
+        navIsSticky={navIsSticky}
+        socket={socketio}
+        notifications={notifications}
+      />
       <Routes>
         <Route path="*" element={<ErrorPage />} />
         <Route
@@ -164,7 +186,7 @@ const App: React.FC = () => {
             )
           }
         >
-          <Route path="/" element={<Timeline />} />
+          <Route path="/" element={<Timeline socket={socketio} />} />
           <Route path="/post/:id" element={<PostPage />} />
           <Route path="/find-friends" element={<FindFriends />} />
           <Route path="/bookmarks" element={<Bookmarks />} />
