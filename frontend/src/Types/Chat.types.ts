@@ -1,6 +1,9 @@
 export interface ChatType {
-  _id: string;
+  chatId: string;
   members: string[];
-  createdAt: string;
-  updatedAt: string;
+  latestMessage: {
+    _id: string;
+    text: string;
+    createdAt: string;
+  };
 }
