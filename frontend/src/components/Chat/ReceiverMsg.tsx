@@ -4,13 +4,18 @@ import isArabic from "../../utils/IsArabic";
 type Props = {
   userPicture: string;
   msg: string;
+  setChatInfoIsVisible: () => void;
 };
 
-const ReceiverMsg: React.FC<Props> = ({ userPicture, msg }) => {
+const ReceiverMsg: React.FC<Props> = ({
+  userPicture,
+  msg,
+  setChatInfoIsVisible,
+}) => {
   const textIsInArabic = isArabic(msg);
 
   return (
-    <div className="flex justify-start gap-2">
+    <div className="flex justify-start gap-2" onClick={setChatInfoIsVisible}>
       <UserImage src={userPicture} className="w-10 h-10 object-cover" />
       <div
         className={

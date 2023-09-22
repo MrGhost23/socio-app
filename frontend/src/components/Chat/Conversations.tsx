@@ -13,9 +13,9 @@ const Conversations: React.FC<Props> = ({ chats, setCurrentChat }) => {
   const currentUser = useSelector(selectUser);
 
   return (
-    <div className="col-span-1 flex flex-col border-r-2 h-[calc(100vh-82px)] overflow-y-auto">
-      <div className="border-b-2 py-4 px-2">
-        <div className="w-full mr-auto max-w-xs xl:max-w-lg 2xl:max-w-2xl bg-gray-100 rounded-md hidden lg:flex items-center">
+    <>
+      <div className="border-b-2 py-4 px-4 sm:px-10 lg:px-4">
+        <div className="w-full flex items-center bg-gray-100 rounded-md">
           <form className="flex items-center w-full">
             <label className="sr-only">Search</label>
             <div className="relative w-full">
@@ -41,7 +41,7 @@ const Conversations: React.FC<Props> = ({ chats, setCurrentChat }) => {
           changeChat={setCurrentChat}
         />
       ))}
-    </div>
+    </>
   );
 };
 export default Conversations;

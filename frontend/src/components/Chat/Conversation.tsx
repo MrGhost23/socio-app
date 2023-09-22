@@ -31,11 +31,11 @@ const Conversation: React.FC<Props> = ({ chat, changeChat }) => {
 
   return (
     <div
-      className="flex flex-row gap-2 py-4 px-2 justify-center items-start border-b-2 cursor-pointer hover:bg-slate-200"
+      className="flex flex-row gap-2 py-4 px-4 sm:px-10 lg:px-4 justify-center items-start border-b-2 cursor-pointer hover:bg-slate-200"
       onClick={changeChatHandler}
     >
       <UserImage
-        className="min-h-[3.5rem] h-14 min-w-[3.5rem] w-14"
+        className="min-h-[3.5rem] h-14 min-w-[3.5rem] w-14 !mb-0"
         src={profile!.userPicture}
         alt={`${profile?.username}'s profile picture`}
       />

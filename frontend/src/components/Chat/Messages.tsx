@@ -22,12 +22,14 @@ type Props = {
   chat: ChatType;
   setSendMessage: React.Dispatch<React.SetStateAction<Message | null>>;
   receiveMessage: MessageType | null;
+  setChatInfoIsVisible: () => void;
 };
 
 const Messages: React.FC<Props> = ({
   chat,
   setSendMessage,
   receiveMessage,
+  setChatInfoIsVisible,
 }) => {
   const currentUser = useSelector(selectUser);
   const receiverUsername = chat?.members?.find(
@@ -106,10 +108,10 @@ const Messages: React.FC<Props> = ({
   if (chatMessagesHasError) console.log(chatMessagesHasError);
 
   return (
-    <div className="col-span-2 px-5 flex flex-col h-[calc(100vh-82px)] justify-between">
+    <>
       <ScrollableDiv>
         <div className="flex flex-col gap-5">
-          {chat ? (
+          {chat &&
             messages.map((message, index) => (
               <div
                 key={message._id}
@@ -124,17 +126,11 @@ const Messages: React.FC<Props> = ({
                   <Receiver
                     userPicture={userData.userPicture!}
                     msg={message.text}
+                    setChatInfoIsVisible={setChatInfoIsVisible}
                   />
                 )}
               </div>
-            ))
-          ) : (
-            <div className="flex justify-center items-center">
-              <p className="text-gray-600 font-semibold text-center">
-                Tap on chat to start a conversation!
-              </p>
-            </div>
-          )}
+            ))}
         </div>
       </ScrollableDiv>
 
@@ -145,7 +141,7 @@ const Messages: React.FC<Props> = ({
           setNewMessage={setNewMessage}
         />
       )}
-    </div>
+    </>
   );
 };
 export default Messages;
