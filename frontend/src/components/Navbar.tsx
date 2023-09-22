@@ -236,9 +236,9 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
             </ul>
           </nav>
           <div className="ml-8 hidden sm:flex flex-col font-bold">
-            <div className="relative w-10 h-10 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+            <div className="relative overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
               <UserImage
-                className="min-w-[3.5rem] w-14 min-h-[3.5rem] h-14 !m-0"
+                className="min-w-[2.5rem] w-10 min-h-[2.5rem] h-10 !m-0"
                 src={user.userPicture}
                 username={user.username}
                 link={true}
