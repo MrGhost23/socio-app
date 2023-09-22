@@ -28,7 +28,7 @@ type Props = {
   removePost: (postId: string) => void;
 };
 
-const Post: React.FC<Props> = ({ post, removePost, updatePost }) => {
+const Post: React.FC<Props> = ({ post, removePost, updatePost, socket }) => {
   const { username } = useSelector(selectUser)!;
   const [likes, setLikes] = useState<Likes>(post.likes);
 
@@ -38,6 +38,12 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost }) => {
         ...prevState,
         [username]: true,
       };
+    });
+    socket.emit("sendNotification", {
+      senderUsername: username,
+      receiverUsername: post.username,
+      actionType: "like",
+      postId: post._id,
     });
   };
 
