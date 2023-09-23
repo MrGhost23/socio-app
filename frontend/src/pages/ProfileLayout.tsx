@@ -11,7 +11,6 @@ import UserMenu from "../components/User/UserMenu";
 import RecentActivities from "../components/RecentActivities";
 import Card from "../ui/Card";
 import Button from "../ui/Button";
-import Loading from "../ui/Loading";
 import { toast } from "react-toastify";
 import ProfileSkeleton from "../skeletons/ProfileSkeleton";
 import RecentActivitiesSkeleton from "../skeletons/RecentActivitiesSkeleton";
