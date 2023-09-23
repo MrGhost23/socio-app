@@ -3,6 +3,7 @@ import { selectUser } from "../../store/slices/authSlice";
 import { ChatType } from "../../Types/Chat.types";
 import { MessageType } from "../../Types/Message.types";
 import Conversation from "./Conversation";
+import ConversationsSkeletons from "../../skeletons/ConversationsSkeletons";
 
 interface Message {
   senderUsername: string;
@@ -12,6 +13,7 @@ interface Message {
 }
 
 type Props = {
+  chatsLoading: boolean;
   chats: ChatType[];
   setCurrentChat: React.Dispatch<React.SetStateAction<string | null>>;
   sendMessage: Message | null;
@@ -19,6 +21,7 @@ type Props = {
 };
 
 const Conversations: React.FC<Props> = ({
+  chatsLoading,
   chats,
   setCurrentChat,
   sendMessage,
@@ -28,17 +31,21 @@ const Conversations: React.FC<Props> = ({
 
   return (
     <>
-      {chats.map((chat) => (
-        <Conversation
-          key={chat.members.find(
-            (username) => username !== currentUser!.username
-          )}
-          chat={chat}
-          changeChat={setCurrentChat}
-          receiveMessage={receiveMessage}
-          sendMessage={sendMessage}
-        />
-      ))}
+      {chatsLoading ? (
+        <ConversationsSkeletons conversationsNumber={10} />
+      ) : (
+        chats.map((chat) => (
+          <Conversation
+            key={chat.members.find(
+              (username) => username !== currentUser!.username
+            )}
+            chat={chat}
+            changeChat={setCurrentChat}
+            receiveMessage={receiveMessage}
+            sendMessage={sendMessage}
+          />
+        ))
+      )}
     </>
   );
 };

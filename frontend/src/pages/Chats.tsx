@@ -43,8 +43,6 @@ const Chats: React.FC<Props> = ({
     "get"
   );
 
-  console.log(userChats);
-
   const [conversationsIsVisible, setConversationsIsVisible] = useState(true);
   const [messagesIsVisible, setMessagesIsVisible] = useState(true);
   const [chatInfoIsVisible, setChatInfoIsVisible] = useState(true);
@@ -80,7 +78,6 @@ const Chats: React.FC<Props> = ({
     }
   }, [sendMessage]);
 
-  if (userChatsIsLoading) return "loading";
   if (userChatsHasError) console.log(userChatsHasError);
 
   return (
@@ -94,6 +91,7 @@ const Chats: React.FC<Props> = ({
           }
         >
           <Conversations
+            chatsLoading={userChatsIsLoading}
             chats={userChats!}
             setCurrentChat={setCurrentChat}
             receiveMessage={receiveMessage}
