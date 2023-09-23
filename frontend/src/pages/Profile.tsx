@@ -6,6 +6,7 @@ import { selectUser } from "../store/slices/authSlice";
 import { PostType } from "../Types/Post.types";
 import PostForm from "../components/Post/PostForm";
 import Posts from "../components/Post/Posts";
+import PostsSkeleton from "../skeletons/PostsSkeleton";
 
 const Profile = () => {
   const { username } = useParams();
@@ -57,26 +58,24 @@ const Profile = () => {
     fetchPosts();
   }, [fetchPosts]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  } else {
-    return (
-      <>
-        {isMyProfile && <PostForm fetchPosts={fetchPosts} />}
-        {userPosts!.length > 0 ? (
-          <Posts
-            posts={userPosts!}
-            removePost={removePost}
-            updatePost={updatePost}
-          />
-        ) : (
-          <div className="text-center text-gray-800 text-xl">
-            {isMyProfile ? "You" : "This user"} didn't post anything yet.
-          </div>
-        )}
-      </>
-    );
-  }
+  return (
+    <>
+      {isMyProfile && <PostForm fetchPosts={fetchPosts} />}
+      {isLoading ? (
+        <PostsSkeleton postsNumber={2} />
+      ) : userPosts!.length > 0 ? (
+        <Posts
+          posts={userPosts!}
+          removePost={removePost}
+          updatePost={updatePost}
+        />
+      ) : (
+        <div className="text-center text-gray-800 text-xl">
+          {isMyProfile ? "You" : "This user"} didn't post anything yet.
+        </div>
+      )}
+    </>
+  );
 };
 
 export default Profile;
