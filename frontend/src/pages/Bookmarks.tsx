@@ -4,7 +4,7 @@ import { selectUser } from "../store/slices/authSlice";
 import axios from "axios";
 import { BookmarkPostType } from "../Types/BookmarkPost.types";
 import BookmarkPosts from "../components/Post/BookmarkPosts";
-import Loading from "../ui/Loading";
+import BookmarkPostsSkeleton from "../skeletons/BookmarkPostsSkeleton";
 
 const Bookmarks = () => {
   const currentUser = useSelector(selectUser);
@@ -31,12 +31,23 @@ const Bookmarks = () => {
     getUserBookmarks();
   }, [getUserBookmarks]);
 
-  if (isLoading) return <Loading />;
   if (error) return <p>An error occurred</p>;
-  if (bookmarkPosts!.length === 0) return <p>You have no bookmarks</p>;
 
   return (
-    <BookmarkPosts posts={bookmarkPosts!} reFetchFunction={getUserBookmarks} />
+    <>
+      {isLoading ? (
+        <BookmarkPostsSkeleton postsNumber={2} />
+      ) : bookmarkPosts!.length > 0 ? (
+        <BookmarkPosts
+          posts={bookmarkPosts!}
+          reFetchFunction={getUserBookmarks}
+        />
+      ) : (
+        <div className="text-center text-gray-800 text-xl">
+          You have no bookmarks.
+        </div>
+      )}
+    </>
   );
 };
 
