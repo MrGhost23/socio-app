@@ -2,45 +2,49 @@ import React from "react";
 
 type Props = {
   type: string;
+  containerClasses?: string;
   className?: string;
   repeat?: number;
 };
 
-const SkeletonElement: React.FC<Props> = ({ type, className, repeat }) => {
-  let classes = "bg-[#ddd] overflow-hidden rounded-sm";
+const SkeletonElement: React.FC<Props> = ({
+  type,
+  containerClasses,
+  className,
+  repeat,
+}) => {
+  let cClasses = "w-full space-y-2";
+  let eClasses = "bg-[#ddd] overflow-hidden rounded-sm";
+
+  if (className) {
+    eClasses += " " + className;
+  }
+
+  if (containerClasses) {
+    cClasses += " " + containerClasses;
+  }
+
   switch (type) {
-    case "title":
-      classes += " w-1/2 h-5";
-      break;
     case "text":
-      classes += " w-full h-[.95rem]";
-      break;
-    case "name":
-      classes += " w-1/4 h-[0.8rem]";
-      break;
-    case "date":
-      classes += " w-1/4 h-[0.8rem]";
+      eClasses += " w-full h-[.95rem]";
       break;
     case "avatar":
-      classes += " !rounded-full";
+      eClasses += " !rounded-full";
       break;
     default:
       break;
-  }
-  if (className) {
-    classes += " " + className;
   }
 
   return (
     <>
       {repeat ? (
-        <div className="flex flex-col gap-2">
+        <div className={cClasses}>
           {Array.from({ length: repeat }, (_, index) => (
-            <div key={index} className={classes}></div>
+            <div key={index} className={eClasses}></div>
           ))}
         </div>
       ) : (
-        <div className={classes}></div>
+        <div className={eClasses}></div>
       )}
     </>
   );

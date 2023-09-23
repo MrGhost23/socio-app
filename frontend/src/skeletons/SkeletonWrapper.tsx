@@ -2,11 +2,19 @@ import SkeletonShimmer from "./SkeletonShimmer";
 
 type Props = {
   children: React.ReactNode;
+  className?: string;
 };
 
-const SkeletonWrapper: React.FC<Props> = ({ children }) => {
+const SkeletonWrapper: React.FC<Props> = ({ children, className }) => {
+  let classes =
+    "relative px-8 py-6 bg-white rounded-xl shadow-lg overflow-hidden";
+
+  if (className) {
+    classes += " " + className;
+  }
+
   return (
-    <div className="relative px-8 py-6 bg-white rounded-xl shadow-lg overflow-hidden">
+    <div className={classes}>
       {children}
       <SkeletonShimmer />
     </div>

@@ -4,20 +4,19 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { selectUser } from "../store/slices/authSlice";
 import { PostType } from "../Types/Post.types";
-import useUserProfile from "../hooks/useUserProfile";
 import PostForm from "../components/Post/PostForm";
 import Posts from "../components/Post/Posts";
+import PostsSkeleton from "../skeletons/PostsSkeleton";
 
 const Profile = () => {
   const { username } = useParams();
-  const { profile, loading, error } = useUserProfile(username!);
 
   const currentUser = useSelector(selectUser);
 
   const [userPosts, setUserPosts] = useState<PostType[]>();
   const [isLoading, setIsLoading] = useState(true);
 
-  const isMyProfile = currentUser?.username === profile?.username;
+  const isMyProfile = currentUser?.username === username;
 
   const fetchPosts = useCallback(async () => {
     try {
@@ -59,28 +58,24 @@ const Profile = () => {
     fetchPosts();
   }, [fetchPosts]);
 
-  if (loading || isLoading) {
-    return <div>Loading...</div>;
-  } else if (error) {
-    return <div>Error: {error}</div>;
-  } else {
-    return (
-      <>
-        {isMyProfile && <PostForm fetchPosts={fetchPosts} />}
-        {userPosts!.length > 0 ? (
-          <Posts
-            posts={userPosts!}
-            removePost={removePost}
-            updatePost={updatePost}
-          />
-        ) : (
-          <div className="text-center text-gray-800 text-xl">
-            {isMyProfile ? "You" : "This user"} didn't post anything yet.
-          </div>
-        )}
-      </>
-    );
-  }
+  return (
+    <>
+      {isMyProfile && <PostForm fetchPosts={fetchPosts} />}
+      {isLoading ? (
+        <PostsSkeleton postsNumber={2} />
+      ) : userPosts!.length > 0 ? (
+        <Posts
+          posts={userPosts!}
+          removePost={removePost}
+          updatePost={updatePost}
+        />
+      ) : (
+        <div className="text-center text-gray-800 text-xl">
+          {isMyProfile ? "You" : "This user"} didn't post anything yet.
+        </div>
+      )}
+    </>
+  );
 };
 
 export default Profile;

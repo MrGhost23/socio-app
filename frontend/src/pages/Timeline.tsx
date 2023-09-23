@@ -4,6 +4,7 @@ import PostForm from "../components/Post/PostForm";
 import { PostType } from "../Types/Post.types";
 import Loading from "../ui/Loading";
 import usePostActions from "../hooks/usePostActions";
+import PostsSkeleton from "../skeletons/PostsSkeleton";
 
 const Timeline = ({ socket }) => {
   const { fetchFeedPosts } = usePostActions();
@@ -45,12 +46,12 @@ const Timeline = ({ socket }) => {
     });
   };
 
-  if (loading) return <Loading />;
-
   return (
     <>
       <PostForm fetchPosts={fetchPosts} />
-      {feedPosts.length > 0 ? (
+      {loading ? (
+        <PostsSkeleton postsNumber={2} />
+      ) : feedPosts.length > 0 ? (
         <Posts
           posts={feedPosts}
           socket={socket}
