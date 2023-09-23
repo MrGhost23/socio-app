@@ -97,6 +97,7 @@ const Chats: React.FC<Props> = ({
             chats={userChats!}
             setCurrentChat={setCurrentChat}
             receiveMessage={receiveMessage}
+            sendMessage={sendMessage}
           />
         </div>
         {currentChat ? (
