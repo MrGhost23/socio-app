@@ -16,6 +16,7 @@ const MessageForm: React.FC<Props> = ({
       <TextareaForm
         text={newMessage}
         setText={setNewMessage}
+        placeholder="Write your message"
         submitFunction={submitHandler}
       />
     </div>

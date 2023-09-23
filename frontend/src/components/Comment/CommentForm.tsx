@@ -60,6 +60,7 @@ const CommentForm: React.FC<Props> = ({
       <TextareaForm
         text={text}
         setText={setText}
+        placeholder="Write your comment"
         submitFunction={commentId ? editHandler : submitHandler}
         showFormIcon={showFormIcon}
       />

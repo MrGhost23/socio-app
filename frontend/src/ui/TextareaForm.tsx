@@ -4,6 +4,7 @@ import { PiNavigationArrowFill } from "react-icons/pi";
 type Props = {
   text: string;
   setText: React.Dispatch<React.SetStateAction<string>>;
+  placeholder: string;
   submitFunction: () => void;
   showFormIcon?: boolean;
 };
@@ -11,6 +12,7 @@ type Props = {
 const TextareaForm: React.FC<Props> = ({
   text,
   setText,
+  placeholder,
   submitFunction,
   showFormIcon,
 }) => {
@@ -60,7 +62,7 @@ const TextareaForm: React.FC<Props> = ({
       <div className="relative w-full">
         <textarea
           className="w-full min-h-[2.5rem] h-fit max-h-[8rem] resize-y pl-4 pr-7 py-1.5 border rounded-xl outline-none text-sm sm:text-base"
-          placeholder="Write your comment"
+          placeholder={placeholder}
           value={text}
           onChange={changeHandler}
           onFocus={focusHandler}
