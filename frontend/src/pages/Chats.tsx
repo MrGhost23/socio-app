@@ -93,7 +93,11 @@ const Chats: React.FC<Props> = ({
               : "col-span-1 lg:h-[calc(100vh-82px)] hidden lg:flex lg:flex-col border-r-2 overflow-y-auto"
           }
         >
-          <Conversations chats={userChats!} setCurrentChat={setCurrentChat} />
+          <Conversations
+            chats={userChats!}
+            setCurrentChat={setCurrentChat}
+            receiveMessage={receiveMessage}
+          />
         </div>
         {currentChat ? (
           <Chat
