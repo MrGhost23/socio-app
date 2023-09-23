@@ -12,7 +12,7 @@ import PostDate from "./PostDate";
 import PostStats from "./PostStats";
 import CommentForm from "../Comment/CommentForm";
 import PostForm from "./PostForm";
-import VerticalLine from "../../ui/VerticalLine";
+import HorizontalLine from "../../ui/HorizontalLine";
 import Comments from "../Comment/Comments";
 import PostMenu from "./PostMenu";
 import { useSelector } from "react-redux";
@@ -159,7 +159,7 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost, socket }) => {
             )}
           </>
         )}
-        <VerticalLine className="my-2" />
+        <HorizontalLine className="my-2" />
         <PostStats
           likes={likes}
           comments={comments.length}
@@ -167,7 +167,7 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost, socket }) => {
           likeFunction={likeFunction}
           unLikeFunction={unLikeFunction}
         />
-        <VerticalLine className="mb-5" />
+        <HorizontalLine className="mb-5" />
         <Comments
           comments={comments}
           removeCommentFunction={removeCommentFunction}

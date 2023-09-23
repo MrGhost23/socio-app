@@ -5,7 +5,7 @@ import { MdOutlineRssFeed } from "react-icons/md";
 import { FaRegBookmark } from "react-icons/fa6";
 import { BiCog, BiLogOut } from "react-icons/bi";
 import UserImage from "./User/UserImage";
-import VerticalLine from "../ui/VerticalLine";
+import HorizontalLine from "../ui/HorizontalLine";
 import UserFullName from "./User/UserFullName";
 import UserTag from "./User/UserTag";
 import { useDispatch, useSelector } from "react-redux";
@@ -83,7 +83,7 @@ const Sidebar: React.FC<Props> = ({ navIsSticky }) => {
               <UserTag username={currentUserTag} />
             </div>
           </div>
-          <VerticalLine className="my-3" />
+          <HorizontalLine className="my-3" />
           <ul className="m-0 list-none">
             {list.map((link) => (
               <li
