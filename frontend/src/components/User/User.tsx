@@ -29,7 +29,7 @@ const SuggestedUser: React.FC<Props> = ({
   const infoContainerClasses = "flex flex-col text-gray-600";
 
   const [followButtonLoading, setFollowButtonLoading] = useState(false);
-  const [buttonText, setButtonText] = useState("");
+  const [buttonText, setButtonText] = useState("Loading...");
 
   useEffect(() => {
     if (user.username === currentUser!.username) return;

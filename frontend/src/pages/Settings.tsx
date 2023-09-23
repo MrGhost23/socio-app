@@ -14,8 +14,8 @@ import Input from "../ui/Input";
 import Textarea from "../ui/Textarea";
 import Button from "../ui/Button";
 import SearchInput from "../ui/SearchInput";
-import Loading from "../ui/Loading";
 import UserImage from "../components/User/UserImage";
+import UsersSkeleton from "../skeletons/UsersSkeleton";
 
 type Props = {
   navIsSticky: boolean;
@@ -43,9 +43,8 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
   const [bio, setBio] = useState(currentUser!.bio || "");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
-  
+
   const submitHandler = async () => {
     try {
       const response = await axios.patch(
@@ -66,22 +65,22 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
       toast.info("Error.");
     }
   };
-  
+
   const uploadPic = async (e) => {
     e.preventDefault();
-    
+
     if (!image) {
       return;
     }
-    
+
     const formData = new FormData();
     formData.append("userPicture", image);
-    
+
     try {
       const response = await axios.post(
         "http://localhost:5000/api/v1/updateUserPicture",
         formData
-        );
+      );
 
       if (response.status === 200) {
         // idk, gonna add some functionality later
@@ -94,20 +93,19 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
       console.error("Error updating profile picture:", error);
     }
   };
-  
-  
+
   const [changePasswordCurrent, setChangePasswordCurrent] = useState("");
   const [changePasswordNew1, setChangePasswordNew1] = useState("");
   const [changePasswordNew2, setChangePasswordNew2] = useState("");
-  
+
   const changePasswordHandler = () => {
     console.log(changePasswordCurrent, changePasswordNew1, changePasswordNew2);
-  }
+  };
 
   const [blockedUsers, setBlockedUsers] = useState<UserType[]>();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
-  
+
   useEffect(() => {
     const fetchPostData = async () => {
       try {
@@ -115,8 +113,8 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
           `http://localhost:5000/api/v1/users/${
             currentUser!.username
           }/blocked-users`
-          );
-          setBlockedUsers(response.data);
+        );
+        setBlockedUsers(response.data);
       } catch (error) {
         setError(!!error);
       }
@@ -126,7 +124,6 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
     fetchPostData();
   }, [currentUser]);
 
-  if (isLoading) return <Loading />;
   if (error) return <p>An error occurred</p>;
 
   return (
@@ -254,21 +251,35 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
                 type="password"
                 placeholder="***************"
               />
-              <Button text="Save" bg={true} onClick={changePasswordHandler} className="xl:col-span-3" />
+              <Button
+                text="Save"
+                bg={true}
+                onClick={changePasswordHandler}
+                className="xl:col-span-3"
+              />
             </div>
           </Card>
         </div>
-        <Card className="p-8 !text-left">
-          <h3 className="mb-5 text-xl">Blocked Users</h3>
-          {blockedUsers!.length ? (
-            <>
-              <SearchInput className="mb-5" />
-              <Users users={blockedUsers!} mode="block" />
-            </>
-          ) : (
-            <p>You don't have anyone in your block list</p>
-          )}
-        </Card>
+        {isLoading ? (
+          <UsersSkeleton
+            title="Blocked Users"
+            usersNumber={6}
+            mode="block"
+            className="!p-8"
+          />
+        ) : (
+          <Card className="p-8 !text-left">
+            <h3 className="mb-5 text-xl">Blocked Users</h3>
+            {blockedUsers!.length ? (
+              <>
+                <SearchInput className="mb-5" />
+                <Users users={blockedUsers!} mode="block" />
+              </>
+            ) : (
+              <p>You don't have anyone in your block list</p>
+            )}
+          </Card>
+        )}
       </div>
     </div>
   );
