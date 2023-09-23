@@ -5,7 +5,7 @@ type Props = {
   text: string;
   setText: React.Dispatch<React.SetStateAction<string>>;
   submitFunction: () => void;
-  showFormIcon: boolean;
+  showFormIcon?: boolean;
 };
 
 const TextareaForm: React.FC<Props> = ({
@@ -28,7 +28,6 @@ const TextareaForm: React.FC<Props> = ({
   }, [classes, showFormIcon]);
 
   const changeHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    console.log(e.target.value.trim().length !== 0);
     setText(e.target.value);
 
     setShowSendIcon(true);

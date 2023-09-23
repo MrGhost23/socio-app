@@ -8,7 +8,7 @@ import useAxios from "../../hooks/useAxios";
 import { ChatType } from "../../Types/Chat.types";
 import ReceiverMsg from "./ReceiverMsg";
 import SenderMsg from "./SenderMsg";
-import TypeMsg from "./TypeMsg";
+import MessageForm from "./MessageForm";
 import ScrollableDiv from "../../ui/ScrollableDiv";
 
 interface Message {
@@ -46,8 +46,7 @@ const Messages: React.FC<Props> = ({
     }
   }, [chat.chatId, receiveMessage]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const submitHandler = async () => {
     const message = {
       senderUsername: currentUser!.username,
       text: newMessage,
@@ -124,8 +123,8 @@ const Messages: React.FC<Props> = ({
       </ScrollableDiv>
 
       {chat && (
-        <TypeMsg
-          handleSubmit={handleSubmit}
+        <MessageForm
+          submitHandler={submitHandler}
           newMessage={newMessage}
           setNewMessage={setNewMessage}
         />
