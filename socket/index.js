@@ -42,12 +42,23 @@ io.on("connection", (socket) => {
 
   socket.on(
     "sendNotification",
-    ({ senderUsername, receiverUsername, actionType, postId }) => {
+    ({
+      senderUsername,
+      receiverUsername,
+      actionType,
+      postId,
+      userPicture,
+      firstName,
+      lastName,
+    }) => {
       const receiver = getUsers(receiverUsername);
       io.to(receiver.socketId).emit("getNotification", {
         senderUsername,
         actionType,
         postId,
+        userPicture,
+        firstName,
+        lastName,
       });
     }
   );
