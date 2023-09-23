@@ -12,7 +12,11 @@ type Props = {
   changeChat: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
-const Conversation: React.FC<Props> = ({ chat, changeChat }) => {
+const Conversation: React.FC<Props> = ({
+  chat,
+  changeChat,
+  receiveMessage,
+}) => {
   const navigate = useNavigate();
   const currentUser = useSelector(selectUser);
 
@@ -50,7 +54,9 @@ const Conversation: React.FC<Props> = ({ chat, changeChat }) => {
           )}
         </div>
         <span className="text-gray-500 font-medium">
-          {chat.latestMessage?.text}
+          {receiveMessage !== null && receiveMessage.chatId === chat.chatId
+            ? receiveMessage.text
+            : chat.latestMessage?.text}
         </span>
       </div>
     </div>

@@ -8,7 +8,11 @@ type Props = {
   setCurrentChat: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
-const Conversations: React.FC<Props> = ({ chats, setCurrentChat }) => {
+const Conversations: React.FC<Props> = ({
+  chats,
+  setCurrentChat,
+  receiveMessage,
+}) => {
   const currentUser = useSelector(selectUser);
 
   return (
@@ -20,6 +24,7 @@ const Conversations: React.FC<Props> = ({ chats, setCurrentChat }) => {
           )}
           chat={chat}
           changeChat={setCurrentChat}
+          receiveMessage={receiveMessage}
         />
       ))}
     </>
