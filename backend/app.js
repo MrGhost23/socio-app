@@ -40,6 +40,7 @@ app.use(cors({ origin: "http://localhost:3000" }));
 const path = require("path");
 const authenticateUser = require("./middleware/authenticateUser");
 const { updateUserPicture } = require("./controllers/usersController");
+const User = require("./models/User");
 
 const profilePictureStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -109,6 +110,10 @@ app.use("/api/v1/validateToken", authenticateUser, async (req, res) => {
 
 let onlineUsers = [];
 
+const getUsers = (username) => {
+  return onlineUsers.find((user) => user.username === username);
+};
+
 io.on("connection", (socket) => {
   socket.on("new-user-add", (newUsername) => {
     if (!onlineUsers.some((user) => user.username === newUsername)) {
@@ -141,7 +146,7 @@ io.on("connection", (socket) => {
 
   socket.on(
     "sendNotification",
-    ({
+    async ({
       senderUsername,
       receiverUsername,
       actionType,
@@ -150,14 +155,16 @@ io.on("connection", (socket) => {
       firstName,
       lastName,
     }) => {
+      const sender = await User.findOne({ username: senderUsername });
+
       const receiver = getUsers(receiverUsername);
       io.to(receiver.socketId).emit("getNotification", {
         senderUsername,
         actionType,
         postId,
-        userPicture,
-        firstName,
-        lastName,
+        userPicture: sender.userPicture,
+        firstName: sender.firstName,
+        lastName: sender.lastName,
       });
     }
   );
