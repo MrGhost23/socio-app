@@ -4,20 +4,18 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { selectUser } from "../store/slices/authSlice";
 import { PostType } from "../Types/Post.types";
-import useUserProfile from "../hooks/useUserProfile";
 import PostForm from "../components/Post/PostForm";
 import Posts from "../components/Post/Posts";
 
 const Profile = () => {
   const { username } = useParams();
-  const { profile, loading, error } = useUserProfile(username!);
 
   const currentUser = useSelector(selectUser);
 
   const [userPosts, setUserPosts] = useState<PostType[]>();
   const [isLoading, setIsLoading] = useState(true);
 
-  const isMyProfile = currentUser?.username === profile?.username;
+  const isMyProfile = currentUser?.username === username;
 
   const fetchPosts = useCallback(async () => {
     try {
@@ -59,10 +57,8 @@ const Profile = () => {
     fetchPosts();
   }, [fetchPosts]);
 
-  if (loading || isLoading) {
+  if (isLoading) {
     return <div>Loading...</div>;
-  } else if (error) {
-    return <div>Error: {error}</div>;
   } else {
     return (
       <>
