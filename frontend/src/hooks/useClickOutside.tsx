@@ -23,7 +23,7 @@ const useClickOutside = (callbackFun: () => void) => {
     };
   }, []);
 
-  return elementRef;
+  return elementRef as React.RefObject<HTMLUListElement>;
 };
 
 export default useClickOutside;
