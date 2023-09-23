@@ -12,6 +12,7 @@ const Conversations: React.FC<Props> = ({
   chats,
   setCurrentChat,
   receiveMessage,
+  sendMessage,
 }) => {
   const currentUser = useSelector(selectUser);
 
@@ -25,6 +26,7 @@ const Conversations: React.FC<Props> = ({
           chat={chat}
           changeChat={setCurrentChat}
           receiveMessage={receiveMessage}
+          sendMessage={sendMessage}
         />
       ))}
     </>
