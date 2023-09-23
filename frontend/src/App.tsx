@@ -93,11 +93,11 @@ const App: React.FC = () => {
     fetchToken();
   }, [dispatch, localToken]);
 
-  const [socketio, setSocket] = useState<Socket>(io("ws://localhost:8800"));
+  const [socketio, setSocket] = useState<Socket>(io("ws://localhost:5000"));
 
   useEffect(() => {
     if (user) {
-      setSocket(io("ws://localhost:8800"));
+      setSocket(io("ws://localhost:5000"));
       socketio.emit("new-user-add", user?.username);
       socketio.on("get-users", (users) => {
         setOnlineUsers(users);
