@@ -13,6 +13,7 @@ import Card from "../ui/Card";
 import Button from "../ui/Button";
 import Loading from "../ui/Loading";
 import { toast } from "react-toastify";
+import ProfileSkeleton from "../skeletons/ProfileSkeleton";
 
 const ProfileLayout = () => {
   const navigate = useNavigate();
@@ -88,7 +89,6 @@ const ProfileLayout = () => {
     }
   };
 
-  if (loading || !profile) return;
   if (!loading && !profile) {
     navigate("/");
     return;
@@ -99,45 +99,49 @@ const ProfileLayout = () => {
     <>
       <div className="flex flex-col lg:grid lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-12 mx-4 sm:mx-10 md:mx-10 my-10">
         <div className="col-span-2 lg:col-span-1 order-1">
-          <Card className="sticky top-32 px-10 py-8 flex flex-col items-center">
-            <div className="relative top-0 right-2 left-full self-start">
-              <UserMenu
-                isMyProfile={isMyProfile}
-                profileUsername={profile.username}
-              />
-            </div>
-            <UserInfo userInfo={profile} followers={followers} />
-            <div className="w-full flex flex-col gap-4">
-              {!isMyProfile ? (
-                <>
-                  <Button
-                    text="Send Message"
-                    onClick={sendMessageHandler}
-                    bg={true}
-                  />
-                  <Button
-                    text={
-                      followButtonLoading
-                        ? "Loading..."
-                        : isFollowing
-                        ? "Unfollow"
-                        : "Follow"
-                    }
-                    onClick={
-                      followButtonLoading ? () => {} : toggleFollowHandler
-                    }
-                    bg={true}
-                  />
-                </>
-              ) : (
-                <Button
-                  text="Edit profile"
-                  onClick={() => navigate("/settings")}
-                  bg={true}
+          {loading ? (
+            <ProfileSkeleton />
+          ) : (
+            <Card className="sticky top-32 px-10 py-8 flex flex-col items-center">
+              <div className="relative top-0 right-2 left-full self-start">
+                <UserMenu
+                  isMyProfile={isMyProfile}
+                  profileUsername={profile!.username}
                 />
-              )}
-            </div>
-          </Card>
+              </div>
+              <UserInfo userInfo={profile!} followers={followers} />
+              <div className="w-full flex flex-col gap-4">
+                {!isMyProfile ? (
+                  <>
+                    <Button
+                      text="Send Message"
+                      onClick={sendMessageHandler}
+                      bg={true}
+                    />
+                    <Button
+                      text={
+                        followButtonLoading
+                          ? "Loading..."
+                          : isFollowing
+                          ? "Unfollow"
+                          : "Follow"
+                      }
+                      onClick={
+                        followButtonLoading ? () => {} : toggleFollowHandler
+                      }
+                      bg={true}
+                    />
+                  </>
+                ) : (
+                  <Button
+                    text="Edit profile"
+                    onClick={() => navigate("/settings")}
+                    bg={true}
+                  />
+                )}
+              </div>
+            </Card>
+          )}
         </div>
         <div className="flex flex-col xl:grid xl:grid-cols-3 col-span-2 xl:col-span-3 order-2 gap-8 xl:gap-12">
           <div className="w-full xl:col-span-2 order-2 xl:order-1">
@@ -153,8 +157,8 @@ const ProfileLayout = () => {
               ) : (
                 <RecentActivities
                   isMyProfile={isMyProfile}
-                  username={profile.username}
-                  userFirstName={profile.firstName}
+                  username={profile!.username}
+                  userFirstName={profile!.firstName}
                   recentActivities={userActivities!}
                 />
               )}
