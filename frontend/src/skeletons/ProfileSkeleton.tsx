@@ -1,9 +1,13 @@
 import SkeletonWrapper from "./SkeletonWrapper";
 import SkeletonElement from "./SkeletonElement";
 
-const ProfileSkeleton = () => {
+type Props = {
+  className?: string;
+};
+
+const ProfileSkeleton: React.FC<Props> = ({ className }) => {
   return (
-    <SkeletonWrapper>
+    <SkeletonWrapper className={className}>
       <div className="flex flex-col items-center gap-2">
         <SkeletonElement
           type="avatar"

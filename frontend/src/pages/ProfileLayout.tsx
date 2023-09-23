@@ -101,7 +101,7 @@ const ProfileLayout = () => {
       <div className="flex flex-col lg:grid lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-12 mx-4 sm:mx-10 md:mx-10 my-10">
         <div className="col-span-2 lg:col-span-1 order-1">
           {loading ? (
-            <ProfileSkeleton />
+            <ProfileSkeleton className="!sticky top-32" />
           ) : (
             <Card className="sticky top-32 px-10 py-8 flex flex-col items-center">
               <div className="relative top-0 right-2 left-full self-start">
