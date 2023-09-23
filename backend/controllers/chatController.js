@@ -33,6 +33,17 @@ const userChats = async (req, res) => {
       });
     }
 
+    chatsWithLatestMessage.sort((a, b) => {
+      if (a.latestMessage && b.latestMessage) {
+        return b.latestMessage.createdAt - a.latestMessage.createdAt;
+      } else if (a.latestMessage) {
+        return -1;
+      } else if (b.latestMessage) {
+        return 1;
+      }
+      return 0;
+    });
+
     res.status(200).json(chatsWithLatestMessage);
   } catch (error) {
     res.status(500).json(error);
