@@ -64,6 +64,7 @@ const ProfileLayout = () => {
 
   useEffect(() => {
     const fetchUserActivities = async () => {
+      if (!profile) return;
       try {
         const response = await axios.get(
           `http://localhost:5000/api/v1/users/${username}/activities`
@@ -75,7 +76,7 @@ const ProfileLayout = () => {
       setUserActivitiesLoading(false);
     };
     fetchUserActivities();
-  }, [username]);
+  }, [profile, username]);
 
   const sendMessageHandler = async () => {
     try {
