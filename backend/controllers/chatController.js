@@ -2,8 +2,20 @@ const Chat = require("../models/Chat");
 const Message = require("../models/Message");
 
 const createChat = async (req, res) => {
+  const { senderUsername, receiverUsername } = req.body;
+
+  const existingChat = await Chat.findOne({
+    members: {
+      $all: [senderUsername, receiverUsername],
+    },
+  });
+
+  if (existingChat) {
+    return res.status(200).json({ exist: true });
+  }
+
   const newChat = new Chat({
-    members: [req.body.senderUsername, req.body.receiverUsername],
+    members: [senderUsername, receiverUsername],
   });
 
   try {
@@ -32,6 +44,17 @@ const userChats = async (req, res) => {
         latestMessage: latestMessage || null,
       });
     }
+
+    chatsWithLatestMessage.sort((a, b) => {
+      if (a.latestMessage && b.latestMessage) {
+        return b.latestMessage.createdAt - a.latestMessage.createdAt;
+      } else if (a.latestMessage) {
+        return -1;
+      } else if (b.latestMessage) {
+        return 1;
+      }
+      return 0;
+    });
 
     res.status(200).json(chatsWithLatestMessage);
   } catch (error) {

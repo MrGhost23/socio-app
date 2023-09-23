@@ -124,7 +124,6 @@ const App: React.FC = () => {
   useEffect(() => {
     socketio.on("getNotification", (data) => {
       setNotifications((prev) => [...prev, data]);
-      console.log(data);
     });
   }, []);
 
