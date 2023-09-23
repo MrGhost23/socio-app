@@ -8,7 +8,7 @@ import { UserType } from "../Types/User.types";
 import Sidebar from "../components/Sidebar";
 import SuggestedUsers from "../components/User/SuggestedUsers";
 import Card from "../ui/Card";
-import Loading from "../ui/Loading";
+import UsersSkeleton from "../skeletons/UsersSkeleton";
 
 type Props = {
   navIsSticky: boolean;
@@ -55,18 +55,21 @@ const MainLayout: React.FC<Props> = ({ navIsSticky }) => {
         <div className="col-span-2 pb-10 xl:pt-10 order-2 xl:order-1">
           <Outlet />
         </div>
-        <Card className="xl:sticky xl:top-32 mt-10 xl:mt-0 xl:mb-10 px-8 py-4 pb-6 flex flex-col !text-left order-1 xl:order-2">
-          <h3 className="mb-5 text-xl">Suggested for you</h3>
-          {suggestedUsersLoading ? (
-            <Loading />
-          ) : suggestedUsersError ? (
-            "An error occurred"
-          ) : suggestedUsers?.length ? (
+        {suggestedUsersLoading ? (
+          <UsersSkeleton
+            title="Suggested for you"
+            usersNumber={5}
+            mode="suggest"
+            className="xl:sticky xl:top-32 mt-10 xl:mt-0 xl:mb-10 px-8 !py-4 pb-6 order-1 xl:order-2"
+          />
+        ) : suggestedUsers?.length ? (
+          <Card className="xl:sticky xl:top-32 mt-10 xl:mt-0 xl:mb-10 px-8 py-4 pb-6 flex flex-col !text-left order-1 xl:order-2">
+            <h3 className="mb-5 text-xl">Suggested for you</h3>
             <SuggestedUsers users={suggestedUsers} />
-          ) : (
-            "Found no users to suggest"
-          )}
-        </Card>
+          </Card>
+        ) : (
+          "Found no users to suggest"
+        )}
       </div>
     </div>
   );

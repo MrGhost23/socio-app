@@ -5,7 +5,7 @@ import { UserType } from "../Types/User.types";
 import Users from "../components/User/Users";
 import Card from "../ui/Card";
 import SearchInput from "../ui/SearchInput";
-import Loading from "../ui/Loading";
+import UsersSkeleton from "../skeletons/UsersSkeleton";
 
 const Followers = () => {
   const { username } = useParams();
@@ -30,21 +30,26 @@ const Followers = () => {
     fetchPostData();
   }, [username]);
 
-  if (isLoading) return <Loading />;
   if (error) return <p>An error occurred</p>;
 
   return (
-    <Card className="sticky top-32 px-8 py-4 pb-6 flex flex-col !text-left">
-      <h3 className="mb-5 text-xl">Followers</h3>
-      {followers!.length ? (
-        <>
-          <SearchInput className="mb-5" />
-          <Users users={followers!} mode="follow" />
-        </>
+    <>
+      {isLoading ? (
+        <UsersSkeleton title="Followers" usersNumber={6} mode="follow" />
       ) : (
-        <p>No one is following {username}</p>
+        <Card className="sticky top-32 px-8 py-4 pb-6 flex flex-col !text-left">
+          <h3 className="mb-5 text-xl">Followers</h3>
+          {followers!.length ? (
+            <>
+              <SearchInput className="mb-5" />
+              <Users users={followers!} mode="follow" />
+            </>
+          ) : (
+            <p>No one is following {username}</p>
+          )}
+        </Card>
       )}
-    </Card>
+    </>
   );
 };
 
