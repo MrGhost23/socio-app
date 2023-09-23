@@ -1,25 +1,38 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/authSlice";
 import { ChatType } from "../../Types/Chat.types";
+import { MessageType } from "../../Types/Message.types";
 import useUserProfile from "../../hooks/useUserProfile";
 import UserImage from "../User/UserImage";
 import UserFullName from "../User/UserFullName";
 import ChatDate from "./ChatDate";
 
+interface Message {
+  senderUsername: string;
+  text: string;
+  chatId: string;
+  receiverUsername: string;
+}
+
 type Props = {
   chat: ChatType;
   changeChat: React.Dispatch<React.SetStateAction<string | null>>;
+  sendMessage: Message | null;
+  receiveMessage: MessageType | null;
 };
 
 const Conversation: React.FC<Props> = ({
   chat,
   changeChat,
-  receiveMessage,
   sendMessage,
+  receiveMessage,
 }) => {
   const navigate = useNavigate();
   const currentUser = useSelector(selectUser);
+
+  const [latestMessage, setLatestMessage] = useState(chat.latestMessage?.text);
 
   const receiverUsername = chat.members.find(
     (username) => username !== currentUser!.username
@@ -32,30 +45,19 @@ const Conversation: React.FC<Props> = ({
 
   const { profile, loading } = useUserProfile(receiverUsername!);
 
+  useEffect(() => {
+    if (receiveMessage && receiveMessage.chatId === chat.chatId) {
+      setLatestMessage(receiveMessage?.text);
+    }
+  }, [chat.chatId, receiveMessage]);
+
+  useEffect(() => {
+    if (sendMessage && sendMessage.chatId === chat.chatId) {
+      setLatestMessage(sendMessage?.text);
+    }
+  }, [chat.chatId, sendMessage]);
+
   if (loading) return <div>Loading...</div>;
-
-  const isSender =
-    (receiveMessage !== null &&
-      receiveMessage.senderUsername === currentUser.username) ||
-    (sendMessage !== null &&
-      sendMessage.senderUsername === currentUser.username);
-
-  let messageText;
-
-  console.log(sendMessage);
-
-  if (
-    receiveMessage !== null &&
-    receiveMessage.chatId === chat.chatId &&
-    sendMessage !== null &&
-    sendMessage.chatId === chat.chatId
-  ) {
-    messageText = sendMessage.text;
-  } else if (!isSender && receiveMessage) {
-    messageText = receiveMessage.text;
-  } else if (chat.latestMessage) {
-    messageText = chat.latestMessage.text;
-  }
 
   return (
     <div
@@ -77,7 +79,7 @@ const Conversation: React.FC<Props> = ({
             <ChatDate date={chat.latestMessage.createdAt} />
           )}
         </div>
-        <span className="text-gray-500 font-medium">{messageText}</span>
+        <span className="text-gray-500 font-medium">{latestMessage}</span>
       </div>
     </div>
   );
