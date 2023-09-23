@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
-import axios from 'axios';
-import Post from '../components/Post/Post';
+import axios from "axios";
+import Post from "../components/Post/Post";
 import { PostType } from "../Types/Post.types";
 import { useNavigate, useParams } from "react-router-dom";
-import SkeletonPost from "../skeletons/SkeletonPost";
+import PostSkeleton from "../skeletons/PostSkeleton";
 
 const PostPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  
+
   const [postData, setPostData] = useState<PostType>();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -16,22 +16,28 @@ const PostPage = () => {
   useEffect(() => {
     const fetchPostData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/v1/posts/${id}`);
+        const response = await axios.get(
+          `http://localhost:5000/api/v1/posts/${id}`
+        );
         setPostData(response.data);
       } catch (error) {
-        setError(!!error)
+        setError(!!error);
       }
       setIsLoading(false);
-    }
+    };
 
     fetchPostData();
-  }, [id])
+  }, [id]);
 
   const removePost = () => {
     navigate("/");
   };
 
-  const updatePost = (postId: string, description: string, image: string): void => {
+  const updatePost = (
+    postId: string,
+    description: string,
+    image: string
+  ): void => {
     setPostData((prevState) => {
       const updatedPostData: PostType = {
         userId: prevState!.userId,
@@ -44,19 +50,19 @@ const PostPage = () => {
         likes: prevState!.likes,
         _id: postId,
         description: description,
-        postImage: image
+        postImage: image,
       };
 
       return updatedPostData;
     });
   };
-  
+
   if (error) return <p>An error occurred</p>;
 
   return (
     <>
       {isLoading ? (
-        <SkeletonPost />
+        <PostSkeleton />
       ) : (
         <Post
           post={postData!}
