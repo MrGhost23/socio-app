@@ -3,7 +3,7 @@ import axios from 'axios';
 import Post from '../components/Post/Post';
 import { PostType } from "../Types/Post.types";
 import { useNavigate, useParams } from "react-router-dom";
-import Loading from "../ui/Loading";
+import SkeletonPost from "../skeletons/SkeletonPost";
 
 const PostPage = () => {
   const { id } = useParams();
@@ -51,11 +51,20 @@ const PostPage = () => {
     });
   };
   
-  if (isLoading) return <Loading />;
   if (error) return <p>An error occurred</p>;
 
   return (
-    <Post post={postData!} removePost={removePost} updatePost={updatePost} />
+    <>
+      {isLoading ? (
+        <SkeletonPost />
+      ) : (
+        <Post
+          post={postData!}
+          removePost={removePost}
+          updatePost={updatePost}
+        />
+      )}
+    </>
   );
 };
 
