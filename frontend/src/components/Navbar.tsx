@@ -239,9 +239,6 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
               </li>
               <li className="ml-2 lg:ml-4 relative inline-block">
                 <Link to="/chats">
-                  <div className="absolute -top-3 -right-2 bg-sky-500 text-xs font-bold px-1 py-0.5 rounded-lg text-white">
-                    3
-                  </div>
                   <AiFillMessage className="text-2xl text-gray-700 dark:text-gray-200" />
                 </Link>
               </li>

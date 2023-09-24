@@ -154,17 +154,19 @@ io.on("connection", (socket) => {
   socket.on(
     "sendNotification",
     async ({ senderUsername, receiverUsername, actionType, postId }) => {
-      const sender = await User.findOne({ username: senderUsername });
+      if (senderUsername !== receiverUsername) {
+        const sender = await User.findOne({ username: senderUsername });
 
-      const receiver = getUsers(receiverUsername);
-      io.to(receiver.socketId).emit("getNotification", {
-        senderUsername,
-        actionType,
-        postId,
-        userPicture: sender.userPicture,
-        firstName: sender.firstName,
-        lastName: sender.lastName,
-      });
+        const receiver = getUsers(receiverUsername);
+        io.to(receiver.socketId).emit("getNotification", {
+          senderUsername,
+          actionType,
+          postId,
+          userPicture: sender.userPicture,
+          firstName: sender.firstName,
+          lastName: sender.lastName,
+        });
+      }
     }
   );
 });
