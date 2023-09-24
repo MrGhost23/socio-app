@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../store/slices/authSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { toggleFollowUser, selectUser } from "../../store/slices/authSlice";
 import { UserType } from "../../Types/User.types";
-import useAxios from "../../hooks/useAxios";
 import useProfileActions from "../../hooks/useProfileActions";
 import UserImage from "./UserImage";
 import UserFullName from "./UserFullName";
 import Button from "../../ui/Button";
+import { RootState } from "../../store/store";
+import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 
 type Props = {
   user: UserType;
@@ -21,8 +22,9 @@ const SuggestedUser: React.FC<Props> = ({
   mode,
   center,
 }) => {
+  const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
   const currentUser = useSelector(selectUser);
-
+  const isFollowing = currentUser!.following.includes(user._id);
   const [followers, setFollowers] = useState<number>(user.followers!);
 
   const mainContainerClasses = center ? "flex items-center" : "flex";
@@ -31,29 +33,23 @@ const SuggestedUser: React.FC<Props> = ({
   const [followButtonLoading, setFollowButtonLoading] = useState(false);
   const [buttonText, setButtonText] = useState("Loading...");
 
-  const { data: isFollowing } = useAxios<{ isFollowing: boolean }>(
-    `http://localhost:5000/api/v1/users/${user.username}/isFollowing`,
-    "get"
-  );
-
   useEffect(() => {
-    if (isFollowing) {
-      setButtonText(
-        mode === "follow"
-          ? isFollowing.isFollowing
-            ? "Unfollow"
-            : "Follow"
-          : "unblock"
-      );
-    }
+    setButtonText(
+      mode === "follow" ? (isFollowing ? "Unfollow" : "Follow") : "unblock"
+    );
   }, [mode, isFollowing]);
 
-  const { toggleFollowUser, toggleBlockUser } = useProfileActions();
+  const { toggleBlockUser } = useProfileActions();
 
   const buttonClickHandler = async () => {
     setFollowButtonLoading(true);
     if (mode === "follow") {
-      await toggleFollowUser(user.username);
+      await dispatch(
+        toggleFollowUser({
+          id: user._id,
+          username: user.username,
+        })
+      );
 
       if (buttonText === "Follow") {
         setFollowers((prevState) => prevState + 1);

@@ -68,9 +68,8 @@ const getFindFriends = async (req, res) => {
     );
 
     const findfriends = users.map((user) => {
-      const { _id, ...rest } = user.toObject();
       return {
-        ...rest,
+        ...user.toObject(),
         followers: user.followers.length,
       };
     });
@@ -101,9 +100,8 @@ const getSuggestedUsers = async (req, res) => {
     ).limit(10);
 
     const suggestedUsersWithFollowersAsNumbers = suggestedUsers.map((user) => {
-      const { _id, ...rest } = user.toObject();
       return {
-        ...rest,
+        ...user.toObject(),
         followers: user.followers.length,
       };
     });
@@ -200,7 +198,7 @@ const followUser = async (req, res) => {
         actionType: "follow",
       });
 
-      res.status(200).json("You have unfollowed this user.");
+      res.status(200).json({ status: 0 }); // unfollow
     } else {
       currentUser.following.push(userToFollow._id);
       await currentUser.save();
@@ -215,7 +213,7 @@ const followUser = async (req, res) => {
       });
       await notification.save();
 
-      res.status(200).json("You are now following this user.");
+      res.status(200).json({ status: 1 }); // follow
     }
   } catch (err) {
     console.error(err);
