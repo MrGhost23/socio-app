@@ -1,20 +1,8 @@
-// authSlice.ts
-
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { AxiosResponse } from "axios";
 import { RootState } from "../store";
-
-interface User {
-  firstName: string;
-  lastName: string;
-  userId: string;
-  email: string;
-  role: string;
-  token: string;
-  username: string;
-  createdAt: Date | string | undefined;
-  userPicture: string | undefined;
-}
+import { toast } from "react-toastify";
+import { ProfileType } from "../../Types/Profile.types";
 
 interface LoginCredentials {
   email: string;
@@ -23,7 +11,7 @@ interface LoginCredentials {
 
 interface AuthState {
   mode: string;
-  user: User | null;
+  user: ProfileType | null;
   loading: boolean;
   error: string | null;
 }
@@ -49,15 +37,16 @@ const initialState: AuthState = {
 };
 
 export const register = createAsyncThunk<
-  User,
+  ProfileType,
   RegistrationData,
   { rejectValue: string }
 >("auth/register", async (registrationData, { rejectWithValue }) => {
   try {
-    const response: AxiosResponse<User> = await axios.post(
-      "http://localhost:5000/api/v1/auth/register",
-      registrationData
-    );
+    const response: AxiosResponse<{ token: string; user: ProfileType }> =
+      await axios.post(
+        "http://localhost:5000/api/v1/auth/register",
+        registrationData
+      );
     if (response.data.token) {
       localStorage.setItem("token", response.data.token);
       console.log("Token stored in local storage:", response.data.token);
@@ -66,7 +55,7 @@ export const register = createAsyncThunk<
         "Authorization"
       ] = `Bearer ${response.data.token}`;
     }
-    return response.data;
+    return response.data.user;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
@@ -78,15 +67,13 @@ export const register = createAsyncThunk<
 });
 
 export const login = createAsyncThunk<
-  User,
+  ProfileType,
   LoginCredentials,
   { rejectValue: string }
 >("auth/login", async (credentials, { rejectWithValue }) => {
   try {
-    const response: AxiosResponse<User> = await axios.post(
-      "http://localhost:5000/api/v1/auth/login",
-      credentials
-    );
+    const response: AxiosResponse<{ token: string; user: ProfileType }> =
+      await axios.post("http://localhost:5000/api/v1/auth/login", credentials);
     if (response.data.token) {
       localStorage.setItem("token", response.data.token);
       console.log("Token stored in local storage:", response.data.token);
@@ -95,7 +82,7 @@ export const login = createAsyncThunk<
         "Authorization"
       ] = `Bearer ${response.data.token}`;
     }
-    return response.data;
+    return response.data.user;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
@@ -103,6 +90,35 @@ export const login = createAsyncThunk<
       }
     }
     return rejectWithValue("An error occurred while logging in.");
+  }
+});
+
+export const toggleFollowUser = createAsyncThunk<
+  { status: number; uId: string } | null,
+  {
+    id: string;
+    username: string;
+  }
+>("auth/toggleFollowUser", async ({ id, username }, { getState }) => {
+  const { auth } = getState() as {
+    auth: AuthState;
+  };
+
+  try {
+    console.log(id, username);
+    console.log(auth.user!.following); // Logging the latest state
+
+    const response: AxiosResponse<{ status: number }> = await axios.put(
+      `http://localhost:5000/api/v1/users/${username}/follow`,
+      {
+        username: auth.user!.username,
+      }
+    );
+    return { status: response.data.status, uId: id };
+  } catch (error) {
+    console.log(error);
+    toast.info(`Something went wrong!`);
+    return null;
   }
 });
 
@@ -128,6 +144,7 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
+        console.log(action.payload);
         state.user = action.payload;
       })
       .addCase(login.rejected, (state, action) => {
@@ -145,6 +162,20 @@ const authSlice = createSlice({
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload ? action.payload : "An error occurred.";
+      })
+      .addCase(toggleFollowUser.fulfilled, (state, action) => {
+        let updatedFollowingArray = [...state.user!.following];
+
+        if (action.payload) {
+          if (action.payload.status === 1) {
+            updatedFollowingArray.push(action.payload.uId);
+          } else {
+            updatedFollowingArray = updatedFollowingArray.filter(
+              (userId) => userId !== action.payload!.uId
+            );
+          }
+          state.user = { ...state.user!, following: updatedFollowingArray };
+        }
       });
   },
 });
