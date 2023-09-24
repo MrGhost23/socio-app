@@ -105,9 +105,6 @@ export const toggleFollowUser = createAsyncThunk<
   };
 
   try {
-    console.log(id, username);
-    console.log(auth.user!.following); // Logging the latest state
-
     const response: AxiosResponse<{ status: number }> = await axios.put(
       `http://localhost:5000/api/v1/users/${username}/follow`,
       {
@@ -116,7 +113,6 @@ export const toggleFollowUser = createAsyncThunk<
     );
     return { status: response.data.status, uId: id };
   } catch (error) {
-    console.log(error);
     toast.info(`Something went wrong!`);
     return null;
   }
@@ -144,7 +140,6 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
-        console.log(action.payload);
         state.user = action.payload;
       })
       .addCase(login.rejected, (state, action) => {
