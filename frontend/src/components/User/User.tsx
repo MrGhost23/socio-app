@@ -44,7 +44,7 @@ const SuggestedUser: React.FC<Props> = ({
   const buttonClickHandler = async () => {
     setFollowButtonLoading(true);
     if (mode === "follow") {
-      dispatch(
+      await dispatch(
         toggleFollowUser({
           id: user._id,
           username: user.username,
