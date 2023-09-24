@@ -175,7 +175,12 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost, socket }) => {
           removeCommentFunction={removeCommentFunction}
           editCommentFunction={editCommentFunction}
         />
-        <CommentForm postId={post._id} reFetchFunction={getPostComments} />
+        <CommentForm
+          socket={socket}
+          postId={post._id}
+          reFetchFunction={getPostComments}
+          postAuthorUsername={post.username}
+        />
       </div>
     </Card>
   );
