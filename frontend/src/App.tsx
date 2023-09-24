@@ -174,7 +174,7 @@ const App: React.FC = () => {
         <Route
           element={
             user ? (
-              <MainLayout navIsSticky={navIsSticky} />
+              <MainLayout socket={socketio} navIsSticky={navIsSticky} />
             ) : (
               <Navigate to="/login" />
             )
@@ -195,7 +195,15 @@ const App: React.FC = () => {
             )
           }
         />
-        <Route element={user ? <ProfileLayout /> : <Navigate to="/login" />}>
+        <Route
+          element={
+            user ? (
+              <ProfileLayout socket={socketio} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        >
           <Route path="/profile/:username" element={<Profile />} />
           <Route path="/profile/:username/followers" element={<Followers />} />
           <Route path="/profile/:username/following" element={<Followings />} />
