@@ -8,12 +8,14 @@ import UserFullName from "./UserFullName";
 import Button from "../../ui/Button";
 import { RootState } from "../../store/store";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
+import { Socket } from "socket.io-client";
 
 type Props = {
   user: UserType;
   changeStyle: boolean;
   mode: string;
   center?: boolean;
+  socket: Socket;
 };
 
 const SuggestedUser: React.FC<Props> = ({
@@ -21,6 +23,7 @@ const SuggestedUser: React.FC<Props> = ({
   changeStyle,
   mode,
   center,
+  socket,
 }) => {
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
   const currentUser = useSelector(selectUser);
@@ -50,6 +53,14 @@ const SuggestedUser: React.FC<Props> = ({
           username: user.username,
         })
       );
+
+      if (!isFollowing) {
+        socket.emit("sendNotification", {
+          senderUsername: currentUser!.username,
+          receiverUsername: user.username,
+          actionType: "follow",
+        });
+      }
 
       if (buttonText === "Follow") {
         setFollowers((prevState) => prevState + 1);
