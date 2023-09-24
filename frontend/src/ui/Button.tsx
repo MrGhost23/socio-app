@@ -8,6 +8,7 @@ type Props = {
   icon?: IconType;
   iconClasses?: string;
   type?: string;
+  disabled?: boolean;
 };
 
 const Button: React.FC<Props> = (props) => {
@@ -28,6 +29,7 @@ const Button: React.FC<Props> = (props) => {
 
   return (
     <button
+      disabled={props.disabled}
       type={"submit" || "button"}
       className={
         props.icon
