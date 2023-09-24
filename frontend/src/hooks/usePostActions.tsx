@@ -6,16 +6,6 @@ import { selectUser } from "../store/slices/authSlice";
 const usePostActions = () => {
   const currentUser = useSelector(selectUser);
 
-  const fetchFeedPosts = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/api/v1/posts");
-
-      return response.data;
-    } catch (error) {
-      toast.info(`Something went wrong!`);
-    }
-  };
-
   const createPost = async (postData: FormData) => {
     try {
       await axios.post("http://localhost:5000/api/v1/posts", postData);
@@ -70,7 +60,6 @@ const usePostActions = () => {
   };
 
   return {
-    fetchFeedPosts,
     createPost,
     editPost,
     deletePost,
