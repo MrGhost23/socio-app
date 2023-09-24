@@ -42,20 +42,18 @@ const App: React.FC = () => {
   const [navIsSticky, setNavIsSticky] = useState(false);
 
   const stickyNav = () => {
-    window.addEventListener("scroll", () => {
-      if (
-        document.body.scrollTop > 120 ||
-        document.documentElement.scrollTop > 120
-      ) {
-        setNavIsSticky(true);
-      } else {
-        setNavIsSticky(false);
-      }
-    });
+    if (
+      document.body.scrollTop > 120 ||
+      document.documentElement.scrollTop > 120
+    ) {
+      setNavIsSticky(true);
+    } else {
+      setNavIsSticky(false);
+    }
   };
 
   useEffect(() => {
-    stickyNav();
+    window.addEventListener("scroll", stickyNav);
 
     return () => window.removeEventListener("scroll", stickyNav);
   }, []);
@@ -97,19 +95,22 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (user) {
-      setSocket(io("ws://localhost:5000"));
-      socketio.emit("new-user-add", user?.username);
-      socketio.on("get-users", (users) => {
+      const socket = io("ws://localhost:5000");
+      socket.emit("new-user-add", user?.username);
+      socket.on("get-users", (users) => {
         setOnlineUsers(users);
       });
+      socket.on("receive-message", (data) => {
+        setReceiveMessage(data);
+      });
+      socket.on("getNotification", (data) => {
+        setNotifications((prev) => [...prev, data]);
+      });
+      return () => {
+        socket.disconnect();
+      };
     }
   }, [user]);
-
-  useEffect(() => {
-    socketio.on("receive-message", (data) => {
-      setReceiveMessage(data);
-    });
-  }, []);
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -119,12 +120,6 @@ const App: React.FC = () => {
       setNotifications(response.data);
     };
     fetchNotifications();
-  }, []);
-
-  useEffect(() => {
-    socketio.on("getNotification", (data) => {
-      setNotifications((prev) => [...prev, data]);
-    });
   }, []);
 
   if (isLoading) return;
