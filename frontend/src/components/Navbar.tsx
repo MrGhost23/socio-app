@@ -36,7 +36,10 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState({ users: [], posts: [] });
+  const [results, setResults] = useState<{
+    users: ProfileType[];
+    posts: PostType[];
+  }>({ users: [], posts: [] });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -44,7 +47,10 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
       if (query.length > 2) {
         setLoading(true);
         try {
-          const response: AxiosResponse<{ users: ProfileType[], posts: PostType[]}> = await axios.get(
+          const response: AxiosResponse<{
+            users: ProfileType[];
+            posts: PostType[];
+          }> = await axios.get(
             `http://localhost:5000/api/v1/search?query=${query}`
           );
           setResults(response.data);
@@ -142,7 +148,7 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
       <div className="relative">
         <div className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg overflow-hidden z-20">
           <div className="py-2">
-            {notifications.map((notification, index) => (
+            {notifications.map((notification) => (
               <Link
                 key={notification.createdAt}
                 to={`/post/${notification.postId}`}
