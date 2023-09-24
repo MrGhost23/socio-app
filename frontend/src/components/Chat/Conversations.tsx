@@ -3,6 +3,7 @@ import { selectUser } from "../../store/slices/authSlice";
 import { ChatType } from "../../Types/Chat.types";
 import { MessageType } from "../../Types/Message.types";
 import Conversation from "./Conversation";
+import { useMemo } from "react";
 
 interface Message {
   senderUsername: string;
@@ -26,20 +27,20 @@ const Conversations: React.FC<Props> = ({
 }) => {
   const currentUser = useSelector(selectUser);
 
-  return (
-    <>
-      {chats.map((chat) => (
-        <Conversation
-          key={chat.members.find(
-            (username) => username !== currentUser!.username
-          )}
-          chat={chat}
-          changeChat={setCurrentChat}
-          receiveMessage={receiveMessage}
-          sendMessage={sendMessage}
-        />
-      ))}
-    </>
-  );
+  const conversationComponents = useMemo(() => {
+    return chats.map((chat) => (
+      <Conversation
+        key={chat.members.find(
+          (username) => username !== currentUser!.username
+        )}
+        chat={chat}
+        changeChat={setCurrentChat}
+        receiveMessage={receiveMessage}
+        sendMessage={sendMessage}
+      />
+    ));
+  }, [chats, currentUser, setCurrentChat, receiveMessage, sendMessage]);
+
+  return <>{conversationComponents}</>;
 };
 export default Conversations;
