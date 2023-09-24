@@ -15,6 +15,7 @@ import Card from "../ui/Card";
 import Button from "../ui/Button";
 import ProfileSkeleton from "../skeletons/ProfileSkeleton";
 import RecentActivitiesSkeleton from "../skeletons/RecentActivitiesSkeleton";
+import Sidebar from '../components/Sidebar';
 
 const ProfileLayout = () => {
   const navigate = useNavigate();
@@ -88,6 +89,7 @@ const ProfileLayout = () => {
   return (
     <>
       <div className="flex flex-col lg:grid lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-12 mx-4 sm:mx-10 md:mx-10 my-10">
+        <Sidebar hide={true} />
         <div className="col-span-2 lg:col-span-1 order-1">
           {userProfileIsLoading ? (
             <ProfileSkeleton className="!sticky top-32 !px-10 !py-8" />

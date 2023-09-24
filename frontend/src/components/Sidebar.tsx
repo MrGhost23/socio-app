@@ -16,10 +16,11 @@ import { RootState } from "../store/store";
 import Backdrop from "./Backdrop";
 
 type Props = {
-  navIsSticky: boolean;
+  navIsSticky?: boolean;
+  hide?: boolean;
 };
 
-const Sidebar: React.FC<Props> = ({ navIsSticky }) => {
+const Sidebar: React.FC<Props> = ({ navIsSticky, hide }) => {
   const currentUser = useSelector(selectUser);
   const currentUserFullName =
     currentUser!.firstName + " " + currentUser!.lastName;
@@ -58,7 +59,7 @@ const Sidebar: React.FC<Props> = ({ navIsSticky }) => {
       <div
         className={`sidebar fixed z-40 h-[calc(100vh)] transition-all bottom-0 duration-300 inset-y-0 bg-white transform ${
           sideOpen ? "left-0 w-fit py-7 px-5" : "left-[-100%]"
-        } lg:sticky lg:shadow-lg`}
+        } ${hide ? "" : "lg:sticky lg:shadow-lg"}`}
       >
         <div
           className={
