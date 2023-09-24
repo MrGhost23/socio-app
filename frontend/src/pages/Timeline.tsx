@@ -13,6 +13,10 @@ type Props = {
 const Timeline: React.FC<Props> = ({ socket }) => {
   const [posts, setPosts] = useState<PostType[]>([]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const {
     data: feedPosts,
     loading: feedPostsIsLoading,
