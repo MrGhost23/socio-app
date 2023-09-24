@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { selectUser } from "../store/slices/authSlice";
+import { PostType } from "../Types/Post.types";
 
 const usePostActions = () => {
   const currentUser = useSelector(selectUser);
@@ -14,12 +15,16 @@ const usePostActions = () => {
     }
   };
 
-  const editPost = async (postId: string, formData: FormData) => {
+  const editPost = async (
+    postId: string,
+    formData: FormData
+  ): Promise<PostType | undefined> => {
     try {
-      await axios.patch(
+      const response = await axios.patch(
         `http://localhost:5000/api/v1/posts/${postId}`,
         formData
       );
+      return response.data;
     } catch (error) {
       toast.info(`Something went wrong!`);
     }

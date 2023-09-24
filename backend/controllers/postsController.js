@@ -60,7 +60,12 @@ const getSinglePost = async (req, res) => {
 const editPost = async (req, res) => {
   try {
     const { postId } = req.params;
-    const { description, postImage } = req.body;
+    const { description } = req.body;
+
+    let postImage = null;
+    if (req.file) {
+      postImage = req.file.filename;
+    }
 
     const post = await Post.findById(postId);
 

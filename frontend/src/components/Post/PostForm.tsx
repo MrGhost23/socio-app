@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { BsImage } from "react-icons/bs";
 import { MdOutlineClose } from "react-icons/md";
@@ -7,11 +7,10 @@ import UserImage from "../User/UserImage";
 import Card from "../../ui/Card";
 import Button from "../../ui/Button";
 import usePostActions from "../../hooks/usePostActions";
-import axios from "axios";
 
 type Props = {
   fetchPosts?: () => void;
-  updatePost?: (postId: string, description: string, image: object) => void;
+  updatePost?: (postId: string, description: string, image: string) => void;
   text?: string;
   postId?: string;
   postImage?: string;
@@ -25,14 +24,13 @@ const PostForm: React.FC<Props> = ({
   postId,
   setIsEditing,
   updatePost,
-  loading,
 }) => {
   const user = useSelector(selectUser);
 
   const [isLoading, setIsLoading] = useState(false);
   const [description, setDescription] = useState(text || "");
   const [descriptionError, setDescriptionError] = useState("");
-  const [image, setImage] = useState<object | null>(postImage || null);
+  const [image, setImage] = useState<object | string | null>(postImage || null);
   const [previewImage, setPreviewImage] = useState<string>(
     postImage
       ? `http://localhost:5000/post_assets/${encodeURIComponent(postImage)}`
@@ -66,17 +64,15 @@ const PostForm: React.FC<Props> = ({
       if (image && image instanceof File) {
         formData.append("postImage", image);
       }
-      const response = await axios.patch(
-        `http://localhost:5000/api/v1/posts/${postId}`,
-        formData
+
+      const updatedPost = await editPost(postId!, formData);
+
+      updatePost(
+        updatedPost!._id,
+        updatedPost!.description,
+        updatedPost!.postImage!
       );
 
-      const updatedPost = response.data;
-      updatePost(
-        updatedPost._id,
-        updatedPost.description,
-        updatedPost.postImage
-      );
       setIsEditing!(false);
       setIsLoading(false);
       return;

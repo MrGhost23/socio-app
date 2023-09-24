@@ -1,5 +1,5 @@
 import UserImage from "../User/UserImage";
-import isArabic from "../../utils/IsArabic";
+import isArabic from "../../utils/isArabic";
 
 type Props = {
   userPicture: string;

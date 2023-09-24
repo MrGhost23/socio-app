@@ -1,10 +1,12 @@
-import Post from "./Post";
+import { Socket } from "socket.io-client";
 import { PostType } from "../../Types/Post.types";
+import Post from "./Post";
 
 type Props = {
   posts: PostType[];
-  updatePost: (postId: string, description: string, image: object) => void;
+  updatePost: (postId: string, description: string, image: string) => void;
   removePost: (postId: string) => void;
+  socket: Socket;
 };
 
 const Posts: React.FC<Props> = ({ posts, removePost, updatePost, socket }) => {
