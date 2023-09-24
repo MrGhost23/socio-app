@@ -40,13 +40,16 @@ const createComment = async (req, res) => {
     });
     await newActivity.save();
 
-    const notification = new Notification({
-      sender: req.user._id,
-      receiver: post.userId,
-      actionType: "comment",
-      postId,
-    });
-    await notification.save();
+    const isCurrentUserOwner = req.user._id.equals(post.userId);
+    if (!isCurrentUserOwner) {
+      const notification = new Notification({
+        sender: req.user._id,
+        receiver: post.userId,
+        actionType: "comment",
+        postId,
+      });
+      await notification.save();
+    }
 
     if (req.user) {
       await cleanupActivities(req.user._id);
