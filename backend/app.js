@@ -9,7 +9,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const connectDB = require("./db/connect");
 const { register } = require("./controllers/authController");
-const { createPost } = require("./controllers/postsController");
+const { createPost, editPost } = require("./controllers/postsController");
 const authRouter = require("./routes/authRoutes");
 const userRouter = require("./routes/usersRoutes");
 const postRouter = require("./routes/postsRoutes");
@@ -81,6 +81,13 @@ app.post(
   authenticateUser,
   uploadPostAsset.single("postImage"),
   createPost
+);
+
+app.patch(
+  "/api/v1/posts/:postId",
+  uploadPostAsset.single("postImage"),
+  authenticateUser,
+  editPost
 );
 
 app.post(
