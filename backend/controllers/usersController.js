@@ -1,3 +1,4 @@
+const Notification = require("../models/Notification.js");
 const Post = require("../models/Post.js");
 const User = require("../models/User.js");
 
@@ -168,6 +169,12 @@ const followUser = async (req, res) => {
       );
       await userToFollow.save();
 
+      await Notification.findOneAndDelete({
+        sender: req.user._id,
+        receiver: userToFollow._id,
+        actionType: "follow",
+      });
+
       res.status(200).json("You have unfollowed this user.");
     } else {
       currentUser.following.push(userToFollow._id);
@@ -175,6 +182,13 @@ const followUser = async (req, res) => {
 
       userToFollow.followers.push(currentUser._id);
       await userToFollow.save();
+
+      const notification = new Notification({
+        sender: req.user._id,
+        receiver: userToFollow._id,
+        actionType: "follow",
+      });
+      await notification.save();
 
       res.status(200).json("You are now following this user.");
     }
