@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
@@ -54,8 +54,124 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
       }
     };
 
-    fetchSearchResults();
+    const debounceTimeout = setTimeout(fetchSearchResults, 500);
+    return () => clearTimeout(debounceTimeout);
   }, [query]);
+
+  const renderSearchResults = useCallback(() => {
+    if (loading) {
+      return <span className="font-bold text-center">Loading...</span>;
+    }
+
+    if (query.length > 2) {
+      return (
+        <div className="absolute px-4 py-4 shadow-md max-h-[400px] overflow-y-auto hidden b-0 z-[998] w-full bg-white p-2 md:grid grid-cols-1">
+          {results.users.length > 1 && (
+            <p className="text-gray-400 font-semibold text-base">USERS</p>
+          )}
+          {results.users.length > 1 &&
+            results.users.map((user) => (
+              <Link
+                to={`/profile/${user.username}`}
+                className="flex font-semibold my-2 pt-2"
+                key={user.username}
+                onClick={() => setQuery("")}
+              >
+                <UserImage
+                  src={user.userPicture}
+                  username={user.username}
+                  className="min-w-[3.5rem] w-14 min-h-[3.5rem] h-14"
+                />
+                <div className="flex flex-col">
+                  <p className="ml-2 text-gray-600 font-semibold">
+                    {user.firstName + " " + user.lastName}
+                  </p>
+                  <p className="ml-2 font-light text-sm text-gray-400">
+                    @{user.username}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          {results.posts.length !== 0 && (
+            <p className="text-gray-400 font-semibold text-base">POSTS</p>
+          )}
+          {results.posts &&
+            results.posts.map((post) => (
+              <Link
+                to={`/post/${post._id}`}
+                className="flex font-semibold my-2 pt-2"
+                key={post._id}
+                onClick={() => setQuery("")}
+              >
+                <UserImage
+                  src={post.userPicture}
+                  username={post.username}
+                  className="min-w-[3.5rem] w-14 min-h-[3.5rem] h-14"
+                />
+                <div className="flex flex-col">
+                  <p className="ml-2 text-gray-600 font-semibold">
+                    {post.firstName + " " + post.lastName}
+                  </p>
+                  <p className="ml-2 font-light text-sm text-gray-400">
+                    @{post.username}
+                  </p>
+                  <p className="ml-2 font-light text-sm text-gray-800">
+                    <span className="font-semibold">
+                      {post.description.length > 25
+                        ? `${post.description.slice(0, 45)}...`
+                        : post.description}
+                    </span>
+                  </p>
+                </div>
+              </Link>
+            ))}
+          {results.users.length === 0 && results.posts.length === 0 && (
+            <p className="text-center font-semibold p-4">
+              We didn't find <span className="text-sky-600">{`${query}`}</span>
+            </p>
+          )}
+        </div>
+      );
+    }
+  }, [loading, query, results]);
+
+  const renderNotifications = useCallback(() => {
+    return (
+      <div className="relative">
+        <div className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg overflow-hidden z-20">
+          <div className="py-2">
+            {notifications.map((notification, index) => (
+              <Link
+                key={notification.id}
+                to={`/post/${notification.postId}`}
+                className="flex items-center px-4 py-3 border-b hover:bg-gray-100 -mx-2"
+              >
+                <img
+                  className="h-8 w-8 rounded-full object-cover mx-1"
+                  src={notification.userPicture}
+                  alt="avatar"
+                />
+                <p className="text-gray-600 text-sm mx-2">
+                  <span className="font-bold">
+                    {notification.firstName} {notification.lastName}
+                  </span>{" "}
+                  {notification.actionType === "like" && "liked your post."}{" "}
+                  {notification.actionType === "comment" &&
+                    "commented on your post."}{" "}
+                  {notification.actionType === "follow" &&
+                    "started following you."}{" "}
+                  <span className="text-gray-400">
+                    {formatTime(notification.createdAt)}
+                  </span>
+                </p>
+              </Link>
+            ))}
+          </div>
+          <Button bg={true} text="See all notifications" />
+        </div>
+      </div>
+    );
+  }, [notifications]);
 
   return (
     <header
@@ -93,86 +209,7 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
                   required
                   onChange={(e) => setQuery(e.target.value)}
                 />
-                {loading && (
-                  <div className="absolute px-4 py-4 shadow-md max-h-[400px] overflow-y-auto hidden b-0 z-[998] w-full bg-white p-2 md:grid grid-cols-1">
-                    <span className="font-bold text-center">Loading...</span>
-                  </div>
-                )}
-                {!loading && query.length > 2 && (
-                  <div className="absolute px-4 py-4 shadow-md max-h-[400px] overflow-y-auto hidden b-0 z-[998] w-full bg-white p-2 md:grid grid-cols-1">
-                    {results.users.length > 1 && (
-                      <p className=" text-gray-400 font-semibold text-base ">
-                        USERS
-                      </p>
-                    )}
-                    {results.users.length > 1 &&
-                      results.users.map((user) => (
-                        <Link
-                          to={`/profile/${user.username}`}
-                          className="flex font-semibold my-2 pt-2"
-                          key={user.username}
-                          onClick={() => setQuery("")}
-                        >
-                          <UserImage
-                            src={user.userPicture}
-                            username={user.username}
-                            className="min-w-[3.5rem] w-14 min-h-[3.5rem] h-14"
-                          />
-                          <div className="flex flex-col">
-                            <p className="ml-2 text-gray-600 font-semibold">
-                              {user.firstName + " " + user.lastName}
-                            </p>
-                            <p className="ml-2 font-light text-sm text-gray-400">
-                              @{user.username}
-                            </p>
-                          </div>
-                        </Link>
-                      ))}
-
-                    {results.posts.length !== 0 && (
-                      <p className=" text-gray-400 font-semibold text-base ">
-                        POSTS
-                      </p>
-                    )}
-                    {results.posts &&
-                      results.posts.map((post) => (
-                        <Link
-                          to={`/post/${post._id}`}
-                          className="flex font-semibold my-2 pt-2"
-                          key={post._id}
-                          onClick={() => setQuery("")}
-                        >
-                          <UserImage
-                            src={post.userPicture}
-                            username={post.username}
-                            className="min-w-[3.5rem] w-14 min-h-[3.5rem] h-14"
-                          />
-                          <div className="flex flex-col">
-                            <p className="ml-2 text-gray-600 font-semibold">
-                              {post.firstName + " " + post.lastName}
-                            </p>
-                            <p className="ml-2 font-light text-sm text-gray-400">
-                              @{post.username}
-                            </p>
-                            <p className="ml-2 font-light text-sm text-gray-800">
-                              <span className="font-semibold">
-                                {post.description.length > 25
-                                  ? `${post.description.slice(0, 45)}...`
-                                  : post.description}
-                              </span>
-                            </p>
-                          </div>
-                        </Link>
-                      ))}
-                    {results.users.length === 0 &&
-                      results.posts.length === 0 && (
-                        <p className="text-center font-semibold p-4">
-                          We didn't find{" "}
-                          <span className="text-sky-600">{`${query}`}</span>
-                        </p>
-                      )}
-                  </div>
-                )}
+                {renderSearchResults()}
               </div>
             </form>
           </div>
@@ -198,42 +235,7 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
                 <div onClick={() => setIsOpen((prev) => !prev)}>
                   <IoIosNotifications className="text-3xl text-gray-700 cursor-pointer dark:text-gray-200" />
                 </div>
-                {isOpen && (
-                  <div className="relative">
-                    <div className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg overflow-hidden z-20">
-                      <div className="py-2">
-                        {notifications.map((notification, index) => (
-                          <Link
-                            key={index}
-                            to={`/post/${notification.postId}`}
-                            className="flex items-center px-4 py-3 border-b hover:bg-gray-100 -mx-2"
-                          >
-                            <img
-                              className="h-8 w-8 rounded-full object-cover mx-1"
-                              src={notification.userPicture}
-                              alt="avatar"
-                            />
-                            <p className="text-gray-600 text-sm mx-2">
-                              <span className="font-bold">
-                                {notification.firstName} {notification.lastName}
-                              </span>{" "}
-                              {notification.actionType === "like" &&
-                                "liked your post."}{" "}
-                              {notification.actionType === "comment" &&
-                                "commented on your post."}{" "}
-                              {notification.actionType === "follow" &&
-                                "started following you."}{" "}
-                              <span className="text-gray-400">
-                                {formatTime(notification.createdAt)}
-                              </span>
-                            </p>
-                          </Link>
-                        ))}
-                      </div>
-                      <Button bg={true} text="See all notifications" />
-                    </div>
-                  </div>
-                )}
+                {isOpen && renderNotifications()}
               </li>
             </ul>
           </nav>
