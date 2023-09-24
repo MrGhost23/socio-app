@@ -8,13 +8,15 @@ import { FiMenu } from "react-icons/fi";
 import { AiFillMessage } from "react-icons/ai";
 import { MdClose } from "react-icons/md";
 import { IoIosNotifications } from "react-icons/io";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { RootState } from "../store/store";
 import { selectUser } from "../store/slices/authSlice";
 import { selectSideOpen, toggleSidebar } from "../store/slices/sidebarSlice";
 import UserImage from "./User/UserImage";
 import Button from "../ui/Button";
 import { formatTime } from "../utils/formatTime";
+import { ProfileType } from "../Types/Profile.types";
+import { PostType } from "../Types/Post.types";
 
 type Props = {
   navIsSticky: boolean;
@@ -42,7 +44,10 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState({ users: [], posts: [] });
+  const [results, setResults] = useState<{
+    users: ProfileType[];
+    posts: PostType[];
+  }>({ users: [], posts: [] });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -50,7 +55,10 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
       if (query.length > 2) {
         setLoading(true);
         try {
-          const response = await axios.get(
+          const response: AxiosResponse<{
+            users: ProfileType[];
+            posts: PostType[];
+          }> = await axios.get(
             `http://localhost:5000/api/v1/search?query=${query}`
           );
           setResults(response.data);
@@ -73,7 +81,7 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
 
     if (query.length > 2) {
       return (
-        <div className="absolute px-4 py-4 shadow-md max-h-[400px] overflow-y-auto hidden b-0 z-[998] w-full bg-white p-2 md:grid grid-cols-1">
+        <div className="absolute px-4 py-4 shadow-md max-h-[400px] overflow-y-auto hidden b-0 z-50 w-full bg-white p-2 md:grid grid-cols-1">
           {results.users.length > 1 && (
             <p className="text-gray-400 font-semibold text-base">USERS</p>
           )}
@@ -187,7 +195,7 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
       className={
         navIsSticky
           ? "sticky-nav bg-white dark:bg-primaryDark z-50"
-          : "bg-white dark:bg-primaryDark z-50"
+          : "relative bg-white dark:bg-primaryDark z-50"
       }
     >
       {!user ? (

@@ -57,7 +57,7 @@ const Sidebar: React.FC<Props> = ({ navIsSticky, hide }) => {
     <>
       {sideOpen && <Backdrop onClick={() => dispatch(closeSidebar())} />}
       <div
-        className={`sidebar fixed z-40 h-[calc(100vh)] transition-all bottom-0 duration-300 inset-y-0 bg-white transform ${
+        className={`sidebar fixed z-40 h-[calc(100vh)] transition-all bottom-0 duration-300 inset-y-0 pt-[82px] lg:pt-0 bg-white transform ${
           sideOpen ? "left-0 w-fit py-7 px-5" : "left-[-100%]"
         } ${hide ? "" : "lg:sticky lg:shadow-lg"}`}
       >
