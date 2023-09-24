@@ -35,6 +35,9 @@ const Conversation: React.FC<Props> = ({
   const currentUser = useSelector(selectUser);
 
   const [latestMessage, setLatestMessage] = useState(chat.latestMessage?.text);
+  const [latestMessageDate, setLatestMessageDate] = useState(
+    chat.latestMessage?.createdAt
+  );
 
   const receiverUsername = chat.members.find(
     (username) => username !== currentUser!.username
@@ -54,12 +57,16 @@ const Conversation: React.FC<Props> = ({
   useEffect(() => {
     if (receiveMessage && receiveMessage.chatId === chat.chatId) {
       setLatestMessage(receiveMessage?.text);
+      const currentDateAndTime = new Date().toISOString();
+      setLatestMessageDate(currentDateAndTime);
     }
   }, [chat.chatId, receiveMessage]);
 
   useEffect(() => {
     if (sendMessage && sendMessage.chatId === chat.chatId) {
       setLatestMessage(sendMessage?.text);
+      const currentDateAndTime = new Date().toISOString();
+      setLatestMessageDate(currentDateAndTime);
     }
   }, [chat.chatId, sendMessage]);
 
@@ -84,7 +91,7 @@ const Conversation: React.FC<Props> = ({
                 fullName={userProfile!.firstName + " " + userProfile!.lastName}
               />
               {chat.latestMessage?.createdAt && (
-                <ChatDate date={chat.latestMessage.createdAt} />
+                <ChatDate date={latestMessageDate} />
               )}
             </div>
             <span className="text-gray-500 font-medium">{latestMessage}</span>
