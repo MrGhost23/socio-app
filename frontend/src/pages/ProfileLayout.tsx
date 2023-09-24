@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 import { Outlet, useParams, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { selectUser } from "../store/slices/authSlice";
+import { selectUser, toggleFollowUser } from "../store/slices/authSlice";
 import { ProfileType } from "../Types/Profile.types";
 import { RecentActivityType } from "../Types/RecentActivity.type";
 import useAxios from "../hooks/useAxios";
-import useProfileActions from "../hooks/useProfileActions";
 import UserInfo from "../components/User/UserInfo";
 import UserMenu from "../components/User/UserMenu";
 import RecentActivities from "../components/RecentActivities";
@@ -15,12 +14,15 @@ import Card from "../ui/Card";
 import Button from "../ui/Button";
 import ProfileSkeleton from "../skeletons/ProfileSkeleton";
 import RecentActivitiesSkeleton from "../skeletons/RecentActivitiesSkeleton";
-import Sidebar from '../components/Sidebar';
+import Sidebar from "../components/Sidebar";
+import { RootState } from "../store/store";
+import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 
 const ProfileLayout = () => {
-  const navigate = useNavigate();
-  const currentUser = useSelector(selectUser);
   const { username } = useParams();
+  const navigate = useNavigate();
+
+  const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
 
   const { data: userProfile, loading: userProfileIsLoading } =
     useAxios<ProfileType>(
@@ -32,6 +34,9 @@ const ProfileLayout = () => {
     RecentActivityType[]
   >(`http://localhost:5000/api/v1/users/${username}/activities`, "get");
 
+  const currentUser = useSelector(selectUser);
+  const [isFollowing, setIsFollowing] = useState(false);
+
   const [followers, setFollowers] = useState<number>(0);
 
   useEffect(() => {
@@ -40,34 +45,29 @@ const ProfileLayout = () => {
     }
   }, [userProfile]);
 
-  const isMyProfile = currentUser?.username === userProfile?.username;
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [followButtonLoading, setFollowButtonLoading] = useState(false);
+  useEffect(() => {
+    if (userProfile) {
+      setIsFollowing(currentUser!.following.includes(userProfile._id));
+    }
+  }, [currentUser, userProfile]);
 
-  const { toggleFollowUser } = useProfileActions();
+  console.log(currentUser!.following);
+
+  const isMyProfile = currentUser?.username === userProfile?.username;
+  const [followButtonLoading, setFollowButtonLoading] = useState(false);
 
   const toggleFollowHandler = async () => {
     setFollowButtonLoading(true);
-    await toggleFollowUser(userProfile!.username);
+
+    await dispatch(
+      toggleFollowUser({
+        id: userProfile!._id,
+        username: userProfile!.username,
+      })
+    );
     setFollowers((prevState) => (isFollowing ? prevState - 1 : prevState + 1));
-    setIsFollowing((prevState) => !prevState);
     setFollowButtonLoading(false);
   };
-
-  useEffect(() => {
-    const fetchIsFollowing = async () => {
-      if (!userProfile || isMyProfile) return;
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/api/v1/users/${username}/isFollowing`
-        );
-        setIsFollowing(response.data.isFollowing);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchIsFollowing();
-  }, [userProfile, isMyProfile, username]);
 
   const sendMessageHandler = async () => {
     try {
