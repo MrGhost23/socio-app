@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { RiCloseLine } from "react-icons/ri";
-import useScrollBlock from "../hooks/useScrollBlock";
 import Backdrop from "./Backdrop";
 import "./Modal.css";
 
-const Modal = (props) => {
+type Props = {
+  className: string;
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+};
+
+const Modal: React.FC<Props> = (props) => {
   const [modalClasses, setModalClasses] = useState(
     props.className
       ? props.className + " modal modal-hidden"
@@ -15,8 +21,6 @@ const Modal = (props) => {
     "backdrop backdrop-hidden"
   );
 
-  const [blockScroll, allowScroll] = useScrollBlock();
-
   const closeModal = () => {
     setModalClasses(
       props.className
@@ -24,8 +28,6 @@ const Modal = (props) => {
         : "modal modal-hidden"
     );
     setBackdropClasses("backdrop backdrop-hidden");
-
-    allowScroll();
 
     /*
     * This setTimeout will delay the execution of the props.onClose() function by 0.7s
@@ -44,8 +46,6 @@ const Modal = (props) => {
           : "modal modal-visible"
       );
       setBackdropClasses("backdrop backdrop-visible");
-
-      blockScroll();
     } else {
       setModalClasses(
         props.className
@@ -53,10 +53,8 @@ const Modal = (props) => {
           : "modal modal-hidden"
       );
       setBackdropClasses("backdrop backdrop-hidden");
-
-      allowScroll();
     }
-  }, [props.isOpen]);
+  }, [props.className, props.isOpen]);
 
   if (!props.isOpen) return;
 
@@ -68,7 +66,7 @@ const Modal = (props) => {
         {props.children}
       </div>
     </>,
-    document.getElementById("portal")
+    document.getElementById("portal") as Element
   );
 };
 
