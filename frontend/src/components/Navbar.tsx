@@ -12,11 +12,11 @@ import axios, { AxiosResponse } from "axios";
 import { RootState } from "../store/store";
 import { selectUser } from "../store/slices/authSlice";
 import { selectSideOpen, toggleSidebar } from "../store/slices/sidebarSlice";
-import UserImage from "./User/UserImage";
-import Button from "../ui/Button";
-import { formatTime } from "../utils/formatTime";
 import { ProfileType } from "../Types/Profile.types";
 import { PostType } from "../Types/Post.types";
+import { formatTime } from "../utils/formatTime";
+import UserImage from "./User/UserImage";
+import Button from "../ui/Button";
 
 type Props = {
   navIsSticky: boolean;
@@ -82,10 +82,10 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
     if (query.length > 2) {
       return (
         <div className="absolute px-4 py-4 shadow-md max-h-[400px] overflow-y-auto hidden b-0 z-50 w-full bg-white p-2 md:grid grid-cols-1">
-          {results.users.length > 1 && (
+          {results.users.length > 0 && (
             <p className="text-gray-400 font-semibold text-base">USERS</p>
           )}
-          {results.users.length > 1 &&
+          {results.users.length > 0 &&
             results.users.map((user) => (
               <Link
                 to={`/profile/${user.username}`}
@@ -108,10 +108,10 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
                 </div>
               </Link>
             ))}
-          {results.posts.length !== 0 && (
+          {results.posts.length > 0 && (
             <p className="text-gray-400 font-semibold text-base">POSTS</p>
           )}
-          {results.posts &&
+          {results.posts.length > 0 &&
             results.posts.map((post) => (
               <Link
                 to={`/post/${post._id}`}
