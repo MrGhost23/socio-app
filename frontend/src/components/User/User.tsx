@@ -18,7 +18,7 @@ type Props = {
   socket: Socket;
 };
 
-const SuggestedUser: React.FC<Props> = ({
+const User: React.FC<Props> = ({
   user,
   changeStyle,
   mode,
@@ -124,4 +124,4 @@ const SuggestedUser: React.FC<Props> = ({
   );
 };
 
-export default SuggestedUser;
+export default User;

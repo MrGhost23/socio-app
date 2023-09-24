@@ -5,8 +5,13 @@ import useAxios from "../hooks/useAxios";
 import Card from "../ui/Card";
 import User from "../components/User/User";
 import UsersSkeleton from "../skeletons/UsersSkeleton";
+import { Socket } from "socket.io-client";
 
-const FindFriends = () => {
+type Props = {
+  socket: Socket;
+};
+
+const FindFriends: React.FC<Props> = ({ socket }) => {
   const currentUser = useSelector(selectUser);
 
   const { data: suggestedUsers, loading: suggestedUsersIsLoading } = useAxios<
@@ -36,6 +41,7 @@ const FindFriends = () => {
                     user={user}
                     changeStyle={false}
                     mode="follow"
+                    socket={socket}
                   />
                 ))
               : "Found no users to suggest"}

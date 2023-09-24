@@ -5,8 +5,13 @@ import Users from "../components/User/Users";
 import Card from "../ui/Card";
 import SearchInput from "../ui/SearchInput";
 import UsersSkeleton from "../skeletons/UsersSkeleton";
+import { Socket } from "socket.io-client";
 
-const Following = () => {
+type Props = {
+  socket: Socket;
+};
+
+const Following: React.FC<Props> = ({ socket }) => {
   const { username } = useParams();
 
   const { data: following, loading: followingIsLoading } = useAxios<UserType[]>(
@@ -24,7 +29,7 @@ const Following = () => {
           {following!.length ? (
             <>
               <SearchInput className="mb-5" />
-              <Users users={following!} mode="follow" />
+              <Users users={following!} mode="follow" socket={socket} />
             </>
           ) : (
             <p>{username} is not following anyone</p>

@@ -178,7 +178,10 @@ const App: React.FC = () => {
         >
           <Route path="/" element={<Timeline socket={socketio} />} />
           <Route path="/post/:id" element={<PostPage />} />
-          <Route path="/find-friends" element={<FindFriends />} />
+          <Route
+            path="/find-friends"
+            element={<FindFriends socket={socketio} />}
+          />
           <Route path="/bookmarks" element={<Bookmarks />} />
         </Route>
         <Route
@@ -201,8 +204,14 @@ const App: React.FC = () => {
           }
         >
           <Route path="/profile/:username" element={<Profile />} />
-          <Route path="/profile/:username/followers" element={<Followers />} />
-          <Route path="/profile/:username/following" element={<Followings />} />
+          <Route
+            path="/profile/:username/followers"
+            element={<Followers socket={socketio} />}
+          />
+          <Route
+            path="/profile/:username/following"
+            element={<Followings socket={socketio} />}
+          />
         </Route>
       </Routes>
       <ToastContainer
