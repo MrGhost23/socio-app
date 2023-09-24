@@ -97,6 +97,7 @@ const deletePost = async (req, res) => {
         .status(StatusCodes.NOT_FOUND)
         .json({ message: "Post not found" });
     }
+    await Notification.deleteMany({ postId: post._id });
 
     await Activity.deleteMany({ postId: post._id });
 
