@@ -1,11 +1,13 @@
+import { Socket } from "socket.io-client";
 import { UserType } from "../../Types/User.types";
 import User from "./User";
 
 type Props = {
   users: UserType[];
+  socket: Socket;
 };
 
-const SuggestedUsers: React.FC<Props> = ({ users }) => {
+const SuggestedUsers: React.FC<Props> = ({ users, socket }) => {
   return (
     <div className="pb-1 xl:pb-0 flex flex-row xl:flex-col gap-5 md:gap-8 xl:gap-3 overflow-x-auto">
       {users.map((user) => (
@@ -15,6 +17,7 @@ const SuggestedUsers: React.FC<Props> = ({ users }) => {
           changeStyle={true}
           mode="follow"
           center={true}
+          socket={socket}
         />
       ))}
     </div>
