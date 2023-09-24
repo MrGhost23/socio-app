@@ -51,8 +51,6 @@ const ProfileLayout = () => {
     }
   }, [currentUser, userProfile]);
 
-  console.log(currentUser!.following);
-
   const isMyProfile = currentUser?.username === userProfile?.username;
   const [followButtonLoading, setFollowButtonLoading] = useState(false);
 

@@ -7,7 +7,7 @@ type Props = {
   className?: string;
   icon?: IconType;
   iconClasses?: string;
-  type?: string;
+  type?: "button" | "submit" | "reset";
   disabled?: boolean;
 };
 
@@ -30,7 +30,7 @@ const Button: React.FC<Props> = (props) => {
   return (
     <button
       disabled={props.disabled}
-      type={"submit" || "button"}
+      type={props.type || "button"}
       className={
         props.icon
           ? classes + " flex flex-row items-center gap-2 cursor-pointer"
