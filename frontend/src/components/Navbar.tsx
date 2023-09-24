@@ -14,6 +14,7 @@ import { selectUser } from "../store/slices/authSlice";
 import { selectSideOpen, toggleSidebar } from "../store/slices/sidebarSlice";
 import UserImage from "./User/UserImage";
 import Button from "../ui/Button";
+import { formatTime } from "../utils/formatTime";
 
 type Props = {
   navIsSticky: boolean;
@@ -45,7 +46,6 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
             `http://localhost:5000/api/v1/search?query=${query}`
           );
           setResults(response.data);
-          console.log(response.data);
           setLoading(false);
         } catch (error) {
           console.error("Error searching:", error);
@@ -203,9 +203,9 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
                     <div className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg overflow-hidden z-20">
                       <div className="py-2">
                         {notifications.map((notification, index) => (
-                          <a
+                          <Link
                             key={index}
-                            href="#"
+                            to={`/post/${notification.postId}`}
                             className="flex items-center px-4 py-3 border-b hover:bg-gray-100 -mx-2"
                           >
                             <img
@@ -223,9 +223,11 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
                                 "commented on your post."}{" "}
                               {notification.actionType === "follow" &&
                                 "started following you."}{" "}
-                              1h
+                              <span className="text-gray-400">
+                                {formatTime(notification.createdAt)}
+                              </span>
                             </p>
-                          </a>
+                          </Link>
                         ))}
                       </div>
                       <Button bg={true} text="See all notifications" />
