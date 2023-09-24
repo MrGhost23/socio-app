@@ -14,20 +14,14 @@ import { selectUser } from "../store/slices/authSlice";
 import { selectSideOpen, toggleSidebar } from "../store/slices/sidebarSlice";
 import { ProfileType } from "../Types/Profile.types";
 import { PostType } from "../Types/Post.types";
+import { NotificationType } from "../Types/Notification.types";
 import { formatTime } from "../utils/formatTime";
 import UserImage from "./User/UserImage";
 import Button from "../ui/Button";
 
 type Props = {
   navIsSticky: boolean;
-  notifications: {
-    createdAt: string;
-    postId: string;
-    userPicture: string;
-    firstName: string;
-    lastName: string;
-    actionType: string;
-  }[];
+  notifications: NotificationType[];
 };
 
 const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {

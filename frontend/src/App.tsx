@@ -30,6 +30,7 @@ import Settings from "./pages/Settings";
 import FindFriends from "./pages/FindFriends";
 import Chats from "./pages/Chats";
 import { MessageType } from "./Types/Message.types";
+import { NotificationType } from "./Types/Notification.types";
 
 interface Message {
   senderUsername: string;
@@ -61,7 +62,7 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const user = useSelector(selectUser);
   const [onlineUsers, setOnlineUsers] = useState([]);
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState<NotificationType[]>([]);
   const [sendMessage, setSendMessage] = useState<Message | null>(null);
   const [receiveMessage, setReceiveMessage] = useState<MessageType | null>(
     null
