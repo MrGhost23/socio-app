@@ -4,6 +4,7 @@ import { selectUser } from "../../store/slices/authSlice";
 import useCommentActions from "../../hooks/useCommentActions";
 import UserImage from "../User/UserImage";
 import TextareaForm from "../../ui/TextareaForm";
+import { Socket } from "socket.io-client";
 
 type Props = {
   reFetchFunction?: () => void;
@@ -12,6 +13,8 @@ type Props = {
   commentId?: string;
   commentText?: string;
   setIsEditing?: React.Dispatch<React.SetStateAction<boolean>>;
+  socket: Socket;
+  postAuthorUsername: string;
 };
 
 const CommentForm: React.FC<Props> = ({
@@ -21,6 +24,8 @@ const CommentForm: React.FC<Props> = ({
   commentId,
   commentText,
   setIsEditing,
+  socket,
+  postAuthorUsername,
 }) => {
   const currentUser = useSelector(selectUser);
   const { submitComment, editComment } = useCommentActions();
@@ -39,6 +44,12 @@ const CommentForm: React.FC<Props> = ({
       await submitComment(postId!, text);
       reFetchFunction!();
       setText("");
+      socket.emit("sendNotification", {
+        senderUsername: currentUser?.username,
+        receiverUsername: postAuthorUsername,
+        actionType: "comment",
+        postId: postId,
+      });
     }
   };
 
