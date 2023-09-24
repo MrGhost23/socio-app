@@ -11,12 +11,14 @@ const {
   getFindFriends,
   getSuggestedUsers,
   updateUser,
+  updatePassword,
 } = require("../controllers/usersController.js");
 const authenticateUser = require("../middleware/authenticateUser.js");
 
 const router = require("express").Router();
 
 router.patch("/updateUser", authenticateUser, updateUser);
+router.patch("/updatePassword", authenticateUser, updatePassword);
 router.get("/:username", authenticateUser, getUser);
 router.get("/:username/find-friends", authenticateUser, getFindFriends);
 router.get("/:username/suggested-users", authenticateUser, getSuggestedUsers);
