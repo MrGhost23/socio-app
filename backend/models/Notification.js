@@ -13,6 +13,7 @@ const notificationSchema = new mongoose.Schema({
   postId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Post",
+    required: false,
   },
   createdAt: {
     type: Date,
