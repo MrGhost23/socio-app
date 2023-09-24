@@ -4,11 +4,12 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/authSlice";
 import { ChatType } from "../../Types/Chat.types";
 import { MessageType } from "../../Types/Message.types";
-import useUserProfile from "../../hooks/useUserProfile";
 import UserImage from "../User/UserImage";
 import UserFullName from "../User/UserFullName";
 import ChatDate from "./ChatDate";
 import ConversationSkeleton from "../../skeletons/ConversationSkeleton";
+import { ProfileType } from "../../Types/Profile.types";
+import useAxios from "../../hooks/useAxios";
 
 interface Message {
   senderUsername: string;
@@ -44,7 +45,11 @@ const Conversation: React.FC<Props> = ({
     navigate(`/chats/${receiverUsername}`);
   };
 
-  const { profile, loading } = useUserProfile(receiverUsername!);
+  const { data: userProfile, loading: userProfileIsLoading } =
+    useAxios<ProfileType>(
+      `http://localhost:5000/api/v1/users/${receiverUsername}`,
+      "get"
+    );
 
   useEffect(() => {
     if (receiveMessage && receiveMessage.chatId === chat.chatId) {
@@ -60,7 +65,7 @@ const Conversation: React.FC<Props> = ({
 
   return (
     <>
-      {loading ? (
+      {userProfileIsLoading ? (
         <ConversationSkeleton />
       ) : (
         <div
@@ -69,14 +74,14 @@ const Conversation: React.FC<Props> = ({
         >
           <UserImage
             className="min-h-[3.5rem] h-14 min-w-[3.5rem] w-14"
-            src={profile!.userPicture}
-            username={profile!.username}
+            src={userProfile!.userPicture}
+            username={userProfile!.username}
           />
           <div className="w-full flex flex-col">
             <div className="flex items-center flex-wrap gap-2">
               <UserFullName
                 className="text-lg font-semibold"
-                fullName={profile!.firstName + " " + profile!.lastName}
+                fullName={userProfile!.firstName + " " + userProfile!.lastName}
               />
               {chat.latestMessage?.createdAt && (
                 <ChatDate date={chat.latestMessage.createdAt} />

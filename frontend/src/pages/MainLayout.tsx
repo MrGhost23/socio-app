@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
-import axios from "axios";
 import { selectUser } from "../store/slices/authSlice";
 import { selectSideOpen } from "../store/slices/sidebarSlice";
 import { UserType } from "../Types/User.types";
+import useAxios from "../hooks/useAxios";
 import Sidebar from "../components/Sidebar";
 import SuggestedUsers from "../components/User/SuggestedUsers";
 import Card from "../ui/Card";
@@ -17,30 +16,13 @@ type Props = {
 const MainLayout: React.FC<Props> = ({ navIsSticky }) => {
   const currentUser = useSelector(selectUser);
 
-  const [suggestedUsers, setSuggestedUsers] = useState<UserType[]>();
-  const [suggestedUsersLoading, setSuggestedUsersLoading] =
-    useState<boolean>(true);
-  const [suggestedUsersError, setSuggestedUsersError] =
-    useState<boolean>(false);
-
-  useEffect(() => {
-    if (!currentUser!.username) return;
-
-    const fetchSuggestedUsers = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/api/v1/users/${
-            currentUser!.username
-          }/suggested-users`
-        );
-        setSuggestedUsers(response.data);
-      } catch (error) {
-        setSuggestedUsersError(!!error);
-      }
-      setSuggestedUsersLoading(false);
-    };
-    fetchSuggestedUsers();
-  }, [currentUser]);
+  const { data: suggestedUsers, loading: suggestedUsersIsLoading } =
+    useAxios<UserType[]>(
+      `http://localhost:5000/api/v1/users/${
+        currentUser!.username
+      }/suggested-users`,
+      "get"
+    );
 
   const sideOpen = useSelector(selectSideOpen);
 
@@ -55,7 +37,7 @@ const MainLayout: React.FC<Props> = ({ navIsSticky }) => {
         <div className="col-span-2 pb-10 xl:pt-10 order-2 xl:order-1">
           <Outlet />
         </div>
-        {suggestedUsersLoading ? (
+        {suggestedUsersIsLoading ? (
           <UsersSkeleton
             title="Suggested for you"
             usersNumber={5}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
@@ -7,6 +7,7 @@ import { RootState } from "../store/store";
 import { selectUser, setUser } from "../store/slices/authSlice";
 import { selectSideOpen } from "../store/slices/sidebarSlice";
 import { UserType } from "../Types/User.types";
+import useAxios from "../hooks/useAxios";
 import Sidebar from "../components/Sidebar";
 import Users from "../components/User/Users";
 import Card from "../ui/Card";
@@ -102,29 +103,12 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
     console.log(changePasswordCurrent, changePasswordNew1, changePasswordNew2);
   };
 
-  const [blockedUsers, setBlockedUsers] = useState<UserType[]>();
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    const fetchPostData = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/api/v1/users/${
-            currentUser!.username
-          }/blocked-users`
-        );
-        setBlockedUsers(response.data);
-      } catch (error) {
-        setError(!!error);
-      }
-      setIsLoading(false);
-    };
-
-    fetchPostData();
-  }, [currentUser]);
-
-  if (error) return <p>An error occurred</p>;
+  const { data: blockedUsers, loading: blockedUsersIsLoading } = useAxios<
+    UserType[]
+  >(
+    `http://localhost:5000/api/v1/users/${currentUser!.username}/blocked-users`,
+    "get"
+  );
 
   return (
     <div
@@ -260,7 +244,7 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
             </div>
           </Card>
         </div>
-        {isLoading ? (
+        {blockedUsersIsLoading ? (
           <UsersSkeleton
             title="Blocked Users"
             usersNumber={6}

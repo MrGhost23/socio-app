@@ -2,7 +2,7 @@ import { useState } from "react";
 import FormLayout from "../components/FormLayout";
 import Input from "../ui/Input";
 import connection from "../assets/connection.svg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { register } from "../store/slices/authSlice";
 import { useDispatch } from "react-redux";
 import Select from "react-select";
@@ -21,7 +21,6 @@ const Register = () => {
   const [country, setCountry] = useState("");
   const [countryError, setCountryError] = useState("");
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
-  const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -1,33 +1,26 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
-import Post from "../components/Post/Post";
 import { PostType } from "../Types/Post.types";
 import { useNavigate, useParams } from "react-router-dom";
+import useAxios from "../hooks/useAxios";
+import Post from "../components/Post/Post";
 import PostSkeleton from "../skeletons/PostSkeleton";
 
 const PostPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const [postData, setPostData] = useState<PostType>();
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [post, setPost] = useState<PostType>();
+
+  const { data: postData, loading: postDataIsLoading } = useAxios<PostType>(
+    `http://localhost:5000/api/v1/posts/${id}`,
+    "get"
+  );
 
   useEffect(() => {
-    const fetchPostData = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/api/v1/posts/${id}`
-        );
-        setPostData(response.data);
-      } catch (error) {
-        setError(!!error);
-      }
-      setIsLoading(false);
-    };
-
-    fetchPostData();
-  }, [id]);
+    if (postData) {
+      setPost(postData);
+    }
+  }, [postData]);
 
   const removePost = () => {
     navigate("/");
@@ -38,7 +31,7 @@ const PostPage = () => {
     description: string,
     image: string
   ): void => {
-    setPostData((prevState) => {
+    setPost((prevState) => {
       const updatedPostData: PostType = {
         userId: prevState!.userId,
         username: prevState!.username,
@@ -57,18 +50,12 @@ const PostPage = () => {
     });
   };
 
-  if (error) return <p>An error occurred</p>;
-
   return (
     <>
-      {isLoading ? (
+      {postDataIsLoading || !post ? (
         <PostSkeleton />
       ) : (
-        <Post
-          post={postData!}
-          removePost={removePost}
-          updatePost={updatePost}
-        />
+        <Post post={post} removePost={removePost} updatePost={updatePost} />
       )}
     </>
   );
