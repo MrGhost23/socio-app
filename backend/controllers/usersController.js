@@ -200,7 +200,7 @@ const followUser = async (req, res) => {
         actionType: "follow",
       });
 
-      res.status(200).json("You have unfollowed this user.");
+      res.status(200).json({ status: 0 }); // unfollow
     } else {
       currentUser.following.push(userToFollow._id);
       await currentUser.save();
@@ -215,7 +215,7 @@ const followUser = async (req, res) => {
       });
       await notification.save();
 
-      res.status(200).json("You are now following this user.");
+      res.status(200).json({ status: 1 }); // follow
     }
   } catch (err) {
     console.error(err);
