@@ -39,8 +39,6 @@ const Conversation: React.FC<Props> = ({
     chat.latestMessage?.createdAt
   );
 
-  console.log(chat.latestMessage?.createdAt);
-
   const receiverUsername = chat.members.find(
     (username) => username !== currentUser!.username
   );
