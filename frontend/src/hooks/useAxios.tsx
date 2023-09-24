@@ -13,6 +13,7 @@ const useAxios = <T,>(url: string, method: Method, body?: object) => {
 
   const fetchData = useCallback(async () => {
     try {
+      setLoading(true);
       const response: AxiosResponse<T> = await axios({
         method,
         url,
