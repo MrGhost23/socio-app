@@ -17,6 +17,7 @@ import Button from "../ui/Button";
 import SearchInput from "../ui/SearchInput";
 import UserImage from "../components/User/UserImage";
 import UsersSkeleton from "../skeletons/UsersSkeleton";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   navIsSticky: boolean;
@@ -43,6 +44,13 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
   const [occupation, setOccupation] = useState(currentUser!.occupation || "");
   const [bio, setBio] = useState(currentUser!.bio || "");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
+
+  const toHome = () => {
+    setTimeout(() => {
+      navigate("/");
+    }, 2000);
+  };
 
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
 
@@ -95,12 +103,45 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
     }
   };
 
-  const [changePasswordCurrent, setChangePasswordCurrent] = useState("");
-  const [changePasswordNew1, setChangePasswordNew1] = useState("");
-  const [changePasswordNew2, setChangePasswordNew2] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
-  const changePasswordHandler = () => {
-    console.log(changePasswordCurrent, changePasswordNew1, changePasswordNew2);
+  const changePasswordHandler = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      if (newPassword !== confirmNewPassword) {
+        setError("New passwords do not match");
+        return;
+      }
+
+      const response = await axios.patch(
+        "http://localhost:5000/api/v1/users/updatePassword",
+        {
+          currentPassword,
+          newPassword,
+        }
+      );
+
+      if (response.status === 200 || response.status === 201) {
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmNewPassword("");
+        setSuccess(true);
+        toHome();
+      } else {
+        setError("An error occurred while changing the password");
+      }
+    } catch (error) {
+      setError("An error occurred while changing the password");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const { data: blockedUsers, loading: blockedUsersIsLoading } = useAxios<
@@ -214,33 +255,41 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
               <Input
                 label="Current Password"
                 id="currentPassword"
-                value={changePasswordCurrent}
-                onChange={(prev) => setChangePasswordCurrent(prev)}
+                value={currentPassword}
+                onChange={(prev) => setCurrentPassword(prev)}
                 type="password"
                 placeholder="***************"
               />
               <Input
                 label="New Password"
                 id="newPassword1"
-                value={changePasswordNew1}
-                onChange={(prev) => setChangePasswordNew1(prev)}
+                value={newPassword}
+                onChange={(prev) => setNewPassword(prev)}
                 type="password"
                 placeholder="***************"
               />
               <Input
                 label="Confirm Password"
                 id="newPassword2"
-                value={changePasswordNew2}
-                onChange={(prev) => setChangePasswordNew2(prev)}
+                value={confirmNewPassword}
+                onChange={(prev) => setConfirmNewPassword(prev)}
                 type="password"
                 placeholder="***************"
               />
               <Button
-                text="Save"
+                text={
+                  success
+                    ? "Password changed successfully!"
+                    : loading
+                    ? "Loading..."
+                    : "Save"
+                }
                 bg={true}
                 onClick={changePasswordHandler}
-                className="xl:col-span-3"
+                className={`xl:col-span-3 ${success ? "bg-green-600" : ""}`}
+                disabled={loading}
               />
+              {error && <p className="text-red-500">{error}</p>}
             </div>
           </Card>
         </div>
