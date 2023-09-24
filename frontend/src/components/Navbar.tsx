@@ -142,7 +142,7 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
           <div className="py-2">
             {notifications.map((notification, index) => (
               <Link
-                key={notification.id}
+                key={notification.createdAt}
                 to={`/post/${notification.postId}`}
                 className="flex items-center px-4 py-3 border-b hover:bg-gray-100 -mx-2"
               >
