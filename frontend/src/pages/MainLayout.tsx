@@ -8,21 +8,24 @@ import Sidebar from "../components/Sidebar";
 import SuggestedUsers from "../components/User/SuggestedUsers";
 import Card from "../ui/Card";
 import UsersSkeleton from "../skeletons/UsersSkeleton";
+import { Socket } from "socket.io-client";
 
 type Props = {
   navIsSticky: boolean;
+  socket: Socket;
 };
 
-const MainLayout: React.FC<Props> = ({ navIsSticky }) => {
+const MainLayout: React.FC<Props> = ({ navIsSticky, socket }) => {
   const currentUser = useSelector(selectUser);
 
-  const { data: suggestedUsers, loading: suggestedUsersIsLoading } =
-    useAxios<UserType[]>(
-      `http://localhost:5000/api/v1/users/${
-        currentUser!.username
-      }/suggested-users`,
-      "get"
-    );
+  const { data: suggestedUsers, loading: suggestedUsersIsLoading } = useAxios<
+    UserType[]
+  >(
+    `http://localhost:5000/api/v1/users/${
+      currentUser!.username
+    }/suggested-users`,
+    "get"
+  );
 
   const sideOpen = useSelector(selectSideOpen);
 
@@ -47,7 +50,7 @@ const MainLayout: React.FC<Props> = ({ navIsSticky }) => {
         ) : suggestedUsers?.length ? (
           <Card className="xl:sticky xl:top-32 mt-10 xl:mt-0 xl:mb-10 px-8 py-4 pb-6 flex flex-col !text-left order-1 xl:order-2">
             <h3 className="mb-5 text-xl">Suggested for you</h3>
-            <SuggestedUsers users={suggestedUsers} />
+            <SuggestedUsers users={suggestedUsers} socket={socket} />
           </Card>
         ) : (
           "Found no users to suggest"
