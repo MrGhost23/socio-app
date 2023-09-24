@@ -7,6 +7,7 @@ import UserImage from "../User/UserImage";
 import Card from "../../ui/Card";
 import Button from "../../ui/Button";
 import usePostActions from "../../hooks/usePostActions";
+import axios from "axios";
 
 type Props = {
   fetchPosts?: () => void;
@@ -34,7 +35,7 @@ const PostForm: React.FC<Props> = ({
   const [image, setImage] = useState<object | null>(postImage || null);
   const [previewImage, setPreviewImage] = useState<string>(
     postImage
-      ? `http://localhost:5000/post-assets/${encodeURIComponent(postImage)}`
+      ? `http://localhost:5000/post_assets/${encodeURIComponent(postImage)}`
       : ""
   );
 
@@ -59,18 +60,37 @@ const PostForm: React.FC<Props> = ({
   const submitHandler = async () => {
     setIsLoading(true);
     if (updatePost) {
-      await editPost(postId!, description, image);
-      updatePost(postId!, description, image!);
+      const formData = new FormData();
+      formData.append("description", description);
+
+      if (image && image instanceof File) {
+        formData.append("postImage", image);
+      }
+      const response = await axios.patch(
+        `http://localhost:5000/api/v1/posts/${postId}`,
+        formData
+      );
+
+      const updatedPost = response.data;
+      updatePost(
+        updatedPost._id,
+        updatedPost.description,
+        updatedPost.postImage
+      );
       setIsEditing!(false);
+      setIsLoading(false);
       return;
     }
     const formData = new FormData();
     formData.append("username", user!.username);
     formData.append("description", description);
-    formData.append("postImage", image);
+    if (image instanceof File) {
+      formData.append("postImage", image);
+    }
 
-    if (!description && !image) {
+    if (!description && !(image instanceof File)) {
       setDescriptionError("You must provide a description or image at least!");
+      setIsLoading(false);
       return;
     }
 
