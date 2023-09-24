@@ -18,6 +18,14 @@ import { formatTime } from "../utils/formatTime";
 
 type Props = {
   navIsSticky: boolean;
+  notifications: {
+    createdAt: string;
+    postId: string;
+    userPicture: string;
+    firstName: string;
+    lastName: string;
+    actionType: string;
+  }[];
 };
 
 const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
@@ -140,17 +148,17 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
       <div className="relative">
         <div className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg overflow-hidden z-20">
           <div className="py-2">
-            {notifications.map((notification, index) => (
+            {notifications.map((notification) => (
               <Link
                 key={notification.createdAt}
                 to={`/post/${notification.postId}`}
                 onClick={() => setIsOpen(false)}
                 className="flex items-center px-4 py-3 border-b hover:bg-gray-100 -mx-2"
               >
-                <img
-                  className="h-8 w-8 rounded-full object-cover mx-1"
+                <UserImage
+                  username={notification.firstName}
                   src={notification.userPicture}
-                  alt="avatar"
+                  className="h-8 w-8 rounded-full object-cover mx-1"
                 />
                 <p className="text-gray-600 text-sm mx-2">
                   <span className="font-bold">
