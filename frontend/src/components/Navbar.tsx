@@ -144,6 +144,7 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
               <Link
                 key={notification.createdAt}
                 to={`/post/${notification.postId}`}
+                onClick={() => setIsOpen(false)}
                 className="flex items-center px-4 py-3 border-b hover:bg-gray-100 -mx-2"
               >
                 <img
