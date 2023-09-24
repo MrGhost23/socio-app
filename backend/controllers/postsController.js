@@ -141,6 +141,12 @@ const likePosts = async (req, res) => {
         postId: req.params.id,
         actionType: "like",
       });
+      await Notification.findOneAndDelete({
+        sender: req.user._id,
+        receiver: receiverUser._id,
+        actionType: "like",
+        postId: req.params.id,
+      });
     } else {
       post.likes.set(username, true);
       const newActivity = new Activity({
