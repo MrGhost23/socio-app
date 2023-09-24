@@ -14,16 +14,12 @@ const usePostActions = () => {
     }
   };
 
-  const editPost = async (
-    postId: string,
-    description: string,
-    postImage: object | null
-  ) => {
+  const editPost = async (postId: string, formData: FormData) => {
     try {
-      await axios.patch(`http://localhost:5000/api/v1/posts/${postId}`, {
-        description,
-        postImage,
-      });
+      await axios.patch(
+        `http://localhost:5000/api/v1/posts/${postId}`,
+        formData
+      );
     } catch (error) {
       toast.info(`Something went wrong!`);
     }
