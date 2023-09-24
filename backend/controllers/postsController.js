@@ -139,6 +139,8 @@ const likePosts = async (req, res) => {
     const post = await Post.findById(id);
     const receiverUser = await User.findById(post.userId);
 
+    const isCurrentUserOwner = req.user._id.equals(receiverUser._id);
+
     const isLiked = post.likes.get(username);
     if (isLiked) {
       post.likes.delete(username);
@@ -163,13 +165,15 @@ const likePosts = async (req, res) => {
       });
       await newActivity.save();
 
-      const notification = new Notification({
-        sender: req.user._id,
-        receiver: receiverUser._id,
-        actionType: "like",
-        postId: req.params.id,
-      });
-      await notification.save();
+      if (!isCurrentUserOwner) {
+        const notification = new Notification({
+          sender: req.user._id,
+          receiver: receiverUser._id,
+          actionType: "like",
+          postId: req.params.id,
+        });
+        await notification.save();
+      }
     }
     const updatedPost = await Post.findByIdAndUpdate(
       id,
