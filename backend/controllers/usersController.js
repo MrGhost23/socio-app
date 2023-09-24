@@ -68,9 +68,8 @@ const getFindFriends = async (req, res) => {
     );
 
     const findfriends = users.map((user) => {
-      const { _id, ...rest } = user.toObject();
       return {
-        ...rest,
+        ...user.toObject(),
         followers: user.followers.length,
       };
     });
@@ -101,9 +100,8 @@ const getSuggestedUsers = async (req, res) => {
     ).limit(10);
 
     const suggestedUsersWithFollowersAsNumbers = suggestedUsers.map((user) => {
-      const { _id, ...rest } = user.toObject();
       return {
-        ...rest,
+        ...user.toObject(),
         followers: user.followers.length,
       };
     });
