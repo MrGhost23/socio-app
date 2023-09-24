@@ -17,8 +17,11 @@ import RecentActivitiesSkeleton from "../skeletons/RecentActivitiesSkeleton";
 import Sidebar from "../components/Sidebar";
 import { RootState } from "../store/store";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
-
-const ProfileLayout = () => {
+import { Socket } from "socket.io-client";
+type Props = {
+  socket: Socket;
+};
+const ProfileLayout: React.FC<Props> = ({ socket }) => {
   const { username } = useParams();
   const navigate = useNavigate();
 
@@ -67,6 +70,13 @@ const ProfileLayout = () => {
     );
     setFollowers((prevState) => (isFollowing ? prevState - 1 : prevState + 1));
     setFollowButtonLoading(false);
+    if (!isFollowing) {
+      socket.emit("sendNotification", {
+        senderUsername: currentUser!.username,
+        receiverUsername: userProfile!.username,
+        actionType: "follow",
+      });
+    }
   };
 
   const sendMessageHandler = async () => {
