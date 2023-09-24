@@ -91,7 +91,7 @@ const App: React.FC = () => {
     fetchToken();
   }, [dispatch, localToken]);
 
-  const [socketio, setSocket] = useState<Socket>(io("ws://localhost:5000"));
+  const [socketio] = useState<Socket>(io("ws://localhost:5000"));
 
   useEffect(() => {
     if (user) {
@@ -104,7 +104,11 @@ const App: React.FC = () => {
         setReceiveMessage(data);
       });
       socket.on("getNotification", (data) => {
-        setNotifications((prev) => [...prev, data]);
+        const currentDateAndTime = new Date().toISOString();
+        setNotifications((prev) => [
+          { ...data, createdAt: currentDateAndTime },
+          ...prev,
+        ]);
       });
       return () => {
         socket.disconnect();
