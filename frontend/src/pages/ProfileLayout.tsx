@@ -2,16 +2,17 @@ import { useState, useEffect } from "react";
 import { Outlet, useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { toast } from "react-toastify";
 import { selectUser } from "../store/slices/authSlice";
+import { ProfileType } from "../Types/Profile.types";
 import { RecentActivityType } from "../Types/RecentActivity.type";
-import useUserProfile from "../hooks/useUserProfile";
+import useAxios from "../hooks/useAxios";
 import useProfileActions from "../hooks/useProfileActions";
 import UserInfo from "../components/User/UserInfo";
 import UserMenu from "../components/User/UserMenu";
 import RecentActivities from "../components/RecentActivities";
 import Card from "../ui/Card";
 import Button from "../ui/Button";
-import { toast } from "react-toastify";
 import ProfileSkeleton from "../skeletons/ProfileSkeleton";
 import RecentActivitiesSkeleton from "../skeletons/RecentActivitiesSkeleton";
 
@@ -19,21 +20,26 @@ const ProfileLayout = () => {
   const navigate = useNavigate();
   const currentUser = useSelector(selectUser);
   const { username } = useParams();
-  const { profile, loading, error } = useUserProfile(username!);
+
+  const { data: userProfile, loading: userProfileIsLoading } =
+    useAxios<ProfileType>(
+      `http://localhost:5000/api/v1/users/${username}`,
+      "get"
+    );
+
+  const { data: userActivities, loading: userActivitiesIsLoading } = useAxios<
+    RecentActivityType[]
+  >(`http://localhost:5000/api/v1/users/${username}/activities`, "get");
+
   const [followers, setFollowers] = useState<number>(0);
 
   useEffect(() => {
-    if (profile) {
-      setFollowers(profile.followers.length);
+    if (userProfile) {
+      setFollowers(userProfile.followers.length);
     }
-  }, [profile]);
+  }, [userProfile]);
 
-  const [userActivities, setUserActivities] = useState<RecentActivityType[]>();
-  const [userActivitiesLoading, setUserActivitiesLoading] =
-    useState<boolean>(true);
-  const [userActivitiesError, setUserActivitiesError] =
-    useState<boolean>(false);
-  const isMyProfile = currentUser?.username === profile?.username;
+  const isMyProfile = currentUser?.username === userProfile?.username;
   const [isFollowing, setIsFollowing] = useState(false);
   const [followButtonLoading, setFollowButtonLoading] = useState(false);
 
@@ -41,7 +47,7 @@ const ProfileLayout = () => {
 
   const toggleFollowHandler = async () => {
     setFollowButtonLoading(true);
-    await toggleFollowUser(profile!.username);
+    await toggleFollowUser(userProfile!.username);
     setFollowers((prevState) => (isFollowing ? prevState - 1 : prevState + 1));
     setIsFollowing((prevState) => !prevState);
     setFollowButtonLoading(false);
@@ -49,7 +55,7 @@ const ProfileLayout = () => {
 
   useEffect(() => {
     const fetchIsFollowing = async () => {
-      if (isMyProfile) return;
+      if (!userProfile || isMyProfile) return;
       try {
         const response = await axios.get(
           `http://localhost:5000/api/v1/users/${username}/isFollowing`
@@ -60,57 +66,40 @@ const ProfileLayout = () => {
       }
     };
     fetchIsFollowing();
-  }, [isMyProfile, username]);
-
-  useEffect(() => {
-    const fetchUserActivities = async () => {
-      if (!profile) return;
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/api/v1/users/${username}/activities`
-        );
-        setUserActivities(response.data);
-      } catch (error) {
-        setUserActivitiesError(!!error);
-      }
-      setUserActivitiesLoading(false);
-    };
-    fetchUserActivities();
-  }, [profile, username]);
+  }, [userProfile, isMyProfile, username]);
 
   const sendMessageHandler = async () => {
     try {
       await axios.post(`http://localhost:5000/api/v1/chat`, {
         senderUsername: currentUser!.username,
-        receiverUsername: profile!.username,
+        receiverUsername: userProfile!.username,
       });
-      navigate(`/chats/${profile!.username}`);
+      navigate(`/chats/${userProfile!.username}`);
     } catch (error) {
       toast.info(`Something went wrong!`);
     }
   };
 
-  if (!loading && !profile) {
+  if (!userProfileIsLoading && !userProfile) {
     navigate("/");
     return;
   }
-  if (error) console.log(error);
 
   return (
     <>
       <div className="flex flex-col lg:grid lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-12 mx-4 sm:mx-10 md:mx-10 my-10">
         <div className="col-span-2 lg:col-span-1 order-1">
-          {loading ? (
+          {userProfileIsLoading ? (
             <ProfileSkeleton className="!sticky top-32 !px-10 !py-8" />
           ) : (
             <Card className="sticky top-32 px-10 py-8 flex flex-col items-center">
               <div className="relative top-0 right-2 left-full self-start">
                 <UserMenu
                   isMyProfile={isMyProfile}
-                  profileUsername={profile!.username}
+                  profileUsername={userProfile!.username}
                 />
               </div>
-              <UserInfo userInfo={profile!} followers={followers} />
+              <UserInfo userInfo={userProfile!} followers={followers} />
               <div className="w-full flex flex-col gap-4">
                 {!isMyProfile ? (
                   <>
@@ -149,15 +138,15 @@ const ProfileLayout = () => {
             <Outlet />
           </div>
           <div className="w-full xl:col-span-1 order-1 xl:order-2">
-            {userActivitiesLoading ? (
+            {userActivitiesIsLoading ? (
               <RecentActivitiesSkeleton className="!sticky top-32 !px-8 !py-4" />
             ) : (
               <Card className="sticky top-32 px-8 py-4 pb-6 flex flex-col !text-left">
                 <h3 className="mb-5 text-xl">Recent Activities</h3>
                 <RecentActivities
                   isMyProfile={isMyProfile}
-                  username={profile!.username}
-                  userFirstName={profile!.firstName}
+                  username={userProfile!.username}
+                  userFirstName={userProfile!.firstName}
                   recentActivities={userActivities!}
                 />
               </Card>

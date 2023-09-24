@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import { UserType } from "../Types/User.types";
+import useAxios from "../hooks/useAxios";
 import Users from "../components/User/Users";
 import Card from "../ui/Card";
 import SearchInput from "../ui/SearchInput";
@@ -10,31 +9,14 @@ import UsersSkeleton from "../skeletons/UsersSkeleton";
 const Followers = () => {
   const { username } = useParams();
 
-  const [followers, setFollowers] = useState<UserType[]>();
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    const fetchPostData = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/api/v1/users/${username}/followers`
-        );
-        setFollowers(response.data);
-      } catch (error) {
-        setError(!!error);
-      }
-      setIsLoading(false);
-    };
-
-    fetchPostData();
-  }, [username]);
-
-  if (error) return <p>An error occurred</p>;
+  const { data: followers, loading: followersIsLoading } = useAxios<UserType[]>(
+    `http://localhost:5000/api/v1/users/${username}/followers`,
+    "get"
+  );
 
   return (
     <>
-      {isLoading ? (
+      {followersIsLoading ? (
         <UsersSkeleton title="Followers" usersNumber={6} mode="follow" />
       ) : (
         <Card className="sticky top-32 px-8 py-4 pb-6 flex flex-col !text-left">

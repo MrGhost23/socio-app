@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios, { Method } from "axios";
+import { toast } from "react-toastify";
 
 interface AxiosResponse<T> {
   data: T;
@@ -10,26 +11,33 @@ const useAxios = <T,>(url: string, method: Method, body?: object) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response: AxiosResponse<T> = await axios({
-          method,
-          url,
-          data: body,
-        });
-        setData(response.data);
-      } catch (error) {
-        setError(!!error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
+  const fetchData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response: AxiosResponse<T> = await axios({
+        method,
+        url,
+        data: body,
+      });
+      setData(response.data);
+    } catch (error) {
+      setError(!!error);
+      toast.info(`Something went wrong!`);
+    } finally {
+      setLoading(false);
+    }
   }, [url, method, body]);
 
-  return { data, loading, error };
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  const reFetch = useCallback(() => {
+    setLoading(true);
+    fetchData();
+  }, [fetchData]);
+
+  return { data, loading, error, reFetch };
 };
 
 export default useAxios;

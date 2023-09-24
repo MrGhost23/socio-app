@@ -1,45 +1,45 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import axios from "axios";
 import { selectUser } from "../store/slices/authSlice";
 import { PostType } from "../Types/Post.types";
+import useAxios from "../hooks/useAxios";
 import PostForm from "../components/Post/PostForm";
 import Posts from "../components/Post/Posts";
 import PostsSkeleton from "../skeletons/PostsSkeleton";
 
 const Profile = () => {
   const { username } = useParams();
-
   const currentUser = useSelector(selectUser);
-
-  const [userPosts, setUserPosts] = useState<PostType[]>();
-  const [isLoading, setIsLoading] = useState(true);
-
   const isMyProfile = currentUser?.username === username;
 
-  const fetchPosts = useCallback(async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/api/v1/posts/user/${username}`
-      );
-      setUserPosts(response.data);
-    } catch (error) {
-      console.log(error);
+  const [posts, setPosts] = useState<PostType[]>([]);
+
+  const {
+    data: profilePosts,
+    loading: profilePostsIsLoading,
+    reFetch: reFetchPosts,
+  } = useAxios<PostType[]>(
+    `http://localhost:5000/api/v1/posts/user/${username}`,
+    "get"
+  );
+
+  useEffect(() => {
+    if (profilePosts) {
+      setPosts(profilePosts);
     }
-    setIsLoading(false);
-  }, [username]);
+  }, [profilePosts]);
 
   const removePost = (postId: string) => {
-    setUserPosts((prevState) =>
-      prevState!.filter((post: PostType) => post._id !== postId)
+    setPosts((prevState) =>
+      prevState.filter((post: PostType) => post._id !== postId)
     );
   };
 
   const updatePost = (postId: string, description: string, image: object) => {
-    setUserPosts((prevState) => {
+    setPosts((prevState) => {
       const updatedPosts: PostType[] = [];
-      prevState!.forEach((post) => {
+      prevState.forEach((post) => {
         if (post._id === postId) {
           updatedPosts.push({
             ...post,
@@ -54,21 +54,13 @@ const Profile = () => {
     });
   };
 
-  useEffect(() => {
-    fetchPosts();
-  }, [fetchPosts]);
-
   return (
     <>
-      {isMyProfile && <PostForm fetchPosts={fetchPosts} />}
-      {isLoading ? (
+      {isMyProfile && <PostForm fetchPosts={reFetchPosts} />}
+      {profilePostsIsLoading ? (
         <PostsSkeleton postsNumber={2} />
-      ) : userPosts!.length > 0 ? (
-        <Posts
-          posts={userPosts!}
-          removePost={removePost}
-          updatePost={updatePost}
-        />
+      ) : posts.length > 0 ? (
+        <Posts posts={posts} removePost={removePost} updatePost={updatePost} />
       ) : (
         <div className="text-center text-gray-800 text-xl">
           {isMyProfile ? "You" : "This user"} didn't post anything yet.

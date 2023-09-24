@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../store/slices/authSlice";
 import { UserType } from "../../Types/User.types";
+import useAxios from "../../hooks/useAxios";
 import useProfileActions from "../../hooks/useProfileActions";
 import UserImage from "./UserImage";
 import UserFullName from "./UserFullName";
 import Button from "../../ui/Button";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../store/slices/authSlice";
 
 type Props = {
   user: UserType;
@@ -23,7 +23,7 @@ const SuggestedUser: React.FC<Props> = ({
 }) => {
   const currentUser = useSelector(selectUser);
 
-  const [followers, setFollowers] = useState<number>(user.followers);
+  const [followers, setFollowers] = useState<number>(user.followers!);
 
   const mainContainerClasses = center ? "flex items-center" : "flex";
   const infoContainerClasses = "flex flex-col text-gray-600";
@@ -31,27 +31,22 @@ const SuggestedUser: React.FC<Props> = ({
   const [followButtonLoading, setFollowButtonLoading] = useState(false);
   const [buttonText, setButtonText] = useState("Loading...");
 
-  useEffect(() => {
-    if (user.username === currentUser!.username) return;
+  const { data: isFollowing } = useAxios<{ isFollowing: boolean }>(
+    `http://localhost:5000/api/v1/users/${user.username}/isFollowing`,
+    "get"
+  );
 
-    const fetchIsFollowing = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/api/v1/users/${user.username}/isFollowing`
-        );
-        setButtonText(
-          mode === "follow"
-            ? response.data.isFollowing
-              ? "Unfollow"
-              : "Follow"
-            : "unblock"
-        );
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchIsFollowing();
-  }, [currentUser, mode, user.username]);
+  useEffect(() => {
+    if (isFollowing) {
+      setButtonText(
+        mode === "follow"
+          ? isFollowing.isFollowing
+            ? "Unfollow"
+            : "Follow"
+          : "unblock"
+      );
+    }
+  }, [mode, isFollowing]);
 
   const { toggleFollowUser, toggleBlockUser } = useProfileActions();
 
