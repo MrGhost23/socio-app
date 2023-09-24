@@ -8,6 +8,7 @@ import useAxios from "../hooks/useAxios";
 import { MessageType } from "../Types/Message.types";
 import Conversations from "../components/Chat/Conversations";
 import Chat from "../components/Chat/Chat";
+import Sidebar from "../components/Sidebar";
 
 interface Message {
   senderUsername: string;
@@ -83,6 +84,7 @@ const Chats: React.FC<Props> = ({
   return (
     <div className="h-[calc(100vh-82px)] shadow-lg rounded-lg">
       <div className="grid grid-cols-1 lg:grid-cols-4 justify-between bg-white">
+        <Sidebar hide={true} />
         <div
           className={
             conversationsIsVisible
