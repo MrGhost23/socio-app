@@ -24,6 +24,31 @@ const updateUserPicture = async (req, res) => {
   }
 };
 
+const updatePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const userId = req.user._id;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!(await user.comparePasswords(currentPassword))) {
+      return res.status(401).json({ message: "Incorrect current password" });
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    res.json({ message: "Password changed successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 const getFindFriends = async (req, res) => {
   try {
     const currentUserUsername = req.params.username;
@@ -382,4 +407,5 @@ module.exports = {
   getBlockedUsers,
   toggleBookmark,
   getBookmarkedPosts,
+  updatePassword,
 };
