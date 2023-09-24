@@ -31,7 +31,7 @@ const Timeline: React.FC<Props> = ({ socket }) => {
     );
   };
 
-  const updatePost = (postId: string, description: string, image: object) => {
+  const updatePost = (postId: string, description: string, image: string) => {
     setPosts((prevState) => {
       const updatedPosts: PostType[] = [];
       prevState.forEach((post) => {
@@ -39,7 +39,7 @@ const Timeline: React.FC<Props> = ({ socket }) => {
           updatedPosts.push({
             ...post,
             description: description,
-            postImage: image && URL.createObjectURL(image),
+            postImage: image,
           });
         } else {
           updatedPosts.push(post);

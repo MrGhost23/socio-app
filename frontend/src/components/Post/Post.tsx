@@ -17,6 +17,7 @@ import Comments from "../Comment/Comments";
 import PostMenu from "./PostMenu";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/authSlice";
+import { Socket } from "socket.io-client";
 
 interface Likes {
   [key: string]: boolean;
@@ -24,8 +25,9 @@ interface Likes {
 
 type Props = {
   post: PostType;
-  updatePost: (postId: string, description: string, image: object) => void;
+  updatePost: (postId: string, description: string, image: string) => void;
   removePost: (postId: string) => void;
+  socket: Socket;
 };
 
 const Post: React.FC<Props> = ({ post, removePost, updatePost, socket }) => {

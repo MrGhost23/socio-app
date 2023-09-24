@@ -1,10 +1,10 @@
 import { BookmarkPostType } from "../../Types/BookmarkPost.types";
+import Card from "../../ui/Card";
 import BookmarkImage from "./BookmarkImage";
 import BookmarkText from "./BookmarkText";
 import UserImage from "../User/UserImage";
 import UserFullName from "../User/UserFullName";
 import PostBookmarkIcon from "./PostBookmarkIcon";
-import Card from "../../ui/Card";
 
 type Props = {
   post: BookmarkPostType;

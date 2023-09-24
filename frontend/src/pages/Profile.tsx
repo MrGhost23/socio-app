@@ -36,7 +36,7 @@ const Profile = () => {
     );
   };
 
-  const updatePost = (postId: string, description: string, image: object) => {
+  const updatePost = (postId: string, description: string, image: string) => {
     setPosts((prevState) => {
       const updatedPosts: PostType[] = [];
       prevState.forEach((post) => {
@@ -44,7 +44,7 @@ const Profile = () => {
           updatedPosts.push({
             ...post,
             description: description,
-            postImage: image && URL.createObjectURL(image),
+            postImage: image,
           });
         } else {
           updatedPosts.push(post);
