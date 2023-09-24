@@ -3,6 +3,8 @@ const Comment = require("../models/Comment");
 const { StatusCodes } = require("http-status-codes");
 const Activity = require("../models/Activity");
 const { cleanupActivities } = require("../utils/activityUtils");
+const Post = require("../models/Post");
+const Notification = require("../models/Notification");
 
 const createComment = async (req, res) => {
   try {
@@ -13,6 +15,15 @@ const createComment = async (req, res) => {
         .status(StatusCodes.BAD_REQUEST)
         .json({ message: "Invalid postId" });
     }
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "Post not found" });
+    }
+
     const newComment = new Comment({
       text,
       author: req.user._id,
@@ -28,6 +39,15 @@ const createComment = async (req, res) => {
       timestamp: Date.now(),
     });
     await newActivity.save();
+
+    const notification = new Notification({
+      sender: req.user._id,
+      receiver: post.userId,
+      actionType: "comment",
+      postId,
+    });
+    await notification.save();
+
     if (req.user) {
       await cleanupActivities(req.user._id);
     }
@@ -107,6 +127,12 @@ const deleteComment = async (req, res) => {
       userId: req.user._id,
       postId: comment.post,
       actionType: "comment",
+    });
+    await Notification.findOneAndDelete({
+      sender: req.user._id,
+      receiver: comment.author,
+      actionType: "comment",
+      postId: comment.post,
     });
 
     res.json({ message: "Comment deleted successfully" });
