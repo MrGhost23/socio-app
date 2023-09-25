@@ -47,6 +47,8 @@ const Messages: React.FC<Props> = ({
   }, [chat.chatId, receiveMessage]);
 
   const submitHandler = async () => {
+    if (newMessage.trim().length === 0) return;
+
     const message = {
       senderUsername: currentUser!.username,
       text: newMessage,

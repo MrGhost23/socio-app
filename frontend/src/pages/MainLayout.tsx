@@ -43,7 +43,7 @@ const MainLayout: React.FC<Props> = ({ navIsSticky, socket }) => {
         {suggestedUsersIsLoading ? (
           <UsersSkeleton
             title="Suggested for you"
-            usersNumber={5}
+            usersNumber={3}
             mode="suggest"
             className="xl:sticky xl:top-32 mt-10 xl:mt-0 xl:mb-10 px-8 !py-4 pb-6 order-1 xl:order-2"
           />

@@ -1,4 +1,5 @@
 import isArabic from "../../utils/isArabic";
+import { useState } from "react";
 
 type Props = {
   text: string;
@@ -6,6 +7,12 @@ type Props = {
 
 const CommentText: React.FC<Props> = ({ text }) => {
   const textIsInArabic = isArabic(text);
+  const max = 300;
+  const [textSliced, setTextSliced] = useState(text?.length > max);
+
+  const seeMore = () => {
+    setTextSliced(false);
+  };
 
   return (
     <p
@@ -15,7 +22,16 @@ const CommentText: React.FC<Props> = ({ text }) => {
           : "text-sm text-gray-800 text-left"
       }
     >
-      {text}
+      {textSliced ? text?.slice(0, max - 3) + "... " : text}
+
+      {textSliced && (
+        <span
+          className="description-sm description-gray-500 font-semibold cursor-pointer transition duration-500 hover:description-sky-500"
+          onClick={seeMore}
+        >
+          See more
+        </span>
+      )}
     </p>
   );
 };
