@@ -158,14 +158,20 @@ io.on("connection", (socket) => {
         const sender = await User.findOne({ username: senderUsername });
 
         const receiver = getUsers(receiverUsername);
-        io.to(receiver.socketId).emit("getNotification", {
-          senderUsername,
-          actionType,
-          postId,
-          userPicture: sender.userPicture,
-          firstName: sender.firstName,
-          lastName: sender.lastName,
-        });
+
+        if (receiver && receiver.socketId) {
+          const notificationData = {
+            senderUsername,
+            actionType,
+            userPicture: sender.userPicture,
+            firstName: sender.firstName,
+            lastName: sender.lastName,
+          };
+          if (actionType !== "follow") {
+            notificationData.postId = postId;
+          }
+          io.to(receiver.socketId).emit("getNotification", notificationData);
+        }
       }
     }
   );
