@@ -118,6 +118,29 @@ export const toggleFollowUser = createAsyncThunk<
   }
 });
 
+export const toggleBlockUser = createAsyncThunk<
+  { status: number; uId: string } | null,
+  {
+    username: string;
+  }
+>("auth/toggleBlockUser", async ({ username }, { getState }) => {
+  const { auth } = getState() as {
+    auth: AuthState;
+  };
+  try {
+    const response: AxiosResponse<{ status: number }> = await axios.put(
+      `http://localhost:5000/api/v1/users/${username}/block-unblock`,
+      {
+        username: auth.user!.username,
+      }
+    );
+    return { status: response.data.status, uId: username };
+  } catch (error) {
+    toast.info(`Something went wrong!`);
+    return null;
+  }
+});
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -170,6 +193,19 @@ const authSlice = createSlice({
             );
           }
           state.user = { ...state.user!, following: updatedFollowingArray };
+        }
+      })
+      .addCase(toggleBlockUser.fulfilled, (state, action) => {
+        let updatedBlockedUsers = [...state.user!.blocked];
+        if (action.payload) {
+          if (action.payload.status === 1) {
+            updatedBlockedUsers.push(action.payload.uId);
+          } else {
+            updatedBlockedUsers = updatedBlockedUsers.filter(
+              (userId) => userId !== action.payload!.uId
+            );
+          }
+          state.user = { ...state.user!, blocked: updatedBlockedUsers };
         }
       });
   },
