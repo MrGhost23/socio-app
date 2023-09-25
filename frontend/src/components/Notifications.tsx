@@ -3,6 +3,8 @@ import { NotificationType } from "../Types/Notification.types";
 import useClickOutside from "../hooks/useClickOutside";
 import { useState, useEffect } from "react";
 import Notification from "./Notification";
+import { CgCheck } from "react-icons/cg";
+import axios from "axios";
 
 type Props = {
   notifications: NotificationType[];
@@ -46,6 +48,25 @@ const Notifications: React.FC<Props> = ({
     );
   };
 
+  const readAllNotifications = async () => {
+    const updatedNotifications = notifications.map(async (notification) => {
+      if (!notification.isRead) {
+        await axios.patch(
+          `http://localhost:5000/api/v1/notifications/${notification._id}`
+        );
+      }
+      return { ...notification, isRead: true };
+    });
+
+    await Promise.all(updatedNotifications);
+
+    setNotifications((prevNotifications) =>
+      prevNotifications.map((notification) => {
+        return { ...notification, isRead: true };
+      })
+    );
+  };
+
   return (
     <div className="relative" ref={notificationsRef}>
       <div
@@ -53,6 +74,13 @@ const Notifications: React.FC<Props> = ({
           isOpen ? "" : "hidden"
         } absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg z-20`}
       >
+        <div
+          className="w-fit ml-auto flex flex-row items-center my-1 mr-4 text-gray-500 cursor-pointer"
+          onClick={readAllNotifications}
+        >
+          <CgCheck className="text-2xl scale-110" />
+          <span className="text-sm capitalize font-semibold">Read all</span>
+        </div>
         <div
           className={`overflow-hidden ${
             !notificationsSliced

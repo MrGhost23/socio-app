@@ -3,7 +3,7 @@ import { formatTime } from "../utils/formatTime";
 import UserImage from "./User/UserImage";
 import { NotificationType } from "../Types/Notification.types";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Props = {
   notification: NotificationType;
@@ -17,6 +17,10 @@ const Notification: React.FC<Props> = ({
   readNotification,
 }) => {
   const [isRead, setIsRead] = useState(notification.isRead);
+
+  useEffect(() => {
+    setIsRead(notification.isRead);
+  }, [notification.isRead]);
 
   const clickHandler = async () => {
     if (!isRead) {
@@ -38,7 +42,7 @@ const Notification: React.FC<Props> = ({
           : `/post/${notification.postId}`
       }
       onClick={clickHandler}
-      className={`flex items-center px-4 py-3 border-b -mx-2 ${
+      className={`flex items-center px-4 py-3 border-b ${
         isRead ? "bg-gray-100" : "hover:bg-gray-100"
       }`}
     >
