@@ -99,7 +99,11 @@ const App: React.FC = () => {
       const socket = io("ws://localhost:5000");
       socket.emit("new-user-add", user?.username);
       socket.on("get-users", (users) => {
-        setOnlineUsers(users);
+        const status = {};
+        users.forEach((user) => {
+          status[user.username] = true;
+        });
+        setOnlineUsers(status);
       });
       socket.on("receive-message", (data) => {
         setReceiveMessage(data);
@@ -116,7 +120,6 @@ const App: React.FC = () => {
       };
     }
   }, [user]);
-
   useEffect(() => {
     const fetchNotifications = async () => {
       const response = await axios.get(
