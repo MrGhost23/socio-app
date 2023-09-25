@@ -16,6 +16,7 @@ interface Message {
 type Props = {
   chatsLoading: boolean;
   chats: ChatType[];
+  currentChat: string | null;
   setCurrentChat: React.Dispatch<React.SetStateAction<string | null>>;
   sendMessage: Message | null;
   receiveMessage: MessageType | null;
@@ -24,6 +25,7 @@ type Props = {
 const Conversations: React.FC<Props> = ({
   chatsLoading,
   chats,
+  currentChat,
   setCurrentChat,
   sendMessage,
   receiveMessage,
@@ -42,6 +44,7 @@ const Conversations: React.FC<Props> = ({
                 (username) => username !== currentUser!.username
               )}
               chat={chat}
+              currentChat={currentChat}
               changeChat={setCurrentChat}
               receiveMessage={receiveMessage}
               sendMessage={sendMessage}
@@ -50,7 +53,7 @@ const Conversations: React.FC<Props> = ({
         )}
       </>
     );
-  }, [chatsLoading, chats, setCurrentChat, receiveMessage, sendMessage, currentUser]);
+  }, [chatsLoading, chats, currentChat, setCurrentChat, receiveMessage, sendMessage, currentUser]);
 
   return <>{conversationComponents}</>;
 };

@@ -20,6 +20,7 @@ interface Message {
 
 type Props = {
   chat: ChatType;
+  currentChat: string | null;
   changeChat: React.Dispatch<React.SetStateAction<string | null>>;
   sendMessage: Message | null;
   receiveMessage: MessageType | null;
@@ -27,6 +28,7 @@ type Props = {
 
 const Conversation: React.FC<Props> = ({
   chat,
+  currentChat,
   changeChat,
   sendMessage,
   receiveMessage,
@@ -70,13 +72,19 @@ const Conversation: React.FC<Props> = ({
     }
   }, [chat.chatId, sendMessage]);
 
+  console.log(chat.chatId);
+  console.log(currentChat);
   return (
     <>
       {userProfileIsLoading ? (
         <ConversationSkeleton />
       ) : (
         <div
-          className="flex flex-row gap-2 py-4 px-4 sm:px-10 lg:px-4 justify-center items-start border-b-2 cursor-pointer hover:bg-slate-200"
+          className={`flex flex-row gap-2 py-4 px-4 sm:px-10 lg:px-4 justify-center items-start border-b-2 cursor-pointer ${
+            chat.chatId === currentChat
+              ? "bg-slate-200"
+              : "hover:bg-slate-100"
+          }`}
           onClick={changeChatHandler}
         >
           <UserImage

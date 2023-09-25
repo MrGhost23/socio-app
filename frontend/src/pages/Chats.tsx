@@ -95,6 +95,7 @@ const Chats: React.FC<Props> = ({
           <Conversations
             chatsLoading={userChatsIsLoading}
             chats={userChats!}
+            currentChat={currentChat}
             setCurrentChat={setCurrentChat}
             receiveMessage={receiveMessage}
             sendMessage={sendMessage}
