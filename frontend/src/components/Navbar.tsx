@@ -21,9 +21,14 @@ import Notifications from "./Notifications";
 type Props = {
   navIsSticky: boolean;
   notifications: NotificationType[];
+  setNotifications: React.Dispatch<React.SetStateAction<NotificationType[]>>;
 };
 
-const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
+const Navbar: React.FC<Props> = ({
+  navIsSticky,
+  notifications,
+  setNotifications,
+}) => {
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
   const user = useSelector(selectUser);
   const sideOpen = useSelector(selectSideOpen);
@@ -31,8 +36,6 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
   const handleSidebar = () => {
     dispatch(toggleSidebar());
   };
-
-  console.log(notifications);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -207,6 +210,7 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
                   notifications={notifications}
                   isOpen={isOpen}
                   setIsOpen={setIsOpen}
+                  setNotifications={setNotifications}
                 />
               </li>
             </ul>

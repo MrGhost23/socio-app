@@ -133,7 +133,11 @@ const App: React.FC = () => {
   if (isLoading) return;
   return (
     <>
-      <Navbar navIsSticky={navIsSticky} notifications={notifications} />
+      <Navbar
+        navIsSticky={navIsSticky}
+        notifications={notifications}
+        setNotifications={setNotifications}
+      />
       <Routes>
         <Route path="*" element={<ErrorPage />} />
         <Route

@@ -1,19 +1,21 @@
 import Button from "../ui/Button";
 import { NotificationType } from "../Types/Notification.types";
 import useClickOutside from "../hooks/useClickOutside";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Notification from "./Notification";
 
 type Props = {
   notifications: NotificationType[];
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setNotifications: React.Dispatch<React.SetStateAction<NotificationType[]>>;
 };
 
 const Notifications: React.FC<Props> = ({
   notifications,
   isOpen,
   setIsOpen,
+  setNotifications,
 }) => {
   const onClickOutside = () => {
     setIsOpen(false);
@@ -26,8 +28,22 @@ const Notifications: React.FC<Props> = ({
     notifications?.length > max
   );
 
+  useEffect(() => {
+    setNotificationsSliced(notifications?.length > max);
+  }, [notifications]);
+
   const showAll = () => {
     setNotificationsSliced((prevState) => !prevState);
+  };
+
+  const readNotificationHandler = (id: string) => {
+    setNotifications((prevNotifications) =>
+      prevNotifications.map((notification) =>
+        notification._id === id
+          ? { ...notification, isRead: true }
+          : notification
+      )
+    );
   };
 
   return (
@@ -52,6 +68,7 @@ const Notifications: React.FC<Props> = ({
                     key={notification._id}
                     notification={notification}
                     setIsOpen={setIsOpen}
+                    readNotification={readNotificationHandler}
                   />
                 ))
             : notifications.map((notification) => (
@@ -59,6 +76,7 @@ const Notifications: React.FC<Props> = ({
                   key={notification._id}
                   notification={notification}
                   setIsOpen={setIsOpen}
+                  readNotification={readNotificationHandler}
                 />
               ))}
         </div>

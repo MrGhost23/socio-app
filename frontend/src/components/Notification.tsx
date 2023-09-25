@@ -8,9 +8,14 @@ import { useState } from "react";
 type Props = {
   notification: NotificationType;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  readNotification: (id: string) => void;
 };
 
-const Notification: React.FC<Props> = ({ notification, setIsOpen }) => {
+const Notification: React.FC<Props> = ({
+  notification,
+  setIsOpen,
+  readNotification,
+}) => {
   const [isRead, setIsRead] = useState(notification.isRead);
 
   const clickHandler = async () => {
@@ -19,6 +24,7 @@ const Notification: React.FC<Props> = ({ notification, setIsOpen }) => {
         `http://localhost:5000/api/v1/notifications/${notification._id}`
       );
       setIsRead(true);
+      readNotification(notification._id);
     }
     setIsOpen(false);
   };
