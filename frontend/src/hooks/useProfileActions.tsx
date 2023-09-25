@@ -1,7 +1,6 @@
 import { toast } from "react-toastify";
 
 const useProfileActions = () => {
-
   const reportUser = () => {
     try {
       // Report logic goes here
@@ -11,7 +10,6 @@ const useProfileActions = () => {
   };
 
   return {
-    toggleBlockUser,
     reportUser,
   };
 };
