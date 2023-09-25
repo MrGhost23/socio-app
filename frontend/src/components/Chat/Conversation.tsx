@@ -85,7 +85,7 @@ const Conversation: React.FC<Props> = ({
             username={userProfile!.username}
           />
           <div className="w-full flex flex-col">
-            <div className="flex items-center flex-wrap gap-2">
+            <div className="flex flex-col sm:flex-row lg:flex-col sm:items-center lg:items-start gap-1 sm:gap-1.5 lg:gap-[0.28rem]">
               <UserFullName
                 className="text-lg font-semibold"
                 fullName={userProfile!.firstName + " " + userProfile!.lastName}

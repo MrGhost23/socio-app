@@ -15,6 +15,7 @@ const Notifications: React.FC<Props> = ({ notifications, setIsOpen }) => {
   const onClickOutside = () => {
     setIsOpen(false);
   };
+  console.log(notifications);
 
   const notificationsRef = useClickOutside(onClickOutside);
 
@@ -43,7 +44,11 @@ const Notifications: React.FC<Props> = ({ notifications, setIsOpen }) => {
             ? notifications.slice(0, max).map((notification) => (
                 <Link
                   key={notification.createdAt}
-                  to={`/post/${notification.postId}`}
+                  to={
+                    notification.actionType === "follow"
+                      ? `/profile/${notification.username}`
+                      : `/post/${notification.postId}`
+                  }
                   onClick={() => setIsOpen(false)}
                   className="flex items-center px-4 py-3 border-b hover:bg-gray-100 -mx-2"
                 >
