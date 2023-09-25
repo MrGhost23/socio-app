@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { formatTime } from "../utils/formatTime";
 import UserImage from "./User/UserImage";
 import { NotificationType } from "../Types/Notification.types";
+import axios from "axios";
 
 type Props = {
   notification: NotificationType;
@@ -9,6 +10,13 @@ type Props = {
 };
 
 const Notification: React.FC<Props> = ({ notification, setIsOpen }) => {
+  const clickHandler = async () => {
+    await axios.patch(
+      `http://localhost:5000/api/v1/notifications/${notification._id}`
+    );
+    setIsOpen(false);
+  };
+
   return (
     <Link
       key={notification.createdAt}
@@ -17,7 +25,7 @@ const Notification: React.FC<Props> = ({ notification, setIsOpen }) => {
           ? `/profile/${notification.username}`
           : `/post/${notification.postId}`
       }
-      onClick={() => setIsOpen(false)}
+      onClick={clickHandler}
       className="flex items-center px-4 py-3 border-b hover:bg-gray-100 -mx-2"
     >
       <UserImage
