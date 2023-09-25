@@ -10,7 +10,7 @@ export interface ProfileType {
   bookmarks: string[];
   following: string[];
   followers: string[];
-  blocked: string[];
+  blockedUsers: string[];
   userPicture?: string;
   occupation?: string;
   bio?: string;
