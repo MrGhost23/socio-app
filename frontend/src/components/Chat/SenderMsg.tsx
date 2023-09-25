@@ -15,8 +15,8 @@ const SenderMsg: React.FC<Props> = ({ userPicture, username, msg }) => {
       <div
         className={
           textIsInArabic
-            ? "py-3 px-4 bg-sky-500 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white text-right"
-            : "py-3 px-4 bg-sky-500 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white text-left"
+            ? "py-2 px-4 bg-sky-500 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white text-right"
+            : "py-2 px-4 bg-sky-500 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white text-left"
         }
       >
         {msg}

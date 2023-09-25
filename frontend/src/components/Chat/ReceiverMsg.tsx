@@ -26,8 +26,8 @@ const ReceiverMsg: React.FC<Props> = ({
       <div
         className={
           textIsInArabic
-            ? "py-3 px-4 bg-[#2798cc] rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white text-right"
-            : "py-3 px-4 bg-[#2798cc] rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white text-left"
+            ? "py-2 px-4 bg-[#2798cc] rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white text-right"
+            : "py-2 px-4 bg-[#2798cc] rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white text-left"
         }
       >
         {msg}
