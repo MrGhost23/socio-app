@@ -6,6 +6,11 @@ import ProfileSkeleton from "../../skeletons/ProfileSkeleton";
 import MessagesSkeleton from "../../skeletons/MessagesSkeleton";
 import { ProfileType } from "../../Types/Profile.types";
 import useAxios from "../../hooks/useAxios";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import MessageForm from "./MessageForm";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../store/slices/authSlice";
 
 interface Message {
   senderUsername: string;
@@ -41,10 +46,57 @@ const Chat: React.FC<Props> = ({
 }) => {
   const chat = userChats?.find((chat) => chat?.chatId === currentChat);
 
+  const currentUser = useSelector(selectUser);
+  const receiverUsername = chat?.members?.find(
+    (username: string) => username !== currentUser!.username
+  );
+
   const { data: chatMessages, loading: chatMessagesIsLoading } = useAxios<
     MessageType[]
   >(`http://localhost:5000/api/v1/message/${chat?.chatId}`, "get");
 
+  const [messages, setMessages] = useState<MessageType[]>();
+  const [newMessage, setNewMessage] = useState("");
+
+  useEffect(() => {
+    if (chatMessages) {
+      setMessages(chatMessages);
+    }
+  }, [chatMessages]);
+
+  useEffect(() => {
+    if (receiveMessage !== null && receiveMessage.chatId === chat!.chatId) {
+      const currentDateAndTime = new Date().toISOString();
+      console.log(receiveMessage);
+
+      setMessages((prevMessages) => [
+        ...prevMessages!,
+        { ...receiveMessage, createdAt: currentDateAndTime },
+      ]);
+    }
+  }, [chat, receiveMessage]);
+
+  const submitHandler = async () => {
+    if (newMessage.trim().length === 0) return;
+
+    const message = {
+      senderUsername: currentUser!.username,
+      text: newMessage,
+      chatId: chat!.chatId,
+    };
+    try {
+      const { data } = await axios.post(
+        "http://localhost:5000/api/v1/message",
+        message
+      );
+      setMessages([...messages!, data]);
+      setNewMessage("");
+    } catch (error) {
+      console.log(error);
+    }
+
+    setSendMessage({ ...message, receiverUsername: receiverUsername! });
+  };
   return (
     <>
       <div
@@ -58,14 +110,16 @@ const Chat: React.FC<Props> = ({
           <MessagesSkeleton messagesNumber={6} />
         ) : (
           <Messages
-            chat={chat!}
-            chatMessages={chatMessages!}
+            chatMessages={messages!}
             receiverData={currentChatUserData}
-            setSendMessage={setSendMessage}
-            receiveMessage={receiveMessage}
             setChatInfoIsVisible={showUserInfo}
           />
         )}
+        <MessageForm
+          submitHandler={submitHandler}
+          newMessage={newMessage}
+          setNewMessage={setNewMessage}
+        />
       </div>
       <div
         className={

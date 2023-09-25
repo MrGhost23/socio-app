@@ -19,7 +19,9 @@ type Props = {
   chats: ChatType[];
   currentChat: string | null;
   setCurrentChat: React.Dispatch<React.SetStateAction<string | null>>;
-  setCurrentChatUserData: React.Dispatch<React.SetStateAction<ProfileType>>;
+  setCurrentChatUserData: React.Dispatch<
+    React.SetStateAction<ProfileType | null | undefined>
+  >;
   setCurrentChatUserDataLoading: React.Dispatch<React.SetStateAction<boolean>>;
   sendMessage: Message | null;
   receiveMessage: MessageType | null;
