@@ -7,8 +7,13 @@ import useAxios from "../hooks/useAxios";
 import PostForm from "../components/Post/PostForm";
 import Posts from "../components/Post/Posts";
 import PostsSkeleton from "../skeletons/PostsSkeleton";
+import { Socket } from "socket.io-client";
 
-const Profile = () => {
+type Props = {
+  socket: Socket;
+};
+
+const Profile: React.FC<Props> = ({ socket }) => {
   const { username } = useParams();
   const currentUser = useSelector(selectUser);
   const isMyProfile = currentUser?.username === username;
@@ -60,7 +65,12 @@ const Profile = () => {
       {profilePostsIsLoading ? (
         <PostsSkeleton postsNumber={2} />
       ) : posts.length > 0 ? (
-        <Posts posts={posts} removePost={removePost} updatePost={updatePost} />
+        <Posts
+          posts={posts}
+          removePost={removePost}
+          updatePost={updatePost}
+          socket={socket}
+        />
       ) : (
         <div className="text-center text-gray-800 text-xl">
           {isMyProfile ? "You" : "This user"} didn't post anything yet.
