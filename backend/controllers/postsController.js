@@ -113,10 +113,28 @@ const deletePost = async (req, res) => {
 
 const getFeedPosts = async (req, res) => {
   try {
-    const post = await Post.find().sort({ createdAt: -1 }).exec();
-    res.status(StatusCodes.OK).json(post);
+    const currentUserId = req.user._id;
+    const currentUser = await User.findById(currentUserId).exec();
+
+    if (!currentUser) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "User not found" });
+    }
+
+    const blockedUserIds = currentUser.blockedUsers || [];
+
+    const posts = await Post.find({
+      $and: [{ userId: { $nin: blockedUserIds } }],
+    })
+      .sort({ createdAt: -1 })
+      .exec();
+
+    res.status(StatusCodes.OK).json(posts);
   } catch (error) {
-    res.status(StatusCodes.NOT_FOUND).json({ message: error.message });
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: error.message });
   }
 };
 
