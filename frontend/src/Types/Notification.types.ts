@@ -1,8 +1,10 @@
 export interface NotificationType {
+  actionType: string;
   createdAt: string;
-  postId: string;
-  userPicture: string;
   firstName: string;
   lastName: string;
-  actionType: string;
+  userPicture: string;
+  isRead: boolean;
+  postId?: string;
+  username?: string;
 }
