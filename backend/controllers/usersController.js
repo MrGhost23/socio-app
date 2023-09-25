@@ -394,11 +394,6 @@ const getBookmarkedPosts = async (req, res) => {
     const blockedUserIds = currentUser.blockedUsers.map((userId) =>
       userId.toString()
     );
-    console.log(
-      currentUser.bookmarks.filter(
-        (post) => !blockedUserIds.includes(post.userId)
-      )
-    );
     const bookmarkedPosts = currentUser.bookmarks
       .filter((post) => !blockedUserIds.includes(post.userId))
       .reverse();
