@@ -4,6 +4,10 @@ import { ImBlocked } from "react-icons/im";
 import { PiWarningBold } from "react-icons/pi";
 import useProfileActions from "../../hooks/useProfileActions";
 import Menu from "../../ui/Menu";
+import { toggleBlockUser } from "../../store/slices/authSlice";
+import { useDispatch } from "react-redux";
+import { RootState } from "../../store/store";
+import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 
 type Props = {
   isMyProfile: boolean;
@@ -11,10 +15,12 @@ type Props = {
 };
 
 const UserMenu: React.FC<Props> = ({ isMyProfile, profileUsername }) => {
-  const { toggleBlockUser, reportUser } = useProfileActions();
+  const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
+
+  const { reportUser } = useProfileActions();
 
   const toggleBlockHandler = () => {
-    toggleBlockUser(profileUsername);
+    dispatch(toggleBlockUser({ username: profileUsername }));
     setMenuOpened(false);
   };
 
@@ -62,5 +68,5 @@ const UserMenu: React.FC<Props> = ({ isMyProfile, profileUsername }) => {
     </>
   );
 };
-  
+
 export default UserMenu;
