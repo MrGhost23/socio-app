@@ -182,7 +182,7 @@ const App: React.FC = () => {
           }
         >
           <Route path="/" element={<Timeline socket={socketio} />} />
-          <Route path="/post/:id" element={<PostPage />} />
+          <Route path="/post/:id" element={<PostPage socket={socketio} />} />
           <Route
             path="/find-friends"
             element={<FindFriends socket={socketio} />}
@@ -199,16 +199,11 @@ const App: React.FC = () => {
             )
           }
         />
-        <Route
-          element={
-            user ? (
-              <ProfileLayout socket={socketio} />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        >
-          <Route path="/profile/:username" element={<Profile />} />
+        <Route element={user ? <ProfileLayout /> : <Navigate to="/login" />}>
+          <Route
+            path="/profile/:username"
+            element={<Profile socket={socketio} />}
+          />
           <Route
             path="/profile/:username/followers"
             element={<Followers socket={socketio} />}

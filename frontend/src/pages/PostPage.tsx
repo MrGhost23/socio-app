@@ -4,8 +4,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import useAxios from "../hooks/useAxios";
 import Post from "../components/Post/Post";
 import PostSkeleton from "../skeletons/PostSkeleton";
+import { Socket } from "socket.io-client";
 
-const PostPage = () => {
+type Props = {
+  socket: Socket;
+};
+
+const PostPage: React.FC<Props> = ({ socket }) => {
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -55,7 +60,12 @@ const PostPage = () => {
       {postDataIsLoading || !post ? (
         <PostSkeleton />
       ) : (
-        <Post post={post} removePost={removePost} updatePost={updatePost} />
+        <Post
+          post={post}
+          removePost={removePost}
+          updatePost={updatePost}
+          socket={socket}
+        />
       )}
     </>
   );
