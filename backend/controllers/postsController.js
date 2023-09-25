@@ -51,6 +51,17 @@ const getSinglePost = async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
+    const currentUser = req.user;
+
+    if (currentUser.blockedUsers.includes(post.userId.toString())) {
+      return res
+        .status(403)
+        .json({
+          message:
+            "Access denied. The author of this post is in your block list.",
+        });
+    }
+
     res.json(post);
   } catch (err) {
     res.status(500).json({ message: err.message });
