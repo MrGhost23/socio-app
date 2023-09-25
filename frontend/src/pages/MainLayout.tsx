@@ -53,7 +53,10 @@ const MainLayout: React.FC<Props> = ({ navIsSticky, socket }) => {
             <SuggestedUsers users={suggestedUsers} socket={socket} />
           </Card>
         ) : (
-          "Found no users to suggest"
+          <Card className="xl:sticky xl:top-32 mt-10 xl:mt-0 xl:mb-10 px-8 py-4 pb-6 flex flex-col !text-left order-1 xl:order-2">
+            <h3 className="mb-5 text-xl">Suggested for you</h3>
+            <p>Found no users to suggest</p>
+          </Card>
         )}
       </div>
     </div>

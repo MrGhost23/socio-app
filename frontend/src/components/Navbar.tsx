@@ -15,9 +15,8 @@ import { selectSideOpen, toggleSidebar } from "../store/slices/sidebarSlice";
 import { ProfileType } from "../Types/Profile.types";
 import { PostType } from "../Types/Post.types";
 import { NotificationType } from "../Types/Notification.types";
-import { formatTime } from "../utils/formatTime";
 import UserImage from "./User/UserImage";
-import Button from "../ui/Button";
+import Notifications from "./Notifications";
 
 type Props = {
   navIsSticky: boolean;
@@ -145,45 +144,6 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
     }
   }, [loading, query, results]);
 
-  const renderNotifications = useCallback(() => {
-    return (
-      <div className="relative">
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg overflow-hidden z-20">
-          <div className="py-2">
-            {notifications.map((notification) => (
-              <Link
-                key={notification.createdAt}
-                to={`/post/${notification.postId}`}
-                onClick={() => setIsOpen(false)}
-                className="flex items-center px-4 py-3 border-b hover:bg-gray-100 -mx-2"
-              >
-                <UserImage
-                  username={notification.firstName}
-                  src={notification.userPicture}
-                  className="h-8 w-8 rounded-full object-cover mx-1"
-                />
-                <p className="text-gray-600 text-sm mx-2">
-                  <span className="font-bold">
-                    {notification.firstName} {notification.lastName}
-                  </span>{" "}
-                  {notification.actionType === "like" && "liked your post."}{" "}
-                  {notification.actionType === "comment" &&
-                    "commented on your post."}{" "}
-                  {notification.actionType === "follow" &&
-                    "started following you."}{" "}
-                  <span className="text-gray-400">
-                    {formatTime(notification.createdAt)}
-                  </span>
-                </p>
-              </Link>
-            ))}
-          </div>
-          <Button bg={true} text="See all notifications" />
-        </div>
-      </div>
-    );
-  }, [notifications]);
-
   return (
     <header
       className={
@@ -243,7 +203,12 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
                 <div onClick={() => setIsOpen((prev) => !prev)}>
                   <IoIosNotifications className="text-3xl text-gray-700 cursor-pointer dark:text-gray-200" />
                 </div>
-                {isOpen && renderNotifications()}
+                {isOpen && (
+                  <Notifications
+                    notifications={notifications}
+                    setIsOpen={setIsOpen}
+                  />
+                )}
               </li>
             </ul>
           </nav>

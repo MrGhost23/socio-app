@@ -9,7 +9,7 @@ type Props = {
 
 const SuggestedUsers: React.FC<Props> = ({ users, socket }) => {
   return (
-    <div className="pb-1 xl:pb-0 flex flex-row xl:flex-col gap-5 md:gap-8 xl:gap-3 overflow-x-auto">
+    <div className="pb-1 xl:pb-0 flex flex-row xl:flex-col gap-5 md:gap-8 xl:gap-3 overflow-x-auto lg:max-h-[calc(70vh-80px)]">
       {users.map((user) => (
         <User
           key={user.username}

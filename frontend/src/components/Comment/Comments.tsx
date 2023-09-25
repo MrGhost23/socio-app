@@ -34,7 +34,7 @@ const Comments: React.FC<Props> = ({
             <FaChevronUp />
             Show all
           </p>
-          {comments?.slice(-2).map((comment) => (
+          {comments.slice(-2).map((comment) => (
             <Comment
               key={comment._id}
               comment={comment}
