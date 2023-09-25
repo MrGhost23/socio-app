@@ -72,8 +72,6 @@ const Conversation: React.FC<Props> = ({
     }
   }, [chat.chatId, sendMessage]);
 
-  console.log(chat.chatId);
-  console.log(currentChat);
   return (
     <>
       {userProfileIsLoading ? (

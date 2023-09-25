@@ -65,12 +65,14 @@ const Chats: React.FC<Props> = ({
       setConversationsIsVisible(false);
       setMessagesIsVisible(true);
       setChatInfoIsVisible(false);
-      setCurrentChat(
-        userChats.find((chat) =>
-          chat.members.find((user) => user === receiverUsername)
-        )?.chatId || null
-      );
+    } else {
+      setConversationsIsVisible(true);
     }
+    setCurrentChat(
+      userChats?.find((chat) =>
+        chat.members.find((user) => user === receiverUsername)
+      )?.chatId || null
+    );
   }, [currentUser?.username, userChats, receiverUsername]);
 
   useEffect(() => {

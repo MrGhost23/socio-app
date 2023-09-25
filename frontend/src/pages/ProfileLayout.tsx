@@ -18,9 +18,11 @@ import Sidebar from "../components/Sidebar";
 import { RootState } from "../store/store";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 import { Socket } from "socket.io-client";
+
 type Props = {
   socket: Socket;
 };
+
 const ProfileLayout: React.FC<Props> = ({ socket }) => {
   const { username } = useParams();
   const navigate = useNavigate();
