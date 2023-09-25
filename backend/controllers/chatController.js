@@ -29,7 +29,6 @@ const createChat = async (req, res) => {
 const userChats = async (req, res) => {
   try {
     const chats = await Chat.find({ members: { $in: [req.params.username] } });
-
     const chatsWithLatestMessage = [];
 
     for (const chat of chats) {
@@ -42,6 +41,7 @@ const userChats = async (req, res) => {
         chatId: chat._id,
         members: chat.members,
         latestMessage: latestMessage || null,
+        isRead: chat.isRead,
       });
     }
 
