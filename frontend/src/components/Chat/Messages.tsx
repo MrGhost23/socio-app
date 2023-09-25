@@ -4,7 +4,6 @@ import axios from "axios";
 import { selectUser } from "../../store/slices/authSlice";
 import { MessageType } from "../../Types/Message.types";
 import { ProfileType } from "../../Types/Profile.types";
-import useAxios from "../../hooks/useAxios";
 import { ChatType } from "../../Types/Chat.types";
 import ReceiverMsg from "./ReceiverMsg";
 import SenderMsg from "./SenderMsg";
@@ -20,6 +19,7 @@ interface Message {
 
 type Props = {
   chat: ChatType;
+  chatMessages: MessageType[];
   receiverData: ProfileType;
   setSendMessage: React.Dispatch<React.SetStateAction<Message | null>>;
   receiveMessage: MessageType | null;
@@ -28,6 +28,7 @@ type Props = {
 
 const Messages: React.FC<Props> = ({
   chat,
+  chatMessages,
   receiverData,
   setSendMessage,
   receiveMessage,
@@ -73,15 +74,6 @@ const Messages: React.FC<Props> = ({
     setSendMessage({ ...message, receiverUsername: receiverUsername! });
   };
 
-  const {
-    data: chatMessages,
-    loading: chatMessagesIsLoading,
-    error: chatMessagesHasError,
-  } = useAxios<MessageType[]>(
-    `http://localhost:5000/api/v1/message/${chat.chatId}`,
-    "get"
-  );
-
   useEffect(() => {
     if (chatMessages) {
       setMessages(chatMessages);
@@ -96,9 +88,6 @@ const Messages: React.FC<Props> = ({
       });
     }
   }, [messages]);
-
-  if (chatMessagesIsLoading) return <p>Loading</p>;
-  if (chatMessagesHasError) console.log(chatMessagesHasError);
 
   return (
     <>

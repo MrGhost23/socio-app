@@ -5,6 +5,7 @@ import ChatInfo from "./ChatInfo";
 import ProfileSkeleton from "../../skeletons/ProfileSkeleton";
 import MessagesSkeleton from "../../skeletons/MessagesSkeleton";
 import { ProfileType } from "../../Types/Profile.types";
+import useAxios from "../../hooks/useAxios";
 
 interface Message {
   senderUsername: string;
@@ -38,6 +39,12 @@ const Chat: React.FC<Props> = ({
   showUserInfo,
   hideUserInfo,
 }) => {
+  const chat = userChats?.find((chat) => chat?.chatId === currentChat);
+
+  const { data: chatMessages, loading: chatMessagesIsLoading } = useAxios<
+    MessageType[]
+  >(`http://localhost:5000/api/v1/message/${chat?.chatId}`, "get");
+
   return (
     <>
       <div
@@ -47,11 +54,12 @@ const Chat: React.FC<Props> = ({
             : "col-span-2 h-[calc(100vh-82px)] px-5 hidden lg:flex lg:flex-col lg:justify-between"
         }
       >
-        {currentChatUserDataLoading ? (
+        {currentChatUserDataLoading || chatMessagesIsLoading ? (
           <MessagesSkeleton messagesNumber={6} />
         ) : (
           <Messages
-            chat={userChats.find((chat) => chat.chatId === currentChat)!}
+            chat={chat!}
+            chatMessages={chatMessages!}
             receiverData={currentChatUserData}
             setSendMessage={setSendMessage}
             receiveMessage={receiveMessage}
