@@ -24,9 +24,13 @@ type Props = {
 };
 
 const ProfileLayout: React.FC<Props> = ({ socket }) => {
+  const currentUser = useSelector(selectUser);
   const { username } = useParams();
-  const navigate = useNavigate();
 
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(false);
+
+  const navigate = useNavigate();
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
 
   const { data: userProfile, loading: userProfileIsLoading } =
@@ -39,16 +43,14 @@ const ProfileLayout: React.FC<Props> = ({ socket }) => {
     RecentActivityType[]
   >(`http://localhost:5000/api/v1/users/${username}/activities`, "get");
 
-  const currentUser = useSelector(selectUser);
-  const [isFollowing, setIsFollowing] = useState(false);
-
   const [followers, setFollowers] = useState<number>(0);
 
   useEffect(() => {
     if (userProfile) {
       setFollowers(userProfile.followers.length);
+      setIsBlocked(currentUser!.blockedUsers.includes(userProfile._id));
     }
-  }, [userProfile]);
+  }, [currentUser, userProfile]);
 
   useEffect(() => {
     if (userProfile) {
@@ -91,7 +93,7 @@ const ProfileLayout: React.FC<Props> = ({ socket }) => {
     }
   };
 
-  if (!userProfileIsLoading && !userProfile) {
+  if ((!userProfileIsLoading && !userProfile) || isBlocked) {
     navigate("/");
     return;
   }
