@@ -5,6 +5,10 @@ const chatSchema = new mongoose.Schema(
     members: {
       type: Array,
     },
+    isRead: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
