@@ -119,6 +119,7 @@ const Chat: React.FC<Props> = ({
           submitHandler={submitHandler}
           newMessage={newMessage}
           setNewMessage={setNewMessage}
+          disabled={currentChatUserDataLoading || chatMessagesIsLoading}
         />
       </div>
       <div
