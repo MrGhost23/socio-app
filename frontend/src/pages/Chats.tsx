@@ -23,6 +23,7 @@ type Props = {
   setSendMessage: React.Dispatch<React.SetStateAction<Message | null>>;
   receiveMessage: MessageType | null;
   socket: Socket;
+  onlineUsers: { [key: string]: boolean };
 };
 
 const Chats: React.FC<Props> = ({
@@ -30,6 +31,7 @@ const Chats: React.FC<Props> = ({
   sendMessage,
   receiveMessage,
   socket,
+  onlineUsers,
 }) => {
   const { username: receiverUsername } = useParams();
   const currentUser = useSelector(selectUser);
@@ -116,6 +118,7 @@ const Chats: React.FC<Props> = ({
             setCurrentChatUserDataLoading={setCurrentChatUserDataLoading}
             receiveMessage={receiveMessage}
             sendMessage={sendMessage}
+            onlineUsers={onlineUsers}
           />
         </div>
         {!currentChatLoading && receiverUsername ? (

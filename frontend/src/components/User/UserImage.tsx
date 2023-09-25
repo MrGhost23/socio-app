@@ -6,9 +6,16 @@ type Props = {
   username: string;
   link?: boolean;
   className?: string;
+  online?: boolean;
 };
 
-const UserImage: React.FC<Props> = ({ username, src, link, className }) => {
+const UserImage: React.FC<Props> = ({
+  username,
+  src,
+  link,
+  className,
+  online,
+}) => {
   let classes = "rounded-full shadow-lg";
   if (className) {
     classes += " " + className;
@@ -17,19 +24,27 @@ const UserImage: React.FC<Props> = ({ username, src, link, className }) => {
   return (
     <>
       {link ? (
-        <Link to={`/profile/${username}`}>
+        <Link to={`/profile/${username}`} className="relative">
           <img
             className={classes}
             src={src || noAvatar}
             alt={`${username}'s profile picture`}
           />
+          {online && (
+            <div className="absolute bottom-0.5 right-0.5 w-3 h-3 bg-green-500 rounded-full"></div>
+          )}
         </Link>
       ) : (
-        <img
-          className={classes}
-          src={src || noAvatar}
-          alt={`${username}'s profile picture`}
-        />
+        <div className="relative">
+          <img
+            className={classes}
+            src={src || noAvatar}
+            alt={`${username}'s profile picture`}
+          />
+          {online && (
+            <div className="absolute bottom-0.5 right-0.5 w-3 h-3 bg-green-500 rounded-full"></div>
+          )}
+        </div>
       )}
     </>
   );

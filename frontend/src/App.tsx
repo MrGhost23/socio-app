@@ -61,7 +61,9 @@ const App: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const user = useSelector(selectUser);
-  const [onlineUsers, setOnlineUsers] = useState([]);
+  const [onlineUsers, setOnlineUsers] = useState<{ [key: string]: boolean }>(
+    {}
+  );
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
   const [sendMessage, setSendMessage] = useState<Message | null>(null);
   const [receiveMessage, setReceiveMessage] = useState<MessageType | null>(
@@ -159,6 +161,7 @@ const App: React.FC = () => {
                 sendMessage={sendMessage}
                 receiveMessage={receiveMessage}
                 socket={socketio}
+                onlineUsers={onlineUsers}
               />
             )
           }
@@ -174,6 +177,7 @@ const App: React.FC = () => {
                 sendMessage={sendMessage}
                 receiveMessage={receiveMessage}
                 socket={socketio}
+                onlineUsers={onlineUsers}
               />
             )
           }
