@@ -73,4 +73,24 @@ const findChat = async (req, res) => {
   }
 };
 
-module.exports = { createChat, userChats, findChat };
+const markChatAsRead = async (req, res) => {
+  try {
+    const { chatId } = req.params;
+    const chat = await Chat.findByIdAndUpdate(
+      chatId,
+      { isRead: true },
+      { new: true }
+    );
+
+    if (!chat) {
+      return res.status(404).json({ message: "Chat not found" });
+    }
+
+    res.json(chat);
+  } catch (error) {
+    console.error("Error marking chat as read:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+module.exports = { createChat, userChats, findChat, markChatAsRead };
