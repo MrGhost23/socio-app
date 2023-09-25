@@ -104,7 +104,7 @@ const Conversation: React.FC<Props> = ({
               ) : (
                 <span className="font-semibold text-gray-700">{`Say Hi to ${
                   userProfile!.firstName
-                }!`}</span>
+                }! 👋`}</span>
               )}
             </span>
           </div>
