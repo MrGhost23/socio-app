@@ -308,11 +308,11 @@ const blockUnblockUser = async (req, res) => {
           blockedUserId.toString() !== userToModify._id.toString()
       );
       await currentUser.save();
-      res.status(200).json({ message: "User has been unblocked" });
+      res.status(200).json({ status: 0 }); // unblocked
     } else {
       currentUser.blockedUsers.push(userToModify._id);
       await currentUser.save();
-      res.status(200).json({ message: "User has been blocked" });
+      res.status(200).json({ status: 1 }); // blocked
     }
   } catch (error) {
     console.error(error);
