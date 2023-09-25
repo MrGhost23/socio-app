@@ -5,5 +5,6 @@ export interface ChatType {
     _id: string;
     text: string;
     createdAt: string;
-  };
+  } | null;
+  isRead: boolean;
 }
