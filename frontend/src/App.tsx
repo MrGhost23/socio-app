@@ -208,7 +208,10 @@ const App: React.FC = () => {
             )
           }
         >
-          <Route path="/profile/:username" element={<Profile />} />
+          <Route
+            path="/profile/:username"
+            element={<Profile socket={socketio} />}
+          />
           <Route
             path="/profile/:username/followers"
             element={<Followers socket={socketio} />}
