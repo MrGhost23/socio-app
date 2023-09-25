@@ -1,13 +1,15 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { FaPen, FaRegBookmark, FaRegTrashAlt } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa6";
 import { ImBlocked } from "react-icons/im";
 import { PiWarningBold } from "react-icons/pi";
-import { selectUser } from "../../store/slices/authSlice";
+import { selectUser, toggleBlockUser } from "../../store/slices/authSlice";
 import useProfileActions from "../../hooks/useProfileActions";
 import usePostActions from "../../hooks/usePostActions";
 import Menu from "../../ui/Menu";
+import { RootState } from "../../store/store";
+import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 
 type Props = {
   postId: string;
@@ -22,13 +24,15 @@ const PostMenu: React.FC<Props> = ({
   setIsEditing,
   removePost,
 }) => {
+  const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
+
   const currentUser = useSelector(selectUser);
 
   const [inBookmarks, setInBookmarks] = useState<boolean>(
     currentUser!.bookmarks?.includes(postId)
   );
 
-  const { toggleBlockUser, reportUser } = useProfileActions();
+  const { reportUser } = useProfileActions();
 
   const { toggleBookmarkPost, deletePost } = usePostActions();
 
@@ -50,7 +54,7 @@ const PostMenu: React.FC<Props> = ({
   };
 
   const toggleBlockHandler = () => {
-    toggleBlockUser(username);
+    dispatch(toggleBlockUser({ username }));
     setMenuOpened(false);
   };
 

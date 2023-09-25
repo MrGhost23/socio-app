@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleFollowUser, selectUser } from "../../store/slices/authSlice";
+import {
+  toggleFollowUser,
+  toggleBlockUser,
+  selectUser,
+} from "../../store/slices/authSlice";
 import { UserType } from "../../Types/User.types";
-import useProfileActions from "../../hooks/useProfileActions";
 import UserImage from "./UserImage";
 import UserFullName from "./UserFullName";
 import Button from "../../ui/Button";
@@ -18,13 +21,7 @@ type Props = {
   socket: Socket;
 };
 
-const User: React.FC<Props> = ({
-  user,
-  changeStyle,
-  mode,
-  center,
-  socket,
-}) => {
+const User: React.FC<Props> = ({ user, changeStyle, mode, center, socket }) => {
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
   const currentUser = useSelector(selectUser);
   const isFollowing = currentUser!.following.includes(user._id);
@@ -41,8 +38,6 @@ const User: React.FC<Props> = ({
       mode === "follow" ? (isFollowing ? "Unfollow" : "Follow") : "unblock"
     );
   }, [mode, isFollowing]);
-
-  const { toggleBlockUser } = useProfileActions();
 
   const buttonClickHandler = async () => {
     setFollowButtonLoading(true);
@@ -71,7 +66,7 @@ const User: React.FC<Props> = ({
       }
       setFollowButtonLoading(false);
     } else {
-      await toggleBlockUser(user.username);
+      dispatch(toggleBlockUser({ username: user.username }));
 
       if (buttonText === "block") {
         setButtonText("unblock");
