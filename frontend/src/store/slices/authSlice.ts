@@ -128,7 +128,7 @@ export const toggleBlockUser = createAsyncThunk<
     auth: AuthState;
   };
   try {
-    const response: AxiosResponse<{ status: number }> = await axios.put(
+    const response: AxiosResponse<{ status: number }> = await axios.post(
       `http://localhost:5000/api/v1/users/${username}/block-unblock`,
       {
         username: auth.user!.username,
@@ -196,7 +196,7 @@ const authSlice = createSlice({
         }
       })
       .addCase(toggleBlockUser.fulfilled, (state, action) => {
-        let updatedBlockedUsers = [...state.user!.blocked];
+        let updatedBlockedUsers = [...state.user!.blockedUsers];
         if (action.payload) {
           if (action.payload.status === 1) {
             updatedBlockedUsers.push(action.payload.uId);
@@ -205,7 +205,7 @@ const authSlice = createSlice({
               (userId) => userId !== action.payload!.uId
             );
           }
-          state.user = { ...state.user!, blocked: updatedBlockedUsers };
+          state.user = { ...state.user!, blockedUsers: updatedBlockedUsers };
         }
       });
   },
