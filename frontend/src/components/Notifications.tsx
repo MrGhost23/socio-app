@@ -15,7 +15,6 @@ const Notifications: React.FC<Props> = ({ notifications, setIsOpen }) => {
   const onClickOutside = () => {
     setIsOpen(false);
   };
-  console.log(notifications);
 
   const notificationsRef = useClickOutside(onClickOutside);
 
