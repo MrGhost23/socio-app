@@ -7,6 +7,7 @@ type Props = {
   placeholder: string;
   submitFunction: () => void;
   showFormIcon?: boolean;
+  disabled?: boolean;
 };
 
 const TextareaForm: React.FC<Props> = ({
@@ -15,6 +16,7 @@ const TextareaForm: React.FC<Props> = ({
   placeholder,
   submitFunction,
   showFormIcon,
+  disabled,
 }) => {
   const classes =
     "absolute bottom-4 right-6 text-lg sm:text-xl text-gray-600 opacity-0 cursor-pointer rotate-[135deg] transition duration-500";
@@ -46,11 +48,15 @@ const TextareaForm: React.FC<Props> = ({
   };
 
   const submitHandler = () => {
+    if (disabled) return;
+
     submitFunction();
     setIconClasses(classes);
   };
 
   const keyDownHandler = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (disabled) return;
+
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       submitFunction();
