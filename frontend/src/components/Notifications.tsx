@@ -54,11 +54,11 @@ const Notifications: React.FC<Props> = ({
         } absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg z-20`}
       >
         <div
-          className={`mb-10 overflow-hidden ${
+          className={`overflow-hidden ${
             !notificationsSliced
               ? "max-h-[calc(80vh-80px)] overflow-y-auto"
               : ""
-          }`}
+          } ${notifications?.length > max ? "mb-10 " : ""}`}
         >
           {notificationsSliced
             ? notifications
@@ -80,12 +80,14 @@ const Notifications: React.FC<Props> = ({
                 />
               ))}
         </div>
-        <Button
-          bg={true}
-          text={notificationsSliced ? "Show all" : "Show less"}
-          onClick={showAll}
-          className="absolute bottom-0 left-0"
-        />
+        {notifications?.length > max && (
+          <Button
+            bg={true}
+            text={notificationsSliced ? "Show all" : "Show less"}
+            onClick={showAll}
+            className="absolute bottom-0 left-0"
+          />
+        )}
       </div>
     </div>
   );
