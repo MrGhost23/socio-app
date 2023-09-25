@@ -59,6 +59,7 @@ const Messages: React.FC<Props> = ({
         "http://localhost:5000/api/v1/message",
         message
       );
+      console.log(data);
       setMessages([...messages, data]);
       setNewMessage("");
     } catch (error) {
@@ -110,12 +111,14 @@ const Messages: React.FC<Props> = ({
                     userPicture={currentUser!.userPicture!}
                     username={currentUser!.username}
                     msg={message.text}
+                    msgDate={message.createdAt}
                   />
                 ) : (
                   <ReceiverMsg
                     userPicture={receiverData.userPicture!}
                     username={receiverData.username}
                     msg={message.text}
+                    msgDate={message.createdAt}
                     setChatInfoIsVisible={setChatInfoIsVisible}
                   />
                 )}
