@@ -1,3 +1,4 @@
+const Chat = require("../models/Chat");
 const Message = require("../models/Message");
 
 const addMessage = async (req, res) => {
@@ -9,6 +10,7 @@ const addMessage = async (req, res) => {
   });
   try {
     const result = await message.save();
+    await Chat.findByIdAndUpdate(chatId, { isRead: false }, { new: true });
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json(error);
