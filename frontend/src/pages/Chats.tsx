@@ -9,6 +9,7 @@ import { MessageType } from "../Types/Message.types";
 import Conversations from "../components/Chat/Conversations";
 import Chat from "../components/Chat/Chat";
 import Sidebar from "../components/Sidebar";
+import { ProfileType } from "../Types/Profile.types";
 
 interface Message {
   senderUsername: string;
@@ -31,9 +32,14 @@ const Chats: React.FC<Props> = ({
   socket,
 }) => {
   const { username: receiverUsername } = useParams();
-
   const currentUser = useSelector(selectUser);
+
   const [currentChat, setCurrentChat] = useState<string | null>(null);
+  const [currentChatLoading, setCurrentChatLoading] = useState<boolean>(true);
+  const [currentChatUserData, setCurrentChatUserData] =
+    useState<ProfileType | null>();
+  const [currentChatUserDataLoading, setCurrentChatUserDataLoading] =
+    useState<boolean>(true);
 
   const {
     data: userChats,
@@ -43,6 +49,18 @@ const Chats: React.FC<Props> = ({
     `http://localhost:5000/api/v1/chat/${currentUser?.username}`,
     "get"
   );
+
+  useEffect(() => {
+    setCurrentChatLoading(true);
+
+    setCurrentChat(
+      userChats?.find((chat) =>
+        chat.members.find((user) => user === receiverUsername)
+      )?.chatId || null
+    );
+
+    setCurrentChatLoading(false);
+  }, [receiverUsername, userChats]);
 
   const [conversationsIsVisible, setConversationsIsVisible] = useState(true);
   const [messagesIsVisible, setMessagesIsVisible] = useState(true);
@@ -61,19 +79,14 @@ const Chats: React.FC<Props> = ({
   };
 
   useEffect(() => {
-    if (userChats && receiverUsername) {
+    if (receiverUsername) {
       setConversationsIsVisible(false);
       setMessagesIsVisible(true);
       setChatInfoIsVisible(false);
     } else {
       setConversationsIsVisible(true);
     }
-    setCurrentChat(
-      userChats?.find((chat) =>
-        chat.members.find((user) => user === receiverUsername)
-      )?.chatId || null
-    );
-  }, [currentUser?.username, userChats, receiverUsername]);
+  }, [receiverUsername]);
 
   useEffect(() => {
     if (sendMessage !== null) {
@@ -99,13 +112,17 @@ const Chats: React.FC<Props> = ({
             chats={userChats!}
             currentChat={currentChat}
             setCurrentChat={setCurrentChat}
+            setCurrentChatUserData={setCurrentChatUserData}
+            setCurrentChatUserDataLoading={setCurrentChatUserDataLoading}
             receiveMessage={receiveMessage}
             sendMessage={sendMessage}
           />
         </div>
-        {currentChat ? (
+        {!currentChatLoading && receiverUsername ? (
           <Chat
             currentChat={currentChat}
+            currentChatUserData={currentChatUserData!}
+            currentChatUserDataLoading={currentChatUserDataLoading}
             userChats={userChats!}
             setSendMessage={setSendMessage}
             receiveMessage={receiveMessage}
