@@ -155,7 +155,7 @@ io.on("connection", (socket) => {
     "sendNotification",
     async ({ senderUsername, receiverUsername, actionType, postId }) => {
       if (senderUsername !== receiverUsername) {
-        const sender = await User.findOne({ username: senderUsername });
+        const sender = await User.findOne({ username: senderUsername }).lean();
 
         const receiver = getUsers(receiverUsername);
 
