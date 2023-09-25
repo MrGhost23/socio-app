@@ -42,7 +42,12 @@ const Messages: React.FC<Props> = ({
 
   useEffect(() => {
     if (receiveMessage !== null && receiveMessage.chatId === chat.chatId) {
-      setMessages((prevMessages) => [...prevMessages, receiveMessage]);
+      const currentDateAndTime = new Date().toISOString();
+
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { ...receiveMessage, createdAt: currentDateAndTime },
+      ]);
     }
   }, [chat.chatId, receiveMessage]);
 
@@ -59,7 +64,6 @@ const Messages: React.FC<Props> = ({
         "http://localhost:5000/api/v1/message",
         message
       );
-      console.log(data);
       setMessages([...messages, data]);
       setNewMessage("");
     } catch (error) {
