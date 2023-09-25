@@ -79,9 +79,7 @@ const Conversation: React.FC<Props> = ({
       ) : (
         <div
           className={`flex flex-row gap-2 py-4 px-4 sm:px-10 lg:px-4 justify-center items-start border-b-2 cursor-pointer ${
-            chat.chatId === currentChat
-              ? "bg-slate-200"
-              : "hover:bg-slate-100"
+            chat.chatId === currentChat ? "bg-slate-200" : "hover:bg-slate-100"
           }`}
           onClick={changeChatHandler}
         >
@@ -100,7 +98,15 @@ const Conversation: React.FC<Props> = ({
                 <ChatDate date={latestMessageDate} />
               )}
             </div>
-            <span className="text-gray-500 font-medium">{latestMessage}</span>
+            <span className="text-gray-500 font-medium">
+              {latestMessage ? (
+                latestMessage
+              ) : (
+                <span className="font-semibold text-gray-700">{`Say Hi to ${
+                  userProfile!.firstName
+                }!`}</span>
+              )}
+            </span>
           </div>
         </div>
       )}
