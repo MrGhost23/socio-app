@@ -103,7 +103,7 @@ const Messages: React.FC<Props> = ({
   return (
     <>
       <ScrollableDiv className="pt-5">
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-5 pb-1">
           {chat &&
             messages.map((message, index) => (
               <div

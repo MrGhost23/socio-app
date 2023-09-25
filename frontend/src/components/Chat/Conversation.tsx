@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../store/slices/authSlice";
 import { ChatType } from "../../Types/Chat.types";
 import { MessageType } from "../../Types/Message.types";
 import UserImage from "../User/UserImage";
@@ -10,6 +8,8 @@ import ChatDate from "./ChatDate";
 import ConversationSkeleton from "../../skeletons/ConversationSkeleton";
 import { ProfileType } from "../../Types/Profile.types";
 import useAxios from "../../hooks/useAxios";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../store/slices/authSlice";
 
 interface Message {
   senderUsername: string;
@@ -22,6 +22,8 @@ type Props = {
   chat: ChatType;
   currentChat: string | null;
   changeChat: React.Dispatch<React.SetStateAction<string | null>>;
+  setCurrentChatUserData: React.Dispatch<React.SetStateAction<ProfileType>>;
+  setCurrentChatUserDataLoading: React.Dispatch<React.SetStateAction<boolean>>;
   sendMessage: Message | null;
   receiveMessage: MessageType | null;
 };
@@ -30,31 +32,50 @@ const Conversation: React.FC<Props> = ({
   chat,
   currentChat,
   changeChat,
+  setCurrentChatUserData,
+  setCurrentChatUserDataLoading,
   sendMessage,
   receiveMessage,
 }) => {
   const navigate = useNavigate();
+
   const currentUser = useSelector(selectUser);
+  const receiverUsername = chat.members.find(
+    (username) => username !== currentUser!.username
+  )!;
 
   const [latestMessage, setLatestMessage] = useState(chat.latestMessage?.text);
   const [latestMessageDate, setLatestMessageDate] = useState(
     chat.latestMessage?.createdAt
   );
 
-  const receiverUsername = chat.members.find(
-    (username) => username !== currentUser!.username
-  );
-
-  const changeChatHandler = () => {
-    changeChat(chat.chatId);
-    navigate(`/chats/${receiverUsername}`);
-  };
-
   const { data: userProfile, loading: userProfileIsLoading } =
     useAxios<ProfileType>(
       `http://localhost:5000/api/v1/users/${receiverUsername}`,
       "get"
     );
+
+  useEffect(() => {
+    if (currentChat === chat.chatId) {
+      setCurrentChatUserDataLoading(userProfileIsLoading);
+    }
+
+    if (currentChat === chat.chatId && userProfile) {
+      setCurrentChatUserData(userProfile);
+    }
+  }, [
+    chat.chatId,
+    currentChat,
+    setCurrentChatUserData,
+    setCurrentChatUserDataLoading,
+    userProfile,
+    userProfileIsLoading,
+  ]);
+
+  const changeChatHandler = () => {
+    changeChat(chat.chatId);
+    navigate(`/chats/${receiverUsername}`);
+  };
 
   useEffect(() => {
     if (receiveMessage && receiveMessage.chatId === chat.chatId) {
@@ -79,9 +100,7 @@ const Conversation: React.FC<Props> = ({
       ) : (
         <div
           className={`flex flex-row gap-2 py-4 px-4 sm:px-10 lg:px-4 justify-center items-start border-b-2 cursor-pointer ${
-            chat.chatId === currentChat
-              ? "bg-slate-200"
-              : "hover:bg-slate-100"
+            chat.chatId === currentChat ? "bg-slate-200" : "hover:bg-slate-100"
           }`}
           onClick={changeChatHandler}
         >

@@ -1,11 +1,10 @@
-import { useSelector } from "react-redux";
 import { ChatType } from "../../Types/Chat.types";
 import { MessageType } from "../../Types/Message.types";
-import { selectUser } from "../../store/slices/authSlice";
-import { ProfileType } from "../../Types/Profile.types";
-import useAxios from "../../hooks/useAxios";
 import Messages from "./Messages";
 import ChatInfo from "./ChatInfo";
+import ProfileSkeleton from "../../skeletons/ProfileSkeleton";
+import MessagesSkeleton from "../../skeletons/MessagesSkeleton";
+import { ProfileType } from "../../Types/Profile.types";
 
 interface Message {
   senderUsername: string;
@@ -16,6 +15,8 @@ interface Message {
 
 type Props = {
   currentChat: string | null;
+  currentChatUserData: ProfileType;
+  currentChatUserDataLoading: boolean;
   userChats: ChatType[];
   setSendMessage: React.Dispatch<React.SetStateAction<Message | null>>;
   receiveMessage: MessageType | null;
@@ -27,6 +28,8 @@ type Props = {
 
 const Chat: React.FC<Props> = ({
   currentChat,
+  currentChatUserData,
+  currentChatUserDataLoading,
   userChats,
   setSendMessage,
   receiveMessage,
@@ -35,37 +38,26 @@ const Chat: React.FC<Props> = ({
   showUserInfo,
   hideUserInfo,
 }) => {
-  const currentUser = useSelector(selectUser);
-  const receiverUsername = userChats
-    .find((chat) => chat.chatId === currentChat)!
-    .members.find((username) => username !== currentUser!.username)!;
-
-  const {
-    data: receiverData,
-    loading: receiverDataIsLoading,
-  } = useAxios<ProfileType>(
-    `http://localhost:5000/api/v1/users/${receiverUsername}`,
-    "get"
-  );
-
-  if (receiverDataIsLoading) return "loading";
-
   return (
     <>
       <div
         className={
           messagesIsVisible
-            ? "col-span-2 h-[calc(100vh-82px)] px-5 flex flex-col justify-between"
+            ? "col-span-2 h-[calc(100vh-82px)] px-5 flex flex-col justify-end"
             : "col-span-2 h-[calc(100vh-82px)] px-5 hidden lg:flex lg:flex-col lg:justify-between"
         }
       >
-        <Messages
-          chat={userChats.find((chat) => chat.chatId === currentChat)!}
-          receiverData={receiverData!}
-          setSendMessage={setSendMessage}
-          receiveMessage={receiveMessage}
-          setChatInfoIsVisible={showUserInfo}
-        />
+        {currentChatUserDataLoading ? (
+          <MessagesSkeleton messagesNumber={6} />
+        ) : (
+          <Messages
+            chat={userChats.find((chat) => chat.chatId === currentChat)!}
+            receiverData={currentChatUserData}
+            setSendMessage={setSendMessage}
+            receiveMessage={receiveMessage}
+            setChatInfoIsVisible={showUserInfo}
+          />
+        )}
       </div>
       <div
         className={
@@ -74,7 +66,14 @@ const Chat: React.FC<Props> = ({
             : "col-span-1 h-[calc(100vh-82px)] hidden lg:block border-l-2 px-4 sm:px-10 lg:px-4 pt-5"
         }
       >
-        <ChatInfo receiverData={receiverData!} hideUserInfo={hideUserInfo} />
+        {currentChatUserDataLoading ? (
+          <ProfileSkeleton className="shadow-none" />
+        ) : (
+          <ChatInfo
+            receiverData={currentChatUserData}
+            hideUserInfo={hideUserInfo}
+          />
+        )}
       </div>
     </>
   );

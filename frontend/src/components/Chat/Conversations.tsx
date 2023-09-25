@@ -5,6 +5,7 @@ import { ChatType } from "../../Types/Chat.types";
 import { MessageType } from "../../Types/Message.types";
 import Conversation from "./Conversation";
 import ConversationsSkeletons from "../../skeletons/ConversationsSkeletons";
+import { ProfileType } from "../../Types/Profile.types";
 
 interface Message {
   senderUsername: string;
@@ -18,6 +19,8 @@ type Props = {
   chats: ChatType[];
   currentChat: string | null;
   setCurrentChat: React.Dispatch<React.SetStateAction<string | null>>;
+  setCurrentChatUserData: React.Dispatch<React.SetStateAction<ProfileType>>;
+  setCurrentChatUserDataLoading: React.Dispatch<React.SetStateAction<boolean>>;
   sendMessage: Message | null;
   receiveMessage: MessageType | null;
 };
@@ -27,6 +30,8 @@ const Conversations: React.FC<Props> = ({
   chats,
   currentChat,
   setCurrentChat,
+  setCurrentChatUserData,
+  setCurrentChatUserDataLoading,
   sendMessage,
   receiveMessage,
 }) => {
@@ -46,6 +51,8 @@ const Conversations: React.FC<Props> = ({
               chat={chat}
               currentChat={currentChat}
               changeChat={setCurrentChat}
+              setCurrentChatUserData={setCurrentChatUserData}
+              setCurrentChatUserDataLoading={setCurrentChatUserDataLoading}
               receiveMessage={receiveMessage}
               sendMessage={sendMessage}
             />
@@ -53,7 +60,17 @@ const Conversations: React.FC<Props> = ({
         )}
       </>
     );
-  }, [chatsLoading, chats, currentChat, setCurrentChat, receiveMessage, sendMessage, currentUser]);
+  }, [
+    chatsLoading,
+    chats,
+    currentChat,
+    setCurrentChat,
+    setCurrentChatUserData,
+    setCurrentChatUserDataLoading,
+    receiveMessage,
+    sendMessage,
+    currentUser,
+  ]);
 
   return <>{conversationComponents}</>;
 };
