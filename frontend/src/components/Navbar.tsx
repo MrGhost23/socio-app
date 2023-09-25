@@ -203,12 +203,11 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
                 <div onClick={() => setIsOpen((prev) => !prev)}>
                   <IoIosNotifications className="text-3xl text-gray-700 cursor-pointer dark:text-gray-200" />
                 </div>
-                {isOpen && (
-                  <Notifications
-                    notifications={notifications}
-                    setIsOpen={setIsOpen}
-                  />
-                )}
+                <Notifications
+                  notifications={notifications}
+                  isOpen={isOpen}
+                  setIsOpen={setIsOpen}
+                />
               </li>
             </ul>
           </nav>

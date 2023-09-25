@@ -6,10 +6,15 @@ import Notification from "./Notification";
 
 type Props = {
   notifications: NotificationType[];
+  isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Notifications: React.FC<Props> = ({ notifications, setIsOpen }) => {
+const Notifications: React.FC<Props> = ({
+  notifications,
+  isOpen,
+  setIsOpen,
+}) => {
   const onClickOutside = () => {
     setIsOpen(false);
   };
@@ -28,7 +33,9 @@ const Notifications: React.FC<Props> = ({ notifications, setIsOpen }) => {
   return (
     <div className="relative" ref={notificationsRef}>
       <div
-        className={`absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg z-20`}
+        className={`${
+          isOpen ? "" : "hidden"
+        } absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg z-20`}
       >
         <div
           className={`mb-10 overflow-hidden ${
