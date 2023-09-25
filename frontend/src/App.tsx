@@ -199,7 +199,15 @@ const App: React.FC = () => {
             )
           }
         />
-        <Route element={user ? <ProfileLayout /> : <Navigate to="/login" />}>
+        <Route
+          element={
+            user ? (
+              <ProfileLayout socket={socketio} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        >
           <Route
             path="/profile/:username"
             element={<Profile socket={socketio} />}
