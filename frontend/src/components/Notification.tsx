@@ -3,7 +3,7 @@ import { formatTime } from "../utils/formatTime";
 import UserImage from "./User/UserImage";
 import { NotificationType } from "../Types/Notification.types";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type Props = {
   notification: NotificationType;

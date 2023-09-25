@@ -198,7 +198,7 @@ const Navbar: React.FC<Props> = ({ navIsSticky, notifications }) => {
               </li>
               <li className="ml-2 lg:ml-4 relative inline-block">
                 <div className="absolute -top-2 -right-1 bg-sky-500 text-xs font-bold px-1 py-0.5 rounded-lg text-white">
-                  {notifications.length}
+                  {notifications.filter((obj) => obj.isRead !== true).length}
                 </div>
                 <div onClick={() => setIsOpen((prev) => !prev)}>
                   <IoIosNotifications className="text-3xl text-gray-700 cursor-pointer dark:text-gray-200" />
