@@ -90,11 +90,17 @@ const getSuggestedUsers = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    const blockedUserIds = currentUser.blockedUsers.map((userId) =>
+      userId.toString()
+    );
     const followingUserIds = currentUser.following.map((user) => user._id);
 
     const suggestedUsers = await User.find(
       {
-        _id: { $ne: currentUser._id, $nin: followingUserIds },
+        _id: {
+          $ne: currentUser._id,
+          $nin: [...blockedUserIds, ...followingUserIds],
+        },
       },
       "firstName lastName username userPicture followers"
     ).limit(10);
@@ -385,8 +391,18 @@ const getBookmarkedPosts = async (req, res) => {
     if (!currentUser) {
       return res.status(404).json({ message: "User not found" });
     }
+    const blockedUserIds = currentUser.blockedUsers.map((userId) =>
+      userId.toString()
+    );
+    console.log(
+      currentUser.bookmarks.filter(
+        (post) => !blockedUserIds.includes(post.userId)
+      )
+    );
+    const bookmarkedPosts = currentUser.bookmarks
+      .filter((post) => !blockedUserIds.includes(post.userId))
+      .reverse();
 
-    const bookmarkedPosts = currentUser.bookmarks.reverse();
     res.status(200).json(bookmarkedPosts);
   } catch (error) {
     console.error(error);
