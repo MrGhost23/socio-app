@@ -14,7 +14,6 @@ import Card from "../ui/Card";
 import Input from "../ui/Input";
 import Textarea from "../ui/Textarea";
 import Button from "../ui/Button";
-import SearchInput from "../ui/SearchInput";
 import UserImage from "../components/User/UserImage";
 import UsersSkeleton from "../skeletons/UsersSkeleton";
 import { useNavigate } from "react-router-dom";
@@ -301,13 +300,10 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
             className="!p-8"
           />
         ) : (
-          <Card className="p-8 !text-left">
+          <Card className="p-8 !pb-5 !text-left">
             <h3 className="mb-5 text-xl">Blocked Users</h3>
             {blockedUsers!.length ? (
-              <>
-                <SearchInput className="mb-5" />
-                <Users users={blockedUsers!} mode="block" />
-              </>
+              <Users users={blockedUsers!} mode="block" />
             ) : (
               <p>You don't have anyone in your block list</p>
             )}

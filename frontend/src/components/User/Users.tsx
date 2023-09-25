@@ -11,7 +11,9 @@ type Props = {
 
 const Users: React.FC<Props> = ({ users, mode, socket }) => {
   const classes =
-    mode === "follow" ? "md:grid-cols-2" : "lg:grid-cols-2 xl:grid-cols-1";
+    mode === "follow"
+      ? "md:grid-cols-2"
+      : "lg:grid-cols-2 xl:grid-cols-1  lg:max-h-[calc(70vh-80px)]";
 
   return (
     <ScrollableDiv className="h-fit max-h-[80vh]">
