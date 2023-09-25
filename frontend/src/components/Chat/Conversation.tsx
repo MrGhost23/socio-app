@@ -120,9 +120,7 @@ const Conversation: React.FC<Props> = ({
               )}
             </div>
             <span className="text-gray-500 font-medium">
-              {latestMessage ? (
-                latestMessage
-              ) : (
+              {latestMessage || (
                 <span className="font-semibold text-gray-700">{`Say Hi to ${
                   userProfile!.firstName
                 }! 👋`}</span>
