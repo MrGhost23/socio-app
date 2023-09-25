@@ -58,11 +58,19 @@ const getFindFriends = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const followingUserIds = currentUser.following.map((user) => user._id);
+    const followingUserIds = currentUser.following.map((user) =>
+      user._id.toString()
+    );
+    const blockedUserIds = currentUser.blockedUsers.map((userId) =>
+      userId.toString()
+    );
 
     const users = await User.find(
       {
-        _id: { $ne: currentUser._id, $nin: followingUserIds },
+        _id: {
+          $ne: currentUser._id,
+          $nin: [...blockedUserIds, ...followingUserIds],
+        },
       },
       "firstName lastName username userPicture followers"
     );
