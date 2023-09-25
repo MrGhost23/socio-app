@@ -303,15 +303,18 @@ const blockUnblockUser = async (req, res) => {
     const isBlocked = currentUser.blockedUsers.includes(userToModify._id);
 
     if (isBlocked) {
-      currentUser.blockedUsers = currentUser.blockedUsers.filter(
-        (blockedUserId) =>
-          blockedUserId.toString() !== userToModify._id.toString()
-      );
+      currentUser.blockedUsers.pull(userToModify._id);
+
       await currentUser.save();
       res.status(200).json({ status: 0 }); // unblocked
     } else {
       currentUser.blockedUsers.push(userToModify._id);
+      userToModify.followers.pull(currentUser._id);
+      userToModify.following.pull(currentUser._id);
+      currentUser.following.pull(userToModify._id);
+      currentUser.followers.pull(userToModify._id);
       await currentUser.save();
+      await userToModify.save();
       res.status(200).json({ status: 1 }); // blocked
     }
   } catch (error) {
