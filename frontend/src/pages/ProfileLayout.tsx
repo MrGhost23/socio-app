@@ -44,17 +44,19 @@ const ProfileLayout: React.FC<Props> = ({ socket }) => {
   >(`http://localhost:5000/api/v1/users/${username}/activities`, "get");
 
   const [followers, setFollowers] = useState<number>(0);
+  const [followersLoading, setFollowersLoading] = useState(true);
 
   useEffect(() => {
     if (userProfile) {
       setFollowers(userProfile.followers.length);
-      setIsBlocked(currentUser!.blockedUsers.includes(userProfile._id));
+      setFollowersLoading(false);
     }
-  }, [currentUser, userProfile]);
+  }, [userProfile]);
 
   useEffect(() => {
     if (userProfile) {
       setIsFollowing(currentUser!.following.includes(userProfile._id));
+      setIsBlocked(currentUser!.blockedUsers.includes(userProfile._id));
     }
   }, [currentUser, userProfile]);
 
@@ -70,7 +72,9 @@ const ProfileLayout: React.FC<Props> = ({ socket }) => {
         username: userProfile!.username,
       })
     );
+
     setFollowers((prevState) => (isFollowing ? prevState - 1 : prevState + 1));
+
     setFollowButtonLoading(false);
     if (!isFollowing) {
       socket.emit("sendNotification", {
@@ -104,7 +108,7 @@ const ProfileLayout: React.FC<Props> = ({ socket }) => {
       <div className="flex flex-col lg:grid lg:grid-cols-3 xl:grid-cols-4 gap-8 lg:gap-12 mx-4 sm:mx-10 md:mx-10 my-10">
         <Sidebar hide={true} />
         <div className="col-span-2 lg:col-span-1 order-1">
-          {userProfileIsLoading ? (
+          {userProfileIsLoading || followersLoading ? (
             <ProfileSkeleton className="!sticky top-32 !px-10 !py-8" />
           ) : (
             <Card className="sticky top-32 px-10 py-8 flex flex-col items-center">

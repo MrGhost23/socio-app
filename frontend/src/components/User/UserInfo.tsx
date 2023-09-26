@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { ProfileType } from "../../Types/Profile.types";
 import UserImage from "./UserImage";
 import UserFullName from "./UserFullName";
@@ -12,7 +13,7 @@ interface UserInfoProps {
   followers: number;
 }
 
-const UserInfo: React.FC<UserInfoProps> = ({ userInfo, followers }) => {
+const UserInfo: React.FC<UserInfoProps> = memo(({ userInfo, followers }) => {
   return (
     <>
       <UserImage
@@ -32,6 +33,6 @@ const UserInfo: React.FC<UserInfoProps> = ({ userInfo, followers }) => {
       <UserStats followers={followers} following={userInfo.following.length} />
     </>
   );
-};
+});
 
 export default UserInfo;
