@@ -8,25 +8,34 @@ const searchUsers = async (query, currentUser) => {
     $or: [{ username: regex }, { firstName: regex }, { lastName: regex }],
   });
 
-  const users = allUsers.filter(
-    (user) => !currentUser.blockedUsers.includes(user._id)
+  const blockedUserIds = currentUser.blockedUsers.map((userId) =>
+    userId.toString()
   );
+  const blockedByIds = currentUser.blockedBy.map((userId) => userId.toString());
+
+  const users = allUsers.filter((user) => {
+    return (
+      !blockedUserIds.includes(user._id.toString()) &&
+      !blockedByIds.includes(user._id.toString())
+    );
+  });
 
   return users;
 };
 
 const searchPosts = async (query, currentUser) => {
   const regex = new RegExp(query, "i");
-  const blockedUsers = currentUser.blockedUsers.map((userId) =>
+  const blockedUserIds = currentUser.blockedUsers.map((userId) =>
     userId.toString()
   );
+  const blockedByIds = currentUser.blockedBy.map((userId) => userId.toString());
 
   const posts = await Post.find({
     $and: [
       { $or: [{ description: regex }] },
       {
         userId: {
-          $nin: blockedUsers,
+          $nin: [...blockedUserIds, ...blockedByIds],
         },
       },
     ],
