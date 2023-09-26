@@ -8,4 +8,5 @@ export interface ChatType {
     createdAt: string;
   } | null;
   isRead: boolean;
+  allowMessage: boolean;
 }
