@@ -320,7 +320,7 @@ const blockUnblockUser = async (req, res) => {
     if (isBlocked) {
       currentUser.blockedUsers.pull(userToModify._id);
       const chat = await Chat.findOne({
-        members: { $all: [currentUser._id, userToModify._id] },
+        members: { $all: [currentUser.username, userToModify.username] },
       });
       if (chat) {
         chat.allowMessage = true;
@@ -336,10 +336,10 @@ const blockUnblockUser = async (req, res) => {
       currentUser.followers.pull(userToModify._id);
 
       const chat = await Chat.findOne({
-        members: { $all: [currentUser._id, userToModify._id] },
+        members: { $all: [currentUser.username, userToModify.username] },
       });
       if (chat) {
-        chat.allowMessage = true;
+        chat.allowMessage = false;
         await chat.save();
       }
 
