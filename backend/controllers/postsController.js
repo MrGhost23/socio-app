@@ -54,12 +54,10 @@ const getSinglePost = async (req, res) => {
     const currentUser = req.user;
 
     if (currentUser.blockedUsers.includes(post.userId.toString())) {
-      return res
-        .status(403)
-        .json({
-          message:
-            "Access denied. The author of this post is in your block list.",
-        });
+      return res.status(403).json({
+        message:
+          "Access denied. You are blocked by this author or have blocked this author.",
+      });
     }
 
     res.json(post);
@@ -134,13 +132,16 @@ const getFeedPosts = async (req, res) => {
     }
 
     const blockedUserIds = currentUser.blockedUsers || [];
+    const blockedByIds = currentUser.blockedBy || [];
 
     const posts = await Post.find({
-      $and: [{ userId: { $nin: blockedUserIds } }],
+      $and: [
+        { userId: { $nin: blockedUserIds } },
+        { userId: { $nin: blockedByIds } },
+      ],
     })
       .sort({ createdAt: -1 })
       .exec();
-
     res.status(StatusCodes.OK).json(posts);
   } catch (error) {
     res
