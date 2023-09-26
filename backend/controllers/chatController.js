@@ -34,10 +34,10 @@ const userChats = async (req, res) => {
     for (const chat of chats) {
       const latestMessage = await Message.findOne({ chatId: chat._id })
         .sort({ createdAt: -1 })
-        .select({ createdAt: 1, text: 1 })
+        .select({ senderUsername: 1, createdAt: 1, text: 1 })
         .lean();
 
-      chatsWithLatestMessage.push({
+        chatsWithLatestMessage.push({
         chatId: chat._id,
         members: chat.members,
         latestMessage: latestMessage || null,
