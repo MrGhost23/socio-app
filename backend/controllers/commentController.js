@@ -75,11 +75,19 @@ const getCommentsForPost = async (req, res) => {
     const blockedUserIds = currentUser.blockedUsers.map((userId) =>
       userId.toString()
     );
+    const blockedByIds = currentUser.blockedBy.map((userId) =>
+      userId.toString()
+    );
 
     const comments = await Comment.find({ post: postId }).populate({
       path: "author",
       select: "firstName lastName username userPicture",
-      match: { _id: { $nin: blockedUserIds } },
+      match: {
+        $and: [
+          { _id: { $nin: blockedUserIds } },
+          { _id: { $nin: blockedByIds } },
+        ],
+      },
     });
 
     const filteredComments = comments.filter(
