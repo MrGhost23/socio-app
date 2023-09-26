@@ -93,10 +93,11 @@ const ProfileLayout: React.FC<Props> = ({ socket }) => {
     }
   };
 
-  if ((!userProfileIsLoading && !userProfile) || isBlocked) {
-    navigate("/");
-    return;
-  }
+  useEffect(() => {
+    if ((!userProfileIsLoading && !userProfile) || isBlocked) {
+      navigate("/");
+    }
+  }, [isBlocked, navigate, userProfile, userProfileIsLoading]);
 
   return (
     <>
