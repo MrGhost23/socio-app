@@ -163,6 +163,7 @@ io.on("connection", (socket) => {
           const notificationData = {
             senderUsername,
             actionType,
+            username: sender.username,
             userPicture: sender.userPicture,
             firstName: sender.firstName,
             lastName: sender.lastName,
