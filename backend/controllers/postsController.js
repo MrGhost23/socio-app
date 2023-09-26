@@ -51,6 +51,17 @@ const getSinglePost = async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
+    const currentUser = req.user;
+
+    if (currentUser.blockedUsers.includes(post.userId.toString())) {
+      return res
+        .status(403)
+        .json({
+          message:
+            "Access denied. The author of this post is in your block list.",
+        });
+    }
+
     res.json(post);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -113,10 +124,28 @@ const deletePost = async (req, res) => {
 
 const getFeedPosts = async (req, res) => {
   try {
-    const post = await Post.find().sort({ createdAt: -1 }).exec();
-    res.status(StatusCodes.OK).json(post);
+    const currentUserId = req.user._id;
+    const currentUser = await User.findById(currentUserId).exec();
+
+    if (!currentUser) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "User not found" });
+    }
+
+    const blockedUserIds = currentUser.blockedUsers || [];
+
+    const posts = await Post.find({
+      $and: [{ userId: { $nin: blockedUserIds } }],
+    })
+      .sort({ createdAt: -1 })
+      .exec();
+
+    res.status(StatusCodes.OK).json(posts);
   } catch (error) {
-    res.status(StatusCodes.NOT_FOUND).json({ message: error.message });
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ message: error.message });
   }
 };
 

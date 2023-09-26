@@ -64,12 +64,29 @@ const createComment = async (req, res) => {
 const getCommentsForPost = async (req, res) => {
   try {
     const { postId } = req.params;
-    const comments = await Comment.find({ post: postId }).populate(
-      "author",
-      "firstName lastName username userPicture"
+    const currentUser = req.user;
+
+    if (!currentUser) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "User not found" });
+    }
+
+    const blockedUserIds = currentUser.blockedUsers.map((userId) =>
+      userId.toString()
     );
 
-    res.status(StatusCodes.OK).json(comments);
+    const comments = await Comment.find({ post: postId }).populate({
+      path: "author",
+      select: "firstName lastName username userPicture",
+      match: { _id: { $nin: blockedUserIds } },
+    });
+
+    const filteredComments = comments.filter(
+      (comment) => comment.author !== null
+    );
+
+    res.status(StatusCodes.OK).json(filteredComments);
   } catch (error) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)

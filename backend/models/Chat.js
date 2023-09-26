@@ -7,7 +7,11 @@ const chatSchema = new mongoose.Schema(
     },
     isRead: {
       type: Boolean,
-      default: false,
+      default: true,
+    },
+    allowMessage: {
+      type: Boolean,
+      default: true,
     },
   },
   { timestamps: true }

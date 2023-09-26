@@ -1,3 +1,4 @@
+const Chat = require("../models/Chat.js");
 const Notification = require("../models/Notification.js");
 const Post = require("../models/Post.js");
 const User = require("../models/User.js");
@@ -58,11 +59,19 @@ const getFindFriends = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const followingUserIds = currentUser.following.map((user) => user._id);
+    const followingUserIds = currentUser.following.map((user) =>
+      user._id.toString()
+    );
+    const blockedUserIds = currentUser.blockedUsers.map((userId) =>
+      userId.toString()
+    );
 
     const users = await User.find(
       {
-        _id: { $ne: currentUser._id, $nin: followingUserIds },
+        _id: {
+          $ne: currentUser._id,
+          $nin: [...blockedUserIds, ...followingUserIds],
+        },
       },
       "firstName lastName username userPicture followers"
     );
@@ -90,11 +99,17 @@ const getSuggestedUsers = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    const blockedUserIds = currentUser.blockedUsers.map((userId) =>
+      userId.toString()
+    );
     const followingUserIds = currentUser.following.map((user) => user._id);
 
     const suggestedUsers = await User.find(
       {
-        _id: { $ne: currentUser._id, $nin: followingUserIds },
+        _id: {
+          $ne: currentUser._id,
+          $nin: [...blockedUserIds, ...followingUserIds],
+        },
       },
       "firstName lastName username userPicture followers"
     ).limit(10);
@@ -303,15 +318,33 @@ const blockUnblockUser = async (req, res) => {
     const isBlocked = currentUser.blockedUsers.includes(userToModify._id);
 
     if (isBlocked) {
-      currentUser.blockedUsers = currentUser.blockedUsers.filter(
-        (blockedUserId) =>
-          blockedUserId.toString() !== userToModify._id.toString()
-      );
+      currentUser.blockedUsers.pull(userToModify._id);
+      const chat = await Chat.findOne({
+        members: { $all: [currentUser._id, userToModify._id] },
+      });
+      if (chat) {
+        chat.allowMessage = true;
+        await chat.save();
+      }
       await currentUser.save();
       res.status(200).json({ status: 0 }); // unblocked
     } else {
       currentUser.blockedUsers.push(userToModify._id);
+      userToModify.followers.pull(currentUser._id);
+      userToModify.following.pull(currentUser._id);
+      currentUser.following.pull(userToModify._id);
+      currentUser.followers.pull(userToModify._id);
+
+      const chat = await Chat.findOne({
+        members: { $all: [currentUser._id, userToModify._id] },
+      });
+      if (chat) {
+        chat.allowMessage = true;
+        await chat.save();
+      }
+
       await currentUser.save();
+      await userToModify.save();
       res.status(200).json({ status: 1 }); // blocked
     }
   } catch (error) {
@@ -382,8 +415,13 @@ const getBookmarkedPosts = async (req, res) => {
     if (!currentUser) {
       return res.status(404).json({ message: "User not found" });
     }
+    const blockedUserIds = currentUser.blockedUsers.map((userId) =>
+      userId.toString()
+    );
+    const bookmarkedPosts = currentUser.bookmarks
+      .filter((post) => !blockedUserIds.includes(post.userId))
+      .reverse();
 
-    const bookmarkedPosts = currentUser.bookmarks.reverse();
     res.status(200).json(bookmarkedPosts);
   } catch (error) {
     console.error(error);

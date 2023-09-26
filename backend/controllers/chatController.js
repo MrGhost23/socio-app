@@ -93,4 +93,9 @@ const markChatAsRead = async (req, res) => {
   }
 };
 
-module.exports = { createChat, userChats, findChat, markChatAsRead };
+module.exports = {
+  createChat,
+  userChats,
+  findChat,
+  markChatAsRead,
+};
