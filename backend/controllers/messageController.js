@@ -9,8 +9,22 @@ const addMessage = async (req, res) => {
     text,
   });
   try {
+    const chat = await Chat.findById(chatId);
+
+    if (!chat) {
+      return res.status(404).json({ message: "Chat not found" });
+    }
+
+    if (!chat.allowMessage) {
+      return res
+        .status(403)
+        .json({ message: "This chat does not allow messages" });
+    }
+
     const result = await message.save();
+
     await Chat.findByIdAndUpdate(chatId, { isRead: false }, { new: true });
+
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json(error);
