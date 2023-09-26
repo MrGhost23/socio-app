@@ -65,12 +65,15 @@ const getFindFriends = async (req, res) => {
     const blockedUserIds = currentUser.blockedUsers.map((userId) =>
       userId.toString()
     );
+    const blockedByIds = currentUser.blockedBy.map((userId) =>
+      userId.toString()
+    );
 
     const users = await User.find(
       {
         _id: {
           $ne: currentUser._id,
-          $nin: [...blockedUserIds, ...followingUserIds],
+          $nin: [...blockedUserIds, ...blockedByIds, ...followingUserIds],
         },
       },
       "firstName lastName username userPicture followers"
@@ -102,13 +105,16 @@ const getSuggestedUsers = async (req, res) => {
     const blockedUserIds = currentUser.blockedUsers.map((userId) =>
       userId.toString()
     );
+    const blockedByIds = currentUser.blockedBy.map((userId) =>
+      userId.toString()
+    );
     const followingUserIds = currentUser.following.map((user) => user._id);
 
     const suggestedUsers = await User.find(
       {
         _id: {
           $ne: currentUser._id,
-          $nin: [...blockedUserIds, ...followingUserIds],
+          $nin: [...blockedUserIds, ...blockedByIds, ...followingUserIds],
         },
       },
       "firstName lastName username userPicture followers"
@@ -131,10 +137,38 @@ const getSuggestedUsers = async (req, res) => {
 const getUser = async (req, res) => {
   try {
     const { username } = req.params;
-    const user = await User.find({ username }).select("-password");
-    res.status(200).json(...user);
+    const currentUser = req.user;
+
+    const user = await User.findOne({ username }).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const userBlockedBy = user.blockedBy.map((blockedById) =>
+      blockedById.toString()
+    );
+    const userBlocked = user.blockedUsers.map((blockedUserId) =>
+      blockedUserId.toString()
+    );
+
+    const isBlockedByCurrentUser = userBlockedBy.includes(
+      currentUser._id.toString()
+    );
+    const isBlockedCurrentUser = userBlocked.includes(
+      currentUser._id.toString()
+    );
+
+    if (isBlockedByCurrentUser || isBlockedCurrentUser) {
+      return res.status(403).json({
+        message:
+          "Access denied. You are blocked by this user or have blocked this user.",
+      });
+    }
+
+    res.status(200).json(user);
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -319,6 +353,7 @@ const blockUnblockUser = async (req, res) => {
 
     if (isBlocked) {
       currentUser.blockedUsers.pull(userToModify._id);
+      userToModify.blockedBy.pull(currentUser._id);
       const chat = await Chat.findOne({
         members: { $all: [currentUser.username, userToModify.username] },
       });
@@ -327,9 +362,11 @@ const blockUnblockUser = async (req, res) => {
         await chat.save();
       }
       await currentUser.save();
+      await userToModify.save();
       res.status(200).json({ status: 0 }); // unblocked
     } else {
       currentUser.blockedUsers.push(userToModify._id);
+      userToModify.blockedBy.push(currentUser._id);
       userToModify.followers.pull(currentUser._id);
       userToModify.following.pull(currentUser._id);
       currentUser.following.pull(userToModify._id);
@@ -409,17 +446,28 @@ const getBookmarkedPosts = async (req, res) => {
       username: req.params.username,
     }).populate(
       "bookmarks",
-      "_id username firstName lastName description postImage userPicture createdAt"
+      "_id username userId firstName lastName description postImage userPicture createdAt"
     );
 
     if (!currentUser) {
       return res.status(404).json({ message: "User not found" });
     }
+
     const blockedUserIds = currentUser.blockedUsers.map((userId) =>
       userId.toString()
     );
+    const blockedByIds = currentUser.blockedBy.map((userId) =>
+      userId.toString()
+    );
+
     const bookmarkedPosts = currentUser.bookmarks
-      .filter((post) => !blockedUserIds.includes(post.userId))
+      .filter((post) => {
+        console.log(post);
+        return (
+          !blockedUserIds.includes(post.userId) &&
+          !blockedByIds.includes(post.userId)
+        );
+      })
       .reverse();
 
     res.status(200).json(bookmarkedPosts);
