@@ -42,6 +42,7 @@ const userChats = async (req, res) => {
         members: chat.members,
         latestMessage: latestMessage || null,
         isRead: chat.isRead,
+        allowMessage: chat.allowMessage,
       });
     }
 
