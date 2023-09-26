@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { ChatType } from "../../Types/Chat.types";
 import { MessageType } from "../../Types/Message.types";
 import UserImage from "../User/UserImage";
@@ -10,6 +10,7 @@ import { ProfileType } from "../../Types/Profile.types";
 import useAxios from "../../hooks/useAxios";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/authSlice";
+import axios from "axios";
 
 interface Message {
   senderUsername: string;
@@ -42,6 +43,7 @@ const Conversation: React.FC<Props> = ({
   onlineUsers,
 }) => {
   const navigate = useNavigate();
+  const { username: usernameInUrl } = useParams();
 
   const currentUser = useSelector(selectUser);
   const receiverUsername = chat.members.find(
@@ -78,18 +80,46 @@ const Conversation: React.FC<Props> = ({
     userProfileIsLoading,
   ]);
 
-  const changeChatHandler = () => {
+  const latestMessageWasFromCurrentUser =
+    chat.latestMessage?.senderUsername === currentUser?.username;
+
+  const [currentUserHaveUnreadMessages, setCurrentUserHaveUnreadMessages] =
+    useState<boolean>(!chat.isRead && !latestMessageWasFromCurrentUser);
+
+  const readChat = useCallback(async () => {
+    await axios.patch(`http://localhost:5000/api/v1/chat/${chat.chatId}`);
+    setCurrentUserHaveUnreadMessages(false);
+  }, [chat.chatId]);
+
+  const changeChatHandler = async () => {
     changeChat(chat.chatId);
     navigate(`/chats/${receiverUsername}`);
   };
+
+  /*
+   * If the current user receives a message
+   * then the latest message and the latest message date
+   * will both get updated to that message he sent and the current date
+   * ofc the id of the received message and the chat need to match
+   * will set the chat to have unread messages too
+   */
 
   useEffect(() => {
     if (receiveMessage && receiveMessage.chatId === chat.chatId) {
       setLatestMessage(receiveMessage?.text);
       const currentDateAndTime = new Date().toISOString();
       setLatestMessageDate(currentDateAndTime);
+
+      setCurrentUserHaveUnreadMessages(true);
     }
   }, [chat.chatId, receiveMessage]);
+
+  /*
+   * If the current user receives a message
+   * then the latest message and the latest message date
+   * will both get updated to that message he sent and the current date
+   * ofc the id of the received message and the chat need to match
+   */
 
   useEffect(() => {
     if (sendMessage && sendMessage.chatId === chat.chatId) {
@@ -99,6 +129,32 @@ const Conversation: React.FC<Props> = ({
     }
   }, [chat.chatId, sendMessage]);
 
+  /*
+  * - current user enters a chat directly and this chat have unread messages
+  * - current user switches to a chat that have unread messages
+  * - current user is in a chat and that chat received a new message
+  * => the readChat function will be called
+  */
+
+  useEffect(() => {
+    if (
+      currentUserHaveUnreadMessages &&
+      ((usernameInUrl && currentChat === chat.chatId) ||
+        (receiveMessage &&
+          receiveMessage.chatId === chat.chatId &&
+          receiveMessage.chatId === currentChat))
+    ) {
+      readChat();
+    }
+  }, [
+    chat.chatId,
+    currentChat,
+    currentUserHaveUnreadMessages,
+    readChat,
+    receiveMessage,
+    usernameInUrl,
+  ]);
+
   return (
     <>
       {userProfileIsLoading ? (
@@ -106,7 +162,9 @@ const Conversation: React.FC<Props> = ({
       ) : (
         <div
           className={`flex flex-row gap-2 py-4 px-4 sm:px-10 lg:px-4 justify-center items-start border-b-2 cursor-pointer ${
-            chat.chatId === currentChat ? "bg-slate-200" : "hover:bg-slate-100"
+            chat.chatId === currentChat || currentUserHaveUnreadMessages
+              ? "bg-slate-200"
+              : "hover:bg-slate-100"
           }`}
           onClick={changeChatHandler}
         >
@@ -123,7 +181,7 @@ const Conversation: React.FC<Props> = ({
                 fullName={userProfile!.firstName + " " + userProfile!.lastName}
               />
               {chat.latestMessage?.createdAt && (
-                <ChatDate date={latestMessageDate} />
+                <ChatDate date={latestMessageDate!} />
               )}
             </div>
             <span className="text-gray-500 font-medium">

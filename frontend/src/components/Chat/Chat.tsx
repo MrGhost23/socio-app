@@ -67,7 +67,6 @@ const Chat: React.FC<Props> = ({
   useEffect(() => {
     if (receiveMessage !== null && receiveMessage.chatId === chat!.chatId) {
       const currentDateAndTime = new Date().toISOString();
-      console.log(receiveMessage);
 
       setMessages((prevMessages) => [
         ...prevMessages,
