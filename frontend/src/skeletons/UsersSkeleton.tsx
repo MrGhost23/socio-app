@@ -18,8 +18,8 @@ const UsersSkeleton: React.FC<Props> = ({
     mode === "follow"
       ? "grid grid-cols-1 md:grid-cols-2 gap-3"
       : mode === "suggest"
-      ? "flex flex-row xl:flex-col gap-5 md:gap-8 xl:gap-3"
-      : "grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-1 gap-3";
+      ? "flex flex-row xl:flex-col gap-5 md:gap-8 xl:gap-3 dark:bg-primarylessDark"
+      : "grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-1 gap-3 dark:bg-primarylessDark";
 
   return (
     <SkeletonWrapper className={className}>

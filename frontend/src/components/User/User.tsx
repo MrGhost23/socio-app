@@ -66,7 +66,9 @@ const User: React.FC<Props> = ({ user, changeStyle, mode, center, socket }) => {
       }
       setFollowButtonLoading(false);
     } else {
-      await dispatch(toggleBlockUser({ id: user._id, username: user.username }));
+      await dispatch(
+        toggleBlockUser({ id: user._id, username: user.username })
+      );
 
       if (buttonText === "block") {
         setButtonText("unblock");
@@ -104,7 +106,9 @@ const User: React.FC<Props> = ({ user, changeStyle, mode, center, socket }) => {
           username={user.username}
         />
         {mode === "follow" && (
-          <p className="text-sm whitespace-nowrap">{followers} followers</p>
+          <p className="text-sm whitespace-nowrap dark:text-textLight">
+            {followers} followers
+          </p>
         )}
         {user.username !== currentUser!.username && (
           <Button

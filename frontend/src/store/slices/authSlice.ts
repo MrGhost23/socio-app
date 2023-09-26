@@ -30,7 +30,7 @@ const token = localStorage.getItem("token");
 axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
 const initialState: AuthState = {
-  mode: "light",
+  mode: localStorage.getItem("mode") || "light",
   user: null,
   loading: false,
   error: null,
@@ -146,8 +146,9 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setMode: (state) => {
-      state.mode = state.mode === "light" ? "light" : "dark";
+    toggleMode: (state) => {
+      state.mode = state.mode === "light" ? "dark" : "light";
+      localStorage.setItem("mode", state.mode);
     },
     setUser: (state, action) => {
       state.user = action.payload;
@@ -211,8 +212,9 @@ const authSlice = createSlice({
       });
   },
 });
-export const { setUser, logout } = authSlice.actions;
+export const { setUser,toggleMode, logout } = authSlice.actions;
 
 export const selectUser = (state: RootState) => state.auth.user;
+export const selectMode = (state: RootState) => state.auth.mode;
 
 export default authSlice.reducer;

@@ -15,7 +15,13 @@ const PostText: React.FC<Props> = ({ text }) => {
   };
 
   return (
-    <p className={textIsInArabic ? "text-right" : "text-left"}>
+    <p
+      className={
+        textIsInArabic
+          ? "text-right dark:text-textLighter"
+          : "text-left dark:text-textLighter"
+      }
+    >
       {textSliced ? text?.slice(0, max - 3) + "... " : text}
 
       {textSliced && (

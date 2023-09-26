@@ -6,7 +6,7 @@ type Props = {
 };
 
 const UserTag: React.FC<Props> = ({ username, className }) => {
-  let classes = "text-sm text-gray-400 font-medium";
+  let classes = "text-sm text-gray-400 font-medium dark:text-textLight";
   if (className) {
     classes += " " + className;
   }

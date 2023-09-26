@@ -12,7 +12,7 @@ type Props = {
 };
 
 const Button: React.FC<Props> = (props) => {
-  let classes = "transition duration-500 font-medium ";
+  let classes = "transition duration-500 font-medium dark:text-textLighter";
   classes += props.bg
     ? "w-full py-2 px-4 bg-sky-500 text-white font-bold tracking-wide hover:bg-sky-600 rounded"
     : "w-fit text-gray-500 hover:text-sky-600";
@@ -21,7 +21,7 @@ const Button: React.FC<Props> = (props) => {
     classes += " " + props.className;
   }
 
-  let iconClasses = "text-sm";
+  let iconClasses = "text-sm dark:text-textLight";
 
   if (props.iconClasses) {
     iconClasses += " " + props.iconClasses;
@@ -41,10 +41,10 @@ const Button: React.FC<Props> = (props) => {
       {props.icon ? (
         <>
           <props.icon className={iconClasses} />
-          <span>{props.text}</span>
+          <span className="dark:text-textLighter">{props.text}</span>
         </>
       ) : (
-        <span>{props.text}</span>
+        <span className="dark:text-textLighter">{props.text}</span>
       )}
     </button>
   );

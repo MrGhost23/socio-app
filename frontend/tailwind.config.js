@@ -14,6 +14,10 @@ export default {
       },
       colors: {
         primaryDark: "#18191a",
+        primarylessDark: "#242526",
+        primarylessDarker: "#3a3b3c",
+        textLighter: "#e4e6eb",
+        textLight: "#b0b3b8",
       },
     },
   },

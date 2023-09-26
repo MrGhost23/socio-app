@@ -117,7 +117,7 @@ const PostForm: React.FC<Props> = ({
         )}
         <div className="w-full flex flex-col items-center md:items-start gap-3">
           <textarea
-            className={`w-full min-h-[6rem] h-fit max-h-[14rem] resize-y pl-4 pr-7 py-1.5 border rounded-xl outline-none ${
+            className={`w-full min-h-[6rem] h-fit max-h-[14rem] resize-y pl-4 pr-7 py-1.5 border rounded-xl outline-none dark:bg-primarylessDarker dark:border-none ${
               descriptionError && "border-red-700 bg-red-100"
             }`}
             placeholder="Share something.."

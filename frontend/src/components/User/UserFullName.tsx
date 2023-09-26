@@ -7,7 +7,7 @@ type Props = {
 };
 
 const UserFullName: React.FC<Props> = ({ username, fullName, className }) => {
-  let classes = "text-lg";
+  let classes = "text-lg dark:text-textLighter";
   if (className) {
     classes += " " + className;
   }

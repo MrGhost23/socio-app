@@ -8,7 +8,8 @@ type Props = {
 };
 
 const PostDate: React.FC<Props> = ({ id, date, className }) => {
-  let classes = "text-sm text-gray-500 font-medium tracking-tight";
+  let classes =
+    "text-sm text-gray-500 font-medium tracking-tight dark:text-gray-400";
   if (className) {
     classes += " " + className;
   }

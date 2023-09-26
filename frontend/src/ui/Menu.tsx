@@ -29,14 +29,14 @@ const Menu: React.FC<Props> = ({
   menuIconClasses,
 }) => {
   let iconClasses =
-    "text-gray-500 text-lg cursor-pointer transition duration-500";
+    "text-gray-500 text-lg cursor-pointer transition duration-500 dark:text-textLighter";
 
   if (menuIconClasses) {
     iconClasses += " " + menuIconClasses;
   }
 
   let ulClasses =
-    "absolute top-6 right-0 z-40 px-4 py-5 bg-white rounded border border-gray-10 shadow-md flex flex-col gap-2 sm:gap-4";
+    "absolute top-6 right-0 z-40 px-4 py-5 dark:bg-primaryDark dark:outline-none dark:border-none bg-white rounded border border-gray-10 shadow-md flex flex-col gap-2 sm:gap-4";
 
   if (menuIconClasses) {
     ulClasses += " " + menuClasses;

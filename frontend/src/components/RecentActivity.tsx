@@ -19,7 +19,7 @@ const RecentActivity: React.FC<Props> = ({
     <Link
       key={recentActivity._id}
       to={`/post/${recentActivity.postId}`}
-      className="flex flex-row items-start gap-2 font-medium"
+      className="flex flex-row items-start gap-2 font-medium dark:bg-primarylessDark dark:text-textLighter"
     >
       {recentActivity.actionType === "like" ? (
         <FaRegHeart className="min-w-[1.35rem] min-h-[1.35rem] mt-0.5 text-xl text-sky-500" />

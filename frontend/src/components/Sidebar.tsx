@@ -57,7 +57,7 @@ const Sidebar: React.FC<Props> = ({ navIsSticky, hide }) => {
     <>
       {sideOpen && <Backdrop onClick={() => dispatch(closeSidebar())} />}
       <div
-        className={`sidebar fixed z-40 h-[calc(100vh)] transition-all bottom-0 duration-300 inset-y-0 pt-[82px] lg:pt-0 bg-white transform ${
+        className={`sidebar fixed dark:bg-primarylessDark dark:text-textLighter z-40 h-[calc(100vh)] transition-all bottom-0 duration-300 inset-y-0 pt-[82px] lg:pt-0 bg-white transform ${
           sideOpen ? "left-0 w-fit py-7 px-5" : "left-[-100%]"
         } ${hide ? "" : "lg:sticky lg:shadow-lg"}`}
       >
@@ -77,7 +77,7 @@ const Sidebar: React.FC<Props> = ({ navIsSticky, hide }) => {
             />
             <div className="flex flex-col">
               <UserFullName
-                className="!text-lg font-medium group-hover:text-gray-700"
+                className="!text-lg font-medium group-hover:text-gray-700 dark:text-textLighter dark:group-hover:text-textLight"
                 fullName={currentUserFullName}
                 username={currentUserTag}
               />
@@ -89,7 +89,7 @@ const Sidebar: React.FC<Props> = ({ navIsSticky, hide }) => {
             {list.map((link) => (
               <li
                 key={link.id}
-                className="mb-4 p-2 text-2xl text-gray-700 cursor-pointer hover:bg-gray-200"
+                className="mb-4 p-2 text-2xl text-gray-700 cursor-pointer dark:text-textLighter hover:bg-gray-200 dark:hover:bg-primarylessDarker"
                 onClick={
                   link.text === "logout"
                     ? handleLogout

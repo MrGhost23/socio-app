@@ -13,8 +13,9 @@ const SkeletonElement: React.FC<Props> = ({
   className,
   repeat,
 }) => {
-  let cClasses = "w-full space-y-2";
-  let eClasses = "bg-[#ddd] overflow-hidden rounded-sm";
+  let cClasses = "w-full space-y-2 dark:bg-primarylessDarker";
+  let eClasses =
+    "bg-[#ddd] overflow-hidden rounded-sm dark:bg-primarylessDarker";
 
   if (className) {
     eClasses += " " + className;

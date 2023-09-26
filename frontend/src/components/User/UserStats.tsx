@@ -11,7 +11,7 @@ const UserStats: React.FC<Props> = (props) => {
   const path = location.pathname.split("/").slice(0, 3).join("/");
 
   return (
-    <div className="mb-5 flex flex-row gap-3 text-gray-500 font-medium tracking-wide">
+    <div className="mb-5 flex flex-row gap-3 text-gray-500 font-medium tracking-wide dark:bg-primarylessDark dark:text-textLighter">
       <Link to={`${path}/followers`} className="flex flex-col gap-1">
         <p>Followers</p>
         <p className="text-xl font-semibold">{props.followers}</p>
