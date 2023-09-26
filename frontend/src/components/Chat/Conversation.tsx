@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ChatType } from "../../Types/Chat.types";
-import { MessageType } from "../../Types/Message.types";
 import UserImage from "../User/UserImage";
 import UserFullName from "../User/UserFullName";
 import ChatDate from "./ChatDate";
@@ -28,9 +27,9 @@ type Props = {
   >;
   setCurrentChatUserDataLoading: React.Dispatch<React.SetStateAction<boolean>>;
   sendMessage: Message | null;
-  receiveMessage: MessageType | null;
-  setReceiveMessage: React.Dispatch<React.SetStateAction<MessageType | null>>;
-
+  setSendMessage: React.Dispatch<React.SetStateAction<Message | null>>;
+  receiveMessage: Message | null;
+  setReceiveMessage: React.Dispatch<React.SetStateAction<Message | null>>;
   onlineUsers: { [key: string]: boolean };
 };
 
@@ -41,6 +40,7 @@ const Conversation: React.FC<Props> = ({
   setCurrentChatUserData,
   setCurrentChatUserDataLoading,
   sendMessage,
+  setSendMessage,
   receiveMessage,
   setReceiveMessage,
   onlineUsers,
@@ -89,6 +89,7 @@ const Conversation: React.FC<Props> = ({
   useEffect(() => {
     const latestMessageWasFromCurrentUser =
       chat.latestMessage?.senderUsername === currentUser?.username;
+
     setCurrentUserHaveUnreadMessages(
       !chat.isRead && !latestMessageWasFromCurrentUser
     );
@@ -109,6 +110,23 @@ const Conversation: React.FC<Props> = ({
    * then the latest message and the latest message date
    * will both get updated to that message he sent and the current date
    * ofc the id of the received message and the chat need to match
+   */
+
+  useEffect(() => {
+    if (sendMessage && sendMessage.chatId === chat.chatId) {
+      setLatestMessage(sendMessage?.text);
+      const currentDateAndTime = new Date().toISOString();
+      setLatestMessageDate(currentDateAndTime);
+      console.log("sendMessage", sendMessage);
+      setSendMessage(null);
+    }
+  }, [chat.chatId, sendMessage, setSendMessage]);
+
+  /*
+   * If the current user receives a message
+   * then the latest message and the latest message date
+   * will both get updated to that message he sent and the current date
+   * ofc the id of the received message and the chat need to match
    * will set the chat to have unread messages too
    */
 
@@ -123,21 +141,6 @@ const Conversation: React.FC<Props> = ({
       setReceiveMessage(null);
     }
   }, [chat.chatId, receiveMessage, setReceiveMessage]);
-
-  /*
-   * If the current user receives a message
-   * then the latest message and the latest message date
-   * will both get updated to that message he sent and the current date
-   * ofc the id of the received message and the chat need to match
-   */
-
-  useEffect(() => {
-    if (sendMessage && sendMessage.chatId === chat.chatId) {
-      setLatestMessage(sendMessage?.text);
-      const currentDateAndTime = new Date().toISOString();
-      setLatestMessageDate(currentDateAndTime);
-    }
-  }, [chat.chatId, sendMessage, setReceiveMessage]);
 
   /*
    * - current user enters a chat directly and this chat have unread messages

@@ -2,15 +2,14 @@ import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/authSlice";
 import { ChatType } from "../../Types/Chat.types";
-import { MessageType } from "../../Types/Message.types";
 import Conversation from "./Conversation";
 import ConversationsSkeletons from "../../skeletons/ConversationsSkeletons";
 import { ProfileType } from "../../Types/Profile.types";
 
 interface Message {
-  senderUsername: string;
   text: string;
   chatId: string;
+  senderUsername: string;
   receiverUsername: string;
 }
 
@@ -24,8 +23,9 @@ type Props = {
   >;
   setCurrentChatUserDataLoading: React.Dispatch<React.SetStateAction<boolean>>;
   sendMessage: Message | null;
-  receiveMessage: MessageType | null;
-  setReceiveMessage: React.Dispatch<React.SetStateAction<MessageType | null>>;
+  setSendMessage: React.Dispatch<React.SetStateAction<Message | null>>;
+  receiveMessage: Message | null;
+  setReceiveMessage: React.Dispatch<React.SetStateAction<Message | null>>;
 
   onlineUsers: { [key: string]: boolean };
 };
@@ -38,6 +38,7 @@ const Conversations: React.FC<Props> = ({
   setCurrentChatUserData,
   setCurrentChatUserDataLoading,
   sendMessage,
+  setSendMessage,
   receiveMessage,
   setReceiveMessage,
   onlineUsers,
@@ -63,6 +64,7 @@ const Conversations: React.FC<Props> = ({
               receiveMessage={receiveMessage}
               setReceiveMessage={setReceiveMessage}
               sendMessage={sendMessage}
+              setSendMessage={setSendMessage}
               onlineUsers={onlineUsers}
             />
           ))
@@ -79,6 +81,7 @@ const Conversations: React.FC<Props> = ({
     receiveMessage,
     setReceiveMessage,
     sendMessage,
+    setSendMessage,
     onlineUsers,
     currentUser,
   ]);

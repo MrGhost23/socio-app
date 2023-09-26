@@ -26,7 +26,7 @@ type Props = {
   currentChatUserDataLoading: boolean;
   userChats: ChatType[];
   setSendMessage: React.Dispatch<React.SetStateAction<Message | null>>;
-  receiveMessage: MessageType | null;
+  receiveMessage: Message | null;
   messagesIsVisible: boolean;
   chatInfoIsVisible: boolean;
   showUserInfo: () => void;
@@ -71,7 +71,11 @@ const Chat: React.FC<Props> = ({
 
       setMessages((prevMessages) => [
         ...prevMessages,
-        { ...receiveMessage, createdAt: currentDateAndTime },
+        {
+          ...receiveMessage,
+          createdAt: currentDateAndTime,
+          updatedAt: currentDateAndTime,
+        },
       ]);
     }
   }, [chat, receiveMessage]);
@@ -89,6 +93,7 @@ const Chat: React.FC<Props> = ({
         "http://localhost:5000/api/v1/message",
         message
       );
+      console.log(data);
       setMessages([...messages, data]);
       setNewMessage("");
     } catch (error) {

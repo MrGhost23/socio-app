@@ -5,24 +5,23 @@ import { Socket } from "socket.io-client";
 import { selectUser } from "../store/slices/authSlice";
 import { ChatType } from "../Types/Chat.types";
 import useAxios from "../hooks/useAxios";
-import { MessageType } from "../Types/Message.types";
 import Conversations from "../components/Chat/Conversations";
 import Chat from "../components/Chat/Chat";
 import Sidebar from "../components/Sidebar";
 import { ProfileType } from "../Types/Profile.types";
 
 interface Message {
-  senderUsername: string;
   text: string;
   chatId: string;
+  senderUsername: string;
   receiverUsername: string;
 }
 
 type Props = {
   sendMessage: Message | null;
   setSendMessage: React.Dispatch<React.SetStateAction<Message | null>>;
-  receiveMessage: MessageType | null;
-  setReceiveMessage: React.Dispatch<React.SetStateAction<MessageType | null>>;
+  receiveMessage: Message | null;
+  setReceiveMessage: React.Dispatch<React.SetStateAction<Message | null>>;
   socket: Socket;
   onlineUsers: { [key: string]: boolean };
 };
@@ -122,6 +121,7 @@ const Chats: React.FC<Props> = ({
             receiveMessage={receiveMessage}
             setReceiveMessage={setReceiveMessage}
             sendMessage={sendMessage}
+            setSendMessage={setSendMessage}
             onlineUsers={onlineUsers}
           />
         </div>
