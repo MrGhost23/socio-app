@@ -14,8 +14,8 @@ const BookmarkText: React.FC<Props> = ({ text, id }) => {
       <p
         className={
           textIsInArabic
-            ? "text-lg md:text-xl text-gray-500 font-medium text-right"
-            : "text-lg md:text-xl text-gray-500 font-medium text-left"
+            ? "text-lg md:text-xl text-gray-500 font-medium text-right dark:text-textLighter"
+            : "text-lg md:text-xl text-gray-500 font-medium text-left dark:text-textLighter"
         }
       >
         {text.length > 120 ? text.slice(0, 117) + "..." : text}
