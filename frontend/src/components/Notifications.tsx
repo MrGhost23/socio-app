@@ -71,7 +71,7 @@ const Notifications: React.FC<Props> = ({
     <div className="relative" ref={notificationsRef}>
       <div
         className={`${
-          isOpen ? "" : "hidden"
+          isOpen && notifications.length !== 0 ? "" : "hidden"
         } absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg z-20`}
       >
         <div
