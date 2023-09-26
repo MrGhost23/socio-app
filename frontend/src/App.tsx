@@ -94,23 +94,22 @@ const App: React.FC = () => {
     fetchToken();
   }, [dispatch, localToken]);
 
-  const [socketio] = useState<Socket>(io("ws://localhost:5000"));
+  const [socketio, setSocket] = useState<Socket>(io("ws://localhost:5000"));
 
   useEffect(() => {
     if (user) {
-      const socket = io("ws://localhost:5000");
-      socket.emit("new-user-add", user?.username);
-      socket.on("get-users", (users) => {
+      socketio.emit("new-user-add", user?.username);
+      socketio.on("get-users", (users) => {
         const status = {};
         users.forEach((user) => {
           status[user.username] = true;
         });
         setOnlineUsers(status);
       });
-      socket.on("receive-message", (data) => {
+      socketio.on("receive-message", (data) => {
         setReceiveMessage(data);
       });
-      socket.on("getNotification", (data) => {
+      socketio.on("getNotification", (data) => {
         const currentDateAndTime = new Date().toISOString();
         setNotifications((prev) => [
           { ...data, createdAt: currentDateAndTime },
@@ -118,7 +117,7 @@ const App: React.FC = () => {
         ]);
       });
       return () => {
-        socket.disconnect();
+        socketio.disconnect();
       };
     }
   }, [user]);
