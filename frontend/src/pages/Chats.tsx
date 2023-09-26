@@ -55,11 +55,12 @@ const Chats: React.FC<Props> = ({
   useEffect(() => {
     setCurrentChatLoading(true);
 
-    setCurrentChat(
+    const currentChatId =
       userChats?.find((chat) =>
         chat.members.find((user) => user === receiverUsername)
-      )?.chatId || null
-    );
+      )?.chatId || null;
+
+    setCurrentChat(currentChatId);
 
     setCurrentChatLoading(false);
   }, [receiverUsername, userChats]);
@@ -137,7 +138,9 @@ const Chats: React.FC<Props> = ({
         ) : (
           <div className="col-span-3 hidden lg:flex lg:justify-center lg:items-center">
             <p className="text-gray-600 font-semibold text-center">
-              Tap on chat to start a conversation!
+              {!currentChatLoading && userChats?.length
+                ? "Tap on chat to start a conversation!"
+                : "You have no conversations"}
             </p>
           </div>
         )}

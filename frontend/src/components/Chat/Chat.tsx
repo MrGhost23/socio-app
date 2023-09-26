@@ -107,14 +107,17 @@ const Chat: React.FC<Props> = ({
             : "col-span-2 h-[calc(100vh-82px)] hidden lg:flex lg:flex-col lg:justify-between"
         }
       >
-        {currentChatUserDataLoading || chatMessagesIsLoading ? (
+        {currentChat &&
+        (currentChatUserDataLoading || chatMessagesIsLoading) ? (
           <MessagesSkeleton messagesNumber={6} />
-        ) : (
+        ) : currentChat ? (
           <Messages
             chatMessages={messages}
             receiverData={currentChatUserData}
             setChatInfoIsVisible={showUserInfo}
           />
+        ) : (
+          ""
         )}
         {currentChatUserDataLoading || chat?.allowMessage ? (
           <MessageForm
@@ -128,7 +131,7 @@ const Chat: React.FC<Props> = ({
             }
           />
         ) : (
-          <MessagesNotAllowed />
+          currentChat && <MessagesNotAllowed />
         )}
       </div>
       <div
@@ -138,13 +141,15 @@ const Chat: React.FC<Props> = ({
             : "col-span-1 h-[calc(100vh-82px)] hidden lg:block border-l-2 px-4 sm:px-10 lg:px-4 pt-5"
         }
       >
-        {currentChatUserDataLoading ? (
+        {currentChat && currentChatUserDataLoading ? (
           <ProfileSkeleton className="shadow-none" />
-        ) : (
+        ) : currentChat ? (
           <ChatInfo
             receiverData={currentChatUserData}
             hideUserInfo={hideUserInfo}
           />
+        ) : (
+          ""
         )}
       </div>
     </>
