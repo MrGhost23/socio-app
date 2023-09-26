@@ -42,8 +42,10 @@ const Notification: React.FC<Props> = ({
           : `/post/${notification.postId}`
       }
       onClick={clickHandler}
-      className={`flex items-center px-4 py-3 border-b ${
-        isRead ? "bg-gray-100" : "hover:bg-gray-100"
+      className={`flex items-center px-4 py-3 border-b dark:border-b-primaryDark ${
+        isRead
+          ? "bg-gray-100"
+          : "hover:bg-gray-100 hover:dark:bg-primarylessDarker"
       }`}
     >
       <UserImage
@@ -51,8 +53,8 @@ const Notification: React.FC<Props> = ({
         src={notification.userPicture}
         className="h-8 w-8 rounded-full object-cover mx-1"
       />
-      <p className="text-gray-600 text-sm mx-2">
-        <span className="font-bold">
+      <p className="text-gray-600 text-sm mx-2 dark:text-textLight">
+        <span className="font-bold dark:text-textLighter">
           {notification.firstName} {notification.lastName}
         </span>{" "}
         {notification.actionType === "like" && "liked your post."}{" "}
