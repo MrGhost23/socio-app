@@ -72,11 +72,11 @@ const Notifications: React.FC<Props> = ({
       <div
         className={`${
           isOpen && notifications.length !== 0 ? "" : "hidden"
-        } absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg z-20`}
+        } absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg z-20 dark:bg-primarylessDark`}
       >
         {notifications.filter((obj) => obj.isRead !== true).length !== 0 && (
           <div
-            className="w-fit ml-auto flex flex-row items-center my-1 mr-4 text-gray-500 cursor-pointer"
+            className="w-fit ml-auto flex flex-row items-center my-1 mr-4 text-gray-500 cursor-pointer dark:text-textLighter"
             onClick={readAllNotifications}
           >
             <CgCheck className="text-2xl scale-110" />
