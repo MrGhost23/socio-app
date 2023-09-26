@@ -139,13 +139,14 @@ io.on("connection", (socket) => {
   });
 
   socket.on("send-message", (data) => {
-    const { receiverUsername } = data;
+    const { receiverUsername, messageId } = data;
     const user = onlineUsers.find((user) => user.username === receiverUsername);
 
     console.log("Sending from socket to:", receiverUsername);
     console.log("Data:", data);
+
     if (user) {
-      io.to(user.socketId).emit("receive-message", data);
+      io.to(user.socketId).emit("receive-message", { ...data, messageId });
       console.log(user.socketId);
       console.log("RECEIVED");
     }
