@@ -44,6 +44,7 @@ const UserSchema = new mongoose.Schema(
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     blockedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    blockedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     bookmarks: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
     bio: {
       type: String,
