@@ -66,7 +66,7 @@ const User: React.FC<Props> = ({ user, changeStyle, mode, center, socket }) => {
       }
       setFollowButtonLoading(false);
     } else {
-      dispatch(toggleBlockUser({ username: user.username }));
+      await dispatch(toggleBlockUser({ id: user._id, username: user.username }));
 
       if (buttonText === "block") {
         setButtonText("unblock");

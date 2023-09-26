@@ -11,16 +11,21 @@ import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 
 type Props = {
   isMyProfile: boolean;
+  profileId: string;
   profileUsername: string;
 };
 
-const UserMenu: React.FC<Props> = ({ isMyProfile, profileUsername }) => {
+const UserMenu: React.FC<Props> = ({
+  isMyProfile,
+  profileId,
+  profileUsername,
+}) => {
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
 
   const { reportUser } = useProfileActions();
 
   const toggleBlockHandler = () => {
-    dispatch(toggleBlockUser({ username: profileUsername }));
+    dispatch(toggleBlockUser({ id: profileId, username: profileUsername }));
     setMenuOpened(false);
   };
 

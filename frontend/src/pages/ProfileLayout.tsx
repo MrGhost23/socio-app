@@ -110,6 +110,7 @@ const ProfileLayout: React.FC<Props> = ({ socket }) => {
               <div className="relative top-0 right-2 left-full self-start">
                 <UserMenu
                   isMyProfile={isMyProfile}
+                  profileId={userProfile!._id}
                   profileUsername={userProfile!.username}
                 />
               </div>

@@ -121,9 +121,10 @@ export const toggleFollowUser = createAsyncThunk<
 export const toggleBlockUser = createAsyncThunk<
   { status: number; uId: string } | null,
   {
+    id: string;
     username: string;
   }
->("auth/toggleBlockUser", async ({ username }, { getState }) => {
+>("auth/toggleBlockUser", async ({ id, username }, { getState }) => {
   const { auth } = getState() as {
     auth: AuthState;
   };
@@ -134,7 +135,7 @@ export const toggleBlockUser = createAsyncThunk<
         username: auth.user!.username,
       }
     );
-    return { status: response.data.status, uId: username };
+    return { status: response.data.status, uId: id };
   } catch (error) {
     toast.info(`Something went wrong!`);
     return null;
