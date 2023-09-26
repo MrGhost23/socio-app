@@ -102,7 +102,7 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost, socket }) => {
   if (isLoading) return;
 
   return (
-    <Card className="px-8 py-6 !text-left">
+    <Card className="px-8 py-6 !text-left dark:bg-primarylessDark">
       <div className="relative mb-2 flex flex-row justify-between gap-3">
         <div className="flex flex-row gap-3">
           <UserImage
