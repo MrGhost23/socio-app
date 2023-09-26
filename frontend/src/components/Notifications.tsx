@@ -74,13 +74,15 @@ const Notifications: React.FC<Props> = ({
           isOpen && notifications.length !== 0 ? "" : "hidden"
         } absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg z-20`}
       >
-        <div
-          className="w-fit ml-auto flex flex-row items-center my-1 mr-4 text-gray-500 cursor-pointer"
-          onClick={readAllNotifications}
-        >
-          <CgCheck className="text-2xl scale-110" />
-          <span className="text-sm capitalize font-semibold">Read all</span>
-        </div>
+        {notifications.filter((obj) => obj.isRead !== true).length !== 0 && (
+          <div
+            className="w-fit ml-auto flex flex-row items-center my-1 mr-4 text-gray-500 cursor-pointer"
+            onClick={readAllNotifications}
+          >
+            <CgCheck className="text-2xl scale-110" />
+            <span className="text-sm capitalize font-semibold">Read all</span>
+          </div>
+        )}
         <div
           className={`overflow-hidden ${
             !notificationsSliced
