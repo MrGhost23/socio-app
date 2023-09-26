@@ -22,6 +22,7 @@ type Props = {
   sendMessage: Message | null;
   setSendMessage: React.Dispatch<React.SetStateAction<Message | null>>;
   receiveMessage: MessageType | null;
+  setReceiveMessage: React.Dispatch<React.SetStateAction<MessageType | null>>;
   socket: Socket;
   onlineUsers: { [key: string]: boolean };
 };
@@ -30,6 +31,7 @@ const Chats: React.FC<Props> = ({
   setSendMessage,
   sendMessage,
   receiveMessage,
+  setReceiveMessage,
   socket,
   onlineUsers,
 }) => {
@@ -118,6 +120,7 @@ const Chats: React.FC<Props> = ({
             setCurrentChatUserData={setCurrentChatUserData}
             setCurrentChatUserDataLoading={setCurrentChatUserDataLoading}
             receiveMessage={receiveMessage}
+            setReceiveMessage={setReceiveMessage}
             sendMessage={sendMessage}
             onlineUsers={onlineUsers}
           />

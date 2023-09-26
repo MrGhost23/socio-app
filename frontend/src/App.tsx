@@ -160,6 +160,7 @@ const App: React.FC = () => {
                 setSendMessage={setSendMessage}
                 sendMessage={sendMessage}
                 receiveMessage={receiveMessage}
+                setReceiveMessage={setReceiveMessage}
                 socket={socketio}
                 onlineUsers={onlineUsers}
               />
@@ -176,6 +177,7 @@ const App: React.FC = () => {
                 setSendMessage={setSendMessage}
                 sendMessage={sendMessage}
                 receiveMessage={receiveMessage}
+                setReceiveMessage={setReceiveMessage}
                 socket={socketio}
                 onlineUsers={onlineUsers}
               />

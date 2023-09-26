@@ -25,6 +25,8 @@ type Props = {
   setCurrentChatUserDataLoading: React.Dispatch<React.SetStateAction<boolean>>;
   sendMessage: Message | null;
   receiveMessage: MessageType | null;
+  setReceiveMessage: React.Dispatch<React.SetStateAction<MessageType | null>>;
+
   onlineUsers: { [key: string]: boolean };
 };
 
@@ -37,6 +39,7 @@ const Conversations: React.FC<Props> = ({
   setCurrentChatUserDataLoading,
   sendMessage,
   receiveMessage,
+  setReceiveMessage,
   onlineUsers,
 }) => {
   const currentUser = useSelector(selectUser);
@@ -58,6 +61,7 @@ const Conversations: React.FC<Props> = ({
               setCurrentChatUserData={setCurrentChatUserData}
               setCurrentChatUserDataLoading={setCurrentChatUserDataLoading}
               receiveMessage={receiveMessage}
+              setReceiveMessage={setReceiveMessage}
               sendMessage={sendMessage}
               onlineUsers={onlineUsers}
             />
@@ -73,6 +77,7 @@ const Conversations: React.FC<Props> = ({
     setCurrentChatUserData,
     setCurrentChatUserDataLoading,
     receiveMessage,
+    setReceiveMessage,
     sendMessage,
     onlineUsers,
     currentUser,

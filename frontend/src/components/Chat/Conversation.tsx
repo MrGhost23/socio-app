@@ -29,6 +29,8 @@ type Props = {
   setCurrentChatUserDataLoading: React.Dispatch<React.SetStateAction<boolean>>;
   sendMessage: Message | null;
   receiveMessage: MessageType | null;
+  setReceiveMessage: React.Dispatch<React.SetStateAction<MessageType | null>>;
+
   onlineUsers: { [key: string]: boolean };
 };
 
@@ -40,6 +42,7 @@ const Conversation: React.FC<Props> = ({
   setCurrentChatUserDataLoading,
   sendMessage,
   receiveMessage,
+  setReceiveMessage,
   onlineUsers,
 }) => {
   const navigate = useNavigate();
@@ -80,11 +83,16 @@ const Conversation: React.FC<Props> = ({
     userProfileIsLoading,
   ]);
 
-  const latestMessageWasFromCurrentUser =
-    chat.latestMessage?.senderUsername === currentUser?.username;
-
   const [currentUserHaveUnreadMessages, setCurrentUserHaveUnreadMessages] =
-    useState<boolean>(!chat.isRead && !latestMessageWasFromCurrentUser);
+    useState<boolean>(false);
+
+  useEffect(() => {
+    const latestMessageWasFromCurrentUser =
+      chat.latestMessage?.senderUsername === currentUser?.username;
+    setCurrentUserHaveUnreadMessages(
+      !chat.isRead && !latestMessageWasFromCurrentUser
+    );
+  }, [chat, currentUser?.username]);
 
   const readChat = useCallback(async () => {
     await axios.patch(`http://localhost:5000/api/v1/chat/${chat.chatId}`);
@@ -110,9 +118,11 @@ const Conversation: React.FC<Props> = ({
       const currentDateAndTime = new Date().toISOString();
       setLatestMessageDate(currentDateAndTime);
 
+      console.log("received message", receiveMessage);
       setCurrentUserHaveUnreadMessages(true);
+      setReceiveMessage(null);
     }
-  }, [chat.chatId, receiveMessage]);
+  }, [chat.chatId, receiveMessage, setReceiveMessage]);
 
   /*
    * If the current user receives a message
@@ -127,7 +137,7 @@ const Conversation: React.FC<Props> = ({
       const currentDateAndTime = new Date().toISOString();
       setLatestMessageDate(currentDateAndTime);
     }
-  }, [chat.chatId, sendMessage]);
+  }, [chat.chatId, sendMessage, setReceiveMessage]);
 
   /*
    * - current user enters a chat directly and this chat have unread messages
@@ -143,6 +153,7 @@ const Conversation: React.FC<Props> = ({
       (usernameInUrl ||
         (receiveMessage && receiveMessage.chatId === chat.chatId))
     ) {
+      console.log("useEffect function was called");
       readChat();
     }
   }, [
