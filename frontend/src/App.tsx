@@ -106,18 +106,26 @@ const App: React.FC = () => {
         });
         setOnlineUsers(status);
       });
-      socketio.on("receive-message", (data) => {
+
+      const receiveMessageHandler = (data) => {
         setReceiveMessage(data);
-      });
-      socketio.on("getNotification", (data) => {
+      };
+      socketio.on("receive-message", receiveMessageHandler);
+
+      const getNotificationHandler = (data) => {
         const currentDateAndTime = new Date().toISOString();
         setNotifications((prev) => [
           { ...data, createdAt: currentDateAndTime },
           ...prev,
         ]);
-      });
+      };
+      socketio.on("getNotification", getNotificationHandler);
+
       return () => {
+        socketio.off("receive-message", receiveMessageHandler);
+        socketio.off("getNotification", getNotificationHandler);
         socketio.disconnect();
+        setReceiveMessage(null);
       };
     }
   }, [user]);
