@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { io, Socket } from "socket.io-client";
-import { selectUser, setUser } from "./store/slices/authSlice";
+import { selectMode, selectUser, setUser } from "./store/slices/authSlice";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -41,7 +41,9 @@ interface Message {
 
 const App: React.FC = () => {
   const [navIsSticky, setNavIsSticky] = useState(false);
-
+  const mode = useSelector(selectMode);
+  document.body.classList.toggle("dark", mode === "dark");
+  console.log(mode);
   const stickyNav = () => {
     if (
       document.body.scrollTop > 120 ||
@@ -141,7 +143,7 @@ const App: React.FC = () => {
 
   if (isLoading) return;
   return (
-    <>
+    <div className="dark:bg-primaryDark w-full h-full">
       <Navbar
         navIsSticky={navIsSticky}
         notifications={notifications}
@@ -255,7 +257,7 @@ const App: React.FC = () => {
         theme="light"
         progressStyle={{ backgroundColor: "#0ea5e9" }}
       />
-    </>
+    </div>
   );
 };
 
