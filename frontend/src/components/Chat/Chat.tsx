@@ -11,6 +11,7 @@ import axios from "axios";
 import MessageForm from "./MessageForm";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/authSlice";
+import MessagesNotAllowed from "./MessagesNotAllowed";
 
 interface Message {
   senderUsername: string;
@@ -88,7 +89,7 @@ const Chat: React.FC<Props> = ({
         "http://localhost:5000/api/v1/message",
         message
       );
-      setMessages([...messages!, data]);
+      setMessages([...messages, data]);
       setNewMessage("");
     } catch (error) {
       console.log(error);
@@ -96,30 +97,39 @@ const Chat: React.FC<Props> = ({
 
     setSendMessage({ ...message, receiverUsername: receiverUsername! });
   };
+
   return (
     <>
       <div
         className={
           messagesIsVisible
-            ? "col-span-2 h-[calc(100vh-82px)] px-5 flex flex-col justify-end"
-            : "col-span-2 h-[calc(100vh-82px)] px-5 hidden lg:flex lg:flex-col lg:justify-between"
+            ? "col-span-2 h-[calc(100vh-82px)] flex flex-col justify-end"
+            : "col-span-2 h-[calc(100vh-82px)] hidden lg:flex lg:flex-col lg:justify-between"
         }
       >
         {currentChatUserDataLoading || chatMessagesIsLoading ? (
           <MessagesSkeleton messagesNumber={6} />
         ) : (
           <Messages
-            chatMessages={messages!}
+            chatMessages={messages}
             receiverData={currentChatUserData}
             setChatInfoIsVisible={showUserInfo}
           />
         )}
-        <MessageForm
-          submitHandler={submitHandler}
-          newMessage={newMessage}
-          setNewMessage={setNewMessage}
-          disabled={currentChatUserDataLoading || chatMessagesIsLoading}
-        />
+        {currentChatUserDataLoading || chat?.allowMessage ? (
+          <MessageForm
+            submitHandler={submitHandler}
+            newMessage={newMessage}
+            setNewMessage={setNewMessage}
+            disabled={
+              currentChatUserDataLoading ||
+              chatMessagesIsLoading ||
+              !chat?.allowMessage
+            }
+          />
+        ) : (
+          <MessagesNotAllowed />
+        )}
       </div>
       <div
         className={

@@ -7,7 +7,7 @@ type Props = {
 
 const MessagesSkeleton: React.FC<Props> = ({ messagesNumber }) => {
   return (
-    <SkeletonWrapper className="!p-0 shadow-none">
+    <SkeletonWrapper className="!p-0 !px-5 shadow-none">
       <div className="flex flex-col gap-4">
         {Array.from({ length: messagesNumber }, (_, index) => (
           <MessageSkeleton
