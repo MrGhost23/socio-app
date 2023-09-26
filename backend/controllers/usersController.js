@@ -1,3 +1,4 @@
+const Chat = require("../models/Chat.js");
 const Notification = require("../models/Notification.js");
 const Post = require("../models/Post.js");
 const User = require("../models/User.js");
@@ -318,7 +319,13 @@ const blockUnblockUser = async (req, res) => {
 
     if (isBlocked) {
       currentUser.blockedUsers.pull(userToModify._id);
-
+      const chat = await Chat.findOne({
+        members: { $all: [currentUser._id, userToModify._id] },
+      });
+      if (chat) {
+        chat.allowMessage = true;
+        await chat.save();
+      }
       await currentUser.save();
       res.status(200).json({ status: 0 }); // unblocked
     } else {
@@ -327,6 +334,15 @@ const blockUnblockUser = async (req, res) => {
       userToModify.following.pull(currentUser._id);
       currentUser.following.pull(userToModify._id);
       currentUser.followers.pull(userToModify._id);
+
+      const chat = await Chat.findOne({
+        members: { $all: [currentUser._id, userToModify._id] },
+      });
+      if (chat) {
+        chat.allowMessage = true;
+        await chat.save();
+      }
+
       await currentUser.save();
       await userToModify.save();
       res.status(200).json({ status: 1 }); // blocked
