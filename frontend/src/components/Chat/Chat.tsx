@@ -55,7 +55,7 @@ const Chat: React.FC<Props> = ({
     MessageType[]
   >(`http://localhost:5000/api/v1/message/${chat?.chatId}`, "get");
 
-  const [messages, setMessages] = useState<MessageType[]>();
+  const [messages, setMessages] = useState<MessageType[]>([]);
   const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
@@ -70,7 +70,7 @@ const Chat: React.FC<Props> = ({
       console.log(receiveMessage);
 
       setMessages((prevMessages) => [
-        ...prevMessages!,
+        ...prevMessages,
         { ...receiveMessage, createdAt: currentDateAndTime },
       ]);
     }
