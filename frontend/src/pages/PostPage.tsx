@@ -16,16 +16,23 @@ const PostPage: React.FC<Props> = ({ socket }) => {
 
   const [post, setPost] = useState<PostType>();
 
-  const { data: postData, loading: postDataIsLoading } = useAxios<PostType>(
-    `http://localhost:5000/api/v1/posts/${id}`,
-    "get"
-  );
+  const {
+    data: postData,
+    loading: postDataIsLoading,
+    error: postDataHasError,
+  } = useAxios<PostType>(`http://localhost:5000/api/v1/posts/${id}`, "get");
 
   useEffect(() => {
     if (postData) {
       setPost(postData);
     }
   }, [postData]);
+
+  useEffect(() => {
+    if (postDataHasError) {
+      navigate("/");
+    }
+  }, [navigate, postDataHasError]);
 
   const removePost = () => {
     navigate("/");
