@@ -5,13 +5,7 @@ import { ChatType } from "../../Types/Chat.types";
 import Conversation from "./Conversation";
 import ConversationsSkeletons from "../../skeletons/ConversationsSkeletons";
 import { ProfileType } from "../../Types/Profile.types";
-
-interface Message {
-  text: string;
-  chatId: string;
-  senderUsername: string;
-  receiverUsername: string;
-}
+import { MessageType } from "../../Types/Message.types";
 
 type Props = {
   chatsLoading: boolean;
@@ -22,10 +16,10 @@ type Props = {
     React.SetStateAction<ProfileType | null | undefined>
   >;
   setCurrentChatUserDataLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  sendMessage: Message | null;
-  setSendMessage: React.Dispatch<React.SetStateAction<Message | null>>;
-  receiveMessage: Message | null;
-  setReceiveMessage: React.Dispatch<React.SetStateAction<Message | null>>;
+  sendMessage: MessageType | null;
+  setSendMessage: React.Dispatch<React.SetStateAction<MessageType | null>>;
+  receiveMessage: MessageType | null;
+  setReceiveMessage: React.Dispatch<React.SetStateAction<MessageType | null>>;
 
   onlineUsers: { [key: string]: boolean };
 };

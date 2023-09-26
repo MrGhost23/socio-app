@@ -9,19 +9,13 @@ import Conversations from "../components/Chat/Conversations";
 import Chat from "../components/Chat/Chat";
 import Sidebar from "../components/Sidebar";
 import { ProfileType } from "../Types/Profile.types";
-
-interface Message {
-  text: string;
-  chatId: string;
-  senderUsername: string;
-  receiverUsername: string;
-}
+import { MessageType } from "../Types/Message.types";
 
 type Props = {
-  sendMessage: Message | null;
-  setSendMessage: React.Dispatch<React.SetStateAction<Message | null>>;
-  receiveMessage: Message | null;
-  setReceiveMessage: React.Dispatch<React.SetStateAction<Message | null>>;
+  sendMessage: MessageType | null;
+  setSendMessage: React.Dispatch<React.SetStateAction<MessageType | null>>;
+  receiveMessage: MessageType | null;
+  setReceiveMessage: React.Dispatch<React.SetStateAction<MessageType | null>>;
   socket: Socket;
   onlineUsers: { [key: string]: boolean };
 };
@@ -95,7 +89,6 @@ const Chats: React.FC<Props> = ({
   useEffect(() => {
     if (sendMessage !== null) {
       socket.emit("send-message", sendMessage);
-      console.log(sendMessage);
     }
   }, [sendMessage]);
 
