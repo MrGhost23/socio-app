@@ -117,7 +117,7 @@ const Conversation: React.FC<Props> = ({
       setLatestMessage(sendMessage?.text);
       const currentDateAndTime = new Date().toISOString();
       setLatestMessageDate(currentDateAndTime);
-      console.log("sendMessage", sendMessage);
+
       setSendMessage(null);
     }
   }, [chat.chatId, sendMessage, setSendMessage]);
@@ -136,7 +136,6 @@ const Conversation: React.FC<Props> = ({
       const currentDateAndTime = new Date().toISOString();
       setLatestMessageDate(currentDateAndTime);
 
-      console.log("received message", receiveMessage);
       setCurrentUserHaveUnreadMessages(true);
       setReceiveMessage(null);
     }
@@ -156,7 +155,6 @@ const Conversation: React.FC<Props> = ({
       (usernameInUrl ||
         (receiveMessage && receiveMessage.chatId === chat.chatId))
     ) {
-      console.log("useEffect function was called");
       readChat();
     }
   }, [
