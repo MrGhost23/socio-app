@@ -37,11 +37,11 @@ const Comment: React.FC<Props> = ({
             username={comment.author.username}
             link={true}
           />
-          <div className="flex flex-col gap-1 sm:gap-0.5 bg-[#f2f2f2] px-4 py-3 rounded-2xl">
+          <div className="flex flex-col gap-1 sm:gap-0.5 bg-[#f2f2f2] px-4 py-3 rounded-2xl dark:bg-primarylessDarker">
             <div className="relative w-fit flex flex-row sm:items-center gap-1 sm:gap-2">
               <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
                 <UserFullName
-                  className="text-sm sm:!text-base"
+                  className="text-sm sm:!text-base font-semibold"
                   fullName={
                     comment.author.firstName + " " + comment.author.lastName
                   }
