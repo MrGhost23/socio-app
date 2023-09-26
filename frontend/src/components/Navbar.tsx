@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 import { BsSearch } from "react-icons/bs";
-import { FaMoon } from "react-icons/fa";
+import { FaMoon, FaSun } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
 import { AiFillMessage } from "react-icons/ai";
 import { MdClose } from "react-icons/md";
@@ -204,7 +204,11 @@ const Navbar: React.FC<Props> = ({
             <ul className="ml-4 xl:w-48 flex items-center gap-2 justify-end">
               <li className="ml-2 lg:ml-4 relative inline-block">
                 <button onClick={handleModeToggle}>
-                  <FaMoon className="text-2xl text-gray-700 dark:text-gray-200" />
+                  {mode === "dark" ? (
+                    <FaSun className="text-2xl text-gray-700 dark:text-gray-200" />
+                  ) : (
+                    <FaMoon className="text-2xl text-gray-700 dark:text-gray-200" />
+                  )}
                 </button>
               </li>
               <li className="ml-2 lg:ml-4 relative inline-block">
