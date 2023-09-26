@@ -13,20 +13,13 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/authSlice";
 import MessagesNotAllowed from "./MessagesNotAllowed";
 
-interface Message {
-  senderUsername: string;
-  text: string;
-  chatId: string;
-  receiverUsername: string;
-}
-
 type Props = {
   currentChat: string | null;
   currentChatUserData: ProfileType;
   currentChatUserDataLoading: boolean;
   userChats: ChatType[];
-  setSendMessage: React.Dispatch<React.SetStateAction<Message | null>>;
-  receiveMessage: Message | null;
+  setSendMessage: React.Dispatch<React.SetStateAction<MessageType | null>>;
+  receiveMessage: MessageType | null;
   messagesIsVisible: boolean;
   chatInfoIsVisible: boolean;
   showUserInfo: () => void;
@@ -67,16 +60,7 @@ const Chat: React.FC<Props> = ({
 
   useEffect(() => {
     if (receiveMessage !== null && receiveMessage.chatId === chat!.chatId) {
-      const currentDateAndTime = new Date().toISOString();
-
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          ...receiveMessage,
-          createdAt: currentDateAndTime,
-          updatedAt: currentDateAndTime,
-        },
-      ]);
+      setMessages((prevMessages) => [...prevMessages, receiveMessage]);
     }
   }, [chat, receiveMessage]);
 
@@ -93,14 +77,13 @@ const Chat: React.FC<Props> = ({
         "http://localhost:5000/api/v1/message",
         message
       );
-      console.log(data);
+
+      setSendMessage({ ...data, receiverUsername: receiverUsername! });
       setMessages([...messages, data]);
       setNewMessage("");
     } catch (error) {
       console.log(error);
     }
-
-    setSendMessage({ ...message, receiverUsername: receiverUsername! });
   };
 
   return (

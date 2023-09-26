@@ -10,13 +10,7 @@ import useAxios from "../../hooks/useAxios";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/authSlice";
 import axios from "axios";
-
-interface Message {
-  senderUsername: string;
-  text: string;
-  chatId: string;
-  receiverUsername: string;
-}
+import { MessageType } from "../../Types/Message.types";
 
 type Props = {
   chat: ChatType;
@@ -26,10 +20,10 @@ type Props = {
     React.SetStateAction<ProfileType | null | undefined>
   >;
   setCurrentChatUserDataLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  sendMessage: Message | null;
-  setSendMessage: React.Dispatch<React.SetStateAction<Message | null>>;
-  receiveMessage: Message | null;
-  setReceiveMessage: React.Dispatch<React.SetStateAction<Message | null>>;
+  sendMessage: MessageType | null;
+  setSendMessage: React.Dispatch<React.SetStateAction<MessageType | null>>;
+  receiveMessage: MessageType | null;
+  setReceiveMessage: React.Dispatch<React.SetStateAction<MessageType | null>>;
   onlineUsers: { [key: string]: boolean };
 };
 
