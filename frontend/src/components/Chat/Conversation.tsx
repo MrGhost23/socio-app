@@ -130,19 +130,18 @@ const Conversation: React.FC<Props> = ({
   }, [chat.chatId, sendMessage]);
 
   /*
-  * - current user enters a chat directly and this chat have unread messages
-  * - current user switches to a chat that have unread messages
-  * - current user is in a chat and that chat received a new message
-  * => the readChat function will be called
-  */
+   * - current user enters a chat directly and this chat have unread messages
+   * - current user switches to a chat that have unread messages
+   * - current user is in a chat and that chat received a new message
+   * => the readChat function will be called
+   */
 
   useEffect(() => {
     if (
+      currentChat === chat.chatId &&
       currentUserHaveUnreadMessages &&
-      ((usernameInUrl && currentChat === chat.chatId) ||
-        (receiveMessage &&
-          receiveMessage.chatId === chat.chatId &&
-          receiveMessage.chatId === currentChat))
+      (usernameInUrl ||
+        (receiveMessage && receiveMessage.chatId === chat.chatId))
     ) {
       readChat();
     }
