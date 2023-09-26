@@ -100,10 +100,10 @@ const Conversation: React.FC<Props> = ({
     setCurrentUserHaveUnreadMessages(false);
   }, [chat.chatId]);
 
-  const changeChatHandler = async () => {
+  const changeChatHandler = useCallback(async () => {
     changeChat(chat.chatId);
     navigate(`/chats/${receiverUsername}`);
-  };
+  }, [changeChat, chat.chatId, navigate, receiverUsername]);
 
   /*
    * If the current user receives a message

@@ -95,6 +95,7 @@ const Chats: React.FC<Props> = ({
   useEffect(() => {
     if (sendMessage !== null) {
       socket.emit("send-message", sendMessage);
+      console.log(sendMessage);
     }
   }, [sendMessage]);
 
