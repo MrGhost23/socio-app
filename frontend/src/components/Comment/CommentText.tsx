@@ -18,15 +18,15 @@ const CommentText: React.FC<Props> = ({ text }) => {
     <p
       className={
         textIsInArabic
-          ? "text-sm text-gray-800 text-right"
-          : "text-sm text-gray-800 text-left"
+          ? "text-sm text-gray-800 text-right dark:text-textLighter"
+          : "text-sm text-gray-800 text-left dark:text-textLighter"
       }
     >
       {textSliced ? text?.slice(0, max - 3) + "... " : text}
 
       {textSliced && (
         <span
-          className="description-sm description-gray-500 font-semibold cursor-pointer transition duration-500 hover:description-sky-500"
+          className="description-sm description-gray-500 font-semibold cursor-pointer transition duration-500 hover:description-sky-500 dark:text-textLighter"
           onClick={seeMore}
         >
           See more
