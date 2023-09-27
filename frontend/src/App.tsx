@@ -37,7 +37,6 @@ const App: React.FC = () => {
   const [navIsSticky, setNavIsSticky] = useState(false);
   const mode = useSelector(selectMode);
   document.body.classList.toggle("dark", mode === "dark");
-  console.log(mode);
   const stickyNav = () => {
     if (
       document.body.scrollTop > 120 ||
