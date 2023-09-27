@@ -86,7 +86,7 @@ const Navbar: React.FC<Props> = ({
 
     if (query.length > 2) {
       return (
-        <div className="absolute px-4 py-4 shadow-md max-h-[400px] overflow-y-auto hidden b-0 z-50 w-full bg-white p-2 md:grid grid-cols-1 dark:bg-primarylessDark">
+        <div className="absolute px-4 py-4 shadow-md max-h-[400px] overflow-y-auto hidden b-0 z-50 w-full bg-white p-2 md:grid grid-cols-1">
           {results.users.length > 0 && (
             <p className="text-gray-400 font-semibold text-base dark:text-textLighter">
               USERS
@@ -164,8 +164,8 @@ const Navbar: React.FC<Props> = ({
     <header
       className={
         navIsSticky
-          ? "sticky-nav bg-white dark:bg-primarylessDark z-50"
-          : "relative bg-white dark:bg-primarylessDark z-50"
+          ? "sticky-nav bg-white border-b-2 dark:bg-primarylessDark dark:border-b-primarylessDarker z-50"
+          : "relative bg-white border-b-2 dark:bg-primarylessDark dark:border-b-primarylessDarker z-50"
       }
     >
       {!user ? (
@@ -191,7 +191,7 @@ const Navbar: React.FC<Props> = ({
 
                 <input
                   type="text"
-                  className="bg-gray-200 border outline-none appearance-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full pl-10 p-2.5  dark:bg-primarylessDarker dark:border-none dark:placeholder-gray-400 dark:text-white dark:focus:ring-sky-500 dark:focus:border-sky-500 focus:bg-gray-50"
+                  className="bg-gray-200 border-none outline-none appearance-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-sky-500 focus:border-sky-500 block w-full pl-10 p-2.5  dark:bg-primarylessDarker dark:placeholder-gray-400 dark:text-white dark:focus:ring-sky-500 dark:focus:border-sky-500 focus:bg-gray-50"
                   placeholder="Search..."
                   required
                   onChange={(e) => setQuery(e.target.value)}
@@ -255,7 +255,6 @@ const Navbar: React.FC<Props> = ({
           </button>
         </div>
       )}
-      {mode === "light" && <hr />}
     </header>
   );
 };
