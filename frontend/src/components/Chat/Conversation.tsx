@@ -209,10 +209,10 @@ const Conversation: React.FC<Props> = ({
         <ConversationSkeleton />
       ) : (
         <div
-          className={`flex flex-row gap-2 py-4 px-4 sm:px-10 lg:px-4 justify-center items-start border-b-2 cursor-pointer ${
+          className={`flex flex-row gap-2 py-4 px-4 sm:px-10 lg:px-4 justify-center items-start border-b-2 cursor-pointer dark:bg-primaryDark dark:border-b-primarylessDark ${
             chat.chatId === currentChat || currentUserHaveUnreadMessages
-              ? "bg-slate-200"
-              : "hover:bg-slate-100"
+              ? "bg-slate-200 dark:bg-primarylessDark"
+              : "hover:bg-slate-100 dark:hover:bg-primarylessDarker"
           }`}
           onClick={changeChatHandler}
         >
@@ -223,7 +223,7 @@ const Conversation: React.FC<Props> = ({
             online={receiverIsOnline && chat.allowMessage}
           />
           <div className="w-full flex flex-col">
-            <div className="flex flex-col sm:flex-row lg:flex-col sm:items-center lg:items-start gap-1 sm:gap-1.5 lg:gap-[0.28rem]">
+            <div className="flex flex-col sm:flex-row lg:flex-col sm:items-center lg:items-start gap-1 sm:gap-1.5 lg:gap-[0.28rem] dark:text-textLighter">
               <UserFullName
                 className="text-lg font-semibold"
                 fullName={
@@ -234,7 +234,7 @@ const Conversation: React.FC<Props> = ({
                 <ChatDate date={latestMessageDate!} />
               )}
             </div>
-            <span className="text-gray-500 font-medium">
+            <span className="text-gray-500 font-medium dark:text-textLighter">
               {latestMessage || (
                 <span className="font-semibold text-gray-700">{`Say Hi to ${
                   receiverData!.firstName
