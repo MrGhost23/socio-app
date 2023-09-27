@@ -34,7 +34,16 @@ const addMessage = async (req, res) => {
 const getMessages = async (req, res) => {
   const { chatId } = req.params;
   try {
-    const result = await Message.find({ chatId });
+    const page = req.query.page || 1;
+    const limit = 20;
+    const skip = (page - 1) * limit;
+
+    const result = await Message.find({ chatId })
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 })
+      .lean();
+
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json(error);
