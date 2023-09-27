@@ -8,27 +8,36 @@ import UserBio from "../User/UserBio";
 import Button from "../../ui/Button";
 
 type Props = {
+  receiverUsername: string;
   receiverData: ProfileType;
   hideUserInfo: () => void;
 };
 
-const ChatInfo: React.FC<Props> = ({ receiverData, hideUserInfo }) => {
+const ChatInfo: React.FC<Props> = ({
+  receiverUsername,
+  receiverData,
+  hideUserInfo,
+}) => {
   const navigate = useNavigate();
 
   return (
     <div className="relative flex flex-col items-center pt-8 lg:pt-0">
       <UserImage
         className="min-w-[9rem] w-36 min-h-[9rem] h-36 mb-4"
-        src={receiverData.userPicture}
-        username={receiverData.username}
+        src={receiverData?.userPicture}
+        username={receiverUsername}
         link={true}
       />
       <UserFullName
         className="font-semibold text-xl"
-        fullName={receiverData.firstName + " " + receiverData.lastName}
-        username={receiverData.username}
+        fullName={
+          (receiverData?.firstName || "Socio") +
+          " " +
+          (receiverData?.lastName || "User")
+        }
+        username={receiverUsername}
       />
-      <UserTag username={receiverData.username} />
+      <UserTag username={receiverUsername} />
       <UserBio bio={receiverData.bio ?? ""} />
       <Button
         text="View Profile"

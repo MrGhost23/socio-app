@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ChatType } from "../../Types/Chat.types";
 import UserImage from "../User/UserImage";
@@ -54,26 +54,69 @@ const Conversation: React.FC<Props> = ({
     chat.latestMessage?.createdAt
   );
 
-  const { data: userProfile, loading: userProfileIsLoading } =
-    useAxios<ProfileType>(
-      `http://localhost:5000/api/v1/users/${receiverUsername}`,
-      "get"
-    );
+  const dummyUserData = useMemo(
+    () => ({
+      _id: "",
+      userId: "",
+      username: receiverUsername,
+      firstName: "Socio",
+      lastName: "User",
+      email: "",
+      country: "",
+      createdAt: "",
+      bookmarks: [],
+      following: [],
+      followers: [],
+      blockedUsers: [],
+    }),
+    [receiverUsername]
+  );
+
+  const [receiverData, setReceiverData] = useState<ProfileType>();
+  const [receiverDataLoading, setReceiverDataLoading] = useState(true);
+
+  const {
+    data: userProfile,
+    loading: userProfileIsLoading,
+    error: userProfileHasError,
+  } = useAxios<ProfileType>(
+    `http://localhost:5000/api/v1/users/${receiverUsername}`,
+    "get"
+  );
 
   useEffect(() => {
-    if (currentChat === chat.chatId) {
-      setCurrentChatUserDataLoading(userProfileIsLoading);
-    }
+    if (userProfile && !userProfileHasError) {
+      if (currentChat === chat.chatId) {
+        setReceiverData(userProfile);
+        setReceiverDataLoading(false);
 
-    if (currentChat === chat.chatId && userProfile) {
-      setCurrentChatUserData(userProfile);
+        setCurrentChatUserData(userProfile);
+        setCurrentChatUserDataLoading(userProfileIsLoading);
+      } else if (!receiverData) {
+        setReceiverData(userProfile);
+        setReceiverDataLoading(false);
+      }
+    } else if (userProfileHasError) {
+      if (currentChat === chat.chatId) {
+        setReceiverData(dummyUserData);
+        setReceiverDataLoading(false);
+
+        setCurrentChatUserData(dummyUserData);
+        setCurrentChatUserDataLoading(userProfileIsLoading);
+      } else if (!receiverData) {
+        setReceiverData(dummyUserData);
+        setReceiverDataLoading(false);
+      }
     }
   }, [
     chat.chatId,
     currentChat,
+    dummyUserData,
+    receiverData,
     setCurrentChatUserData,
     setCurrentChatUserDataLoading,
     userProfile,
+    userProfileHasError,
     userProfileIsLoading,
   ]);
 
@@ -162,7 +205,7 @@ const Conversation: React.FC<Props> = ({
 
   return (
     <>
-      {userProfileIsLoading ? (
+      {userProfileIsLoading || receiverDataLoading ? (
         <ConversationSkeleton />
       ) : (
         <div
@@ -175,15 +218,17 @@ const Conversation: React.FC<Props> = ({
         >
           <UserImage
             className="min-h-[3.5rem] h-14 min-w-[3.5rem] w-14"
-            src={userProfile!.userPicture}
-            username={userProfile!.username}
+            src={receiverData?.userPicture}
+            username={receiverUsername}
             online={receiverIsOnline && chat.allowMessage}
           />
           <div className="w-full flex flex-col">
             <div className="flex flex-col sm:flex-row lg:flex-col sm:items-center lg:items-start gap-1 sm:gap-1.5 lg:gap-[0.28rem]">
               <UserFullName
                 className="text-lg font-semibold"
-                fullName={userProfile!.firstName + " " + userProfile!.lastName}
+                fullName={
+                  receiverData!.firstName + " " + receiverData!.lastName
+                }
               />
               {chat.latestMessage?.createdAt && (
                 <ChatDate date={latestMessageDate!} />
@@ -192,7 +237,7 @@ const Conversation: React.FC<Props> = ({
             <span className="text-gray-500 font-medium">
               {latestMessage || (
                 <span className="font-semibold text-gray-700">{`Say Hi to ${
-                  userProfile!.firstName
+                  receiverData!.firstName
                 }! 👋`}</span>
               )}
             </span>

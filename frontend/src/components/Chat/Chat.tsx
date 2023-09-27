@@ -133,6 +133,7 @@ const Chat: React.FC<Props> = ({
           <ProfileSkeleton className="shadow-none" />
         ) : currentChat ? (
           <ChatInfo
+            receiverUsername={receiverUsername!}
             receiverData={currentChatUserData}
             hideUserInfo={hideUserInfo}
           />
