@@ -30,7 +30,7 @@ const RecentActivities: React.FC<Props> = ({
       ) : (
         <NoDataMessage
           message={`${
-            isMyProfile ? "You don't" : `${userFirstName}} doesn't`
+            isMyProfile ? "You don't" : `${userFirstName} doesn't`
           } have any recent activities.`}
         />
       )}
