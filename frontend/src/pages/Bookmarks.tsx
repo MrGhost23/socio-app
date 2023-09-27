@@ -1,10 +1,10 @@
 import { useSelector } from "react-redux";
 import { selectUser } from "../store/slices/authSlice";
 import { BookmarkPostType } from "../Types/BookmarkPost.types";
-import useAxios from "../hooks/useAxios";
 import BookmarkPosts from "../components/Post/BookmarkPosts";
 import BookmarkPostsSkeleton from "../skeletons/BookmarkPostsSkeleton";
 import NoDataMessage from "../components/NoDataMessage";
+import useInfiniteFetch from "../hooks/useInfiniteFetch";
 
 const Bookmarks = () => {
   const currentUser = useSelector(selectUser);
@@ -13,11 +13,13 @@ const Bookmarks = () => {
     data: bookmarkPosts,
     loading: bookmarkPostsIsLoading,
     reFetch: reFetchPosts,
-  } = useAxios<BookmarkPostType[]>(
+  } = useInfiniteFetch<BookmarkPostType>(
     `http://localhost:5000/api/v1/users/${
       currentUser!.username
     }/bookmarked-posts`,
-    "get"
+    "get",
+    10,
+    true
   );
 
   return (
