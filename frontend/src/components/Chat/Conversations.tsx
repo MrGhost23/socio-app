@@ -7,7 +7,6 @@ import { ProfileType } from "../../Types/Profile.types";
 import { MessageType } from "../../Types/Message.types";
 
 type Props = {
-  chatsLoading: boolean;
   chats: ChatType[];
   currentChat: string | null;
   setCurrentChat: React.Dispatch<React.SetStateAction<string | null>>;
@@ -19,7 +18,6 @@ type Props = {
   setSendMessage: React.Dispatch<React.SetStateAction<MessageType | null>>;
   receiveMessage: MessageType | null;
   setReceiveMessage: React.Dispatch<React.SetStateAction<MessageType | null>>;
-
   onlineUsers: { [key: string]: boolean };
 };
 
