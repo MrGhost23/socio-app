@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const ErrorPage: React.FC = () => {
   const navigate = useNavigate();
-  const [countdown, setCountdown] = useState(200);
+  const [countdown, setCountdown] = useState(5);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -12,7 +12,7 @@ const ErrorPage: React.FC = () => {
 
     setTimeout(() => {
       navigate("/");
-    }, 100000);
+    }, 5000);
 
     return () => {
       clearInterval(timer);
