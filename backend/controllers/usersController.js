@@ -460,9 +460,12 @@ const getBookmarkedPosts = async (req, res) => {
       userId.toString()
     );
 
+    const page = req.query.page || 1;
+    const limit = 10;
+    const skip = (page - 1) * limit;
+
     const bookmarkedPosts = currentUser.bookmarks
       .filter((post) => {
-        console.log(post);
         return (
           !blockedUserIds.includes(post.userId) &&
           !blockedByIds.includes(post.userId)
@@ -470,7 +473,9 @@ const getBookmarkedPosts = async (req, res) => {
       })
       .reverse();
 
-    res.status(200).json(bookmarkedPosts);
+    const paginatedBookmarkedPosts = bookmarkedPosts.slice(skip, skip + limit);
+
+    res.status(200).json(paginatedBookmarkedPosts);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
