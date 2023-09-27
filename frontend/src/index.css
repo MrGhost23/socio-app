@@ -7,6 +7,22 @@ html {
   font-family: "Noto Sans Arabic", sans-serif;
 }
 
+::-webkit-scrollbar {
+  @apply w-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-600;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-sky-500;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-sky-600;
+}
+
 @media (prefers-color-scheme: dark) {
   .dark {
     @apply bg-primaryDark;
