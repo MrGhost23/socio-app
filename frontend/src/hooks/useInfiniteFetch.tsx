@@ -54,7 +54,7 @@ const useInfiniteFetch = <T,>(
         setLoading(false);
       }
     },
-    [method, url, page, displayToast]
+    [method, url, page, elementsFromEachRequest, displayToast]
   );
 
   useEffect(() => {
