@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectUser } from "../store/slices/authSlice";
 import { PostType } from "../Types/Post.types";
@@ -15,6 +15,8 @@ type Props = {
 
 const Profile: React.FC<Props> = ({ socket }) => {
   const { username } = useParams();
+  const navigate = useNavigate();
+
   const currentUser = useSelector(selectUser);
   const isMyProfile = currentUser?.username === username;
 
@@ -23,6 +25,7 @@ const Profile: React.FC<Props> = ({ socket }) => {
   const {
     data: profilePosts,
     loading: profilePostsIsLoading,
+    error: profilePostsHasError,
     reFetch: reFetchPosts,
   } = useAxios<PostType[]>(
     `http://localhost:5000/api/v1/posts/user/${username}`,
@@ -58,6 +61,14 @@ const Profile: React.FC<Props> = ({ socket }) => {
       return updatedPosts;
     });
   };
+
+  useEffect(() => {
+    if (profilePostsHasError) {
+      navigate("/error");
+    }
+  }, [navigate, profilePostsHasError]);
+
+  if (profilePostsHasError) return;
 
   return (
     <>

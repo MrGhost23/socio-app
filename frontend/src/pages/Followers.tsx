@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { UserType } from "../Types/User.types";
 import useAxios from "../hooks/useAxios";
 import Users from "../components/User/Users";
@@ -6,6 +6,7 @@ import Card from "../ui/Card";
 import SearchInput from "../ui/SearchInput";
 import UsersSkeleton from "../skeletons/UsersSkeleton";
 import { Socket } from "socket.io-client";
+import { useEffect } from "react";
 
 type Props = {
   socket: Socket;
@@ -13,11 +14,24 @@ type Props = {
 
 const Followers: React.FC<Props> = ({ socket }) => {
   const { username } = useParams();
+  const navigate = useNavigate();
 
-  const { data: followers, loading: followersIsLoading } = useAxios<UserType[]>(
+  const {
+    data: followers,
+    loading: followersIsLoading,
+    error: followersHasError,
+  } = useAxios<UserType[]>(
     `http://localhost:5000/api/v1/users/${username}/followers`,
     "get"
   );
+
+  useEffect(() => {
+    if (followersHasError) {
+      navigate("/error");
+    }
+  }, [navigate, followersHasError]);
+
+  if (followersHasError) return;
 
   return (
     <>

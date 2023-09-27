@@ -20,19 +20,18 @@ const PostPage: React.FC<Props> = ({ socket }) => {
     data: postData,
     loading: postDataIsLoading,
     error: postDataHasError,
-  } = useAxios<PostType>(`http://localhost:5000/api/v1/posts/${id}`, "get");
+  } = useAxios<PostType>(
+    `http://localhost:5000/api/v1/posts/${id}`,
+    "get",
+    undefined,
+    false
+  );
 
   useEffect(() => {
     if (postData) {
       setPost(postData);
     }
   }, [postData]);
-
-  useEffect(() => {
-    if (postDataHasError) {
-      navigate("/");
-    }
-  }, [navigate, postDataHasError]);
 
   const removePost = () => {
     navigate("/");
@@ -61,6 +60,14 @@ const PostPage: React.FC<Props> = ({ socket }) => {
       return updatedPostData;
     });
   };
+
+  useEffect(() => {
+    if (postDataHasError) {
+      navigate("/error");
+    }
+  }, [navigate, postDataHasError]);
+
+  if (postDataHasError) return;
 
   return (
     <>

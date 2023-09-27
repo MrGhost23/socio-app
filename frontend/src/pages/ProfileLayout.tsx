@@ -28,20 +28,27 @@ const ProfileLayout: React.FC<Props> = ({ socket }) => {
   const { username } = useParams();
 
   const [isFollowing, setIsFollowing] = useState(false);
-  const [isBlocked, setIsBlocked] = useState(false);
 
   const navigate = useNavigate();
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
 
-  const { data: userProfile, loading: userProfileIsLoading } =
-    useAxios<ProfileType>(
-      `http://localhost:5000/api/v1/users/${username}`,
-      "get"
-    );
+  const {
+    data: userProfile,
+    loading: userProfileIsLoading,
+    error: userProfileHasError,
+  } = useAxios<ProfileType>(
+    `http://localhost:5000/api/v1/users/${username}`,
+    "get"
+  );
 
-  const { data: userActivities, loading: userActivitiesIsLoading } = useAxios<
-    RecentActivityType[]
-  >(`http://localhost:5000/api/v1/users/${username}/activities`, "get");
+  const {
+    data: userActivities,
+    loading: userActivitiesIsLoading,
+    error: userActivitiesHasError,
+  } = useAxios<RecentActivityType[]>(
+    `http://localhost:5000/api/v1/users/${username}/activities`,
+    "get"
+  );
 
   const [followers, setFollowers] = useState<number>(0);
   const [followersLoading, setFollowersLoading] = useState(true);
@@ -56,7 +63,6 @@ const ProfileLayout: React.FC<Props> = ({ socket }) => {
   useEffect(() => {
     if (userProfile) {
       setIsFollowing(currentUser!.following.includes(userProfile._id));
-      setIsBlocked(currentUser!.blockedUsers.includes(userProfile._id));
     }
   }, [currentUser, userProfile]);
 
@@ -98,10 +104,12 @@ const ProfileLayout: React.FC<Props> = ({ socket }) => {
   };
 
   useEffect(() => {
-    if ((!userProfileIsLoading && !userProfile) || isBlocked) {
-      navigate("/");
+    if (userProfileHasError || userActivitiesHasError) {
+      navigate("/error");
     }
-  }, [isBlocked, navigate, userProfile, userProfileIsLoading]);
+  }, [navigate, userProfileHasError, userActivitiesHasError]);
+
+  if (userProfileHasError || userActivitiesHasError) return;
 
   return (
     <>
