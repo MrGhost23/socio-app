@@ -96,13 +96,13 @@ const Chats: React.FC<Props> = ({
 
   return (
     <div className="h-[calc(100vh-82px)] shadow-lg rounded-lg">
-      <div className="grid grid-cols-1 lg:grid-cols-4 justify-between bg-white">
+      <div className="grid grid-cols-1 lg:grid-cols-4 justify-between bg-white dark:bg-primaryDark">
         <Sidebar hide={true} />
         <div
           className={
             conversationsIsVisible
-              ? "col-span-1 lg:h-[calc(100vh-82px)] flex flex-col border-r-2 overflow-y-auto"
-              : "col-span-1 lg:h-[calc(100vh-82px)] hidden lg:flex lg:flex-col border-r-2 overflow-y-auto"
+              ? "col-span-1 lg:h-[calc(100vh-82px)] flex flex-col border-r-2 dark:border-r-primarylessDark overflow-y-auto"
+              : "col-span-1 lg:h-[calc(100vh-82px)] hidden lg:flex lg:flex-col border-r-2 dark:border-r-primaryDark overflow-y-auto"
           }
         >
           <Conversations
@@ -134,7 +134,7 @@ const Chats: React.FC<Props> = ({
           />
         ) : (
           <div className="col-span-3 hidden lg:flex lg:justify-center lg:items-center">
-            <p className="text-gray-600 font-semibold text-center">
+            <p className="text-gray-600 font-semibold text-center dark:text-textLighter">
               {!currentChatLoading && userChats?.length
                 ? "Tap on chat to start a conversation!"
                 : "You have no conversations"}
