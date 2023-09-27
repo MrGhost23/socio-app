@@ -125,8 +125,8 @@ const Chat: React.FC<Props> = ({
       <div
         className={
           chatInfoIsVisible
-            ? "col-span-1 h-[calc(100vh-82px)] lg:block border-l-2 px-4 sm:px-10 lg:px-4 pt-5"
-            : "col-span-1 h-[calc(100vh-82px)] hidden lg:block border-l-2 px-4 sm:px-10 lg:px-4 pt-5"
+            ? "col-span-1 h-[calc(100vh-82px)] lg:block border-l-2 dark:border-l-primarylessDark dark:text-textLighter px-4 sm:px-10 lg:px-4 pt-5"
+            : "col-span-1 h-[calc(100vh-82px)] hidden lg:block border-l-2 dark:border-l-primarylessDark dark:text-textLighter px-4 sm:px-10 lg:px-4 pt-5"
         }
       >
         {currentChat && currentChatUserDataLoading ? (
