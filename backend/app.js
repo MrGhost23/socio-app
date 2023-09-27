@@ -22,6 +22,9 @@ const notificationRouter = require("./routes/notificationRoutes");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const CustomError = require("./errors/index");
+var cron = require("node-cron");
+const axios = require("axios");
+
 const { Server } = require("socket.io");
 
 const app = express();
@@ -64,6 +67,33 @@ const postAssetStorage = multer.diskStorage({
 
 const uploadProfilePicture = multer({ storage: profilePictureStorage });
 const uploadPostAsset = multer({ storage: postAssetStorage });
+
+app.get("/", (req, res) => {
+  const responseData = {
+    message: "YO, HOW U DOIN?",
+  };
+
+  res.status(200).json(responseData);
+});
+
+cron.schedule("*/5 * * * *", () => {
+  console.log("SERVER PING IS ALRIGHT!");
+  const serverUrl = "http://localhost:5000";
+  axios
+    .get(serverUrl)
+    .then((response) => {
+      if (response.status === 200) {
+        console.log(`Request sent to ${serverUrl}`);
+      } else {
+        console.error(
+          `Failed to send request to ${serverUrl}. Status code: ${response.status}`
+        );
+      }
+    })
+    .catch((error) => {
+      console.error(`Error sending request to ${serverUrl}: ${error.message}`);
+    });
+});
 
 app.use(
   "/profile_pics",
