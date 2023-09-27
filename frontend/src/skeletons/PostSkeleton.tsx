@@ -1,9 +1,13 @@
 import SkeletonWrapper from "./SkeletonWrapper";
 import SkeletonElement from "./SkeletonElement";
 
-const PostSkeleton: React.FC = () => {
+type Props = {
+  className: string;
+};
+
+const PostSkeleton: React.FC<Props> = ({ className }) => {
   return (
-    <SkeletonWrapper>
+    <SkeletonWrapper className={className || ""}>
       <div className="flex flex-col gap-2">
         <div className="relative mb-2 flex flex-row justify-between gap-3">
           <SkeletonElement
