@@ -9,6 +9,7 @@ interface AxiosResponse<T> {
 const useInfiniteFetch = <T,>(
   url: string,
   method: Method,
+  elementsFromEachRequest: number,
   displayToast?: boolean
 ) => {
   const [data, setData] = useState<T[] | null>();
@@ -35,7 +36,7 @@ const useInfiniteFetch = <T,>(
         });
 
         setLoading(false);
-        setHasMore(response.data.length === 10);
+        setHasMore(response.data.length >= elementsFromEachRequest);
 
         setData((prevData) => {
           if (prevData) {
