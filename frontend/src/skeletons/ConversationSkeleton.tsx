@@ -3,7 +3,7 @@ import SkeletonWrapper from "./SkeletonWrapper";
 
 const ConversationSkeleton = () => {
   return (
-    <SkeletonWrapper className="!p-0 !bg-transparent !rounded-none shadow-none border-b-2">
+    <SkeletonWrapper className="!p-0 !bg-transparent !rounded-none shadow-none border-b-2 dark:border-b-primarylessDarker">
       <div className="flex flex-row gap-2 py-4 px-4">
         <SkeletonElement
           type="avatar"
