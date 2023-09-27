@@ -44,8 +44,8 @@ const Notification: React.FC<Props> = ({
       onClick={clickHandler}
       className={`flex items-center px-4 py-3 border-b dark:border-b-primaryDark ${
         isRead
-          ? "bg-gray-100"
-          : "hover:bg-gray-100 hover:dark:bg-primarylessDarker"
+        ? "hover:bg-gray-100 hover:dark:bg-primarylessDarker"
+        : "bg-gray-100 dark:bg-primarylessDarker"
       }`}
     >
       <UserImage
