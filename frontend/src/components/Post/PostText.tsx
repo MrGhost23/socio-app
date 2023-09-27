@@ -26,7 +26,7 @@ const PostText: React.FC<Props> = ({ text }) => {
 
       {textSliced && (
         <span
-          className="description-sm description-gray-500 font-semibold cursor-pointer transition duration-500 hover:description-sky-500"
+          className="description-sm description-gray-500 font-semibold whitespace-nowrap cursor-pointer transition duration-500 hover:description-sky-500"
           onClick={seeMore}
         >
           See more
