@@ -18,8 +18,8 @@ const PostText: React.FC<Props> = ({ text }) => {
     <p
       className={
         textIsInArabic
-          ? "text-right dark:text-textLighter"
-          : "text-left dark:text-textLighter"
+          ? "text-right break-all dark:text-textLighter"
+          : "text-left break-all dark:text-textLighter"
       }
     >
       {textSliced ? text?.slice(0, max - 3) + "... " : text}

@@ -18,8 +18,8 @@ const CommentText: React.FC<Props> = ({ text }) => {
     <p
       className={
         textIsInArabic
-          ? "text-sm text-gray-800 text-right dark:text-textLighter"
-          : "text-sm text-gray-800 text-left dark:text-textLighter"
+          ? "text-sm text-gray-800 text-right break-all dark:text-textLighter"
+          : "text-sm text-gray-800 text-left break-all dark:text-textLighter"
       }
     >
       {textSliced ? text?.slice(0, max - 3) + "... " : text}

@@ -20,7 +20,10 @@ const ReceiverMsg: React.FC<Props> = ({
   const textIsInArabic = isArabic(msg);
 
   return (
-    <div className="ml-5 flex justify-start gap-2" onClick={setChatInfoIsVisible}>
+    <div
+      className="ml-5 flex justify-start gap-2"
+      onClick={setChatInfoIsVisible}
+    >
       <UserImage
         src={userPicture}
         username={username}
@@ -30,8 +33,8 @@ const ReceiverMsg: React.FC<Props> = ({
         <div
           className={
             textIsInArabic
-              ? "py-2 px-4 bg-[#2798cc] rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white text-right"
-              : "py-2 px-4 bg-[#2798cc] rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white text-left"
+              ? "py-2 px-4 bg-[#2798cc] rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white text-right break-all"
+              : "py-2 px-4 bg-[#2798cc] rounded-br-3xl rounded-tr-3xl rounded-tl-xl text-white text-left break-all"
           }
         >
           {msg}
