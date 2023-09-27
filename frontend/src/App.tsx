@@ -34,9 +34,12 @@ import { NotificationType } from "./Types/Notification.types";
 import { ProfileType } from "./Types/Profile.types";
 
 const App: React.FC = () => {
-  const [navIsSticky, setNavIsSticky] = useState(false);
   const mode = useSelector(selectMode);
   document.body.classList.toggle("dark", mode === "dark");
+  document.documentElement.classList.toggle("dark", mode === "dark");
+
+  const [navIsSticky, setNavIsSticky] = useState(false);
+
   const stickyNav = () => {
     if (
       document.body.scrollTop > 120 ||
