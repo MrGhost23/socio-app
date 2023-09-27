@@ -1,6 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { UserType } from "../Types/User.types";
-import useAxios from "../hooks/useAxios";
 import Users from "../components/User/Users";
 import Card from "../ui/Card";
 import SearchInput from "../ui/SearchInput";
@@ -8,6 +7,9 @@ import UsersSkeleton from "../skeletons/UsersSkeleton";
 import { Socket } from "socket.io-client";
 import { useEffect } from "react";
 import NoDataMessage from "../components/NoDataMessage";
+import useInfiniteFetch from "../hooks/useInfiniteFetch";
+import InfiniteScroll from "react-infinite-scroll-component";
+import PostSkeleton from "../skeletons/PostSkeleton";
 
 type Props = {
   socket: Socket;
@@ -21,9 +23,12 @@ const Following: React.FC<Props> = ({ socket }) => {
     data: following,
     loading: followingIsLoading,
     error: followingHasError,
-  } = useAxios<UserType[]>(
+    hasMore: followingHasMore,
+    fetchMoreData: fetchMoreFollowing,
+  } = useInfiniteFetch<UserType>(
     `http://localhost:5000/api/v1/users/${username}/following`,
-    "get"
+    "get",
+    20
   );
 
   useEffect(() => {
@@ -41,10 +46,17 @@ const Following: React.FC<Props> = ({ socket }) => {
       ) : (
         <Card className="sticky top-32 px-8 py-4 pb-6 flex flex-col !text-left">
           <h3 className="mb-5 text-xl">Following</h3>
-          {following!.length ? (
+          {following && following?.length > 0 ? (
             <>
               <SearchInput className="mb-5" />
-              <Users users={following!} mode="follow" socket={socket} />
+              <InfiniteScroll
+                dataLength={following.length}
+                next={fetchMoreFollowing}
+                hasMore={followingHasMore}
+                loader={<PostSkeleton className="mt-8" />}
+              >
+                <Users users={following} mode="follow" socket={socket} />
+              </InfiniteScroll>
             </>
           ) : (
             <NoDataMessage message={`${username} is not following anyone`} />
