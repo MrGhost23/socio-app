@@ -4,12 +4,14 @@ import { useSelector } from "react-redux";
 import { Socket } from "socket.io-client";
 import { selectUser } from "../store/slices/authSlice";
 import { ChatType } from "../Types/Chat.types";
-import useAxios from "../hooks/useAxios";
 import Conversations from "../components/Chat/Conversations";
 import Chat from "../components/Chat/Chat";
 import Sidebar from "../components/Sidebar";
 import { ProfileType } from "../Types/Profile.types";
 import { MessageType } from "../Types/Message.types";
+import useInfiniteFetch from "../hooks/useInfiniteFetch";
+import InfiniteScroll from "react-infinite-scroll-component";
+import PostSkeleton from "../skeletons/PostSkeleton";
 
 type Props = {
   sendMessage: MessageType | null;
@@ -42,9 +44,12 @@ const Chats: React.FC<Props> = ({
     data: userChats,
     loading: userChatsIsLoading,
     error: userChatsHasError,
-  } = useAxios<ChatType[]>(
+    hasMore: userChatsHasMore,
+    fetchMoreData: fetchMoreUserChats,
+  } = useInfiniteFetch<ChatType>(
     `http://localhost:5000/api/v1/chat/${currentUser?.username}`,
-    "get"
+    "get",
+    10
   );
 
   useEffect(() => {
@@ -105,19 +110,26 @@ const Chats: React.FC<Props> = ({
               : "col-span-1 lg:h-[calc(100vh-82px)] hidden lg:flex lg:flex-col border-r-2 dark:border-r-primaryDark overflow-y-auto"
           }
         >
-          <Conversations
-            chatsLoading={userChatsIsLoading}
-            chats={userChats!}
-            currentChat={currentChat}
-            setCurrentChat={setCurrentChat}
-            setCurrentChatUserData={setCurrentChatUserData}
-            setCurrentChatUserDataLoading={setCurrentChatUserDataLoading}
-            receiveMessage={receiveMessage}
-            setReceiveMessage={setReceiveMessage}
-            sendMessage={sendMessage}
-            setSendMessage={setSendMessage}
-            onlineUsers={onlineUsers}
-          />
+          <InfiniteScroll
+            dataLength={userChats!.length}
+            next={fetchMoreUserChats}
+            hasMore={userChatsHasMore}
+            loader={<PostSkeleton className="mt-8" />}
+          >
+            <Conversations
+              chatsLoading={userChatsIsLoading}
+              chats={userChats!}
+              currentChat={currentChat}
+              setCurrentChat={setCurrentChat}
+              setCurrentChatUserData={setCurrentChatUserData}
+              setCurrentChatUserDataLoading={setCurrentChatUserDataLoading}
+              receiveMessage={receiveMessage}
+              setReceiveMessage={setReceiveMessage}
+              sendMessage={sendMessage}
+              setSendMessage={setSendMessage}
+              onlineUsers={onlineUsers}
+            />
+          </InfiniteScroll>
         </div>
         {!currentChatLoading && receiverUsername ? (
           <Chat
