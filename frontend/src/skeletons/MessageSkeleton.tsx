@@ -7,7 +7,7 @@ type Props = {
 const MessageSkeleton: React.FC<Props> = ({ type }) => {
   return (
     <div
-      className={`flex items-center gap-2 ${
+      className={`flex items-center gap-2 dark:bg-primaryDark ${
         type === "received" ? "flex-row" : "flex-row-reverse justify-flex-start"
       }`}
     >
