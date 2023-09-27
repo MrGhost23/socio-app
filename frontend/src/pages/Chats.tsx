@@ -12,6 +12,7 @@ import { MessageType } from "../Types/Message.types";
 import useInfiniteFetch from "../hooks/useInfiniteFetch";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostSkeleton from "../skeletons/PostSkeleton";
+import ConversationsSkeletons from "../skeletons/ConversationsSkeletons";
 
 type Props = {
   sendMessage: MessageType | null;
@@ -110,26 +111,32 @@ const Chats: React.FC<Props> = ({
               : "col-span-1 lg:h-[calc(100vh-82px)] hidden lg:flex lg:flex-col border-r-2 dark:border-r-primaryDark overflow-y-auto"
           }
         >
-          <InfiniteScroll
-            dataLength={userChats!.length}
-            next={fetchMoreUserChats}
-            hasMore={userChatsHasMore}
-            loader={<PostSkeleton className="mt-8" />}
-          >
-            <Conversations
-              chatsLoading={userChatsIsLoading}
-              chats={userChats!}
-              currentChat={currentChat}
-              setCurrentChat={setCurrentChat}
-              setCurrentChatUserData={setCurrentChatUserData}
-              setCurrentChatUserDataLoading={setCurrentChatUserDataLoading}
-              receiveMessage={receiveMessage}
-              setReceiveMessage={setReceiveMessage}
-              sendMessage={sendMessage}
-              setSendMessage={setSendMessage}
-              onlineUsers={onlineUsers}
-            />
-          </InfiniteScroll>
+          {userChatsIsLoading ? (
+            <ConversationsSkeletons conversationsNumber={10} />
+          ) : userChats && userChats?.length > 0 ? (
+            <InfiniteScroll
+              dataLength={userChats.length}
+              next={fetchMoreUserChats}
+              hasMore={userChatsHasMore}
+              loader={<PostSkeleton className="mt-8" />}
+            >
+              <Conversations
+                chatsLoading={userChatsIsLoading}
+                chats={userChats}
+                currentChat={currentChat}
+                setCurrentChat={setCurrentChat}
+                setCurrentChatUserData={setCurrentChatUserData}
+                setCurrentChatUserDataLoading={setCurrentChatUserDataLoading}
+                receiveMessage={receiveMessage}
+                setReceiveMessage={setReceiveMessage}
+                sendMessage={sendMessage}
+                setSendMessage={setSendMessage}
+                onlineUsers={onlineUsers}
+              />
+            </InfiniteScroll>
+          ) : (
+            ""
+          )}
         </div>
         {!currentChatLoading && receiverUsername ? (
           <Chat

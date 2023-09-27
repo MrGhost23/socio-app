@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/authSlice";
 import { ChatType } from "../../Types/Chat.types";
 import Conversation from "./Conversation";
-import ConversationsSkeletons from "../../skeletons/ConversationsSkeletons";
 import { ProfileType } from "../../Types/Profile.types";
 import { MessageType } from "../../Types/Message.types";
 
@@ -25,7 +24,6 @@ type Props = {
 };
 
 const Conversations: React.FC<Props> = ({
-  chatsLoading,
   chats,
   currentChat,
   setCurrentChat,
@@ -42,31 +40,26 @@ const Conversations: React.FC<Props> = ({
   const conversationComponents = useMemo(() => {
     return (
       <>
-        {chatsLoading ? (
-          <ConversationsSkeletons conversationsNumber={10} />
-        ) : (
-          chats?.map((chat) => (
-            <Conversation
-              key={chat.members.find(
-                (username) => username !== currentUser!.username
-              )}
-              chat={chat}
-              currentChat={currentChat}
-              changeChat={setCurrentChat}
-              setCurrentChatUserData={setCurrentChatUserData}
-              setCurrentChatUserDataLoading={setCurrentChatUserDataLoading}
-              receiveMessage={receiveMessage}
-              setReceiveMessage={setReceiveMessage}
-              sendMessage={sendMessage}
-              setSendMessage={setSendMessage}
-              onlineUsers={onlineUsers}
-            />
-          ))
-        )}
+        {chats?.map((chat) => (
+          <Conversation
+            key={chat.members.find(
+              (username) => username !== currentUser!.username
+            )}
+            chat={chat}
+            currentChat={currentChat}
+            changeChat={setCurrentChat}
+            setCurrentChatUserData={setCurrentChatUserData}
+            setCurrentChatUserDataLoading={setCurrentChatUserDataLoading}
+            receiveMessage={receiveMessage}
+            setReceiveMessage={setReceiveMessage}
+            sendMessage={sendMessage}
+            setSendMessage={setSendMessage}
+            onlineUsers={onlineUsers}
+          />
+        ))}
       </>
     );
   }, [
-    chatsLoading,
     chats,
     currentChat,
     setCurrentChat,
