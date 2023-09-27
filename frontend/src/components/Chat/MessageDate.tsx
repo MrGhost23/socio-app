@@ -6,7 +6,7 @@ type Props = {
 
 const MessageDate: React.FC<Props> = ({ date }) => {
   return (
-    <span className="w-fit text-xs sm:text-sm text-gray-600 tracking-tight">
+    <span className="w-fit text-xs sm:text-sm text-gray-600 tracking-tight dark:text-textLight">
       {formatDistanceToNow(new Date(date), {
         addSuffix: true,
       })}
