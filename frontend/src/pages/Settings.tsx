@@ -17,6 +17,7 @@ import Button from "../ui/Button";
 import UserImage from "../components/User/UserImage";
 import UsersSkeleton from "../skeletons/UsersSkeleton";
 import { useNavigate } from "react-router-dom";
+import NoDataMessage from "../components/NoDataMessage";
 
 type Props = {
   navIsSticky: boolean;
@@ -305,7 +306,7 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
             {blockedUsers!.length ? (
               <Users users={blockedUsers!} mode="block" />
             ) : (
-              <p>You don't have anyone in your block list</p>
+              <NoDataMessage message="You don't have anyone in your block list" />
             )}
           </Card>
         )}

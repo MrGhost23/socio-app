@@ -8,6 +8,7 @@ import PostForm from "../components/Post/PostForm";
 import Posts from "../components/Post/Posts";
 import PostsSkeleton from "../skeletons/PostsSkeleton";
 import { Socket } from "socket.io-client";
+import NoDataMessage from "../components/NoDataMessage";
 
 type Props = {
   socket: Socket;
@@ -83,9 +84,12 @@ const Profile: React.FC<Props> = ({ socket }) => {
           socket={socket}
         />
       ) : (
-        <div className="text-center text-gray-800 text-xl">
-          {isMyProfile ? "You" : "This user"} didn't post anything yet.
-        </div>
+        <NoDataMessage
+          message={`${
+            isMyProfile ? "You" : "This user"
+          } didn't post anything yet.`}
+          className="text-center text-gray-800 text-xl"
+        />
       )}
     </>
   );

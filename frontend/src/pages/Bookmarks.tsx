@@ -4,6 +4,7 @@ import { BookmarkPostType } from "../Types/BookmarkPost.types";
 import useAxios from "../hooks/useAxios";
 import BookmarkPosts from "../components/Post/BookmarkPosts";
 import BookmarkPostsSkeleton from "../skeletons/BookmarkPostsSkeleton";
+import NoDataMessage from "../components/NoDataMessage";
 
 const Bookmarks = () => {
   const currentUser = useSelector(selectUser);
@@ -24,14 +25,12 @@ const Bookmarks = () => {
       {bookmarkPostsIsLoading ? (
         <BookmarkPostsSkeleton postsNumber={2} />
       ) : bookmarkPosts!.length > 0 ? (
-        <BookmarkPosts
-          posts={bookmarkPosts!}
-          reFetchFunction={reFetchPosts}
-        />
+        <BookmarkPosts posts={bookmarkPosts!} reFetchFunction={reFetchPosts} />
       ) : (
-        <div className="text-center text-gray-800 text-xl">
-          You have no bookmarks.
-        </div>
+        <NoDataMessage
+          message="You have no bookmarks."
+          className="text-center text-gray-800 text-xl"
+        />
       )}
     </>
   );

@@ -7,6 +7,7 @@ import SearchInput from "../ui/SearchInput";
 import UsersSkeleton from "../skeletons/UsersSkeleton";
 import { Socket } from "socket.io-client";
 import { useEffect } from "react";
+import NoDataMessage from "../components/NoDataMessage";
 
 type Props = {
   socket: Socket;
@@ -46,7 +47,7 @@ const Followers: React.FC<Props> = ({ socket }) => {
               <Users users={followers!} mode="follow" socket={socket} />
             </>
           ) : (
-            <p>No one is following {username}</p>
+            <NoDataMessage message={`No one is following ${username}`} />
           )}
         </Card>
       )}

@@ -9,6 +9,7 @@ import SuggestedUsers from "../components/User/SuggestedUsers";
 import Card from "../ui/Card";
 import UsersSkeleton from "../skeletons/UsersSkeleton";
 import { Socket } from "socket.io-client";
+import NoDataMessage from "../components/NoDataMessage";
 
 type Props = {
   navIsSticky: boolean;
@@ -55,7 +56,7 @@ const MainLayout: React.FC<Props> = ({ navIsSticky, socket }) => {
         ) : (
           <Card className="xl:sticky xl:top-32 mt-10 xl:mt-0 xl:mb-10 px-8 py-4 pb-6 flex flex-col !text-left order-1 xl:order-2">
             <h3 className="mb-5 text-xl">Suggested for you</h3>
-            <p>Found no users to suggest</p>
+            <NoDataMessage message="Found no users to suggest" />
           </Card>
         )}
       </div>

@@ -1,5 +1,6 @@
 import RecentActivity from "./RecentActivity";
 import { RecentActivityType } from "../Types/RecentActivity.type";
+import NoDataMessage from "./NoDataMessage";
 
 type Props = {
   isMyProfile: boolean;
@@ -27,10 +28,11 @@ const RecentActivities: React.FC<Props> = ({
           />
         ))
       ) : (
-        <p>
-          {isMyProfile ? "You don't" : `${userFirstName} doesn't`} have any
-          recent activities.
-        </p>
+        <NoDataMessage
+          message={`${
+            isMyProfile ? "You don't" : `${userFirstName}} doesn't`
+          } have any recent activities.`}
+        />
       )}
     </div>
   );
