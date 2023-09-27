@@ -121,7 +121,6 @@ const Chats: React.FC<Props> = ({
               loader={<PostSkeleton className="mt-8" />}
             >
               <Conversations
-                chatsLoading={userChatsIsLoading}
                 chats={userChats}
                 currentChat={currentChat}
                 setCurrentChat={setCurrentChat}

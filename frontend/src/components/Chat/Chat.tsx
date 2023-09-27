@@ -5,13 +5,15 @@ import ChatInfo from "./ChatInfo";
 import ProfileSkeleton from "../../skeletons/ProfileSkeleton";
 import MessagesSkeleton from "../../skeletons/MessagesSkeleton";
 import { ProfileType } from "../../Types/Profile.types";
-import useAxios from "../../hooks/useAxios";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import MessageForm from "./MessageForm";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/authSlice";
 import MessagesNotAllowed from "./MessagesNotAllowed";
+import useInfiniteFetch from "../../hooks/useInfiniteFetch";
+import InfiniteScroll from "react-infinite-scroll-component";
+import PostSkeleton from "../../skeletons/PostSkeleton";
 
 type Props = {
   currentChat: string | null;
@@ -45,9 +47,17 @@ const Chat: React.FC<Props> = ({
     (username: string) => username !== currentUser!.username
   );
 
-  const { data: chatMessages, loading: chatMessagesIsLoading } = useAxios<
-    MessageType[]
-  >(`http://localhost:5000/api/v1/message/${chat?.chatId}`, "get");
+  const {
+    data: chatMessages,
+    loading: chatMessagesIsLoading,
+    fetchMoreData: fetchMorePosts,
+    hasMore: feedPostsHasMore,
+  } = useInfiniteFetch<MessageType>(
+    `http://localhost:5000/api/v1/message/${chat?.chatId}`,
+    "get",
+    10,
+    true
+  );
 
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [newMessage, setNewMessage] = useState("");
@@ -98,12 +108,19 @@ const Chat: React.FC<Props> = ({
         {currentChat &&
         (currentChatUserDataLoading || chatMessagesIsLoading) ? (
           <MessagesSkeleton messagesNumber={6} />
-        ) : currentChat ? (
-          <Messages
-            chatMessages={messages}
-            receiverData={currentChatUserData}
-            setChatInfoIsVisible={showUserInfo}
-          />
+        ) : currentChat && chatMessages && chatMessages?.length > 0 ? (
+          <InfiniteScroll
+            dataLength={chatMessages.length}
+            next={fetchMorePosts}
+            hasMore={feedPostsHasMore}
+            loader={<PostSkeleton className="mt-8" />}
+          >
+            <Messages
+              chatMessages={messages}
+              receiverData={currentChatUserData}
+              setChatInfoIsVisible={showUserInfo}
+            />
+          </InfiniteScroll>
         ) : (
           ""
         )}
