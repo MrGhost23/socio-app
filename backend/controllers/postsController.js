@@ -134,6 +134,10 @@ const getFeedPosts = async (req, res) => {
     const blockedUserIds = currentUser.blockedUsers || [];
     const blockedByIds = currentUser.blockedBy || [];
 
+    const page = req.query.page || 1;
+    const limit = 10;
+    const skip = (page - 1) * limit;
+
     const posts = await Post.find({
       $and: [
         { userId: { $nin: blockedUserIds } },
@@ -141,6 +145,8 @@ const getFeedPosts = async (req, res) => {
       ],
     })
       .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
       .exec();
     res.status(StatusCodes.OK).json(posts);
   } catch (error) {
