@@ -180,7 +180,7 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
                     text="Save"
                     bg={true}
                     onClick={uploadPic}
-                    className="absolute bottom-0 bg-opacity-70 !py-1"
+                    className="absolute bottom-0 w-full bg-opacity-70 !py-1"
                   />
                 )}
               </div>
