@@ -7,7 +7,6 @@ import { RootState } from "../store/store";
 import { selectUser, setUser } from "../store/slices/authSlice";
 import { selectSideOpen } from "../store/slices/sidebarSlice";
 import { UserType } from "../Types/User.types";
-import useAxios from "../hooks/useAxios";
 import Sidebar from "../components/Sidebar";
 import Users from "../components/User/Users";
 import Card from "../ui/Card";
@@ -18,6 +17,9 @@ import UserImage from "../components/User/UserImage";
 import UsersSkeleton from "../skeletons/UsersSkeleton";
 import { useNavigate } from "react-router-dom";
 import NoDataMessage from "../components/NoDataMessage";
+import useInfiniteFetch from "../hooks/useInfiniteFetch";
+import InfiniteScroll from "react-infinite-scroll-component";
+import PostSkeleton from "../skeletons/PostSkeleton";
 
 type Props = {
   navIsSticky: boolean;
@@ -144,11 +146,15 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
     }
   };
 
-  const { data: blockedUsers, loading: blockedUsersIsLoading } = useAxios<
-    UserType[]
-  >(
+  const {
+    data: blockedUsers,
+    loading: blockedUsersIsLoading,
+    hasMore: blockedUsersHasMore,
+    fetchMoreData: fetchMoreBlockedUsers,
+  } = useInfiniteFetch<UserType>(
     `http://localhost:5000/api/v1/users/${currentUser!.username}/blocked-users`,
-    "get"
+    "get",
+    20
   );
 
   return (
@@ -303,8 +309,15 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
         ) : (
           <Card className="p-8 !pb-5 !text-left">
             <h3 className="mb-5 text-xl">Blocked Users</h3>
-            {blockedUsers!.length ? (
-              <Users users={blockedUsers!} mode="block" />
+            {blockedUsers && blockedUsers?.length > 0 ? (
+              <InfiniteScroll
+                dataLength={blockedUsers.length}
+                next={fetchMoreBlockedUsers}
+                hasMore={blockedUsersHasMore}
+                loader={<PostSkeleton className="mt-8" />}
+              >
+                <Users users={blockedUsers} mode="block" />
+              </InfiniteScroll>
             ) : (
               <NoDataMessage message="You don't have anyone in your block list" />
             )}
