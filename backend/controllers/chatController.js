@@ -28,7 +28,15 @@ const createChat = async (req, res) => {
 
 const userChats = async (req, res) => {
   try {
-    const chats = await Chat.find({ members: { $in: [req.params.username] } });
+    const page = req.query.page || 1;
+    const limit = 10;
+    const skip = (page - 1) * limit;
+
+    const chats = await Chat.find({ members: { $in: [req.params.username] } })
+      .skip(skip)
+      .limit(limit)
+      .lean();
+
     const chatsWithLatestMessage = [];
 
     for (const chat of chats) {
@@ -37,7 +45,7 @@ const userChats = async (req, res) => {
         .select({ senderUsername: 1, createdAt: 1, text: 1 })
         .lean();
 
-        chatsWithLatestMessage.push({
+      chatsWithLatestMessage.push({
         chatId: chat._id,
         members: chat.members,
         latestMessage: latestMessage || null,

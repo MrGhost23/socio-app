@@ -417,7 +417,14 @@ const getBlockedUsers = async (req, res) => {
     }
 
     const blockedUsers = currentUser.blockedUsers;
-    res.status(200).json(blockedUsers);
+
+    const page = req.query.page || 1;
+    const limit = 20;
+    const skip = (page - 1) * limit;
+
+    const paginatedBlockedUsers = blockedUsers.slice(skip, skip + limit);
+
+    res.status(200).json(paginatedBlockedUsers);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
