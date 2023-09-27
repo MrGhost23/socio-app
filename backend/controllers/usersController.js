@@ -276,9 +276,15 @@ const getFollowers = async (req, res) => {
       "followers",
       `_id username firstName lastName userPicture followers`
     );
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
+    const page = req.query.page || 1;
+    const limit = 20;
+    const skip = (page - 1) * limit;
+
     const followers = user.followers.map((follower) => ({
       _id: follower._id,
       username: follower.username,
@@ -288,7 +294,9 @@ const getFollowers = async (req, res) => {
       followers: follower.followers.length,
     }));
 
-    res.status(200).json(followers);
+    const paginatedFollowers = followers.slice(skip, skip + limit);
+
+    res.status(200).json(paginatedFollowers);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
@@ -301,9 +309,15 @@ const getFollowing = async (req, res) => {
       "following",
       `_id username firstName lastName userPicture followers`
     );
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
+    const page = req.query.page || 1;
+    const limit = 20;
+    const skip = (page - 1) * limit;
+
     const following = user.following.map((follower) => ({
       _id: follower._id,
       username: follower.username,
@@ -313,7 +327,9 @@ const getFollowing = async (req, res) => {
       followers: follower.followers.length,
     }));
 
-    res.status(200).json(following);
+    const paginatedFollowing = following.slice(skip, skip + limit);
+
+    res.status(200).json(paginatedFollowing);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
