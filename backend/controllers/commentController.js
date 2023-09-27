@@ -79,7 +79,11 @@ const getCommentsForPost = async (req, res) => {
       userId.toString()
     );
 
-    const comments = await Comment.find({ post: postId }).populate({
+    const page = req.query.page || 1;
+    const limit = 10;
+    const skip = (page - 1) * limit;
+
+    const commentsQuery = Comment.find({ post: postId }).populate({
       path: "author",
       select: "firstName lastName username userPicture",
       match: {
@@ -90,11 +94,14 @@ const getCommentsForPost = async (req, res) => {
       },
     });
 
-    const filteredComments = comments.filter(
-      (comment) => comment.author !== null
-    );
+    const comments = await commentsQuery
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .exec();
+    const paginatedComments = comments.reverse();
 
-    res.status(StatusCodes.OK).json(filteredComments);
+    res.status(StatusCodes.OK).json(paginatedComments);
   } catch (error) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
