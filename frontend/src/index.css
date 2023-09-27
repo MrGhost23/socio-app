@@ -12,7 +12,7 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-gray-600;
+  @apply bg-gray-200 dark:bg-primarylessDarker;
 }
 
 ::-webkit-scrollbar-thumb {
