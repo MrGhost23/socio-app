@@ -1,42 +1,62 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Socket } from "socket.io-client";
 import { PostType } from "../Types/Post.types";
-import useAxios from "../hooks/useAxios";
 import PostForm from "../components/Post/PostForm";
 import Posts from "../components/Post/Posts";
 import PostsSkeleton from "../skeletons/PostsSkeleton";
+import axios from "axios";
+import InfiniteScroll from "react-infinite-scroll-component";
+import PostSkeleton from "../skeletons/PostSkeleton";
+import NoDataMessage from "../components/NoDataMessage";
 
 type Props = {
   socket: Socket;
 };
 
 const Timeline: React.FC<Props> = ({ socket }) => {
-  const [posts, setPosts] = useState<PostType[]>([]);
+  const [feedPosts, setFeedPosts] = useState<PostType[]>([]);
+  const [feedPostsIsLoading, setFeedPostsIsLoading] = useState(true);
+
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
+  const fetchData = useCallback(
+    async (p?: number) => {
+      const response = await axios.get(
+        `http://localhost:5000/api/v1/posts?page=${p || page}`
+      );
+      const data = await response.data;
+
+      setFeedPosts((prevData) => [...prevData, ...data]);
+      setFeedPostsIsLoading(false);
+      setHasMore(data.length === 10);
+    },
+    [page]
+  );
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    fetchData();
+  }, [fetchData]);
 
-  const {
-    data: feedPosts,
-    loading: feedPostsIsLoading,
-    reFetch: reFetchPosts,
-  } = useAxios<PostType[]>(`http://localhost:5000/api/v1/posts`, "get");
+  const reFetchPosts = () => {
+    setFeedPostsIsLoading(true);
+    setFeedPosts([]);
+    setPage(1);
+    fetchData(1);
+  };
 
-  useEffect(() => {
-    if (feedPosts) {
-      setPosts(feedPosts);
-    }
-  }, [feedPosts]);
+  const fetchMorePosts = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
 
   const removePost = (postId: string) => {
-    setPosts((prevState) =>
+    setFeedPosts((prevState) =>
       prevState.filter((post: PostType) => post._id !== postId)
     );
   };
 
   const updatePost = (postId: string, description: string, image: string) => {
-    setPosts((prevState) => {
+    setFeedPosts((prevState) => {
       const updatedPosts: PostType[] = [];
       prevState.forEach((post) => {
         if (post._id === postId) {
@@ -58,17 +78,22 @@ const Timeline: React.FC<Props> = ({ socket }) => {
       <PostForm fetchPosts={reFetchPosts} />
       {feedPostsIsLoading ? (
         <PostsSkeleton postsNumber={2} />
-      ) : posts.length > 0 ? (
-        <Posts
-          posts={posts}
-          socket={socket}
-          removePost={removePost}
-          updatePost={updatePost}
-        />
+      ) : feedPosts.length > 0 ? (
+        <InfiniteScroll
+          dataLength={feedPosts.length}
+          next={fetchMorePosts}
+          hasMore={hasMore}
+          loader={<PostSkeleton className="mt-8" />}
+        >
+          <Posts
+            posts={feedPosts}
+            socket={socket}
+            removePost={removePost}
+            updatePost={updatePost}
+          />
+        </InfiniteScroll>
       ) : (
-        <div className="text-center text-gray-800 text-xl">
-          There are no posts yet.
-        </div>
+        <NoDataMessage message="There are no posts yet." />
       )}
     </>
   );
