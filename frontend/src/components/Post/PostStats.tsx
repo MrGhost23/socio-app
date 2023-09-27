@@ -44,7 +44,7 @@ const PostStats: React.FC<Props> = ({
   };
 
   return (
-    <div className="mb-2 flex flex-row gap-4 text-gray-500 font-medium">
+    <div className="mb-2 flex flex-row gap-4 text-gray-500 dark:text-textLight font-medium">
       <div className="flex flex-row items-center gap-1.5">
         {liked ? (
           <FaHeart
