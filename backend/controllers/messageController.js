@@ -44,7 +44,9 @@ const getMessages = async (req, res) => {
       .sort({ createdAt: -1 })
       .lean();
 
-    res.status(200).json(result);
+    const latestMessages = result.reverse();
+
+    res.status(200).json(latestMessages);
   } catch (error) {
     res.status(500).json(error);
   }
