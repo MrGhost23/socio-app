@@ -23,6 +23,7 @@ const Timeline: React.FC<Props> = ({ socket }) => {
   } = useInfiniteFetch<PostType>(
     `http://localhost:5000/api/v1/posts`,
     "get",
+    10,
     true
   );
 
