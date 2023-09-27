@@ -158,9 +158,15 @@ const getFeedPosts = async (req, res) => {
 
 const getUserPosts = async (req, res) => {
   try {
+    const page = req.query.page || 1;
+    const limit = 10;
+    const skip = (page - 1) * limit;
+
     const user = await User.findOne({ username: req.params.username });
     const posts = await Post.find({ userId: user._id })
       .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
       .exec();
     res.status(StatusCodes.OK).json(posts);
   } catch (error) {
