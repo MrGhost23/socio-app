@@ -31,13 +31,7 @@ import FindFriends from "./pages/FindFriends";
 import Chats from "./pages/Chats";
 import { MessageType } from "./Types/Message.types";
 import { NotificationType } from "./Types/Notification.types";
-
-interface Message {
-  senderUsername: string;
-  text: string;
-  chatId: string;
-  receiverUsername: string;
-}
+import { ProfileType } from "./Types/Profile.types";
 
 const App: React.FC = () => {
   const [navIsSticky, setNavIsSticky] = useState(false);
@@ -67,7 +61,7 @@ const App: React.FC = () => {
     {}
   );
   const [notifications, setNotifications] = useState<NotificationType[]>([]);
-  const [sendMessage, setSendMessage] = useState<Message | null>(null);
+  const [sendMessage, setSendMessage] = useState<MessageType | null>(null);
   const [receiveMessage, setReceiveMessage] = useState<MessageType | null>(
     null
   );
@@ -96,25 +90,25 @@ const App: React.FC = () => {
     fetchToken();
   }, [dispatch, localToken]);
 
-  const [socketio, setSocket] = useState<Socket>(io("ws://localhost:5000"));
+  const [socketio] = useState<Socket>(io("ws://localhost:5000"));
 
   useEffect(() => {
     if (user) {
       socketio.emit("new-user-add", user?.username);
       socketio.on("get-users", (users) => {
-        const status = {};
-        users.forEach((user) => {
+        const status: { [key: string]: boolean } = {};
+        users.forEach((user: ProfileType) => {
           status[user.username] = true;
         });
         setOnlineUsers(status);
       });
 
-      const receiveMessageHandler = (data) => {
+      const receiveMessageHandler = (data: MessageType) => {
         setReceiveMessage(data);
       };
       socketio.on("receive-message", receiveMessageHandler);
 
-      const getNotificationHandler = (data) => {
+      const getNotificationHandler = (data: NotificationType) => {
         const currentDateAndTime = new Date().toISOString();
         setNotifications((prev) => [
           { ...data, createdAt: currentDateAndTime },
