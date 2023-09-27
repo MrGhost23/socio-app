@@ -6,7 +6,12 @@ interface AxiosResponse<T> {
   data: T;
 }
 
-const useAxios = <T,>(url: string, method: Method, body?: object) => {
+const useAxios = <T,>(
+  url: string,
+  method: Method,
+  body?: object,
+  displayToast?: boolean
+) => {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
@@ -22,11 +27,13 @@ const useAxios = <T,>(url: string, method: Method, body?: object) => {
       setData(response.data);
     } catch (error) {
       setError(!!error);
-      toast.info(`Something went wrong!`);
+      if (displayToast) {
+        toast.info(`Something went wrong!`);
+      }
     } finally {
       setLoading(false);
     }
-  }, [url, method, body]);
+  }, [method, url, body, displayToast]);
 
   useEffect(() => {
     fetchData();
