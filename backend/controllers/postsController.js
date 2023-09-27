@@ -35,9 +35,8 @@ const createPost = async (req, res) => {
       likes: {},
       comments: [],
     });
-    await newPost.save();
-    const post = await Post.find().sort({ createdAt: -1 }).exec();
-    res.status(StatusCodes.CREATED).json(post);
+    const savedPost = await newPost.save();
+    res.status(StatusCodes.CREATED).json(savedPost);
   } catch (error) {
     res.status(StatusCodes.CONFLICT).json({ message: error.message });
   }
