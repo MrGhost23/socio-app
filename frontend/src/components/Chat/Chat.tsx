@@ -83,7 +83,7 @@ const Chat: React.FC<Props> = ({
       );
 
       setSendMessage({ ...data, receiverUsername: receiverUsername! });
-      setMessages([...messages, data]);
+      setMessages((prevState) => [...prevState, data]);
       setNewMessage("");
     } catch (error) {
       console.log(error);
@@ -105,7 +105,7 @@ const Chat: React.FC<Props> = ({
             <MessagesSkeleton messagesNumber={6} />
           ) : chatMessages && chatMessages?.length > 0 ? (
             <Messages
-              chatMessages={chatMessages}
+              chatMessages={messages}
               receiverData={currentChatUserData}
               setChatInfoIsVisible={showUserInfo}
             />
