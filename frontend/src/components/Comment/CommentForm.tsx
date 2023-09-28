@@ -43,7 +43,6 @@ const CommentForm: React.FC<Props> = ({
   const submitHandler = async () => {
     if (text) {
       const newCommentData = await submitComment(postId!, text);
-      console.log(newCommentData);
       addCommentFunction!(newCommentData);
       setText("");
       socket.emit("sendNotification", {
