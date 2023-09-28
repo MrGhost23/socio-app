@@ -2,7 +2,7 @@ import SkeletonWrapper from "./SkeletonWrapper";
 import SkeletonElement from "./SkeletonElement";
 
 type Props = {
-  title: string;
+  title?: string;
   usersNumber: number;
   mode?: string;
   className?: string;
