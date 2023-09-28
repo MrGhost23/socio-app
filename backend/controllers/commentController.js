@@ -55,7 +55,21 @@ const createComment = async (req, res) => {
       await cleanupActivities(req.user._id);
     }
 
-    res.status(StatusCodes.CREATED).json(savedComment);
+    const author = {
+      username: req.user.username,
+      firstName: req.user.firstName,
+      lastName: req.user.lastName,
+      userPicture: req.user.userPicture,
+    };
+
+    const data = {
+      text: savedComment.text,
+      _id: savedComment._id,
+      createdAt: savedComment.createdAt,
+      author,
+    };
+
+    res.status(StatusCodes.CREATED).json(data);
   } catch (error) {
     res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
   }
