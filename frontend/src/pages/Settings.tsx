@@ -18,8 +18,6 @@ import UsersSkeleton from "../skeletons/UsersSkeleton";
 import { useNavigate } from "react-router-dom";
 import NoDataMessage from "../components/NoDataMessage";
 import useInfiniteFetch from "../hooks/useInfiniteFetch";
-import InfiniteScroll from "react-infinite-scroll-component";
-import PostSkeleton from "../skeletons/PostSkeleton";
 
 type Props = {
   navIsSticky: boolean;
@@ -311,14 +309,12 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
           <Card className="p-8 !pb-5 !text-left">
             <h3 className="mb-5 text-xl">Blocked Users</h3>
             {blockedUsers && blockedUsers?.length > 0 ? (
-              <InfiniteScroll
-                dataLength={blockedUsers.length}
-                next={fetchMoreBlockedUsers}
-                hasMore={blockedUsersHasMore}
-                loader={<PostSkeleton className="mt-8" />}
-              >
-                <Users users={blockedUsers} mode="block" />
-              </InfiniteScroll>
+              <Users
+                users={blockedUsers}
+                mode="block"
+                fetchMoreUsers={fetchMoreBlockedUsers}
+                moreUsers={blockedUsersHasMore}
+              />
             ) : (
               <NoDataMessage message="You don't have anyone in your block list" />
             )}
