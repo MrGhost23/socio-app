@@ -44,7 +44,6 @@ const useInfiniteFetch = <T,>(
           setLoading(false);
 
           setHasMore(response.data.total > elementsFromEachRequest * page);
-          console.log(response.data);
 
           setTotal(response.data.total);
           setData((prevData) => {
@@ -64,7 +63,6 @@ const useInfiniteFetch = <T,>(
           setLoading(false);
 
           setHasMore(response.data.length >= elementsFromEachRequest);
-          console.log(response.data);
           setData((prevData) => {
             if (prevData) {
               return [...prevData, ...response.data];
