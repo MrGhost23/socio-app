@@ -118,7 +118,7 @@ const getSuggestedUsers = async (req, res) => {
         },
       },
       "firstName lastName username userPicture followers"
-    ).limit(10);
+    ).limit(8);
 
     const suggestedUsersWithFollowersAsNumbers = suggestedUsers.map((user) => {
       return {
