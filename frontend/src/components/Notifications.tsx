@@ -72,7 +72,7 @@ const Notifications: React.FC<Props> = ({
       <div
         className={`${
           isOpen && notifications.length !== 0 ? "" : "hidden"
-        } absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg z-20 dark:bg-primarylessDark`}
+        } absolute lg:right-0 -right-12 mt-2 w-80 bg-white rounded-md shadow-lg z-20 dark:bg-primarylessDark`}
       >
         {notifications.filter((obj) => obj.isRead !== true).length !== 0 && (
           <div
@@ -115,7 +115,7 @@ const Notifications: React.FC<Props> = ({
             bg={true}
             text={notificationsSliced ? "Show all" : "Show less"}
             onClick={showAll}
-            className="absolute bottom-0 left-0"
+            className="absolute bottom-0 left-0 w-full"
           />
         )}
       </div>
