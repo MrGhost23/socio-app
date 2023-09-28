@@ -1,12 +1,12 @@
 import { useSelector } from "react-redux";
 import { selectUser } from "../store/slices/authSlice";
 import { UserType } from "../Types/User.types";
-import useAxios from "../hooks/useAxios";
 import Card from "../ui/Card";
 import User from "../components/User/User";
 import UsersSkeleton from "../skeletons/UsersSkeleton";
 import { Socket } from "socket.io-client";
 import NoDataMessage from "../components/NoDataMessage";
+import useInfiniteFetch from '../hooks/useInfiniteFetch';
 
 type Props = {
   socket: Socket;
@@ -15,11 +15,14 @@ type Props = {
 const FindFriends: React.FC<Props> = ({ socket }) => {
   const currentUser = useSelector(selectUser);
 
-  const { data: suggestedUsers, loading: suggestedUsersIsLoading } = useAxios<
-    UserType[]
-  >(
+  const {
+    data: suggestedUsers,
+    loading: suggestedUsersIsLoading,
+  } = useInfiniteFetch<UserType>(
     `http://localhost:5000/api/v1/users/${currentUser!.username}/find-friends`,
-    "get"
+    "get",
+    20,
+    "_id"
   );
 
   return (
