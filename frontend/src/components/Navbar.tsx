@@ -202,7 +202,7 @@ const Navbar: React.FC<Props> = ({
           </div>
           <nav className="contents">
             <ul className="ml-4 xl:w-48 flex items-center gap-2 justify-end">
-              <li className="ml-2 lg:ml-4 relative inline-block">
+              <li className="relative inline-block ml-2 lg:ml-4 translate-y-1">
                 <button onClick={handleModeToggle}>
                   {mode === "dark" ? (
                     <FaSun className="text-2xl text-gray-700 dark:text-gray-200" />
