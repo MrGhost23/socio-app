@@ -79,6 +79,10 @@ const getFindFriends = async (req, res) => {
       "firstName lastName username userPicture followers"
     );
 
+    const page = req.query.page || 1;
+    const limit = 20;
+    const skip = (page - 1) * limit;
+
     const findfriends = users.map((user) => {
       return {
         ...user.toObject(),
@@ -86,7 +90,9 @@ const getFindFriends = async (req, res) => {
       };
     });
 
-    res.status(200).json(findfriends);
+    const paginatedUsers = findfriends.slice(skip, skip + limit);
+    console.log(page, paginatedUsers);
+    res.status(200).json(paginatedUsers);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
