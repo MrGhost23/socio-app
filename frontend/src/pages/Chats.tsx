@@ -121,7 +121,7 @@ const Chats: React.FC<Props> = ({
               dataLength={userChats.length}
               next={fetchMoreUserChats}
               hasMore={userChatsHasMore}
-              loader={<UsersSkeleton usersNumber={3} className="mt-2" />}
+              loader={<ConversationsSkeletons conversationsNumber={3} />}
               scrollableTarget="scrollableDiv"
             >
               <Conversations
