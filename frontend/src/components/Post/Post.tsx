@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PostType } from "../../Types/Post.types";
 import { Comment } from "../../Types/Comment.types";
 import Card from "../../ui/Card";
@@ -58,6 +58,7 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost, socket }) => {
   };
 
   const [isEditing, setIsEditing] = useState(false);
+  const [total, setTotal] = useState(0);
 
   const {
     data: comments,
@@ -76,16 +77,24 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost, socket }) => {
     true
   );
 
+  useEffect(() => {
+    setTotal(totalComments);
+  }, [totalComments]);
+
   const addCommentFunction = (commentData: Comment) => {
     setComments((prevState) => {
       return [...prevState!, commentData];
     });
+
+    setTotal((prevValue) => prevValue + 1);
   };
 
   const removeCommentFunction = (commentId: string) => {
     setComments((prevState) =>
       prevState!.filter((comment: Comment) => comment._id !== commentId)
     );
+
+    setTotal((prevValue) => prevValue - 1);
   };
 
   const editCommentFunction = (commentId: string, text: string) => {
@@ -167,7 +176,7 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost, socket }) => {
         <HorizontalLine className="my-2" />
         <PostStats
           likes={likes}
-          comments={totalComments}
+          comments={total}
           postId={post._id}
           likeFunction={likeFunction}
           unLikeFunction={unLikeFunction}
