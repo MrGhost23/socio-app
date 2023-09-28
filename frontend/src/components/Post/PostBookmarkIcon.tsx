@@ -3,15 +3,15 @@ import usePostActions from "../../hooks/usePostActions";
 
 type Props = {
   postId: string;
-  reFetchFunction: () => void;
+  removeBookmark: () => void;
 };
 
-const PostBookmarkIcon: React.FC<Props> = ({ postId, reFetchFunction }) => {
+const PostBookmarkIcon: React.FC<Props> = ({ postId, removeBookmark }) => {
   const { toggleBookmarkPost } = usePostActions();
 
   const toggleBookmark = async () => {
     await toggleBookmarkPost(postId);
-    reFetchFunction();
+    removeBookmark();
   };
 
   const classes =

@@ -13,18 +13,25 @@ const Bookmarks = () => {
 
   const {
     data: bookmarkPosts,
+    setData: setBookmarkPosts,
     loading: bookmarkPostsIsLoading,
     fetchMoreData: fetchMorePosts,
     hasMore: bookmarkPostsHasMore,
-    reFetch: reFetchPosts,
   } = useInfiniteFetch<BookmarkPostType>(
     `http://localhost:5000/api/v1/users/${
       currentUser!.username
     }/bookmarked-posts`,
     "get",
     10,
+    "_id",
     true
   );
+
+  const removeBookmark = (postId: string) => {
+    setBookmarkPosts((prevState) =>
+      prevState!.filter((post: BookmarkPostType) => post._id !== postId)
+    );
+  };
 
   return (
     <>
@@ -37,7 +44,10 @@ const Bookmarks = () => {
           hasMore={bookmarkPostsHasMore}
           loader={<PostSkeleton className="mt-8" />}
         >
-          <BookmarkPosts posts={bookmarkPosts} reFetchFunction={reFetchPosts} />
+          <BookmarkPosts
+            posts={bookmarkPosts}
+            removeBookmarkFunction={removeBookmark}
+          />
         </InfiniteScroll>
       ) : (
         <NoDataMessage

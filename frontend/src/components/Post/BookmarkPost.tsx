@@ -8,10 +8,14 @@ import PostBookmarkIcon from "./PostBookmarkIcon";
 
 type Props = {
   post: BookmarkPostType;
-  reFetchFunction: () => void;
+  removeBookmarkFunction: (postId: string) => void;
 };
 
-const BookmarkPost: React.FC<Props> = ({ post, reFetchFunction }) => {
+const BookmarkPost: React.FC<Props> = ({ post, removeBookmarkFunction }) => {
+  const removeBookmarkHandler = () => {
+    removeBookmarkFunction(post._id);
+  };
+
   return (
     <Card className="px-8 py-6 !text-left">
       <div className="relative">
@@ -40,7 +44,7 @@ const BookmarkPost: React.FC<Props> = ({ post, reFetchFunction }) => {
             </div>
             <PostBookmarkIcon
               postId={post._id}
-              reFetchFunction={reFetchFunction}
+              removeBookmark={removeBookmarkHandler}
             />
           </div>
         </div>
