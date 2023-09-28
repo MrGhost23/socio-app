@@ -9,7 +9,12 @@ const usePostActions = () => {
 
   const createPost = async (postData: FormData) => {
     try {
-      await axios.post("http://localhost:5000/api/v1/posts", postData);
+      const response = await axios.post(
+        "http://localhost:5000/api/v1/posts",
+        postData
+      );
+
+      return response.data;
     } catch (error) {
       toast.info(`Something went wrong!`);
     }
