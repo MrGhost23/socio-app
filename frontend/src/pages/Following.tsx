@@ -28,7 +28,8 @@ const Following: React.FC<Props> = ({ socket }) => {
   } = useInfiniteFetch<UserType>(
     `http://localhost:5000/api/v1/users/${username}/following`,
     "get",
-    20
+    20,
+    "_id"
   );
 
   useEffect(() => {

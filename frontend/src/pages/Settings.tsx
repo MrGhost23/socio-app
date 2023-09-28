@@ -154,7 +154,8 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
   } = useInfiniteFetch<UserType>(
     `http://localhost:5000/api/v1/users/${currentUser!.username}/blocked-users`,
     "get",
-    20
+    20,
+    "_id"
   );
 
   return (
