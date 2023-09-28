@@ -453,15 +453,11 @@ const toggleBookmark = async (req, res) => {
         (postId) => postId.toString() !== postToToggle._id.toString()
       );
       await currentUser.save();
-      res.status(200).json({
-        message: "Post has been unbookmarked",
-      });
+      res.status(200).json({ status: 0 }); // unbookmarked
     } else {
       currentUser.bookmarks.push(postToToggle._id);
       await currentUser.save();
-      res.status(200).json({
-        message: "Post has been bookmarked",
-      });
+      res.status(200).json({ status: 1 }); // bookmarked
     }
   } catch (error) {
     console.error(error);
