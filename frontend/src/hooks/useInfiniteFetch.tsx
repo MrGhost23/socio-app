@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect, useCallback } from "react";
 import axios, { Method } from "axios";
 import { toast } from "react-toastify";
@@ -9,7 +10,8 @@ interface AxiosResponse<T> {
 const useInfiniteFetch = <T,>(
   url: string,
   method: Method,
-  elementsFromEachRequest: number,
+  elementsPerRequest: number,
+  uniqueKey: string,
   displayToast?: boolean,
   apiWillReturnTotal?: boolean,
   reverse?: boolean
@@ -23,12 +25,24 @@ const useInfiniteFetch = <T,>(
 
   const [total, setTotal] = useState(0);
 
+  const getUniqueData = useCallback(
+    (data: T[]) => {
+      return [
+        ...new Set(data.map((item: any) => item[uniqueKey] as string)),
+      ].map((id) => {
+        return data.find((item: any) => item[uniqueKey] === id)!;
+      });
+    },
+    [uniqueKey]
+  );
+
   const fetchData = useCallback(
     async (reFetch?: boolean) => {
       try {
         let firstPage = 0;
         if (reFetch) {
           setLoading(true);
+          setHasMore(true);
           setData([]);
 
           firstPage = 1;
@@ -43,14 +57,16 @@ const useInfiniteFetch = <T,>(
 
           setLoading(false);
 
-          setHasMore(response.data.total > elementsFromEachRequest * page);
+          setHasMore(response.data.total > elementsPerRequest * page);
 
           setTotal(response.data.total);
           setData((prevData) => {
             if (prevData) {
-              return reverse
+              const allData: T[] = reverse
                 ? [...response.data.data, ...prevData]
                 : [...prevData, ...response.data.data];
+
+              return getUniqueData(allData);
             } else {
               setData(response.data.data);
             }
@@ -62,10 +78,10 @@ const useInfiniteFetch = <T,>(
           });
           setLoading(false);
 
-          setHasMore(response.data.length >= elementsFromEachRequest);
+          setHasMore(response.data.length >= elementsPerRequest);
           setData((prevData) => {
             if (prevData) {
-              return [...prevData, ...response.data];
+              return getUniqueData([...prevData, ...response.data]);
             } else {
               setData(response.data);
             }
@@ -85,8 +101,9 @@ const useInfiniteFetch = <T,>(
       method,
       url,
       page,
-      elementsFromEachRequest,
+      elementsPerRequest,
       reverse,
+      getUniqueData,
       displayToast,
     ]
   );
