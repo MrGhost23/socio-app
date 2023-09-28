@@ -50,7 +50,8 @@ const Chats: React.FC<Props> = ({
   } = useInfiniteFetch<ChatType>(
     `http://localhost:5000/api/v1/chat/${currentUser?.username}`,
     "get",
-    10
+    10,
+    "chatId"
   );
 
   useEffect(() => {
@@ -105,6 +106,7 @@ const Chats: React.FC<Props> = ({
       <div className="grid grid-cols-1 lg:grid-cols-4 justify-between bg-white dark:bg-primaryDark">
         <Sidebar hide={true} />
         <div
+          id="scrollableDiv"
           className={
             conversationsIsVisible
               ? "col-span-1 lg:h-[calc(100vh-82px)] flex flex-col border-r-2 dark:border-r-primarylessDark overflow-y-auto"
@@ -119,6 +121,7 @@ const Chats: React.FC<Props> = ({
               next={fetchMoreUserChats}
               hasMore={userChatsHasMore}
               loader={<PostSkeleton className="mt-8" />}
+              scrollableTarget="scrollableDiv"
             >
               <Conversations
                 chats={userChats}
@@ -150,7 +153,7 @@ const Chats: React.FC<Props> = ({
             showUserInfo={showUserInfo}
             hideUserInfo={hideUserInfo}
           />
-        ) : (
+        ) : !userChatsIsLoading ? (
           <div className="col-span-3 hidden lg:flex lg:justify-center lg:items-center">
             <p className="text-gray-600 font-semibold text-center dark:text-textLighter">
               {!currentChatLoading && userChats?.length
@@ -158,6 +161,8 @@ const Chats: React.FC<Props> = ({
                 : "You have no conversations"}
             </p>
           </div>
+        ) : (
+          ""
         )}
       </div>
     </div>
