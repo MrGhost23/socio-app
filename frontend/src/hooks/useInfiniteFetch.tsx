@@ -66,8 +66,10 @@ const useInfiniteFetch = <T,>(
   }, [fetchData]);
 
   const fetchMoreData = useCallback(() => {
-    setPage((prevPage) => prevPage + 1);
-  }, []);
+    if (hasMore) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  }, [hasMore]);
 
   return { data, setData, loading, error, hasMore, fetchMoreData, reFetch };
 };
