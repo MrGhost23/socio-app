@@ -81,7 +81,11 @@ const useInfiniteFetch = <T,>(
           setHasMore(response.data.length >= elementsPerRequest);
           setData((prevData) => {
             if (prevData) {
-              return getUniqueData([...prevData, ...response.data]);
+              const allData: T[] = reverse
+                ? [...response.data, ...prevData]
+                : [...prevData, ...response.data];
+
+              return getUniqueData(allData);
             } else {
               setData(response.data);
             }
