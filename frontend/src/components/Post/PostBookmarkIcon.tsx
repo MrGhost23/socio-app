@@ -1,5 +1,8 @@
 import { FaBookmark } from "react-icons/fa6";
-import usePostActions from "../../hooks/usePostActions";
+import { toggleBookmarkPost, selectUser } from "../../store/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store/store";
+import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 
 type Props = {
   postId: string;
@@ -7,10 +10,12 @@ type Props = {
 };
 
 const PostBookmarkIcon: React.FC<Props> = ({ postId, removeBookmark }) => {
-  const { toggleBookmarkPost } = usePostActions();
+  const currentUser = useSelector(selectUser);
+
+  const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
 
   const toggleBookmark = async () => {
-    await toggleBookmarkPost(postId);
+    dispatch(toggleBookmarkPost({ username: currentUser!.username, postId }));
     removeBookmark();
   };
 

@@ -4,7 +4,11 @@ import { FaPen, FaRegBookmark, FaRegTrashAlt } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa6";
 import { ImBlocked } from "react-icons/im";
 import { PiWarningBold } from "react-icons/pi";
-import { selectUser, toggleBlockUser } from "../../store/slices/authSlice";
+import {
+  selectUser,
+  toggleBlockUser,
+  toggleBookmarkPost,
+} from "../../store/slices/authSlice";
 import useProfileActions from "../../hooks/useProfileActions";
 import usePostActions from "../../hooks/usePostActions";
 import Menu from "../../ui/Menu";
@@ -34,10 +38,10 @@ const PostMenu: React.FC<Props> = ({
 
   const { reportUser } = useProfileActions();
 
-  const { toggleBookmarkPost, deletePost } = usePostActions();
+  const { deletePost } = usePostActions();
 
   const toggleBookmarkHandler = () => {
-    toggleBookmarkPost(postId);
+    dispatch(toggleBookmarkPost({ username: currentUser!.username, postId }));
     setInBookmarks((prevState) => !prevState);
     setMenuOpened(false);
   };
