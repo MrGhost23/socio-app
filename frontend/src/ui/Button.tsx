@@ -2,7 +2,7 @@ import { IconType } from "react-icons";
 
 type Props = {
   text: string;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   bg?: boolean;
   className?: string;
   icon?: IconType;
