@@ -2,6 +2,7 @@ import { useState } from "react";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import { Comment as CommentType } from "../../Types/Comment.types";
 import Comment from "./Comment";
+import { Socket } from "socket.io-client";
 
 type Props = {
   comments: CommentType[];
@@ -9,6 +10,7 @@ type Props = {
   editCommentFunction: (commentId: string, text: string) => void;
   fetchMoreComments: () => void;
   commentsHasMore: boolean;
+  socket: Socket;
 };
 
 const Comments: React.FC<Props> = ({
@@ -17,6 +19,7 @@ const Comments: React.FC<Props> = ({
   editCommentFunction,
   fetchMoreComments,
   commentsHasMore,
+  socket,
 }) => {
   const max = 2;
   const [commentsSliced, setCommentsSliced] = useState(comments?.length > max);
@@ -63,6 +66,7 @@ const Comments: React.FC<Props> = ({
                 comment={comment}
                 removeCommentFunction={removeCommentFunction}
                 editCommentFunction={editCommentFunction}
+                socket={socket}
               />
             ))
         : comments?.map((comment) => (
@@ -71,6 +75,7 @@ const Comments: React.FC<Props> = ({
               comment={comment}
               removeCommentFunction={removeCommentFunction}
               editCommentFunction={editCommentFunction}
+              socket={socket}
             />
           ))}
     </div>

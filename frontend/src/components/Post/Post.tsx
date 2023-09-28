@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { PostType } from "../../Types/Post.types";
-import axios from "axios";
 import { Comment } from "../../Types/Comment.types";
 import Card from "../../ui/Card";
 import UserImage from "../User/UserImage";
@@ -18,6 +17,7 @@ import PostMenu from "./PostMenu";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/authSlice";
 import { Socket } from "socket.io-client";
+import useInfiniteFetch from "../../hooks/useInfiniteFetch";
 
 interface Likes {
   [key: string]: boolean;
@@ -59,32 +59,39 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost, socket }) => {
 
   const [isEditing, setIsEditing] = useState(false);
 
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const {
+    data: comments,
+    total: totalComments,
+    loading: feedPostsIsLoading,
+    setData: setComments,
+    fetchMoreData: fetchMoreComments,
+    hasMore: commentsHasMore,
+  } = useInfiniteFetch<Comment>(
+    `http://localhost:5000/api/v1/posts/${post._id}/comments`,
+    "get",
+    10,
+    "_id",
+    true,
+    true,
+    true
+  );
 
-  const getPostComments = useCallback(() => {
-    axios
-      .get(`http://localhost:5000/api/v1/posts/${post._id}/comments`)
-      .then((response) => {
-        setComments(response.data);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsLoading(false);
-      });
-  }, [post._id]);
+  const addCommentFunction = (commentData: Comment) => {
+    setComments((prevState) => {
+      return [...prevState!, commentData];
+    });
+  };
 
   const removeCommentFunction = (commentId: string) => {
     setComments((prevState) =>
-      prevState.filter((comment: Comment) => comment._id !== commentId)
+      prevState!.filter((comment: Comment) => comment._id !== commentId)
     );
   };
 
   const editCommentFunction = (commentId: string, text: string) => {
     setComments((prevState) => {
       const updatedComments: Comment[] = [];
-      prevState.forEach((comment) => {
+      prevState!.forEach((comment) => {
         if (comment._id === commentId) {
           updatedComments.push({ ...comment, text });
         } else {
@@ -95,11 +102,7 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost, socket }) => {
     });
   };
 
-  useEffect(() => {
-    getPostComments();
-  }, [getPostComments]);
-
-  if (isLoading) return;
+  if (feedPostsIsLoading) return;
 
   return (
     <Card className="px-8 py-6 !text-left dark:bg-primarylessDark">
@@ -164,21 +167,24 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost, socket }) => {
         <HorizontalLine className="my-2" />
         <PostStats
           likes={likes}
-          comments={comments.length}
+          comments={totalComments}
           postId={post._id}
           likeFunction={likeFunction}
           unLikeFunction={unLikeFunction}
         />
         <HorizontalLine className="mb-5" />
         <Comments
-          comments={comments}
+          comments={comments!}
           removeCommentFunction={removeCommentFunction}
           editCommentFunction={editCommentFunction}
+          fetchMoreComments={fetchMoreComments}
+          commentsHasMore={commentsHasMore}
+          socket={socket}
         />
         <CommentForm
           socket={socket}
           postId={post._id}
-          reFetchFunction={getPostComments}
+          addCommentFunction={addCommentFunction}
           postAuthorUsername={post.username}
         />
       </div>

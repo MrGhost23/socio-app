@@ -5,9 +5,10 @@ import useCommentActions from "../../hooks/useCommentActions";
 import UserImage from "../User/UserImage";
 import TextareaForm from "../../ui/TextareaForm";
 import { Socket } from "socket.io-client";
+import { Comment as CommentType } from "../../Types/Comment.types";
 
 type Props = {
-  reFetchFunction?: () => void;
+  addCommentFunction?: (commentData: CommentType) => void;
   editCommentFunction?: (commentId: string, text: string) => void;
   postId?: string;
   commentId?: string;
@@ -18,7 +19,7 @@ type Props = {
 };
 
 const CommentForm: React.FC<Props> = ({
-  reFetchFunction,
+  addCommentFunction,
   editCommentFunction,
   postId,
   commentId,
@@ -41,8 +42,9 @@ const CommentForm: React.FC<Props> = ({
 
   const submitHandler = async () => {
     if (text) {
-      await submitComment(postId!, text);
-      reFetchFunction!();
+      const newCommentData = await submitComment(postId!, text);
+      console.log(newCommentData);
+      addCommentFunction!(newCommentData);
       setText("");
       socket.emit("sendNotification", {
         senderUsername: currentUser?.username,

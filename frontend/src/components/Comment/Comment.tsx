@@ -6,17 +6,20 @@ import UserFullName from "../User/UserFullName";
 import CommentDate from "./CommentDate";
 import CommentMenu from "./CommentMenu";
 import CommentText from "./CommentText";
+import { Socket } from "socket.io-client";
 
 type Props = {
   comment: CommentType;
   removeCommentFunction: (commentId: string) => void;
   editCommentFunction: (commentId: string, text: string) => void;
+  socket: Socket;
 };
 
 const Comment: React.FC<Props> = ({
   comment,
   removeCommentFunction,
   editCommentFunction,
+  socket,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
 
@@ -28,6 +31,8 @@ const Comment: React.FC<Props> = ({
           commentText={comment.text}
           setIsEditing={setIsEditing}
           editCommentFunction={editCommentFunction}
+          socket={socket}
+          postAuthorUsername={comment.author.username}
         />
       ) : (
         <div className="flex flex-row items-start gap-2 group">
