@@ -28,7 +28,9 @@ const User: React.FC<Props> = ({ user, changeStyle, mode, center, socket }) => {
   const [followers, setFollowers] = useState<number>(user.followers!);
 
   const mainContainerClasses = center ? "flex items-center" : "flex";
-  const infoContainerClasses = "flex flex-col text-gray-600";
+  const infoContainerClasses = center
+    ? "flex flex-col text-gray-600"
+    : "flex flex-col items-start text-gray-600";
 
   const [followButtonLoading, setFollowButtonLoading] = useState(false);
   const [buttonText, setButtonText] = useState("Loading...");
