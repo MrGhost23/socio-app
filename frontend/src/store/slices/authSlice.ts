@@ -49,7 +49,6 @@ export const register = createAsyncThunk<
       );
     if (response.data.token) {
       localStorage.setItem("token", response.data.token);
-      console.log("Token stored in local storage:", response.data.token);
 
       axios.defaults.headers.common[
         "Authorization"
@@ -76,7 +75,6 @@ export const login = createAsyncThunk<
       await axios.post("http://localhost:5000/api/v1/auth/login", credentials);
     if (response.data.token) {
       localStorage.setItem("token", response.data.token);
-      console.log("Token stored in local storage:", response.data.token);
 
       axios.defaults.headers.common[
         "Authorization"
