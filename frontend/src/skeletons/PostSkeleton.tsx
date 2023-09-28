@@ -2,7 +2,7 @@ import SkeletonWrapper from "./SkeletonWrapper";
 import SkeletonElement from "./SkeletonElement";
 
 type Props = {
-  className: string;
+  className?: string;
 };
 
 const PostSkeleton: React.FC<Props> = ({ className }) => {
