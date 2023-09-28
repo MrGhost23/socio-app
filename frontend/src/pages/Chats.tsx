@@ -125,7 +125,6 @@ const Chats: React.FC<Props> = ({
               hasMore={userChatsHasMore}
               loader={<PostSkeleton className="mt-8" />}
               scrollableTarget="scrollableDiv"
-              inverse={true}
             >
               <Conversations
                 chats={userChats}
