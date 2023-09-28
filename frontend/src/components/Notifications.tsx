@@ -86,7 +86,7 @@ const Notifications: React.FC<Props> = ({
         <div
           className={`overflow-hidden ${
             !notificationsSliced
-              ? "max-h-[calc(80vh-80px)] overflow-y-auto"
+              ? "max-h-[calc(80vh-80px)] overflow-y-auto scrollbar scrollbar-w-2 scrollbar-thumb-sky-500 hover:scrollbar-thumb-sky-600 scrollbar-track-gray-200 dark:scrollbar-track-primarylessDarker"
               : ""
           } ${notifications?.length > max ? "mb-10 " : ""}`}
         >
