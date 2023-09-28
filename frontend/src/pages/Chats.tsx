@@ -12,7 +12,6 @@ import { MessageType } from "../Types/Message.types";
 import useInfiniteFetch from "../hooks/useInfiniteFetch";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ConversationsSkeletons from "../skeletons/ConversationsSkeletons";
-import UsersSkeleton from "../skeletons/UsersSkeleton";
 
 type Props = {
   sendMessage: MessageType | null;
