@@ -10,7 +10,9 @@ const useInfiniteFetch = <T,>(
   url: string,
   method: Method,
   elementsFromEachRequest: number,
-  displayToast?: boolean
+  displayToast?: boolean,
+  apiWillReturnTotal?: boolean,
+  reverse?: boolean
 ) => {
   const [data, setData] = useState<T[] | null>();
   const [loading, setLoading] = useState<boolean>(true);
@@ -18,6 +20,8 @@ const useInfiniteFetch = <T,>(
 
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+
+  const [total, setTotal] = useState(0);
 
   const fetchData = useCallback(
     async (reFetch?: boolean) => {
@@ -30,21 +34,45 @@ const useInfiniteFetch = <T,>(
           firstPage = 1;
         }
 
-        const response: AxiosResponse<T[]> = await axios({
-          method,
-          url: `${url}?page=${firstPage || page}`,
-        });
+        if (apiWillReturnTotal) {
+          const response: AxiosResponse<{ data: T[]; total: number }> =
+            await axios({
+              method,
+              url: `${url}?page=${firstPage || page}`,
+            });
 
-        setLoading(false);
-        setHasMore(response.data.length >= elementsFromEachRequest);
+          setLoading(false);
 
-        setData((prevData) => {
-          if (prevData) {
-            return [...prevData, ...response.data];
-          } else {
-            setData(response.data);
-          }
-        });
+          setHasMore(response.data.total > elementsFromEachRequest * page);
+          console.log(response.data);
+
+          setTotal(response.data.total);
+          setData((prevData) => {
+            if (prevData) {
+              return reverse
+                ? [...response.data.data, ...prevData]
+                : [...prevData, ...response.data.data];
+            } else {
+              setData(response.data.data);
+            }
+          });
+        } else {
+          const response: AxiosResponse<T[]> = await axios({
+            method,
+            url: `${url}?page=${firstPage || page}`,
+          });
+          setLoading(false);
+
+          setHasMore(response.data.length >= elementsFromEachRequest);
+          console.log(response.data);
+          setData((prevData) => {
+            if (prevData) {
+              return [...prevData, ...response.data];
+            } else {
+              setData(response.data);
+            }
+          });
+        }
       } catch (error) {
         setError(!!error);
         if (displayToast) {
@@ -54,7 +82,15 @@ const useInfiniteFetch = <T,>(
         setLoading(false);
       }
     },
-    [method, url, page, elementsFromEachRequest, displayToast]
+    [
+      apiWillReturnTotal,
+      method,
+      url,
+      page,
+      elementsFromEachRequest,
+      reverse,
+      displayToast,
+    ]
   );
 
   useEffect(() => {
@@ -71,7 +107,16 @@ const useInfiniteFetch = <T,>(
     }
   }, [hasMore]);
 
-  return { data, setData, loading, error, hasMore, fetchMoreData, reFetch };
+  return {
+    data,
+    total,
+    loading,
+    error,
+    hasMore,
+    setData,
+    fetchMoreData,
+    reFetch,
+  };
 };
 
 export default useInfiniteFetch;
