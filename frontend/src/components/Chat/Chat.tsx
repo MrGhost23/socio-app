@@ -92,60 +92,61 @@ const Chat: React.FC<Props> = ({
 
   return (
     <>
-      <div
-        id="scrollableDiv"
-        className={
-          messagesIsVisible
-            ? "col-span-2 h-[calc(100vh-82px)] flex flex-col justify-end"
-            : "col-span-2 h-[calc(100vh-82px)] hidden lg:flex lg:flex-col lg:justify-between"
-        }
-      >
-        {currentChat &&
-        (currentChatUserDataLoading || chatMessagesIsLoading) ? (
-          <MessagesSkeleton messagesNumber={6} />
-        ) : currentChat && chatMessages && chatMessages?.length > 0 ? (
-          <Messages
-            chatMessages={chatMessages}
-            receiverData={currentChatUserData}
-            setChatInfoIsVisible={showUserInfo}
-          />
-        ) : (
-          ""
-        )}
-        {currentChatUserDataLoading || chat?.allowMessage ? (
-          <MessageForm
-            submitHandler={submitHandler}
-            newMessage={newMessage}
-            setNewMessage={setNewMessage}
-            disabled={
-              currentChatUserDataLoading ||
-              chatMessagesIsLoading ||
-              !chat?.allowMessage
-            }
-          />
-        ) : (
-          currentChat && <MessagesNotAllowed />
-        )}
-      </div>
-      <div
-        className={
-          chatInfoIsVisible
-            ? "col-span-1 h-[calc(100vh-82px)] lg:block border-l-2 dark:border-l-primarylessDark dark:text-textLighter px-4 sm:px-10 lg:px-4 pt-5"
-            : "col-span-1 h-[calc(100vh-82px)] hidden lg:block border-l-2 dark:border-l-primarylessDark dark:text-textLighter px-4 sm:px-10 lg:px-4 pt-5"
-        }
-      >
-        {currentChat && currentChatUserDataLoading ? (
-          <ProfileSkeleton className="shadow-none" />
-        ) : currentChat ? (
-          <ChatInfo
-            receiverUsername={receiverUsername!}
-            receiverData={currentChatUserData}
-            hideUserInfo={hideUserInfo}
-          />
-        ) : (
-          ""
-        )}
-      </div>
+      {currentChat && (
+        <div
+          id="scrollableDiv"
+          className={
+            messagesIsVisible
+              ? "col-span-2 h-[calc(100vh-82px)] flex flex-col justify-end"
+              : "col-span-2 h-[calc(100vh-82px)] hidden lg:flex lg:flex-col lg:justify-between"
+          }
+        >
+          {currentChatUserDataLoading || chatMessagesIsLoading ? (
+            <MessagesSkeleton messagesNumber={6} />
+          ) : chatMessages && chatMessages?.length > 0 ? (
+            <Messages
+              chatMessages={chatMessages}
+              receiverData={currentChatUserData}
+              setChatInfoIsVisible={showUserInfo}
+            />
+          ) : (
+            ""
+          )}
+          {currentChatUserDataLoading || chat?.allowMessage ? (
+            <MessageForm
+              submitHandler={submitHandler}
+              newMessage={newMessage}
+              setNewMessage={setNewMessage}
+              disabled={
+                currentChatUserDataLoading ||
+                chatMessagesIsLoading ||
+                !chat?.allowMessage
+              }
+            />
+          ) : (
+            <MessagesNotAllowed />
+          )}
+        </div>
+      )}
+      {currentChat && (
+        <div
+          className={
+            chatInfoIsVisible
+              ? "col-span-1 h-[calc(100vh-82px)] lg:block border-l-2 dark:border-l-primarylessDark dark:text-textLighter px-4 sm:px-10 lg:px-4 pt-5"
+              : "col-span-1 h-[calc(100vh-82px)] hidden lg:block border-l-2 dark:border-l-primarylessDark dark:text-textLighter px-4 sm:px-10 lg:px-4 pt-5"
+          }
+        >
+          {currentChatUserDataLoading ? (
+            <ProfileSkeleton className="shadow-none" />
+          ) : (
+            <ChatInfo
+              receiverUsername={receiverUsername!}
+              receiverData={currentChatUserData}
+              hideUserInfo={hideUserInfo}
+            />
+          )}
+        </div>
+      )}
     </>
   );
 };
