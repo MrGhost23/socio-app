@@ -11,7 +11,6 @@ import { ProfileType } from "../Types/Profile.types";
 import { MessageType } from "../Types/Message.types";
 import useInfiniteFetch from "../hooks/useInfiniteFetch";
 import InfiniteScroll from "react-infinite-scroll-component";
-import PostSkeleton from "../skeletons/PostSkeleton";
 import ConversationsSkeletons from "../skeletons/ConversationsSkeletons";
 import UsersSkeleton from "../skeletons/UsersSkeleton";
 
