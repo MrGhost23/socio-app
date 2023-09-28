@@ -4,12 +4,14 @@ import { toast } from "react-toastify";
 const useCommentActions = () => {
   const submitComment = async (postId: string, text: string) => {
     try {
-      await axios.post(
+      const response = await axios.post(
         `http://localhost:5000/api/v1/posts/${postId}/comments`,
         {
           text,
         }
       );
+
+      return response.data;
     } catch (error) {
       toast.info(`Something went wrong!`);
     }
