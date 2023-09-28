@@ -8,7 +8,6 @@ import { Socket } from "socket.io-client";
 import NoDataMessage from "../components/NoDataMessage";
 import useInfiniteFetch from "../hooks/useInfiniteFetch";
 import InfiniteScroll from "react-infinite-scroll-component";
-import PostSkeleton from "../skeletons/PostSkeleton";
 
 type Props = {
   socket: Socket;
