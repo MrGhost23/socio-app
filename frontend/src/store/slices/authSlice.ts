@@ -240,7 +240,6 @@ const authSlice = createSlice({
             );
           }
           state.user = { ...state.user!, bookmarks: updatedBookmarks };
-          console.log(updatedBookmarks);
         }
       });
   },
