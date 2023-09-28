@@ -18,7 +18,7 @@ type Props = {
   changeStyle: boolean;
   mode: string;
   center?: boolean;
-  socket: Socket;
+  socket?: Socket;
 };
 
 const User: React.FC<Props> = ({ user, changeStyle, mode, center, socket }) => {
