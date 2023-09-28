@@ -142,6 +142,24 @@ export const toggleBlockUser = createAsyncThunk<
   }
 });
 
+export const toggleBookmarkPost = createAsyncThunk<
+  { status: number; postId: string } | null,
+  {
+    username: string;
+    postId: string;
+  }
+>("auth/toggleBookmarkPost", async ({ username, postId }) => {
+  try {
+    const response: AxiosResponse<{ status: number }> = await axios.post(
+      `http://localhost:5000/api/v1/users/${username}/toggle-bookmark/${postId}`
+    );
+    return { status: response.data.status, postId };
+  } catch (error) {
+    toast.info(`Something went wrong!`);
+    return null;
+  }
+});
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -209,10 +227,25 @@ const authSlice = createSlice({
           }
           state.user = { ...state.user!, blockedUsers: updatedBlockedUsers };
         }
+      })
+      .addCase(toggleBookmarkPost.fulfilled, (state, action) => {
+        let updatedBookmarks = [...state.user!.bookmarks];
+
+        if (action.payload) {
+          if (action.payload.status === 1) {
+            updatedBookmarks.push(action.payload.postId);
+          } else {
+            updatedBookmarks = updatedBookmarks.filter(
+              (postId) => postId !== action.payload!.postId
+            );
+          }
+          state.user = { ...state.user!, bookmarks: updatedBookmarks };
+          console.log(updatedBookmarks);
+        }
       });
   },
 });
-export const { setUser,toggleMode, logout } = authSlice.actions;
+export const { setUser, toggleMode, logout } = authSlice.actions;
 
 export const selectUser = (state: RootState) => state.auth.user;
 export const selectMode = (state: RootState) => state.auth.mode;
