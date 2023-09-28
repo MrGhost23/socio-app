@@ -13,6 +13,7 @@ import useInfiniteFetch from "../hooks/useInfiniteFetch";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostSkeleton from "../skeletons/PostSkeleton";
 import ConversationsSkeletons from "../skeletons/ConversationsSkeletons";
+import UsersSkeleton from "../skeletons/UsersSkeleton";
 
 type Props = {
   sendMessage: MessageType | null;
@@ -121,7 +122,7 @@ const Chats: React.FC<Props> = ({
               dataLength={userChats.length}
               next={fetchMoreUserChats}
               hasMore={userChatsHasMore}
-              loader={<PostSkeleton className="mt-8" />}
+              loader={<UsersSkeleton usersNumber={1} className="mt-2" />}
               scrollableTarget="scrollableDiv"
             >
               <Conversations

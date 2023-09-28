@@ -34,13 +34,9 @@ const addMessage = async (req, res) => {
 const getMessages = async (req, res) => {
   const { chatId } = req.params;
   try {
-    const result = await Message.find({ chatId })
-      .sort({ createdAt: -1 })
-      .lean();
+    const result = await Message.find({ chatId }).sort({ createdAt: 1 }).lean();
 
-    const latestMessages = result.reverse();
-
-    res.status(200).json(latestMessages);
+    res.status(200).json(result);
   } catch (error) {
     res.status(500).json(error);
   }

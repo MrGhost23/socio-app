@@ -46,7 +46,7 @@ const FindFriends: React.FC<Props> = ({ socket }) => {
               dataLength={suggestedUsers.length}
               next={fetchMoreFollowing}
               hasMore={followingHasMore}
-              loader={<PostSkeleton className="mt-8" />}
+              loader={<UsersSkeleton usersNumber={2} />}
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
                 {suggestedUsers.map((user) => (
