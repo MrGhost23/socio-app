@@ -53,9 +53,7 @@ const Chats: React.FC<Props> = ({
     "get",
     10,
     "chatId",
-    false,
-    false,
-    true
+    false
   );
 
   useEffect(() => {
