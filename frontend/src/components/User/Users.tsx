@@ -4,6 +4,7 @@ import User from "./User";
 import { Socket } from "socket.io-client";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostSkeleton from "../../skeletons/PostSkeleton";
+import UsersSkeleton from "../../skeletons/UsersSkeleton";
 
 type Props = {
   users: UserType[];
@@ -31,7 +32,7 @@ const Users: React.FC<Props> = ({
         dataLength={users.length}
         next={fetchMoreUsers}
         hasMore={moreUsers}
-        loader={<PostSkeleton className="mt-8" />}
+        loader={<UsersSkeleton usersNumber={2} />}
         scrollableTarget="scrollableDiv"
       >
         <div className={`grid grid-cols-1 ${classes} gap-3`}>
