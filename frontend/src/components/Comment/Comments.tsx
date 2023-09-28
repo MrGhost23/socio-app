@@ -48,7 +48,7 @@ const Comments: React.FC<Props> = ({
           <FaChevronUp />
           Show More
         </p>
-      ) : (
+      ) : comments?.length > max ? (
         <p
           className="flex flex-row items-center gap-2 text-base text-gray-500 font-semibold cursor-pointer transition duration-500 hover:text-sky-500 dark:text-gray-300 dark:hover:text-sky-500"
           onClick={showLess}
@@ -56,6 +56,8 @@ const Comments: React.FC<Props> = ({
           <FaChevronDown />
           Show Less
         </p>
+      ) : (
+        ""
       )}
       {commentsSliced
         ? comments
