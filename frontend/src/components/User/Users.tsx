@@ -3,7 +3,6 @@ import ScrollableDiv from "../../ui/ScrollableDiv";
 import User from "./User";
 import { Socket } from "socket.io-client";
 import InfiniteScroll from "react-infinite-scroll-component";
-import PostSkeleton from "../../skeletons/PostSkeleton";
 import UsersSkeleton from "../../skeletons/UsersSkeleton";
 
 type Props = {
