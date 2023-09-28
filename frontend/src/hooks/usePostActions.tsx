@@ -43,18 +43,6 @@ const usePostActions = () => {
     }
   };
 
-  const toggleBookmarkPost = async (postId: string) => {
-    try {
-      await axios.post(
-        `http://localhost:5000/api/v1/users/${
-          currentUser!.username
-        }/toggle-bookmark/${postId}`
-      );
-    } catch (error) {
-      toast.info(`Something went wrong!`);
-    }
-  };
-
   const toggleLikePost = async (postId: string) => {
     try {
       await axios.patch(`http://localhost:5000/api/v1/posts/${postId}/like`, {
@@ -69,7 +57,6 @@ const usePostActions = () => {
     createPost,
     editPost,
     deletePost,
-    toggleBookmarkPost,
     toggleLikePost,
   };
 };
