@@ -78,7 +78,7 @@ app.get("/", (req, res) => {
 
 cron.schedule("*/5 * * * *", () => {
   console.log("SERVER PING IS ALRIGHT!");
-  const serverUrl = "http://localhost:5000";
+  const serverUrl = "https://socio-irdl.onrender.com";
   axios
     .get(serverUrl)
     .then((response) => {
