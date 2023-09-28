@@ -101,7 +101,11 @@ const getCommentsForPost = async (req, res) => {
       .exec();
     const paginatedComments = comments.reverse();
 
-    res.status(StatusCodes.OK).json(paginatedComments);
+    const commentsCount = await Comment.countDocuments({ post: postId });
+
+    res
+      .status(StatusCodes.OK)
+      .json({ data: paginatedComments, total: commentsCount });
   } catch (error) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
