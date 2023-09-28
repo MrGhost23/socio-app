@@ -11,9 +11,7 @@ import MessageForm from "./MessageForm";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../store/slices/authSlice";
 import MessagesNotAllowed from "./MessagesNotAllowed";
-import useInfiniteFetch from "../../hooks/useInfiniteFetch";
-import InfiniteScroll from "react-infinite-scroll-component";
-import PostSkeleton from "../../skeletons/PostSkeleton";
+import useAxios from "../../hooks/useAxios";
 
 type Props = {
   currentChat: string | null;
@@ -47,25 +45,21 @@ const Chat: React.FC<Props> = ({
     (username: string) => username !== currentUser!.username
   );
 
-  const {
-    data: chatMessages,
-    loading: chatMessagesIsLoading,
-    fetchMoreData: fetchMorePosts,
-    hasMore: feedPostsHasMore,
-  } = useInfiniteFetch<MessageType>(
+  const [messages, setMessages] = useState<MessageType[]>([]);
+
+  const { data: chatMessages, loading: chatMessagesIsLoading } = useAxios<
+    MessageType[]
+  >(
     `http://localhost:5000/api/v1/message/${chat?.chatId}`,
     "get",
-    10,
-    true
+    undefined,
+    false
   );
 
-  const [messages, setMessages] = useState<MessageType[]>([]);
   const [newMessage, setNewMessage] = useState("");
 
   useEffect(() => {
-    if (chatMessages) {
-      setMessages(chatMessages);
-    }
+    setMessages(chatMessages!);
   }, [chatMessages]);
 
   useEffect(() => {
@@ -99,6 +93,7 @@ const Chat: React.FC<Props> = ({
   return (
     <>
       <div
+        id="scrollableDiv"
         className={
           messagesIsVisible
             ? "col-span-2 h-[calc(100vh-82px)] flex flex-col justify-end"
@@ -109,18 +104,11 @@ const Chat: React.FC<Props> = ({
         (currentChatUserDataLoading || chatMessagesIsLoading) ? (
           <MessagesSkeleton messagesNumber={6} />
         ) : currentChat && chatMessages && chatMessages?.length > 0 ? (
-          <InfiniteScroll
-            dataLength={chatMessages.length}
-            next={fetchMorePosts}
-            hasMore={feedPostsHasMore}
-            loader={<PostSkeleton className="mt-8" />}
-          >
-            <Messages
-              chatMessages={messages}
-              receiverData={currentChatUserData}
-              setChatInfoIsVisible={showUserInfo}
-            />
-          </InfiniteScroll>
+          <Messages
+            chatMessages={chatMessages}
+            receiverData={currentChatUserData}
+            setChatInfoIsVisible={showUserInfo}
+          />
         ) : (
           ""
         )}

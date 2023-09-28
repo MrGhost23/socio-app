@@ -36,32 +36,30 @@ const Messages: React.FC<Props> = ({
   }, [messages]);
 
   return (
-    <ScrollableDiv className="pt-5">
-      <div className="flex flex-col gap-5 pb-1">
-        {messages?.map((message, index) => (
-          <div
-            key={message._id}
-            ref={index === messages.length - 1 ? lastItemRef : null}
-          >
-            {message?.senderUsername !== receiverData?.username ? (
-              <SenderMsg
-                userPicture={currentUser!.userPicture!}
-                username={currentUser!.username}
-                msg={message.text}
-                msgDate={message.createdAt}
-              />
-            ) : (
-              <ReceiverMsg
-                userPicture={receiverData.userPicture!}
-                username={receiverData.username}
-                msg={message.text}
-                msgDate={message.createdAt}
-                setChatInfoIsVisible={setChatInfoIsVisible}
-              />
-            )}
-          </div>
-        ))}
-      </div>
+    <ScrollableDiv className="pt-5 flex flex-col gap-5 pb-1">
+      {messages?.map((message, index) => (
+        <div
+          key={message._id}
+          ref={index === messages.length - 1 ? lastItemRef : null}
+        >
+          {message?.senderUsername !== receiverData?.username ? (
+            <SenderMsg
+              userPicture={currentUser!.userPicture!}
+              username={currentUser!.username}
+              msg={message.text}
+              msgDate={message.createdAt}
+            />
+          ) : (
+            <ReceiverMsg
+              userPicture={receiverData.userPicture!}
+              username={receiverData.username}
+              msg={message.text}
+              msgDate={message.createdAt}
+              setChatInfoIsVisible={setChatInfoIsVisible}
+            />
+          )}
+        </div>
+      ))}
     </ScrollableDiv>
   );
 };

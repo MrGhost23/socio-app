@@ -51,7 +51,10 @@ const Chats: React.FC<Props> = ({
     `http://localhost:5000/api/v1/chat/${currentUser?.username}`,
     "get",
     10,
-    "chatId"
+    "chatId",
+    false,
+    false,
+    true
   );
 
   useEffect(() => {
@@ -122,6 +125,7 @@ const Chats: React.FC<Props> = ({
               hasMore={userChatsHasMore}
               loader={<PostSkeleton className="mt-8" />}
               scrollableTarget="scrollableDiv"
+              inverse={true}
             >
               <Conversations
                 chats={userChats}
