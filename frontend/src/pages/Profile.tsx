@@ -30,12 +30,18 @@ const Profile: React.FC<Props> = ({ socket }) => {
     setData: setFeedPosts,
     hasMore: feedPostsHasMore,
     fetchMoreData: fetchMorePosts,
-    reFetch: reFetchPosts,
   } = useInfiniteFetch<PostType>(
     `http://localhost:5000/api/v1/posts/user/${username}`,
     "get",
-    10
+    10,
+    "_id"
   );
+
+  const addPost = (postData: PostType) => {
+    setFeedPosts((prevState) => {
+      return [postData, ...prevState!];
+    });
+  };
 
   const removePost = (postId: string) => {
     setFeedPosts((prevState) =>
@@ -71,7 +77,7 @@ const Profile: React.FC<Props> = ({ socket }) => {
 
   return (
     <>
-      {isMyProfile && <PostForm fetchPosts={reFetchPosts} />}
+      {isMyProfile && <PostForm addPost={addPost} />}
       {profilePostsIsLoading ? (
         <PostsSkeleton postsNumber={2} />
       ) : profilePosts && profilePosts.length > 0 ? (

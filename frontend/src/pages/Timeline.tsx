@@ -19,13 +19,19 @@ const Timeline: React.FC<Props> = ({ socket }) => {
     setData: setFeedPosts,
     fetchMoreData: fetchMorePosts,
     hasMore: feedPostsHasMore,
-    reFetch: reFetchPosts,
   } = useInfiniteFetch<PostType>(
     `http://localhost:5000/api/v1/posts`,
     "get",
     10,
+    "_id",
     true
   );
+
+  const addPost = (postData: PostType) => {
+    setFeedPosts((prevState) => {
+      return [postData, ...prevState!];
+    });
+  };
 
   const removePost = (postId: string) => {
     setFeedPosts((prevState) =>
@@ -53,7 +59,7 @@ const Timeline: React.FC<Props> = ({ socket }) => {
 
   return (
     <>
-      <PostForm fetchPosts={reFetchPosts} />
+      <PostForm addPost={addPost} />
       {feedPostsIsLoading ? (
         <PostsSkeleton postsNumber={2} />
       ) : feedPosts && feedPosts?.length > 0 ? (

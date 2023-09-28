@@ -7,9 +7,10 @@ import UserImage from "../User/UserImage";
 import Card from "../../ui/Card";
 import Button from "../../ui/Button";
 import usePostActions from "../../hooks/usePostActions";
+import { PostType } from "../../Types/Post.types";
 
 type Props = {
-  fetchPosts?: () => void;
+  addPost?: (postData: PostType) => void;
   updatePost?: (postId: string, description: string, image: string) => void;
   text?: string;
   postId?: string;
@@ -18,7 +19,7 @@ type Props = {
 };
 
 const PostForm: React.FC<Props> = ({
-  fetchPosts,
+  addPost,
   text,
   postImage,
   postId,
@@ -90,9 +91,9 @@ const PostForm: React.FC<Props> = ({
       return;
     }
 
-    await createPost(formData);
+    const postData = await createPost(formData);
 
-    fetchPosts!();
+    addPost!(postData);
     setDescription("");
     setImage(null);
     setPreviewImage("");
