@@ -13,7 +13,6 @@ import { selectUser } from "../../store/slices/authSlice";
 import MessagesNotAllowed from "./MessagesNotAllowed";
 import useInfiniteFetch from "../../hooks/useInfiniteFetch";
 import InfiniteScroll from "react-infinite-scroll-component";
-import PostSkeleton from "../../skeletons/PostSkeleton";
 
 type Props = {
   currentChat: string | null;
@@ -113,7 +112,7 @@ const Chat: React.FC<Props> = ({
             dataLength={chatMessages.length}
             next={fetchMorePosts}
             hasMore={feedPostsHasMore}
-            loader={<PostSkeleton className="mt-8" />}
+            loader={<MessagesSkeleton messagesNumber={1} />}
           >
             <Messages
               chatMessages={messages}
