@@ -97,7 +97,7 @@ const Chats: React.FC<Props> = ({
     if (sendMessage !== null) {
       socket.emit("send-message", sendMessage);
     }
-  }, [sendMessage]);
+  }, [sendMessage, socket]);
 
   if (userChatsHasError) console.log(userChatsHasError);
 
