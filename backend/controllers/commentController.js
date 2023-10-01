@@ -99,7 +99,7 @@ const getCommentsForPost = async (req, res) => {
 
     const commentsQuery = Comment.find({ post: postId }).populate({
       path: "author",
-      select: "firstName lastName username userPicture",
+      select: "firstName lastName username userPicture _id",
       match: {
         $and: [
           { _id: { $nin: blockedUserIds } },
@@ -139,7 +139,6 @@ const editComment = async (req, res) => {
         .status(StatusCodes.NOT_FOUND)
         .json({ message: "Comment not found" });
     }
-    console.log(comment.author._id);
 
     if (comment.author.toString() !== req.user._id.toString()) {
       return res
