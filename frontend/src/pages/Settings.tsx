@@ -75,7 +75,9 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
     }
   };
 
-  const uploadPic = async (e) => {
+  const uploadPic = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
 
     if (!image) {
