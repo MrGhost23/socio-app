@@ -25,6 +25,7 @@ type Props = {
 
 const PostMenu: React.FC<Props> = ({
   postId,
+  userId,
   username,
   setIsEditing,
   removePost,
@@ -59,7 +60,7 @@ const PostMenu: React.FC<Props> = ({
   };
 
   const toggleBlockHandler = () => {
-    dispatch(toggleBlockUser({ username }));
+    dispatch(toggleBlockUser({ id: userId, username }));
     setMenuOpened(false);
   };
 
