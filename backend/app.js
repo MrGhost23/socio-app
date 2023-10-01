@@ -30,7 +30,7 @@ const { Server } = require("socket.io");
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: "http://localhost:3000" },
+  cors: { origin: "https://sociooapp.netlify.app/" },
 });
 
 app.use(express.json());
@@ -39,7 +39,7 @@ app.use(helmet({ crossOriginResourcePolicy: false }));
 app.use(morgan("common"));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: "https://sociooapp.netlify.app/" }));
 const path = require("path");
 const authenticateUser = require("./middleware/authenticateUser");
 const { updateUserPicture } = require("./controllers/usersController");
