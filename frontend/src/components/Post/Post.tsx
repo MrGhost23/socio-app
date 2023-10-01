@@ -68,7 +68,7 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost, socket }) => {
     fetchMoreData: fetchMoreComments,
     hasMore: commentsHasMore,
   } = useInfiniteFetch<Comment>(
-    `http://localhost:5000/api/v1/posts/${post._id}/comments`,
+    `https://socio-irdl.onrender.com/api/v1/posts/${post._id}/comments`,
     "get",
     10,
     "_id",
@@ -166,7 +166,7 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost, socket }) => {
             <PostText text={post.description} />
             {post.postImage && (
               <PostImage
-                src={`http://localhost:5000/post_assets/${encodeURIComponent(
+                src={`https://socio-irdl.onrender.com/post_assets/${encodeURIComponent(
                   post.postImage
                 )}`}
                 alt=""

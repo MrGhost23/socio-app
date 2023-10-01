@@ -22,7 +22,7 @@ const MainLayout: React.FC<Props> = ({ navIsSticky, socket }) => {
   const { data: suggestedUsers, loading: suggestedUsersIsLoading } = useAxios<
     UserType[]
   >(
-    `http://localhost:5000/api/v1/users/${
+    `https://socio-irdl.onrender.com/api/v1/users/${
       currentUser!.username
     }/suggested-users`,
     "get"

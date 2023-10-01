@@ -60,7 +60,7 @@ const Navbar: React.FC<Props> = ({
             users: ProfileType[];
             posts: PostType[];
           }> = await axios.get(
-            `http://localhost:5000/api/v1/search?query=${query}`
+            `https://socio-irdl.onrender.com/api/v1/search?query=${query}`
           );
           setResults(response.data);
           setLoading(false);

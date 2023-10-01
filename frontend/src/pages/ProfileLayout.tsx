@@ -37,7 +37,7 @@ const ProfileLayout: React.FC<Props> = ({ socket }) => {
     loading: userProfileIsLoading,
     error: userProfileHasError,
   } = useAxios<ProfileType>(
-    `http://localhost:5000/api/v1/users/${username}`,
+    `https://socio-irdl.onrender.com/api/v1/users/${username}`,
     "get"
   );
 
@@ -46,7 +46,7 @@ const ProfileLayout: React.FC<Props> = ({ socket }) => {
     loading: userActivitiesIsLoading,
     error: userActivitiesHasError,
   } = useAxios<RecentActivityType[]>(
-    `http://localhost:5000/api/v1/users/${username}/activities`,
+    `https://socio-irdl.onrender.com/api/v1/users/${username}/activities`,
     "get"
   );
 
@@ -93,7 +93,7 @@ const ProfileLayout: React.FC<Props> = ({ socket }) => {
 
   const sendMessageHandler = async () => {
     try {
-      await axios.post(`http://localhost:5000/api/v1/chat`, {
+      await axios.post(`https://socio-irdl.onrender.com/api/v1/chat`, {
         senderUsername: currentUser!.username,
         receiverUsername: userProfile!.username,
       });

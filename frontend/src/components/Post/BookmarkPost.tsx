@@ -22,7 +22,7 @@ const BookmarkPost: React.FC<Props> = ({ post, removeBookmarkFunction }) => {
         <div className="flex flex-col sm:flex-row gap-4">
           {post.postImage && (
             <BookmarkImage
-              src={`http://localhost:5000/post_assets/${post.postImage}`}
+              src={`https://socio-irdl.onrender.com/post_assets/${post.postImage}`}
               alt=""
               id={post._id}
             />

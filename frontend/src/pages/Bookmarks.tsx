@@ -18,7 +18,7 @@ const Bookmarks = () => {
     fetchMoreData: fetchMorePosts,
     hasMore: bookmarkPostsHasMore,
   } = useInfiniteFetch<BookmarkPostType>(
-    `http://localhost:5000/api/v1/users/${
+    `https://socio-irdl.onrender.com/api/v1/users/${
       currentUser!.username
     }/bookmarked-posts`,
     "get",

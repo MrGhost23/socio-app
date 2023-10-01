@@ -21,7 +21,7 @@ const PostPage: React.FC<Props> = ({ socket }) => {
     loading: postDataIsLoading,
     error: postDataHasError,
   } = useAxios<PostType>(
-    `http://localhost:5000/api/v1/posts/${id}`,
+    `https://socio-irdl.onrender.com/api/v1/posts/${id}`,
     "get",
     undefined,
     false

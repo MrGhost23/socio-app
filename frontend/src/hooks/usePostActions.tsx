@@ -10,7 +10,7 @@ const usePostActions = () => {
   const createPost = async (postData: FormData) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/v1/posts",
+        "https://socio-irdl.onrender.com/api/v1/posts",
         postData
       );
 
@@ -26,7 +26,7 @@ const usePostActions = () => {
   ): Promise<PostType | undefined> => {
     try {
       const response = await axios.patch(
-        `http://localhost:5000/api/v1/posts/${postId}`,
+        `https://socio-irdl.onrender.com/api/v1/posts/${postId}`,
         formData
       );
       return response.data;
@@ -37,7 +37,9 @@ const usePostActions = () => {
 
   const deletePost = async (postId: string) => {
     try {
-      await axios.delete(`http://localhost:5000/api/v1/posts/${postId}`);
+      await axios.delete(
+        `https://socio-irdl.onrender.com/api/v1/posts/${postId}`
+      );
     } catch (error) {
       toast.info(`Something went wrong!`);
     }
@@ -45,9 +47,12 @@ const usePostActions = () => {
 
   const toggleLikePost = async (postId: string) => {
     try {
-      await axios.patch(`http://localhost:5000/api/v1/posts/${postId}/like`, {
-        username: currentUser!.username,
-      });
+      await axios.patch(
+        `https://socio-irdl.onrender.com/api/v1/posts/${postId}/like`,
+        {
+          username: currentUser!.username,
+        }
+      );
     } catch (error) {
       toast.info(`Something went wrong!`);
     }

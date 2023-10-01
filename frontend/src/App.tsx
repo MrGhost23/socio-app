@@ -78,7 +78,7 @@ const App: React.FC = () => {
     const fetchToken = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:5000/api/v1/validateToken",
+          "https://socio-irdl.onrender.com/api/v1/validateToken",
           {
             token: localToken,
           }
@@ -130,7 +130,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const fetchNotifications = async () => {
       const response = await axios.get(
-        "http://localhost:5000/api/v1/notifications"
+        "https://socio-irdl.onrender.com/api/v1/notifications"
       );
       setNotifications(response.data);
     };

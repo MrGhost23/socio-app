@@ -80,7 +80,7 @@ const Conversation: React.FC<Props> = ({
     loading: userProfileIsLoading,
     error: userProfileHasError,
   } = useAxios<ProfileType>(
-    `http://localhost:5000/api/v1/users/${receiverUsername}`,
+    `https://socio-irdl.onrender.com/api/v1/users/${receiverUsername}`,
     "get"
   );
 
@@ -133,7 +133,9 @@ const Conversation: React.FC<Props> = ({
   }, [chat, currentUser?.username]);
 
   const readChat = useCallback(async () => {
-    await axios.patch(`http://localhost:5000/api/v1/chat/${chat.chatId}`);
+    await axios.patch(
+      `https://socio-irdl.onrender.com/api/v1/chat/${chat.chatId}`
+    );
     setCurrentUserHaveUnreadMessages(false);
   }, [chat.chatId]);
 

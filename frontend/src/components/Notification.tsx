@@ -25,7 +25,7 @@ const Notification: React.FC<Props> = ({
   const clickHandler = async () => {
     if (!isRead) {
       await axios.patch(
-        `http://localhost:5000/api/v1/notifications/${notification._id}`
+        `https://socio-irdl.onrender.com/api/v1/notifications/${notification._id}`
       );
       setIsRead(true);
       readNotification(notification._id);
@@ -44,8 +44,8 @@ const Notification: React.FC<Props> = ({
       onClick={clickHandler}
       className={`flex items-center px-4 py-3 border-b dark:border-b-primaryDark ${
         isRead
-        ? "hover:bg-gray-100 hover:dark:bg-primarylessDarker"
-        : "bg-gray-100 dark:bg-primarylessDarker"
+          ? "hover:bg-gray-100 hover:dark:bg-primarylessDarker"
+          : "bg-gray-100 dark:bg-primarylessDarker"
       }`}
     >
       <UserImage

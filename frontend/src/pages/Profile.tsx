@@ -31,7 +31,7 @@ const Profile: React.FC<Props> = ({ socket }) => {
     hasMore: feedPostsHasMore,
     fetchMoreData: fetchMorePosts,
   } = useInfiniteFetch<PostType>(
-    `http://localhost:5000/api/v1/posts/user/${username}`,
+    `https://socio-irdl.onrender.com/api/v1/posts/user/${username}`,
     "get",
     10,
     "_id"

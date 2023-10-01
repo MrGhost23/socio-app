@@ -22,7 +22,9 @@ const FindFriends: React.FC<Props> = ({ socket }) => {
     hasMore: followingHasMore,
     fetchMoreData: fetchMoreFollowing,
   } = useInfiniteFetch<UserType>(
-    `http://localhost:5000/api/v1/users/${currentUser!.username}/find-friends`,
+    `https://socio-irdl.onrender.com/api/v1/users/${
+      currentUser!.username
+    }/find-friends`,
     "get",
     20,
     "_id"

@@ -50,7 +50,7 @@ const Chat: React.FC<Props> = ({
   const { data: chatMessages, loading: chatMessagesIsLoading } = useAxios<
     MessageType[]
   >(
-    `http://localhost:5000/api/v1/message/${chat?.chatId}`,
+    `https://socio-irdl.onrender.com/api/v1/message/${chat?.chatId}`,
     "get",
     undefined,
     false
@@ -78,7 +78,7 @@ const Chat: React.FC<Props> = ({
     };
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/v1/message",
+        "https://socio-irdl.onrender.com/api/v1/message",
         message
       );
 

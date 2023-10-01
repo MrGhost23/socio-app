@@ -57,7 +57,7 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
   const submitHandler = async () => {
     try {
       const response = await axios.patch(
-        `http://localhost:5000/api/v1/users/updateUser`,
+        `https://socio-irdl.onrender.com/api/v1/users/updateUser`,
         {
           bio,
           firstName,
@@ -89,7 +89,7 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/v1/updateUserPicture",
+        "https://socio-irdl.onrender.com/api/v1/updateUserPicture",
         formData
       );
 
@@ -123,7 +123,7 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
       }
 
       const response = await axios.patch(
-        "http://localhost:5000/api/v1/users/updatePassword",
+        "https://socio-irdl.onrender.com/api/v1/users/updatePassword",
         {
           currentPassword,
           newPassword,
@@ -152,7 +152,9 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
     hasMore: blockedUsersHasMore,
     fetchMoreData: fetchMoreBlockedUsers,
   } = useInfiniteFetch<UserType>(
-    `http://localhost:5000/api/v1/users/${currentUser!.username}/blocked-users`,
+    `https://socio-irdl.onrender.com/api/v1/users/${
+      currentUser!.username
+    }/blocked-users`,
     "get",
     20,
     "_id"

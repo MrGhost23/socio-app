@@ -52,7 +52,7 @@ const Notifications: React.FC<Props> = ({
     const updatedNotifications = notifications.map(async (notification) => {
       if (!notification.isRead) {
         await axios.patch(
-          `http://localhost:5000/api/v1/notifications/${notification._id}`
+          `https://socio-irdl.onrender.com/api/v1/notifications/${notification._id}`
         );
       }
       return { ...notification, isRead: true };

@@ -47,7 +47,7 @@ const Chats: React.FC<Props> = ({
     hasMore: userChatsHasMore,
     fetchMoreData: fetchMoreUserChats,
   } = useInfiniteFetch<ChatType>(
-    `http://localhost:5000/api/v1/chat/${currentUser?.username}`,
+    `https://socio-irdl.onrender.com/api/v1/chat/${currentUser?.username}`,
     "get",
     10,
     "chatId",

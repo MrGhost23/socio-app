@@ -20,7 +20,7 @@ const Timeline: React.FC<Props> = ({ socket }) => {
     fetchMoreData: fetchMorePosts,
     hasMore: feedPostsHasMore,
   } = useInfiniteFetch<PostType>(
-    `http://localhost:5000/api/v1/posts`,
+    `https://socio-irdl.onrender.com/api/v1/posts`,
     "get",
     10,
     "_id",

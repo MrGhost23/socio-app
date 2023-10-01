@@ -34,7 +34,9 @@ const PostForm: React.FC<Props> = ({
   const [image, setImage] = useState<object | string | null>(postImage || null);
   const [previewImage, setPreviewImage] = useState<string>(
     postImage
-      ? `http://localhost:5000/post_assets/${encodeURIComponent(postImage)}`
+      ? `https://socio-irdl.onrender.com/post_assets/${encodeURIComponent(
+          postImage
+        )}`
       : ""
   );
 

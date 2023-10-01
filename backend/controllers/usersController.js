@@ -5,7 +5,8 @@ const User = require("../models/User.js");
 
 const updateUserPicture = async (req, res) => {
   try {
-    const imageUrl = "http://localhost:5000/profile_pics/" + req.file.filename;
+    const imageUrl =
+      "https://socio-irdl.onrender.com/profile_pics/" + req.file.filename;
 
     const updatedUser = await User.findByIdAndUpdate(
       req.user._id,

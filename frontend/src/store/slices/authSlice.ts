@@ -44,7 +44,7 @@ export const register = createAsyncThunk<
   try {
     const response: AxiosResponse<{ token: string; user: ProfileType }> =
       await axios.post(
-        "http://localhost:5000/api/v1/auth/register",
+        "https://socio-irdl.onrender.com/api/v1/auth/register",
         registrationData
       );
     if (response.data.token) {
@@ -72,7 +72,7 @@ export const login = createAsyncThunk<
 >("auth/login", async (credentials, { rejectWithValue }) => {
   try {
     const response: AxiosResponse<{ token: string; user: ProfileType }> =
-      await axios.post("http://localhost:5000/api/v1/auth/login", credentials);
+      await axios.post("https://socio-irdl.onrender.com/api/v1/auth/login", credentials);
     if (response.data.token) {
       localStorage.setItem("token", response.data.token);
 
@@ -104,7 +104,7 @@ export const toggleFollowUser = createAsyncThunk<
 
   try {
     const response: AxiosResponse<{ status: number }> = await axios.put(
-      `http://localhost:5000/api/v1/users/${username}/follow`,
+      `https://socio-irdl.onrender.com/api/v1/users/${username}/follow`,
       {
         username: auth.user!.username,
       }
@@ -128,7 +128,7 @@ export const toggleBlockUser = createAsyncThunk<
   };
   try {
     const response: AxiosResponse<{ status: number }> = await axios.post(
-      `http://localhost:5000/api/v1/users/${username}/block-unblock`,
+      `https://socio-irdl.onrender.com/api/v1/users/${username}/block-unblock`,
       {
         username: auth.user!.username,
       }
@@ -149,7 +149,7 @@ export const toggleBookmarkPost = createAsyncThunk<
 >("auth/toggleBookmarkPost", async ({ username, postId }) => {
   try {
     const response: AxiosResponse<{ status: number }> = await axios.post(
-      `http://localhost:5000/api/v1/users/${username}/toggle-bookmark/${postId}`
+      `https://socio-irdl.onrender.com/api/v1/users/${username}/toggle-bookmark/${postId}`
     );
     return { status: response.data.status, postId };
   } catch (error) {

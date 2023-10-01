@@ -5,7 +5,7 @@ const useCommentActions = () => {
   const submitComment = async (postId: string, text: string) => {
     try {
       const response = await axios.post(
-        `http://localhost:5000/api/v1/posts/${postId}/comments`,
+        `https://socio-irdl.onrender.com/api/v1/posts/${postId}/comments`,
         {
           text,
         }
@@ -20,7 +20,7 @@ const useCommentActions = () => {
   const editComment = async (commentId: string, text: string) => {
     try {
       await axios.patch(
-        `http://localhost:5000/api/v1/posts/comments/${commentId}`,
+        `https://socio-irdl.onrender.com/api/v1/posts/comments/${commentId}`,
         {
           text,
         }
@@ -35,7 +35,7 @@ const useCommentActions = () => {
   const deleteComment = async (commentId: string) => {
     try {
       await axios.delete(
-        `http://localhost:5000/api/v1/posts/comments/${commentId}`
+        `https://socio-irdl.onrender.com/api/v1/posts/comments/${commentId}`
       );
 
       toast.info(`Comment deleted successfully!`);
