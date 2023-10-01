@@ -80,10 +80,10 @@ const getCommentsForPost = async (req, res) => {
     const { postId } = req.params;
     const currentUser = req.user;
 
-    if (!currentUser) {
+    if (!postId || !currentUser) {
       return res
         .status(StatusCodes.NOT_FOUND)
-        .json({ message: "User not found" });
+        .json({ message: "Post or user not found" });
     }
 
     const blockedUserIds = currentUser.blockedUsers.map((userId) =>
@@ -93,37 +93,42 @@ const getCommentsForPost = async (req, res) => {
       userId.toString()
     );
 
-    const page = req.query.page || 1;
-    const limit = 10;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
 
-    const commentsQuery = Comment.find({ post: postId }).populate({
+    const commentsQuery = Comment.find({
+      post: postId,
+      author: { $ne: null },
+    }).populate({
       path: "author",
       select: "firstName lastName username userPicture _id",
-      match: {
-        $and: [
-          { _id: { $nin: blockedUserIds } },
-          { _id: { $nin: blockedByIds } },
-        ],
-      },
     });
 
+    const commentsCount = await Comment.countDocuments({ post: postId });
     const comments = await commentsQuery
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
       .exec();
-    const paginatedComments = comments.reverse();
 
-    const commentsCount = await Comment.countDocuments({ post: postId });
+    const filteredComments = comments.filter((comment) => {
+      const authorId = comment.author ? comment.author._id.toString() : null;
+      return (
+        authorId &&
+        !blockedUserIds.includes(authorId) &&
+        !blockedByIds.includes(authorId)
+      );
+    });
 
     res
       .status(StatusCodes.OK)
-      .json({ data: paginatedComments, total: commentsCount });
+      .json({ data: filteredComments, total: commentsCount });
   } catch (error) {
+    console.error(error);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: error.message });
+      .json({ message: "Internal server error" });
   }
 };
 
