@@ -126,7 +126,7 @@ const App: React.FC = () => {
         setReceiveMessage(null);
       };
     }
-  }, [user]);
+  }, [user, socketio]);
   useEffect(() => {
     const fetchNotifications = async () => {
       const response = await axios.get(
