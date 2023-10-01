@@ -8,7 +8,7 @@ import UsersSkeleton from "../../skeletons/UsersSkeleton";
 type Props = {
   users: UserType[];
   mode: string;
-  socket: Socket;
+  socket?: Socket;
   fetchMoreUsers: () => void;
   moreUsers: boolean;
 };

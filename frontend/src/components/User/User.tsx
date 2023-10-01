@@ -18,7 +18,7 @@ type Props = {
   changeStyle: boolean;
   mode: string;
   center?: boolean;
-  socket: Socket;
+  socket?: Socket;
 };
 
 const User: React.FC<Props> = ({ user, changeStyle, mode, center, socket }) => {
@@ -52,7 +52,7 @@ const User: React.FC<Props> = ({ user, changeStyle, mode, center, socket }) => {
       );
 
       if (!isFollowing) {
-        socket.emit("sendNotification", {
+        socket!.emit("sendNotification", {
           senderUsername: currentUser!.username,
           receiverUsername: user.username,
           actionType: "follow",
