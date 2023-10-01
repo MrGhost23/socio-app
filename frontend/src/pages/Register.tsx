@@ -18,7 +18,9 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [country, setCountry] = useState("");
+  const [country, setCountry] = useState<
+    { value: string; label: string } | undefined
+  >();
   const [countryError, setCountryError] = useState("");
   const dispatch: ThunkDispatch<RootState, void, AnyAction> = useDispatch();
 
@@ -38,6 +40,12 @@ const Register = () => {
         username,
       })
     );
+  };
+
+  const handleCountryChange = (
+    selectedOption: { value: string; label: string } | null
+  ) => {
+    setCountry(selectedOption || undefined);
   };
 
   return (
@@ -117,7 +125,7 @@ const Register = () => {
                 placeholder="Country"
                 isSearchable
                 name="countries"
-                onChange={setCountry}
+                onChange={handleCountryChange}
                 options={countries}
                 noOptionsMessage={() => "Please select a country"}
               />
