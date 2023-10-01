@@ -92,7 +92,7 @@ const App: React.FC = () => {
     fetchToken();
   }, [dispatch, localToken]);
 
-  const [socketio] = useState<Socket>(io("ws://localhost:5000"));
+  const [socketio] = useState<Socket>(io("wss://socio-irdl.onrender.com/"));
 
   useEffect(() => {
     if (user) {
