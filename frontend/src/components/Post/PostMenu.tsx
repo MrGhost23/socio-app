@@ -17,6 +17,7 @@ import { AnyAction, ThunkDispatch } from "@reduxjs/toolkit";
 
 type Props = {
   postId: string;
+  userId: string;
   username: string;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
   removePost: (postId: string) => void;

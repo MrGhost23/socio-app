@@ -146,6 +146,7 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost, socket }) => {
         </div>
         <PostMenu
           postId={post._id}
+          userId={post.userId}
           username={post.username}
           setIsEditing={setIsEditing}
           removePost={removePost}
