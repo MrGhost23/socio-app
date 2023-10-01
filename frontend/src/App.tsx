@@ -134,7 +134,9 @@ const App: React.FC = () => {
       );
       setNotifications(response.data);
     };
-    fetchNotifications();
+    if (user) {
+      fetchNotifications();
+    }
   }, []);
 
   if (isLoading) return;
