@@ -9,7 +9,6 @@ const commentSchema = new mongoose.Schema(
     author: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
     },
     post: {
       type: mongoose.Schema.Types.ObjectId,
@@ -19,5 +18,13 @@ const commentSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+commentSchema.pre("save", async function (next) {
+  if (!this.author) {
+    const err = new Error("Comment must have an author");
+    return next(err);
+  }
+  next();
+});
 
 module.exports = mongoose.model("Comment", commentSchema);
