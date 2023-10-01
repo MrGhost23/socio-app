@@ -28,7 +28,7 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
 
   const sideOpen = useSelector(selectSideOpen);
 
-  const [image, setImage] = useState<object>();
+  const [image, setImage] = useState<File | undefined>();
   const [previewImage, setPreviewImage] = useState<string>("");
 
   const uploadImageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
