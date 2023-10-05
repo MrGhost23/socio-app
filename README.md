@@ -59,6 +59,7 @@ Socio comes equipped with a wide range of social media features to enhance your 
 - **Notifications**: Stay informed about likes, comments, and followers.
 - **Explore Feed**: Discover new content through a feed of popular and trending posts.
 - **Direct Messaging**: Send private messages to other Socio users.
+- **Online Dot In Chat**: You can know if socio user online or not from the dot in chat.
 
 ## Acknowledgements
 
