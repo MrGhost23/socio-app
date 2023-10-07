@@ -192,14 +192,7 @@ io.on("connection", (socket) => {
         const receiver = getUsers(receiverUsername);
 
         if (receiver && receiver.socketId) {
-          let notification = await Notification.findOne({
-            senderUsername,
-            actionType,
-            postId,
-          }).lean();
-
           const notificationData = {
-            _id: notification._id,
             senderUsername,
             actionType,
             username: sender.username,
