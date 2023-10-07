@@ -44,6 +44,7 @@ const path = require("path");
 const authenticateUser = require("./middleware/authenticateUser");
 const { updateUserPicture } = require("./controllers/usersController");
 const User = require("./models/User");
+const Notification = require("./models/Notification");
 
 const profilePictureStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -191,7 +192,14 @@ io.on("connection", (socket) => {
         const receiver = getUsers(receiverUsername);
 
         if (receiver && receiver.socketId) {
+          let notification = await Notification.findOne({
+            senderUsername,
+            actionType,
+            postId,
+          }).lean();
+
           const notificationData = {
+            _id: notification._id,
             senderUsername,
             actionType,
             username: sender.username,
