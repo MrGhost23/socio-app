@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import Notification from "./Notification";
 import { CgCheck } from "react-icons/cg";
 import axios from "axios";
+import NoDataMessage from "./NoDataMessage";
 
 type Props = {
   notifications: NotificationType[];
@@ -67,11 +68,12 @@ const Notifications: React.FC<Props> = ({
     );
   };
 
+
   return (
     <div className="relative" ref={notificationsRef}>
       <div
         className={`${
-          isOpen && notifications.length !== 0 ? "" : "hidden"
+          isOpen ? "" : "hidden"
         } absolute lg:right-0 -right-12 mt-2 w-80 bg-white rounded-md shadow-lg z-20 dark:bg-primarylessDark`}
       >
         {notifications.filter((obj) => obj.isRead !== true).length !== 0 && (
@@ -90,25 +92,32 @@ const Notifications: React.FC<Props> = ({
               : ""
           } ${notifications?.length > max ? "mb-10 " : ""}`}
         >
-          {notificationsSliced
-            ? notifications
-                .slice(0, max)
-                .map((notification) => (
-                  <Notification
-                    key={notification._id}
-                    notification={notification}
-                    setIsOpen={setIsOpen}
-                    readNotification={readNotificationHandler}
-                  />
-                ))
-            : notifications.map((notification) => (
+          {notificationsSliced ? (
+            notifications
+              .slice(0, max)
+              .map((notification) => (
                 <Notification
                   key={notification._id}
                   notification={notification}
                   setIsOpen={setIsOpen}
                   readNotification={readNotificationHandler}
                 />
-              ))}
+              ))
+          ) : notifications.length > 0 ? (
+            notifications.map((notification) => (
+              <Notification
+                key={notification._id}
+                notification={notification}
+                setIsOpen={setIsOpen}
+                readNotification={readNotificationHandler}
+              />
+            ))
+          ) : (
+            <NoDataMessage
+              message="You don't have any notification"
+              className="py-3 px-4"
+            />
+          )}
         </div>
         {notifications?.length > max && (
           <Button
