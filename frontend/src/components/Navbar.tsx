@@ -86,7 +86,7 @@ const Navbar: React.FC<Props> = ({
 
     if (query.length > 2) {
       return (
-        <div className="absolute px-4 py-4 shadow-md max-h-[400px] overflow-y-auto hidden b-0 z-50 w-full bg-white p-2 md:grid grid-cols-1">
+        <div className="absolute px-4 py-4 shadow-md max-h-[400px] overflow-y-auto hidden b-0 z-50 w-full bg-white p-2 md:grid grid-cols-1 scrollbar scrollbar-w-2 scrollbar-thumb-sky-500 hover:scrollbar-thumb-sky-600 scrollbar-track-gray-200 dark:scrollbar-track-primarylessDarker dark:bg-primarylessDark">
           {results.users.length > 0 && (
             <p className="text-gray-400 font-semibold text-base dark:text-textLighter">
               USERS
