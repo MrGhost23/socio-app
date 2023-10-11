@@ -36,7 +36,7 @@ const Comments: React.FC<Props> = ({
     setCommentsSliced(true);
   };
 
-  if (!comments) return;
+  if (comments.length === 0) return;
 
   return (
     <div className="mb-5 flex flex-col gap-4">

@@ -111,8 +111,6 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost, socket }) => {
     });
   };
 
-  if (feedPostsIsLoading) return;
-
   return (
     <Card className="px-8 py-6 !text-left dark:bg-primarylessDark">
       <div className="relative mb-2 flex flex-row justify-between gap-3">
@@ -183,14 +181,16 @@ const Post: React.FC<Props> = ({ post, removePost, updatePost, socket }) => {
           unLikeFunction={unLikeFunction}
         />
         <HorizontalLine className="mb-5" />
-        <Comments
-          comments={comments!}
-          removeCommentFunction={removeCommentFunction}
-          editCommentFunction={editCommentFunction}
-          fetchMoreComments={fetchMoreComments}
-          commentsHasMore={commentsHasMore}
-          socket={socket}
-        />
+        {!feedPostsIsLoading && (
+          <Comments
+            comments={comments!}
+            removeCommentFunction={removeCommentFunction}
+            editCommentFunction={editCommentFunction}
+            fetchMoreComments={fetchMoreComments}
+            commentsHasMore={commentsHasMore}
+            socket={socket}
+          />
+        )}
         <CommentForm
           socket={socket}
           postId={post._id}
