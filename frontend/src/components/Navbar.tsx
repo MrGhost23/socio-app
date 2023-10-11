@@ -243,7 +243,7 @@ const Navbar: React.FC<Props> = ({
             </div>
           </div>
           <button
-            className="md:mr-5 lg:hidden ml-auto mr-0 flex items-center gap-2 text-gray-600"
+            className="md:mr-5 lg:hidden ml-auto mr-0 flex items-center gap-2 text-gray-600 dark:text-textLight"
             onClick={handleSidebar}
           >
             <span className="text-2xl">
