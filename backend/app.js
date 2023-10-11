@@ -44,6 +44,7 @@ const path = require("path");
 const authenticateUser = require("./middleware/authenticateUser");
 const { updateUserPicture } = require("./controllers/usersController");
 const User = require("./models/User");
+const Notification = require("./models/Notification");
 
 const profilePictureStorage = multer.diskStorage({
   destination: (req, file, cb) => {
