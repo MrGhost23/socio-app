@@ -110,7 +110,7 @@ const Chats: React.FC<Props> = ({
           className={
             conversationsIsVisible
               ? "col-span-1 lg:h-[calc(100vh-82px)] flex flex-col border-r-2 dark:border-r-primarylessDark overflow-y-auto"
-              : "col-span-1 lg:h-[calc(100vh-82px)] hidden lg:flex lg:flex-col border-r-2 dark:border-r-primaryDark overflow-y-auto"
+              : "col-span-1 lg:h-[calc(100vh-82px)] hidden lg:flex lg:flex-col border-r-2 dark:border-r-primarylessDark overflow-y-auto"
           }
         >
           {userChatsIsLoading ? (

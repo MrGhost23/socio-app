@@ -236,9 +236,9 @@ const Conversation: React.FC<Props> = ({
                 <ChatDate date={latestMessageDate!} />
               )}
             </div>
-            <span className="text-gray-500 font-medium dark:text-textLighter">
+            <span className="text-gray-500 font-medium dark:text-textLight">
               {latestMessage || (
-                <span className="font-semibold text-gray-700">{`Say Hi to ${
+                <span className="font-semibold text-gray-700 dark:text-textLight">{`Say Hi to ${
                   receiverData!.firstName
                 }! 👋`}</span>
               )}
