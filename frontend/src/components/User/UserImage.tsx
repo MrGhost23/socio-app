@@ -40,6 +40,12 @@ const UserImage: React.FC<Props> = ({
             className={classes}
             src={src || noAvatar}
             alt={`${username}'s profile picture`}
+            onError={(e) => {
+              const imgElement = e.target as HTMLImageElement;
+              if (imgElement) {
+                imgElement.src = noAvatar;
+              }
+            }}
           />
           {online && (
             <div className="absolute bottom-0.5 right-0.5 w-3 h-3 bg-green-500 rounded-full"></div>
