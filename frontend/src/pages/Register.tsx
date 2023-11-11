@@ -138,7 +138,7 @@ const Register = () => {
             type="submit"
             className="block bg-sky-500 text-white w-full py-2 hover:bg-sky-600 mb-4"
           />
-          <p>
+          <p className="dark:text-white">
             Have an account?
             <Link to="/login" className="font-bold ml-1">
               Log in
