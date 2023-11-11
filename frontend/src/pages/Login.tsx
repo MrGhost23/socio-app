@@ -74,7 +74,7 @@ const Login = () => {
           {error && <p className="text-red-500">{error}</p>}
 
           <p className="dark:text-white">
-            Don't have an account??{" "}
+            Don't have an account?{" "}
             <Link to="/register" className="font-bold">
               Sign Up
             </Link>
