@@ -21,6 +21,13 @@ const UserImage: React.FC<Props> = ({
     classes += " " + className;
   }
 
+  const imageErrorHandler = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const imgElement = e.target as HTMLImageElement;
+    if (imgElement) {
+      imgElement.src = noAvatar;
+    }
+  };
+
   return (
     <>
       {link ? (
@@ -29,6 +36,7 @@ const UserImage: React.FC<Props> = ({
             className={classes}
             src={src || noAvatar}
             alt={`${username}'s profile picture`}
+            onError={imageErrorHandler}
           />
           {online && (
             <div className="absolute bottom-0.5 right-0.5 w-3 h-3 bg-green-500 rounded-full"></div>
@@ -40,12 +48,7 @@ const UserImage: React.FC<Props> = ({
             className={classes}
             src={src || noAvatar}
             alt={`${username}'s profile picture`}
-            onError={(e) => {
-              const imgElement = e.target as HTMLImageElement;
-              if (imgElement) {
-                imgElement.src = noAvatar;
-              }
-            }}
+            onError={imageErrorHandler}
           />
           {online && (
             <div className="absolute bottom-0.5 right-0.5 w-3 h-3 bg-green-500 rounded-full"></div>
