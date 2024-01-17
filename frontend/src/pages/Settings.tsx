@@ -201,7 +201,7 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
                 id="bio"
                 value={bio}
                 onChange={(prev) => setBio(prev)}
-                placeholder="Non sunt magna esse ea velit sint laborum irure sint minim ut excepteur mollit nulla."
+                placeholder="Write your bio here."
               />
             </div>
             <div className="mb-5 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5">
@@ -211,7 +211,7 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
                 value={firstName}
                 onChange={(prev) => setFirstName(prev)}
                 type="text"
-                placeholder="Omar"
+                placeholder="John"
               />
               <Input
                 label="Last Name"
@@ -219,7 +219,7 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
                 value={lastName}
                 onChange={(prev) => setLastName(prev)}
                 type="text"
-                placeholder="Mohamed"
+                placeholder="Doe"
               />
               <Input
                 label="Email"
@@ -227,7 +227,7 @@ const Settings: React.FC<Props> = ({ navIsSticky }) => {
                 value={email}
                 onChange={(prev) => setEmail(prev)}
                 type="email"
-                placeholder="whatever@gmail.com"
+                placeholder="johndoe@gmail.com"
               />
               <Input
                 label="Country"

@@ -36,10 +36,7 @@ const Login = () => {
         <img src={connection} alt="" className="" />
       </div>
       <FormLayout>
-        <form
-          className="w-full max-w-lg shadow-sm px-8"
-          onSubmit={handleSubmit}
-        >
+        <form className="w-full max-w-lg px-8" onSubmit={handleSubmit}>
           <div className="flex flex-wrap -mx-3 mb-6">
             <div className="w-full px-3">
               <Input
@@ -48,7 +45,7 @@ const Login = () => {
                 value={email}
                 onChange={(prev) => setEmail(prev)}
                 type="email"
-                placeholder="whatever@gmail.com"
+                placeholder="johndoe@example.com"
               />
             </div>
           </div>
@@ -73,7 +70,7 @@ const Login = () => {
           </button>
           {error && <p className="text-red-500">{error}</p>}
 
-          <p className="dark:text-white">
+          <p className="dark:text-white border-b border-gray-300 dark:border-gray-600 pb-5">
             Don't have an account?{" "}
             <Link to="/register" className="font-bold">
               Sign Up

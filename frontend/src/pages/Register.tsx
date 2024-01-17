@@ -54,10 +54,7 @@ const Register = () => {
         <img src={connection} alt="" />
       </div>
       <FormLayout>
-        <form
-          className="w-full max-w-lg shadow-sm px-8 py-10"
-          onSubmit={handleSubmit}
-        >
+        <form className="w-full max-w-lg px-8" onSubmit={handleSubmit}>
           <div className="flex flex-wrap -mx-3 mb-6">
             <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
               <Input
@@ -66,7 +63,7 @@ const Register = () => {
                 value={firstName}
                 onChange={(prev) => setFirstName(prev)}
                 type="text"
-                placeholder="Omar"
+                placeholder="John"
               />
             </div>
             <div className="w-full md:w-1/2 px-3">
@@ -76,7 +73,7 @@ const Register = () => {
                 value={lastName}
                 onChange={(prev) => setLastName(prev)}
                 type="text"
-                placeholder="Mohamed"
+                placeholder="Doe"
               />
             </div>
           </div>
@@ -88,7 +85,7 @@ const Register = () => {
                 value={username}
                 onChange={(prev) => setUsername(prev)}
                 type="text"
-                placeholder="whateveriam"
+                placeholder="JohnDoe"
               />
             </div>
           </div>
@@ -100,7 +97,7 @@ const Register = () => {
                 value={email}
                 onChange={(prev) => setEmail(prev)}
                 type="email"
-                placeholder="whatever@gmail.com"
+                placeholder="johndoe@gmail.com"
               />
             </div>
           </div>
@@ -114,7 +111,7 @@ const Register = () => {
                 type="password"
                 placeholder="***************"
               />
-              <p className="text-gray-600 text-xs italic">
+              <p className="mt-2 text-gray-600 text-xs italic">
                 Make it strong with at least 6 numbers
               </p>
             </div>
@@ -138,7 +135,7 @@ const Register = () => {
             type="submit"
             className="block bg-sky-500 text-white w-full py-2 hover:bg-sky-600 mb-4"
           />
-          <p className="dark:text-white">
+          <p className="dark:text-white border-b border-gray-300 dark:border-gray-600 pb-5">
             Have an account?
             <Link to="/login" className="font-bold ml-1">
               Log in
