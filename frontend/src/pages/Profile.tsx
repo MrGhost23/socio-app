@@ -86,6 +86,7 @@ const Profile: React.FC<Props> = ({ socket }) => {
           next={fetchMorePosts}
           hasMore={feedPostsHasMore}
           loader={<PostSkeleton className="mt-8" />}
+          className="!overflow-visible"
         >
           <Posts
             posts={profilePosts}
