@@ -43,6 +43,7 @@ const Bookmarks = () => {
           next={fetchMorePosts}
           hasMore={bookmarkPostsHasMore}
           loader={<PostSkeleton className="mt-8" />}
+          className="!overflow-visible"
         >
           <BookmarkPosts
             posts={bookmarkPosts}
